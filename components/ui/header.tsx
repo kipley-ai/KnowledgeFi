@@ -8,6 +8,7 @@ import Notifications from '@/components/dropdown-notifications'
 import DropdownHelp from '@/components/dropdown-help'
 import ThemeToggle from '@/components/theme-toggle'
 import DropdownProfile from '@/components/dropdown-profile'
+import SearchForm from '../search-form'
 
 export default function Header() {
 
@@ -15,7 +16,7 @@ export default function Header() {
   const [searchModalOpen, setSearchModalOpen] = useState<boolean>(false)
 
   return (
-    <header className="sticky top-0 bg-white dark:bg-[#182235] border-b border-slate-200 dark:border-slate-700 z-30">
+    <header className="sticky top-0 dark:bg-[#182235] border-b border-slate-200 dark:border-slate-700 z-30" style={{ boxShadow:'0px 4px 6px rgba(0, 0, 0, 0.1);', backgroundColor: '#292D31' }}>
       <div className="px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 -mb-px">
 
@@ -37,30 +38,35 @@ export default function Header() {
               </svg>
             </button>
 
+            <div className="flex items-center">
+              <svg className="shrink-0 h-6 w-6" viewBox="0 0 24 24" style={{ padding: '8px', margin: '0 8px' }}>
+                <path className={`fill-current`} d="M1 3h22v20H1z" />
+                <path
+                  className={`fill-current`}
+                  d="M21 3h2v4H1V3h2V1h4v2h10V1h4v2Z"
+                />
+              </svg>
+              <span className="text-sm font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200" style={{ fontSize: '14px', fontWeight: 600, color: '#FFFFFF' }}>
+                Create NFT
+              </span>
+            </div>
           </div>
 
           {/* Header: Right side */}
           <div className="flex items-center space-x-3">
-            <div>
-              <button
-                className={`w-8 h-8 flex items-center justify-center bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600/80 rounded-full ml-3 ${searchModalOpen && 'bg-slate-200'}`}
-                onClick={() => { setSearchModalOpen(true) }}
-              >
-                <span className="sr-only">Search</span>
-                <svg className="w-4 h-4" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
-                  <path className="fill-current text-slate-500 dark:text-slate-400" d="M7 14c-3.86 0-7-3.14-7-7s3.14-7 7-7 7 3.14 7 7-3.14 7-7 7zM7 2C4.243 2 2 4.243 2 7s2.243 5 5 5 5-2.243 5-5-2.243-5-5-5z" />
-                  <path className="fill-current text-slate-400 dark:text-slate-500" d="M15.707 14.293L13.314 11.9a8.019 8.019 0 01-1.414 1.414l2.393 2.393a.997.997 0 001.414 0 .999.999 0 000-1.414z" />
+            <SearchForm />
+            <button>
+              <div className="flex items-center" style={{ border: '2px solid #353945', borderRadius: '90px', padding: '12px 16px' }}>
+                <svg className="shrink-0 h-6 w-6" viewBox="0 0 24 24" style={{ padding: '8px', margin: '0 8px' }}>
+                  <path className={`fill-current`} d="M1 3h22v20H1z" />
+                  <path
+                    className={`fill-current`}
+                    d="M21 3h2v4H1V3h2V1h4v2h10V1h4v2Z"
+                  />
                 </svg>
-              </button>
-              <SearchModal isOpen={searchModalOpen} setIsOpen={setSearchModalOpen} />
-            </div>
-            <Notifications align="right" />
-            <DropdownHelp align="right" />
-            <ThemeToggle />
-            {/*  Divider */}
-            <hr className="w-px h-6 bg-slate-200 dark:bg-slate-700 border-none" />
-            <DropdownProfile align="right" />
-
+                <span className="text-sm font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200" style={{ fontSize: '14px', fontWeight: 600, color: '#DDDDDD' }}>Connect Wallet</span>
+              </div>
+            </button>
           </div>
 
         </div>
