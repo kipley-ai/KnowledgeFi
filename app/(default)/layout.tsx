@@ -13,7 +13,7 @@ export default function DefaultLayout({
       <Sidebar />
 
       {/* Content area */}
-      <div className="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden bg-neutral-900 p-4 border-gray-700 rounded-lg">
+      <div className="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden bg-neutral-900 p-6 pl-0 border-gray-700 rounded-lg">
         <div className='border border-gray-700 rounded-lg'>
 
         {/*  Site header */}

@@ -103,7 +103,7 @@ export default function Sidebar() {
           </button>
           {/* Logo */}
           <h2 className="text-slate-500 font-semibold pl-3">
-              <span className="lg:hidden lg:sidebar-expanded:block 2xl:block" style={{ fontSize: '28px', fontWeight: 900, color: '#DDDDDD', padding: '10px 3px' }}>KnowledgeFi</span>
+              <span className="lg:hidden lg:sidebar-expanded:block 2xl:block text-[28px] font-black text-neutral-300">KnowledgeFi</span>
             </h2>
         </div>
 
@@ -113,7 +113,8 @@ export default function Sidebar() {
           <div>
             <ul className="">
               {/* Inbox */}
-              <li className={`px-3 py-2 rounded-sm mb-3 last:mb-0 ${segments.includes('inbox') && 'bg-slate-900'}`} style={{ border: '2px solid #01F7FF', borderRadius: '24px', padding: '6px 10px' }}>
+              <li className={`px-3 py-2 rounded-sm mb-3 last:mb-0 ${segments.includes('home') && 'bg-slate-900'} border-2 border-aqua-700 rounded-3xl py-1.5 px-2.5`} >
+              {/* style={{ border: '2px solid #01F7FF', borderRadius: '24px', padding: '6px 10px' }}> */}
                 <SidebarLink href="/#">
                   <div className="flex items-center">
                     <Image
@@ -127,7 +128,7 @@ export default function Sidebar() {
                         d="M21 3h2v4H1V3h2V1h4v2h10V1h4v2Z"
                       />
                     </svg> */}
-                    <span className="text-sm font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200" style={{ fontSize: '14px', fontWeight: 600, color: '#F1F5F9' }}>Home</span>
+                    <span className="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200 text-[14px] font-semibold text-neutral-500">Home</span>
                   </div>
                 </SidebarLink>
               </li>
@@ -141,7 +142,7 @@ export default function Sidebar() {
                     >
                       <path fill="#F1F5F9" fillRule="evenodd" d="M18 7C11.925 7 7 11.925 7 18s4.925 11 11 11 11-4.925 11-11S24.075 7 18 7zm0 6a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3h-3a1 1 0 110-2h3v-3a1 1 0 011-1z" clipRule="evenodd"> </path>
                     </svg>
-                    <span className="text-sm font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200" style={{ fontSize: '14px', fontWeight: 600, color: '#F1F5F9' }}>
+                    <span className="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200 text-[14px] font-semibold text-neutral-500">
                     
                       Create chat bot
                     </span>
