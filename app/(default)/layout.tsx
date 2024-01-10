@@ -7,13 +7,14 @@ export default function DefaultLayout({
   children: React.ReactNode
 }) {  
   return (
-    <div className="flex h-[100dvh] overflow-hidden">
+    <div className="flex h-[100dvh] overflow-hidden bg-neutral-900">
 
       {/* Sidebar */}
       <Sidebar />
 
       {/* Content area */}
-      <div className="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
+      <div className="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden bg-neutral-900 p-4 border-gray-700 rounded-lg">
+        <div className='border border-gray-700 rounded-lg'>
 
         {/*  Site header */}
         <Header />
@@ -21,7 +22,7 @@ export default function DefaultLayout({
         <main className="grow [&>*:first-child]:scroll-mt-16">
           {children}
         </main>        
-
+        </div>
       </div>
 
     </div>

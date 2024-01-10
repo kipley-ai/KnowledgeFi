@@ -8,6 +8,8 @@ import { getBreakpoint } from '../utils/utils'
 import SidebarLinkGroup from './sidebar-link-group'
 import SidebarLink from './sidebar-link'
 import Logo from './logo'
+import Image from 'next/image'
+import home_logo from '@/public/images/logo-home.png'
 
 export default function Sidebar() {
   const sidebar = useRef<HTMLDivElement>(null)
@@ -71,7 +73,7 @@ export default function Sidebar() {
         as="div"
         id="sidebar"
         ref={sidebar}
-        className="flex lg:!flex flex-col absolute z-40 left-0 top-0 lg:static lg:left-auto lg:top-auto lg:translate-x-0 h-[100dvh] overflow-y-scroll lg:overflow-y-auto no-scrollbar w-64 lg:w-20 lg:sidebar-expanded:!w-64 2xl:!w-64 shrink-0 bg-slate-800 p-4 transition-all duration-200 ease-in-out"
+        className="flex lg:!flex flex-col absolute z-40 left-0 top-0 lg:static lg:left-auto lg:top-auto lg:translate-x-0 h-[100dvh] overflow-y-scroll lg:overflow-y-auto no-scrollbar w-64 lg:w-20 lg:sidebar-expanded:!w-64 2xl:!w-64 shrink-0 bg-neutral-900 p-4 transition-all duration-200 ease-in-out"
         enterFrom="-translate-x-full"
         enterTo="translate-x-0"
         leaveFrom="translate-x-0"
@@ -106,13 +108,17 @@ export default function Sidebar() {
               <li className={`px-3 py-2 rounded-sm mb-3 last:mb-0 ${segments.includes('inbox') && 'bg-slate-900'}`} style={{ border: '2px solid #01F7FF', borderRadius: '24px', padding: '6px 10px' }}>
                 <SidebarLink href="/#">
                   <div className="flex items-center">
-                    <svg className="shrink-0 h-6 w-6" viewBox="0 0 24 24" style={{ padding: '8px', margin: '0 8px' }}>
+                    <Image
+                      className="h-9 w-9"
+                      alt="home"
+                     src={home_logo}/>
+                    {/* <svg className="shrink-0 h-6 w-6" viewBox="0 0 24 24" style={{ padding: '8px', margin: '0 8px' }}>
                       <path className={`fill-current ${segments.includes('calendar') ? 'text-indigo-500' : 'text-slate-600'}`} d="M1 3h22v20H1z" />
                       <path
                         className={`fill-current ${segments.includes('calendar') ? 'text-indigo-300' : 'text-slate-400'}`}
                         d="M21 3h2v4H1V3h2V1h4v2h10V1h4v2Z"
                       />
-                    </svg>
+                    </svg> */}
                     <span className="text-sm font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200" style={{ fontSize: '14px', fontWeight: 600, color: '#F1F5F9' }}>Home</span>
                   </div>
                 </SidebarLink>
@@ -121,14 +127,12 @@ export default function Sidebar() {
               <li className={`px-3 py-2 rounded-sm mb-0.5 last:mb-0 ${segments.includes('login') && 'bg-slate-900'}`}>
                 <SidebarLink href="/login">
                   <div className="flex items-center">
-                    <svg className="shrink-0 h-6 w-6" viewBox="0 0 24 24" style={{ padding: '8px', margin: '0 8px' }}>
-                      <path className={`fill-current ${segments.includes('calendar') ? 'text-indigo-500' : 'text-slate-600'}`} d="M1 3h22v20H1z" />
-                      <path
-                        className={`fill-current ${segments.includes('calendar') ? 'text-indigo-300' : 'text-slate-400'}`}
-                        d="M21 3h2v4H1V3h2V1h4v2h10V1h4v2Z"
-                      />
+                    <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="none" viewBox="0 0 36 36"
+                    >
+                      <path fill="#F1F5F9" fillRule="evenodd" d="M18 7C11.925 7 7 11.925 7 18s4.925 11 11 11 11-4.925 11-11S24.075 7 18 7zm0 6a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3h-3a1 1 0 110-2h3v-3a1 1 0 011-1z" clipRule="evenodd"> </path>
                     </svg>
                     <span className="text-sm font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200" style={{ fontSize: '14px', fontWeight: 600, color: '#F1F5F9' }}>
+                    
                       Create chat bot
                     </span>
                   </div>

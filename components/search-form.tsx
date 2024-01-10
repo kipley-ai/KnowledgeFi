@@ -2,7 +2,10 @@ export default function SearchForm({ placeholder = 'Search' }: { placeholder?: s
   return (
     <form className="relative">
       <label htmlFor="action-search" className="sr-only">Search</label>
-      <input id="action-search" className="form-input pl-3 bg-white dark:bg-slate-800" type="search" placeholder={placeholder} style={{ backgroundColor: '#292D31', borderColor: '#393E44', borderWidth: 2, borderRadius: 8, color: '#DDD' }} />
+      <input id="action-search" 
+        className="form-input pl-3 bg-stone-800 border-2 border-gray-700 rounded-md text-neutral-300 placeholder-neutral-300" 
+        // style={{ backgroundColor: '#292D31', borderColor: '#393E44', borderWidth: 2, borderRadius: 8, color: '#DDD' }}
+        type="search" placeholder={placeholder} />
       <button className="absolute inset-0 left-auto group" type="submit" aria-label="Search">
         <svg className="w-4 h-4 shrink-0 fill-current text-slate-400 dark:text-slate-500 group-hover:text-slate-500 dark:group-hover:text-slate-400 ml-3 mr-2" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
           <path d="M7 14c-3.86 0-7-3.14-7-7s3.14-7 7-7 7 3.14 7 7-3.14 7-7 7zM7 2C4.243 2 2 4.243 2 7s2.243 5 5 5 5-2.243 5-5-2.243-5-5-5z" />
