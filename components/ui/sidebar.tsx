@@ -113,7 +113,7 @@ export default function Sidebar() {
           <div>
             <ul className="">
               {/* Inbox */}
-              <li className={`px-3 py-2 rounded-sm mb-3 last:mb-0 ${segments.includes('home') && 'bg-slate-900'} border-2 border-aqua-700 rounded-3xl py-1.5 px-2.5`} >
+              <li className={`px-3 py-2  mb-3 last:mb-0 ${(segments.includes('home') || segments.includes('dashboard')) && 'bg-slate-900'} border-2 border-aqua-700 rounded-3xl py-1.5 px-2.5`} >
               {/* style={{ border: '2px solid #01F7FF', borderRadius: '24px', padding: '6px 10px' }}> */}
                 <SidebarLink href="/#">
                   <div className="flex items-center">
@@ -133,7 +133,7 @@ export default function Sidebar() {
                 </SidebarLink>
               </li>
               {/* Login */}
-              <li className={`px-3 py-2 rounded-sm mb-0.5 last:mb-0 ${segments.includes('login') && 'bg-slate-900'}`}
+              <li className={`px-3 py-2  mb-0.5 last:mb-0 ${segments.includes('login') && 'bg-slate-900'}`}
               onClick={()=>setModalLogin(true)}
               >
                 <SidebarLink href="/dashboard" >
