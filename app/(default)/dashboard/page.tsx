@@ -65,35 +65,39 @@ export default function Dashboard() {
             onClick={()=>setModalLogin(true)}/>
         </div> */}
 
-        <div className="flex flex-wrap justify-center mx-[-22px] my-[8px]">
+        {/* <div className="grid-cols-4 gap-4 mx-[-22px] my-[8px]"> */}
+        <div className="flex flex-wrap justify-center mx-[-70px] my-[8px]">
+        {/* <div className="grid grid-cols-6"> */}
           {accounts.map((person, index) => (
-            <AnimationOnScroll
-              className="relative flex flex-col cursor-pointer"
-              style={{ flex: '0 0 calc(16.667% - 44px)', width: 'calc(16.667% - 44px)', margin: '27px 11px 0' }}
-              initiallyVisible
-              key={index}
-              animateOnce
-            >
-              <div className="absolute top-[5px] right-px w-[60px] h-[60px] rounded-2xl bg-apricot-700"></div>
-              <div className="p-2 rounded-tl-3xl bg-stone-500" style={{ clipPath: 'url(#polygonPhoto)' }}>
-              <div className="relative h-[150px] bg-stone-400 rounded-[18px] overflow-hidden" style={{ clipPath: 'url(#polygonPhoto)' }} onClick={()=>setModalLogin(true)}>
-                  <Image
-                    src={person.image}
-                    layout="fill"
-                    objectFit="cover"
-                    alt="Avatar"
-                  />
+            // <div className="col-span-2">
+              <AnimationOnScroll
+                className="relative flex flex-col cursor-pointer"
+                style={{ flex: '0 0 calc(16.667% - 44px)', width: 'calc(16.667% - 44px)', margin: '27px 11px 0' }}
+                initiallyVisible
+                key={index}
+                animateOnce
+              >
+                <div className="absolute top-[5px] right-px w-[60px] h-[60px] rounded-2xl bg-apricot-700"></div>
+                <div className="p-2 rounded-tl-3xl bg-stone-500" style={{ clipPath: 'url(#polygonPhoto)' }}>
+                <div className="relative h-[170px] bg-stone-400 rounded-[18px] overflow-hidden" style={{ clipPath: 'url(#polygonPhoto)' }} onClick={()=>setModalLogin(true)}>
+                    <Image
+                      src={person.image}
+                      layout="fill"
+                      objectFit="cover"
+                      alt="Avatar"
+                    />
+                  </div>
+                  <svg width="0" height="0" className="block">
+                    <clipPath id="polygonPhoto" clipPathUnits="objectBoundingBox">
+                      <path d="M1 1V.215C1 .196.993.177.98.162L.851.023C.838.008.819 0 .8 0H0v1" />
+                    </clipPath>
+                  </svg>
                 </div>
-                <svg width="0" height="0" className="block">
-                  <clipPath id="polygonPhoto" clipPathUnits="objectBoundingBox">
-                    <path d="M1 1V.215C1 .196.993.177.98.162L.851.023C.838.008.819 0 .8 0H0v1" />
-                  </clipPath>
-                </svg>
-              </div>
-              <div className="grow bg-stone-500 rounded-bl-3xl rounded-br-3xl" style={{ padding: '16px 16px 20px', overflowWrap: 'break-word' }} onClick={()=>setModalLogin(true)}>
-                <div className='text-neutral-300 font-semibold text-lg'>{person.name}</div>
-              </div>
-            </AnimationOnScroll>
+                <div className="grow bg-stone-500 rounded-bl-3xl rounded-br-3xl" style={{ padding: '16px 16px 20px', overflowWrap: 'break-word' }} onClick={()=>setModalLogin(true)}>
+                  <div className='text-neutral-300 font-semibold text-lg'>{person.name}</div>
+                </div>
+              </AnimationOnScroll>
+            // </div>
           ))}
         </div>
 
