@@ -14,11 +14,11 @@ export default function AccountHeader() {
 	const { sidebarOpen, setSidebarOpen } = useAppProvider();
 	const [searchModalOpen, setSearchModalOpen] = useState<boolean>(false);
 
-	const checkMetamask = () => {
-		return window.ethereum ? true : false;
-	};
+	// const checkMetamask = () => {
+	// 	return window.ethereum ? true : false;
+	// };
 
-	const metamask = checkMetamask();
+	// const metamask = checkMetamask();
 
 	return (
 		<header

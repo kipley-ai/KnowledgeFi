@@ -16,11 +16,11 @@ export default function Header() {
   const [searchModalOpen, setSearchModalOpen] = useState<boolean>(false)
 
   
-  const checkMetamask = () => {
-    return window.ethereum ? true : false;
-  };
+  // const checkMetamask = () => {
+  //   return window.ethereum ? true : false;
+  // };
 
-  const metamask = checkMetamask();
+  // const metamask = checkMetamask();
 
 
 
