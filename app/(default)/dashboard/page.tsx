@@ -47,11 +47,11 @@ export default function Dashboard() {
   const {modalLogin,setModalLogin} = useAppProvider()
 
   return (
-    <>
+    <div className='w-full bg-stone-800'>
       <ModalLoginTwitter
         isOpen={modalLogin} setIsOpen={setModalLogin}
       />
-      <div className="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-[96rem] mx-auto">
+      <div className="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-[96rem] ">
         <Switcher
           texts={["All", "Custom", "Custom", "Custom", "Custom"]}
           setWhich={setMode}
@@ -66,7 +66,7 @@ export default function Dashboard() {
         </div> */}
 
         {/* <div className="grid-cols-4 gap-4 mx-[-22px] my-[8px]"> */}
-        <div className="flex flex-wrap justify-center mx-[-70px] my-[8px]">
+        <div className="w-full flex flex-wrap justify-left my-[8px]">
         {/* <div className="grid grid-cols-6"> */}
           {accounts.map((person, index) => (
             // <div className="col-span-2">
@@ -74,7 +74,7 @@ export default function Dashboard() {
                 className="relative flex flex-col cursor-pointer w-[100px]"
                 // style={{ flex: '0 0 calc(16.667% - 44px)', width: 'calc(16.667% - 44px)', margin: '27px 11px 0' }}
                 // style={{ flex: '0 0 175px', width: 'calc(16.667% - 44px)', margin: '27px 11px 0' }}
-                style={{ width: '175px', margin: '27px 11px 0' }}
+                style={{ width: '175px', margin: '27px 22px 0 0' }}
                 initiallyVisible
                 key={index}
                 animateOnce
@@ -111,6 +111,6 @@ export default function Dashboard() {
           </button>
         </div>
       </div>
-    </>
+    </div>
   )
 }

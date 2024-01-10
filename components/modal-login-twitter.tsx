@@ -48,7 +48,7 @@ export default function ModalLoginTwitter({
                 {/* <div className=" rounded-full mr-2 cursor-pointer">
                 <Image className=" border-slate-200" src={fbLogo} width={"40"} height={"40"} alt="facebook logo"/>
                 </div> */}
-                <div className="flex w-full p-3 items-center justify-center  rounded-full bg-white cursor-pointer">
+                <div className="flex w-full p-3 items-center justify-center rounded-full bg-white cursor-pointer">
                     <div className=" rounded-full mr-2 cursor-pointer">
                     <Image className=" border-slate-200" src={twtLogo} width={"40"} height={"40"} alt="twitter logo"/>
                     </div>
