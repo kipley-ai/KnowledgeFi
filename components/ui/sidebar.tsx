@@ -10,6 +10,7 @@ import SidebarLink from './sidebar-link'
 import Logo from './logo'
 import Image from 'next/image'
 import home_logo from '@/public/images/logo-home.png'
+import ModalLoginTwitter from '../modal-login-twitter'
 
 export default function Sidebar() {
   const sidebar = useRef<HTMLDivElement>(null)
@@ -50,8 +51,15 @@ export default function Sidebar() {
       window.removeEventListener('resize', handleBreakpoint)
     }
   }, [breakpoint])    
+  const {modalLogin,setModalLogin} = useAppProvider()
+  
+
 
   return (
+    <>
+    <ModalLoginTwitter
+      isOpen={modalLogin} setIsOpen={setModalLogin}
+    />
     <div className={`min-w-fit ${sidebarExpanded ? 'sidebar-expanded' : ''}`} style={{ boxShadow:'0px 4px 6px rgba(0, 0, 0, 0.1);', backgroundColor: '#fff' }}>
       {/* Sidebar backdrop (mobile only) */}
       <Transition
@@ -124,8 +132,10 @@ export default function Sidebar() {
                 </SidebarLink>
               </li>
               {/* Login */}
-              <li className={`px-3 py-2 rounded-sm mb-0.5 last:mb-0 ${segments.includes('login') && 'bg-slate-900'}`}>
-                <SidebarLink href="/login">
+              <li className={`px-3 py-2 rounded-sm mb-0.5 last:mb-0 ${segments.includes('login') && 'bg-slate-900'}`}
+              onClick={()=>setModalLogin(true)}
+              >
+                <SidebarLink href="/dashboard" >
                   <div className="flex items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="none" viewBox="0 0 36 36"
                     >
@@ -156,5 +166,6 @@ export default function Sidebar() {
         </div>
       </Transition>
     </div>
+    </>
   )
 }

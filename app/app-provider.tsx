@@ -7,6 +7,8 @@ interface ContextProps {
   setSidebarOpen: Dispatch<SetStateAction<boolean>>
   headerTitle: string
   setHeaderTitle: Dispatch<SetStateAction<string>>
+  modalLogin: boolean
+  setModalLogin: Dispatch<SetStateAction<boolean>>
 }
 
 const AppContext = createContext<ContextProps>({
@@ -14,6 +16,8 @@ const AppContext = createContext<ContextProps>({
   setSidebarOpen: (): boolean => false,
   headerTitle: "",
   setHeaderTitle: (): string => "",
+  modalLogin: false,
+  setModalLogin: (): boolean => false,
 })
 
 export default function AppProvider({
@@ -23,9 +27,11 @@ export default function AppProvider({
 }) {  
   const [sidebarOpen, setSidebarOpen] = useState<boolean>(false)
   const [headerTitle,setHeaderTitle] = useState("")
+  const [modalLogin, setModalLogin] = useState(false);
   return (
     <AppContext.Provider value={{ sidebarOpen, setSidebarOpen,
-      headerTitle, setHeaderTitle
+      headerTitle, setHeaderTitle,
+      modalLogin, setModalLogin
     }}>
       {children}
     </AppContext.Provider>

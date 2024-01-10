@@ -15,6 +15,15 @@ export default function Header() {
   const { sidebarOpen, setSidebarOpen } = useAppProvider()
   const [searchModalOpen, setSearchModalOpen] = useState<boolean>(false)
 
+  
+  const checkMetamask = () => {
+    return window.ethereum ? true : false;
+  };
+
+  const metamask = checkMetamask();
+
+
+
   return (
     <header className=" bg-stone-800 border-b border-gray-700 z-30" style={{ boxShadow:'0px 4px 6px rgba(0, 0, 0, 0.1);'}}>
       <div className="px-4 sm:px-6 lg:px-8">
@@ -66,6 +75,10 @@ export default function Header() {
                 >Connect Wallet</span>
               </div>
             </button>
+            {/* <div> 
+              {metamask?'anjay':'anjuy'}
+            </div> */}
+            {/* <DropdownProfile align="right" /> */}
           </div>
 
         </div>
