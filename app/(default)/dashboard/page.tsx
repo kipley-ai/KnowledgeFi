@@ -1,9 +1,5 @@
 "use client";
 
-export const metadata = {
-  title: 'Dashboard - Mosaic',
-  description: 'Page description',
-}
 
 import WelcomeBanner from './welcome-banner'
 import DashboardAvatars from './dashboard-avatars'
