@@ -28,6 +28,7 @@ import ModalLoginTwitter from '@/components/modal-login-twitter';
 import { useAppProvider } from '@/app/app-provider'
 import { getBreakpoint } from '@/components/utils/utils';
 import { AnimationOnScroll } from 'react-animation-on-scroll';
+import { accounts } from '@/components/utils/twitter-account';
 
 export default function Dashboard() {
   const [mode, setMode] = useState(0);
@@ -36,82 +37,6 @@ export default function Dashboard() {
   const handleBreakpoint = () => {
     setBreakpoint(getBreakpoint())      
   }
-
-  const accounts = [
-    {
-        image: "/images/twitter-profile/@0xFinish.jpg",
-        name: "0xFinish",
-    },
-    {
-        image: "/images/twitter-profile/@0xJok9r.jpg",
-        name: "0xJok9r",
-    },
-    {
-        image: "/images/twitter-profile/@0xKillTheWolf.jpg",
-        name: "0xKillTheWolf",
-    },
-    {
-        image: "/images/twitter-profile/@0xprerich.jpg",
-        name: "0xprerich",
-    },
-    {
-        image: "/images/twitter-profile/@0xSalazar.jpg",
-        name: "0xSalazar",
-    },
-    {
-        image: "/images/twitter-profile/@33NFT.jpg",
-        name: "33NFT",
-    },
-    {
-        image: "/images/twitter-profile/@alpha_pls.jpg",
-        name: "alpha_pls",
-    },
-    {
-        image: "/images/twitter-profile/@arndxt_xo.jpg",
-        name: "arndxt_xo",
-    },
-    {
-        image: "/images/twitter-profile/@Auri_0x.jpg",
-        name: "Auri_0x",
-    },
-    {
-        image: "/images/twitter-profile/@balajis.jpg",
-        name: "balajis",
-    },
-    {
-        image: "/images/twitter-profile/@basileus_eth.jpg",
-        name: "basileus_eth",
-    },
-    {
-        image: "/images/twitter-profile/@batsoupyum.jpg",
-        name: "batsoupyum",
-    },
-    {
-        image: "/images/twitter-profile/@co1born.jpg",
-        name: "co1born",
-    },
-    {
-        image: "/images/twitter-profile/@cryptocrushmia.jpg",
-        name: "cryptocrushmia",
-    },
-    {
-        image: "/images/twitter-profile/@CryptoGideon_.jpg",
-        name: "CryptoGideon_",
-    },
-    {
-        image: "/images/twitter-profile/@CryptoGirlNova.jpg",
-        name: "CryptoGirlNova",
-    },
-    {
-        image: "/images/twitter-profile/@CryptoKoryo.jpg",
-        name: "CryptoKoryo",
-    },
-    {
-        image: "/images/twitter-profile/@cryptoxingkong.jpg",
-        name: "cryptoxingkong",
-    },
-];
-
 
   useEffect(() => {
     window.addEventListener('resize', handleBreakpoint)
@@ -141,7 +66,7 @@ export default function Dashboard() {
         </div> */}
 
         <div className="flex flex-wrap justify-center mx-[-22px] my-[8px]">
-          {accounts.map((man, index) => (
+          {accounts.map((person, index) => (
             <AnimationOnScroll
               className="relative flex flex-col cursor-pointer"
               style={{ flex: '0 0 calc(16.667% - 44px)', width: 'calc(16.667% - 44px)', margin: '27px 11px 0' }}
@@ -153,7 +78,7 @@ export default function Dashboard() {
               <div className="p-2 rounded-tl-3xl bg-stone-500" style={{ clipPath: 'url(#polygonPhoto)' }}>
               <div className="relative h-[150px] bg-stone-400 rounded-[18px] overflow-hidden" style={{ clipPath: 'url(#polygonPhoto)' }} onClick={()=>setModalLogin(true)}>
                   <Image
-                    src={man.image}
+                    src={person.image}
                     layout="fill"
                     objectFit="cover"
                     alt="Avatar"
@@ -166,7 +91,7 @@ export default function Dashboard() {
                 </svg>
               </div>
               <div className="grow bg-stone-500 rounded-bl-3xl rounded-br-3xl" style={{ padding: '16px 16px 20px', overflowWrap: 'break-word' }} onClick={()=>setModalLogin(true)}>
-                <div className='text-neutral-300 font-semibold text-lg'>{man.name}</div>
+                <div className='text-neutral-300 font-semibold text-lg'>{person.name}</div>
               </div>
             </AnimationOnScroll>
           ))}
