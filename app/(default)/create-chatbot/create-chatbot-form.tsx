@@ -40,7 +40,7 @@ const ChatBotForm = () => {
     };
 
     return (
-        <div className="flex flex-col sm:px-6 lg:px-8 py-8 max-w-[96rem] bg-[#292D32]">
+        <div className="flex flex-col sm:px-6 lg:px-8 py-8 bg-[#292D32]">
             <div className='mx-64'>
                 <h1 className="text-3xl font-semibold text-white">General Information</h1>
                 <h5 className="text-lg text-[#7C878E]">Give some general information about your character</h5>
