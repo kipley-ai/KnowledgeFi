@@ -1,9 +1,11 @@
 'use client'
 import './css/style.css'
 
-import { Inter } from 'next/font/google'
-import Theme from './theme-provider'
-import AppProvider from './app-provider'
+import { Inter } from "next/font/google";
+import Theme from "./theme-provider";
+import AppProvider from "./app-provider";
+import NextAuthProvider from "./session-provider";
+import { getServerSession } from "next-auth";
 
 import '@rainbow-me/rainbowkit/styles.css';
 import {
@@ -41,15 +43,15 @@ const wagmiConfig = createConfig({
 })
 
 const inter = Inter({
-  subsets: ['latin'],
-  variable: '--font-inter',
-  display: 'swap'
-})
+	subsets: ["latin"],
+	variable: "--font-inter",
+	display: "swap",
+});
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+	children: React.ReactNode;
 }) {
   return (
     <html lang="en" suppressHydrationWarning>{/* suppressHydrationWarning: https://github.com/vercel/next.js/issues/44343 */}
