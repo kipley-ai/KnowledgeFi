@@ -11,6 +11,12 @@ import Logo from './logo'
 import Image from 'next/image'
 import home_logo from '@/public/images/logo-home.png'
 import ModalLoginTwitter from '../modal-login-twitter'
+import { useAccount } from 'wagmi'
+import dynamic from 'next/dynamic'
+
+const GetInvolvedButton = dynamic(() => import("../GetInvolvedButton/get-involved-button"), {
+  ssr: false,
+});
 
 export default function Sidebar() {
   const sidebar = useRef<HTMLDivElement>(null)
@@ -19,6 +25,7 @@ export default function Sidebar() {
   const segments = useSelectedLayoutSegments()  
   const [breakpoint, setBreakpoint] = useState<string | undefined>(getBreakpoint())
   const expandOnly = !sidebarExpanded && (breakpoint === 'lg' || breakpoint === 'xl')
+  const { isConnected } = useAccount() 
 
   // close on click outside
   useEffect(() => {
@@ -60,7 +67,7 @@ export default function Sidebar() {
     <ModalLoginTwitter
       isOpen={modalLogin} setIsOpen={setModalLogin}
     />
-    <div className={`min-w-fit ${sidebarExpanded ? 'sidebar-expanded' : ''}`} style={{ boxShadow:'0px 4px 6px rgba(0, 0, 0, 0.1);', backgroundColor: '#fff' }}>
+    <div className={`min-w-fit ${sidebarExpanded ? 'sidebar-expanded' : ''}`} style={{ boxShadow:'0px 4px 6px rgba(0, 0, 0, 0.1)', backgroundColor: '#fff' }}>
       {/* Sidebar backdrop (mobile only) */}
       <Transition
         className="fixed inset-0 bg-slate-900 bg-opacity-30 z-40 lg:hidden lg:z-auto"
@@ -133,19 +140,42 @@ export default function Sidebar() {
                 </SidebarLink>
               </li>
               {/* Login */}
-              <li className={`px-3 py-2  mb-0.5 last:mb-0 ${segments.includes('login') && 'bg-slate-900'}`}
-              onClick={()=>setModalLogin(true)}
-              >
+              <li className={`px-3 py-2  mb-0.5 last:mb-0 ${segments.includes('login') && 'bg-slate-900'}`}>
+                
                 <SidebarLink href="/dashboard" >
                   <div className="flex items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="none" viewBox="0 0 36 36"
-                    >
-                      <path fill="#F1F5F9" fillRule="evenodd" d="M18 7C11.925 7 7 11.925 7 18s4.925 11 11 11 11-4.925 11-11S24.075 7 18 7zm0 6a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3h-3a1 1 0 110-2h3v-3a1 1 0 011-1z" clipRule="evenodd"> </path>
-                    </svg>
-                    <span className="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200 text-[14px] font-semibold text-neutral-500">
+                    {
+                      isConnected // wallet connected
+                      ? <><svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="none" viewBox="0 0 36 36"
+                      onClick={()=>{
+                        //check if twitter is logged in 
+                      }}
+                        >
+                          <path fill="#F1F5F9" fillRule="evenodd" d="M18 7C11.925 7 7 11.925 7 18s4.925 11 11 11 11-4.925 11-11S24.075 7 18 7zm0 6a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3h-3a1 1 0 110-2h3v-3a1 1 0 011-1z" clipRule="evenodd"> </path>
+                        </svg>
+                        <span className="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200 text-[14px] font-semibold text-neutral-500">
+                        
+                          Create chat bot
+                        </span></>
+                      : <GetInvolvedButton
+                          buttonStyle='flex items-center '
+                          wrapStyle='flex items-center '
+                          chainStyle='flex items-center '
+                          content={
+                            <>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="none" viewBox="0 0 36 36"
+                            >
+                              <path fill="#F1F5F9" fillRule="evenodd" d="M18 7C11.925 7 7 11.925 7 18s4.925 11 11 11 11-4.925 11-11S24.075 7 18 7zm0 6a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3h-3a1 1 0 110-2h3v-3a1 1 0 011-1z" clipRule="evenodd"> </path>
+                            </svg>
+                            <span className="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200 text-[14px] font-semibold text-neutral-500">
+                            
+                              Create chat bot
+                            </span>
+                            </>
+                          }
+                        />
+                    }
                     
-                      Create chat bot
-                    </span>
                   </div>
                 </SidebarLink>
               </li>
