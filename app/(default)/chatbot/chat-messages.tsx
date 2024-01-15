@@ -1,6 +1,6 @@
 const MessageList = () => {
     return (
-        <div className="flex flex-col p-4 space-y-4 overflow-auto">
+        <div className="flex flex-col p-4 space-y-4 overflow-auto border border-gray-600">
             {/* Levi's message */}
             <div className="flex items-start space-x-2">
                 <div className="flex-none">
@@ -8,11 +8,12 @@ const MessageList = () => {
                 </div>
                 <div className="flex-grow">
                     <div className="text-xs text-gray-400 mb-1">Levi Ackerman:</div>
-                    <div className="bg-gray-700 text-white text-sm rounded-lg px-4 py-2 w-full">
+                    <div className="text-white text-sm rounded-lg py-2 w-full">
                         I for one, when I mention my love of mountain biking, am often met with looks of disgust and disappointment. Trail runners don’t like us. Roadies hate us. Hikers despise us. Even internet search algorithms seem to have a bias against us mountain bikers. During the coronavirus pandemic, when I began to wonder why brake pads had become scarce commodities, I typed the words “why are mountain bike…” into an internet search bar. “Why are mountain bike brake pads so hard to find?” I intended to inquire. But the search bar auto-filled: “…rs such douchebags.”
                     </div>
                 </div>
             </div>
+            <hr className="border-t border-gray-600 mx-[-1rem]" />
             {/* User's message */}
             <div className="flex items-start justify-end space-x-2 flex-row">
                 <div className="flex-none">
@@ -20,11 +21,12 @@ const MessageList = () => {
                 </div>
                 <div className="flex-grow">
                     <div className="text-xs text-gray-400 mb-1">You:</div>
-                    <div className="bg-blue-500 text-white text-sm rounded-lg px-4 py-2 w-full">
+                    <div className="text-white text-sm rounded-lg py-2 w-full">
                         I for one, when I mention my love of mountain biking, am often met with looks of disgust and disappointment. Trail runners don’t like us. Roadies hate us. Hikers despise us. Even internet search algorithms seem to have a bias against us mountain bikers. During the coronavirus pandemic, when I began to wonder why brake pads had become scarce commodities, I typed the words “why are mountain bike…” into an internet search bar. “Why are mountain bike brake pads so hard to find?” I intended to inquire. But the search bar auto-filled: “…rs such douchebags.”
                     </div>
                 </div>
             </div>
+            <hr className="border-t border-gray-600 mx-[-1rem]" />
             {/* Repeat the pattern above for each message */}
             {/* ... */}
             <div className="flex items-start space-x-2">
@@ -33,22 +35,24 @@ const MessageList = () => {
                 </div>
                 <div className="flex-grow">
                     <div className="text-xs text-gray-400 mb-1">Levi Ackerman:</div>
-                    <div className="bg-gray-700 text-white text-sm rounded-lg px-4 py-2 w-full">
+                    <div className="text-white text-sm rounded-lg py-2 w-full">
                         Brace yourself to undertake an extraordinary adventure to the heart of Africa’s arid landscapes, where ancient deserts, rugged mountains, and unique wildlife offer a surreal and untamed experience. Cradled in the southwestern corner of the continent, this captivating nation invites you to explore its vast wilderness and connect with the raw beauty of the natural world.
                     </div>
                 </div>
             </div>
+            <hr className="border-t border-gray-600 mx-[-1rem]" />
             <div className="flex items-start justify-end space-x-2 flex-row">
                 <div className="flex-none">
                     <div className="rounded-full bg-gray-300 w-8 h-8"></div>
                 </div>
                 <div className="flex-grow">
                     <div className="text-xs text-gray-400 mb-1">You:</div>
-                    <div className="bg-blue-500 text-white text-sm rounded-lg px-4 py-2 w-full">
+                    <div className="text-white text-sm rounded-lg py-2 w-full">
                         Your expedition begins as you touch down in this land of stark contrasts, where the vastness of the Namib Desert stretches to the horizon, and the silence of the Kalahari Desert is broken only by the whispers of the wind. Here, time seems to slow, and the spirit of exploration beckons.
                     </div>
                 </div>
             </div>
+            <hr className="border-t border-gray-600 mx-[-1rem]" />
             <div className="flex flex-col space-y-2">
                 {/* Loading icon and generating text */}
                 <div className="flex items-center text-gray-400 text-sm mb-2">
@@ -67,7 +71,7 @@ const MessageList = () => {
                         </div>
                         <div className="flex-grow">
                             <div className="text-xs text-gray-400 mb-1">Levi Ackerman:</div>
-                            <div className="bg-gray-700 text-white text-sm rounded-lg px-4 py-2 w-full">
+                            <div className="text-white text-sm rounded-lg py-2 w-full">
                                 And it's always like that in the evening time. We drink and we sing when our fighting is done.
                             </div>
                         </div>
@@ -134,7 +138,6 @@ const MessageList = () => {
                         </button>
                     </div>
                 </div>
-
             </div>
 
         </div>

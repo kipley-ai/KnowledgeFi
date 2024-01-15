@@ -1,6 +1,6 @@
 const MessageInput = () => {
     return (
-        <div className="relative flex items-center rounded-full bg-dark-blue px-4 py-2 w-full">
+        <div className="relative flex items-center rounded-full bg-dark-blue px-4 py-2 mt-10 w-full">
             <div className="absolute left-4 inset-y-0 my-auto flex items-center pl-2">
                 {/* Profile picture placeholder */}
                 <div className="rounded-full bg-gray-300 w-8 h-8"></div>
