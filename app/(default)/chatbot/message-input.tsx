@@ -1,13 +1,13 @@
 const MessageInput = () => {
     return (
-        <div className="flex items-center rounded-full border border-cyan-500 bg-dark-blue px-4 py-2 mt-6 w-full">
+        <div className="flex items-center rounded-xl border border-gray-600 focus-within:border-[#01F7FF] bg-dark-blue px-4 py-2 mt-6 w-full">
             {/* Profile picture placeholder */}
             <div className="rounded-full bg-gray-300 w-8 h-8 mr-4"></div>
             {/* Input Field */}
             <input
                 type="text"
                 placeholder="Ask me anything"
-                className="flex-grow bg-transparent text-white placeholder-gray-300 border-0 outline-none rounded-full"
+                className="flex-grow bg-transparent text-white placeholder-gray-300 border-0 outline-none rounded-full focus:ring-0"
             />
             {/* Icons or buttons */}
             <div className="flex items-center ml-4">
