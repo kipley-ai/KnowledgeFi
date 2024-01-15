@@ -26,6 +26,7 @@
     "react-animation-on-scroll": "^5.1.0",
     "react-dom": "18.2.0",
     "react-flatpickr": "^3.10.13",
+    "sharp": "^0.33.2",
     "typescript": "^5.0.4",
     "viem": "~1.21.4",
     "wagmi": "~1.4.13",
