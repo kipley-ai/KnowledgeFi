@@ -7,12 +7,14 @@ import SearchModal from "@/components/search-modal";
 import Notifications from "@/components/dropdown-notifications";
 import DropdownHelp from "@/components/dropdown-help";
 import ThemeToggle from "@/components/theme-toggle";
-import DropdownAccount from "@/components/dropdown-account";
+import DropdownTwitter from "@/components/dropdown-twitter";
 import SearchForm from "../search-form";
+import { useSession } from "next-auth/react";
 
 export default function AccountHeader() {
 	const { sidebarOpen, setSidebarOpen } = useAppProvider();
 	const [searchModalOpen, setSearchModalOpen] = useState<boolean>(false);
+	const {data: twitterSession, status: twitterStatus} = useSession();
 
 	// const checkMetamask = () => {
 	// 	return window.ethereum ? true : false;
@@ -76,10 +78,12 @@ export default function AccountHeader() {
 					{/* Header: Right side */}
 					<div className="flex items-center space-x-3">
 						<SearchForm />
-						<DropdownAccount align="right" />
+						{
+							twitterStatus == "authenticated" && <DropdownTwitter twitterSession={twitterSession} align="right" />
+						}
 						{/* <div> 
-              {metamask?'anjay':'anjuy'}
-            </div> */}
+							{metamask?'anjay':'anjuy'}
+						</div> */}
 						{/* <DropdownProfile align="right" /> */}
 					</div>
 				</div>

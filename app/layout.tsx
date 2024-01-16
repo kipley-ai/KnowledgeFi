@@ -1,46 +1,32 @@
-'use client'
-import './css/style.css'
+"use client";
+import "./css/style.css";
 
 import { Inter } from "next/font/google";
 import Theme from "./theme-provider";
 import AppProvider from "./app-provider";
 import NextAuthProvider from "./session-provider";
-import { getServerSession } from "next-auth";
 
-import '@rainbow-me/rainbowkit/styles.css';
-import {
-  getDefaultWallets,
-  RainbowKitProvider,
-} from '@rainbow-me/rainbowkit';
-import { configureChains, createConfig, WagmiConfig } from 'wagmi';
-import {
-  mainnet,
-  polygon,
-  optimism,
-  arbitrum,
-  base,
-  zora,
-} from 'wagmi/chains';
-import { alchemyProvider } from 'wagmi/providers/alchemy';
-import { publicProvider } from 'wagmi/providers/public';
-
+import "@rainbow-me/rainbowkit/styles.css";
+import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
+import { configureChains, createConfig, WagmiConfig } from "wagmi";
+import { mainnet, polygon, optimism, arbitrum, base, zora } from "wagmi/chains";
+import { alchemyProvider } from "wagmi/providers/alchemy";
+import { publicProvider } from "wagmi/providers/public";
 
 const { chains, publicClient } = configureChains(
-  [mainnet, polygon, optimism, arbitrum, base, zora],
-  [
-    publicProvider()
-  ]
+	[mainnet, polygon, optimism, arbitrum, base, zora],
+	[publicProvider()]
 );
 const { connectors } = getDefaultWallets({
-  appName: 'KIP Protocol',
-  projectId: 'f53ae5cdc0007d6f85bd532c0edf4d3d',
-  chains
+	appName: "KIP Protocol",
+	projectId: "f53ae5cdc0007d6f85bd532c0edf4d3d",
+	chains,
 });
 const wagmiConfig = createConfig({
-  autoConnect: true,
-  connectors,
-  publicClient
-})
+	autoConnect: true,
+	connectors,
+	publicClient,
+});
 
 const inter = Inter({
 	subsets: ["latin"],
@@ -49,23 +35,28 @@ const inter = Inter({
 });
 
 export default function RootLayout({
-  children,
+	children,
 }: {
 	children: React.ReactNode;
 }) {
-  return (
-    <html lang="en" suppressHydrationWarning>{/* suppressHydrationWarning: https://github.com/vercel/next.js/issues/44343 */}
-      <body className={`${inter.variable} font-inter antialiased bg-slate-100 dark:bg-slate-900 text-slate-600 dark:text-slate-400`}>
-        <Theme>
-          <AppProvider>
-            <WagmiConfig config={wagmiConfig}>
-            <RainbowKitProvider chains={chains}>
-              {children}
-            </RainbowKitProvider>
-            </WagmiConfig>
-          </AppProvider>
-        </Theme>
-      </body>
-    </html>
-  )
+	return (
+		<html lang="en" suppressHydrationWarning>
+			{/* suppressHydrationWarning: https://github.com/vercel/next.js/issues/44343 */}
+			<body
+				className={`${inter.variable} font-inter antialiased bg-slate-100 dark:bg-slate-900 text-slate-600 dark:text-slate-400`}
+			>
+				<Theme>
+					<AppProvider>
+						<NextAuthProvider>
+						<WagmiConfig config={wagmiConfig}>
+							<RainbowKitProvider chains={chains}>
+								{children}
+							</RainbowKitProvider>
+						</WagmiConfig>
+						</NextAuthProvider>
+					</AppProvider>
+				</Theme>
+			</body>
+		</html>
+	);
 }

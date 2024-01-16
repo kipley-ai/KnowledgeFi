@@ -19,6 +19,7 @@
     "encoding": "^0.1.13",
     "ethers": "^6.9.1",
     "lokijs": "^1.5.12",
+    "make-plural": "^7.3.0",
     "next": "^13.4.4",
     "next-auth": "^4.24.5",
     "next-themes": "^0.2.1",

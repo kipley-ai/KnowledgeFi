@@ -4,23 +4,30 @@ import Link from "next/link";
 import Image from "next/image";
 import { Menu, Transition } from "@headlessui/react";
 import UserAvatar from "@/public/images/user-avatar-32.png";
+import type { Session } from "next-auth";
+import { signOut } from "next-auth/react";
 
-export default function DropdownAccount({
+export default function DropdownTwitter({
 	align,
+	twitterSession,
 }: {
 	align?: "left" | "right";
+	twitterSession: Session;
 }) {
 	return (
-		<Menu as="div" className="dark relative inline-flex">
+		<Menu as="div" className="relative inline-flex">
 			<Menu.Button className="inline-flex justify-center items-center group">
 				<Image
 					className="w-8 h-8 rounded-full"
-					src={UserAvatar}
+					src={twitterSession.user?.image || UserAvatar}
 					width={32}
 					height={32}
 					alt="User"
 				/>
 				<div className="flex items-center truncate">
+					<span className="truncate ml-2 text-sm font-medium dark:text-slate-300 group-hover:text-slate-800 dark:group-hover:text-slate-200">
+						{twitterSession.user?.name}
+					</span>
 					<svg
 						className="w-3 h-3 shrink-0 ml-1 fill-current text-slate-400"
 						viewBox="0 0 12 12"
@@ -41,14 +48,11 @@ export default function DropdownAccount({
 				leaveTo="opacity-0"
 			>
 				<div className="pt-0.5 pb-2 px-3 mb-1 border-b border-slate-200 dark:border-slate-700">
-					<div className="font-large text-2xl text-slate-800 dark:text-slate-100">
-						Enrico Cole
-					</div>
-					<div className="text-s text-slate-500 dark:text-slate-400 italic">
-            0xc4c16ab5ac7d...b21a
+					<div className="font-medium text-slate-800 dark:text-slate-100">
+						{twitterSession.user?.email}
 					</div>
 					<div className="text-xs text-slate-500 dark:text-slate-400 italic">
-            Balance: 250 Credits
+						User
 					</div>
 				</div>
 				<Menu.Items as="ul" className="focus:outline-none">
@@ -60,7 +64,7 @@ export default function DropdownAccount({
 										? "text-indigo-600 dark:text-indigo-400"
 										: "text-indigo-500"
 								}`}
-								href="#0"
+								href="/account/manage"
 							>
 								Settings
 							</Link>
@@ -68,16 +72,19 @@ export default function DropdownAccount({
 					</Menu.Item>
 					<Menu.Item as="li">
 						{({ active }) => (
-							<Link
+							<button
 								className={`font-medium text-sm flex items-center py-1 px-3 ${
 									active
 										? "text-indigo-600 dark:text-indigo-400"
 										: "text-indigo-500"
 								}`}
-								href="#0"
+								onClick={(e) => {
+                  e.preventDefault();
+									signOut();
+								}}
 							>
 								Sign Out
-							</Link>
+							</button>
 						)}
 					</Menu.Item>
 				</Menu.Items>
