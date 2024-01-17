@@ -48,11 +48,11 @@ export default function RootLayout({
 				<Theme>
 					<AppProvider>
 						<NextAuthProvider>
-						<WagmiConfig config={wagmiConfig}>
-							<RainbowKitProvider chains={chains}>
-								{children}
-							</RainbowKitProvider>
-						</WagmiConfig>
+							<WagmiConfig config={wagmiConfig}>
+								<RainbowKitProvider chains={chains}>
+									{children}
+								</RainbowKitProvider>
+							</WagmiConfig>
 						</NextAuthProvider>
 					</AppProvider>
 				</Theme>
