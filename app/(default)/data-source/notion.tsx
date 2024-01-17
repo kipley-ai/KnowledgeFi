@@ -1,6 +1,6 @@
 const Notion = ({ closeModal }: any) => {
     return (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 px-4">
+        <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur flex items-center justify-center z-50 px-4">
             <div className="bg-[#141416] text-white max-w-md w-full rounded-lg p-6 shadow-lg">
                 <div className="flex justify-between items-center">
                     <h2 className="text-xl font-semibold">Connect Notion</h2>
