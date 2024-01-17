@@ -5,16 +5,22 @@ import Notion from './notion';
 import Local from './local';
 
 
-export default function Step2({selectedButton}: {selectedButton: string}) {
+export default function Step2({ selectedButton }: { selectedButton: string }) {
+    const [isModalOpen, setIsModalOpen] = useState(true);
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
+
     return (
         <>
-        {
-            selectedButton == 'twitter' ? 
-            <Twitter /> 
-            : selectedButton == 'notion' ? 
-            <Notion /> 
-            : <Local />
-        }
+            {
+                selectedButton == 'twitter' ?
+                    <Twitter />
+                    : selectedButton == 'notion' ?
+                        isModalOpen && <Notion closeModal={closeModal} />
+                        : <Local />
+            }
         </>
     )
 }
