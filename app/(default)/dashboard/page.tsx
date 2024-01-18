@@ -51,7 +51,7 @@ export default function Dashboard() {
 	return (
 		<div className="w-full bg-stone-800">
 			<ModalLoginTwitter isOpen={modalLogin} setIsOpen={setModalLogin} />
-			<div className="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-[96rem] ">
+			<div className="px-4 sm:px-6 lg:px-12 py-8 w-full max-w-[96rem] ">
 				<Switcher
 					texts={["All", "Custom", "Custom", "Custom", "Custom"]}
 					setWhich={setMode}
@@ -74,7 +74,7 @@ export default function Dashboard() {
 							className="relative flex flex-col cursor-pointer w-[100px]"
 							// style={{ flex: '0 0 calc(16.667% - 44px)', width: 'calc(16.667% - 44px)', margin: '27px 11px 0' }}
 							// style={{ flex: '0 0 175px', width: 'calc(16.667% - 44px)', margin: '27px 11px 0' }}
-							style={{ width: "175px", margin: "27px 22px 0 0" }}
+							style={{ width: "155px", margin: "27px 22px 0 0" }}
 							initiallyVisible
 							key={index}
 							animateOnce
@@ -85,7 +85,7 @@ export default function Dashboard() {
 								style={{ clipPath: "url(#polygonPhoto)" }}
 							>
 								<div
-									className="relative h-[175px] bg-stone-400 rounded-[18px] overflow-hidden"
+									className="relative h-[138px] bg-stone-400 rounded-[18px] overflow-hidden"
 									style={{ clipPath: "url(#polygonPhoto)" }}
 									onClick={() => setModalLogin(true)}
 								>
@@ -110,7 +110,7 @@ export default function Dashboard() {
 								}}
 								onClick={() => setModalLogin(true)}
 							>
-								<div className="text-neutral-300 font-semibold text-lg">
+								<div className="text-neutral-300 font-bold text-md">
 									{person.name}
 								</div>
 							</div>
