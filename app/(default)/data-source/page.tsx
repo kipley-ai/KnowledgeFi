@@ -2,13 +2,14 @@
 import React, { useState } from "react";
 import Step1 from "./step-1";
 import Step2 from "./step-2";
-import uploadFile from "lib/upload";
 
 type PossibleOptions = "files" | "twitter" | "notion" | "";
 
 export interface UIFile {
-	loading: boolean;
 	fileObject: File;
+	status: "loading" | "failed" | "succeed";
+	bucketPath: string;
+	link: string;
 }
 
 export default function DataSource() {
@@ -16,18 +17,18 @@ export default function DataSource() {
 	const [selectedButton, setSelectedButton] = useState<PossibleOptions>("");
 	const [localFiles, setLocalFiles] = useState<UIFile[]>([]);
 
-	const handleContinue = async () => {
-		if (localFiles) {
-			localFiles.forEach(async (fileObject: UIFile) => {
-				const { url: presignedUrl } = await fetch("/api/upload/s3", {
-					method: "POST",
-					body: JSON.stringify({
-						filename: fileObject.fileObject.name,
-					}),
-				});
+	// For future, can remove if unneeded
+	const [showLoadingModal, setShowLoadingModal] = useState(false);
 
-				uploadFile(fileObject.fileObject, presignedUrl);
-			});
+	const handleContinue = (e: React.MouseEvent<HTMLButtonElement>) => {
+		if (localFiles) {
+			const stillHasLoading =
+				localFiles.filter((localFile) => {
+					// Keep the still loading files
+					return localFile.status === "loading";
+				}).length !== 0;
+
+			setShowLoadingModal(stillHasLoading);
 		}
 	};
 
@@ -67,9 +68,9 @@ export default function DataSource() {
 				<button
 					className="flex flex-row items-center justify-between bg-[#01F7FF] rounded-3xl w-44 p-2 px-5 mt-8"
 					type="submit"
-					onClick={() => {
+					onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
 						if (step < 2) setStep(step + 1);
-                        handleContinue();
+						if (step == 2) handleContinue(e);
 					}}
 				>
 					<h5 className="text-black font-semibold">Continue</h5>

@@ -1,11 +1,15 @@
+import {
+	deleteFileS3,
+	fetchPresignedUrlS3,
+	uploadFileS3,
+} from "@/app/api/upload/s3/helper";
+import type { ReactSetter } from "lib/aliases";
+import Image from "next/image";
 import CheckIcon from "public/images/check-icon.svg";
 import CrossIcon from "public/images/cross-icon.svg";
 import UploadIcon from "public/images/upload-icon.svg";
-import Image from "next/image";
-import React, { useCallback, useRef, useState } from "react";
-import uploadFile from "lib/upload";
+import React, { useState } from "react";
 import type { UIFile } from "./page";
-import type { ReactSetter } from "lib/aliases";
 
 export default function Local({
 	files,
@@ -16,8 +20,6 @@ export default function Local({
 }) {
 	const [showInvalidModal, setShowInvalidModal] = useState(false);
 	const [dragActive, setDragActive] = useState(false);
-	const [presignedUrl, setPresignedUrl] = React.useState<string>("");
-	const fileInputRef = useRef<HTMLInputElement>(null);
 
 	const dummyFile = [
 		{ fileName: "file1.txt", fileSize: "10 KB" },
@@ -25,14 +27,15 @@ export default function Local({
 		{ fileName: "file3.txt", fileSize: "8 KB" },
 	];
 
-	const handleNewFiles = (newFileObjects: File[]) => {
-		const formats =
-			".docx, .doc, .odt, .pptx, .ppt, .xlsx, .csv, .tsv, .eml, .msg, .rtf, .epub, .html, .xml, .json, .jpg, .png, .pdf, .txt";
+	const formats =
+		".docx, .doc, .odt, .pptx, .ppt, .xlsx, .csv, .tsv, .eml, .msg, .rtf, .epub, .html, .xml, .json, .jpg, .png, .pdf, .txt";
 
+	const handleNewFiles = (newFileObjects: File[]) => {
 		newFileObjects.forEach(async (newFileObject: File) => {
 			const filenameArray = newFileObject.name.split(".");
 			const fileformat = filenameArray.pop();
 
+			// Check if format valid
 			if (
 				formats.split(", ").filter((format) => "." + fileformat === format)
 					.length == 0
@@ -48,10 +51,50 @@ export default function Local({
 					files.filter((file) => file.fileObject.name == newFileObject.name)
 						.length > 0)
 			) {
-				setFiles((prev) => [
-					...prev,
-					{ loading: true, fileObject: newFileObject },
-				]);
+				const { presignedUrl, bucketPath } = await fetchPresignedUrlS3(
+					newFileObject.name
+				);
+
+				setFiles((prevFiles) => {
+					return [
+						...prevFiles,
+						{
+							fileObject: newFileObject,
+							bucketPath: bucketPath,
+							status: "loading",
+							link: `${process.env.KBFILES_S3_URL}/${bucketPath}`,
+						},
+					];
+				});
+
+				await uploadFileS3(newFileObject, presignedUrl)
+					.then(async (res) => {
+						if (res.ok) {
+							console.log("Uploading file succeed: " + newFileObject.name)
+							setFiles((prevFiles) => {
+								return prevFiles.map((file) => {
+									if (file.fileObject.name === newFileObject.name) {
+										return {
+											...file,
+											status: "succeed",
+										};
+									}
+									return file;
+								});
+							});
+						}
+					})
+					.catch((e) => {
+						console.error(e);
+
+						// TODO: Add toast
+						// setToastAttribute({
+						// 	open: true,
+						// 	message: "Upload failed",
+						// 	type: "danger",
+						// 	noteElement: null,
+						// });
+					});
 			}
 		});
 	};
@@ -86,14 +129,16 @@ export default function Local({
 	};
 
 	const handleDelete =
-		(filename: string) => (e: React.MouseEvent<HTMLImageElement>) => {
-			console.log("Deleted the item: " + filename);
+		(bucketPath: string) => async (e: React.MouseEvent<HTMLImageElement>) => {
+			console.log("Deleted the item: " + bucketPath);
 
 			setFiles((prevFiles: UIFile[]) => {
 				return prevFiles.filter(
-					(prevFile) => prevFile.fileObject.name !== filename
+					(prevFile) => prevFile.bucketPath !== bucketPath
 				);
 			});
+
+			await deleteFileS3(bucketPath);
 		};
 
 	return (
@@ -138,7 +183,10 @@ export default function Local({
 			<div>
 				{files.map((file) => {
 					return (
-						<div className="flex py-5 px-8 my-5 rounded-3xl text-white bg-neutral-900 justify-between">
+						<div
+							key={file.bucketPath}
+							className="flex py-5 px-8 my-5 rounded-3xl text-white bg-neutral-900 justify-between"
+						>
 							<div className="flex flex-row">
 								<Image src={CheckIcon} alt="Check Icon" />
 								<div className="flex flex-col ml-8">
@@ -146,8 +194,9 @@ export default function Local({
 									<p className="text-xs">{file.fileObject.size}</p>
 								</div>
 							</div>
+							{ file.status == "loading" && "Loading"}
 							<Image
-								onClick={handleDelete(file.fileObject.name)}
+								onClick={handleDelete(file.bucketPath)}
 								src={CrossIcon}
 								alt="Cross Icon"
 							/>
