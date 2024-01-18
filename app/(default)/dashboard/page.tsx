@@ -26,6 +26,7 @@ import { AnimationOnScroll } from "react-animation-on-scroll";
 import { accounts } from "@/components/utils/twitter-account";
 
 export default function Dashboard() {
+	const { setHeaderTitle } = useAppProvider();
 	const [mode, setMode] = useState(0);
 	const [breakpoint, setBreakpoint] = useState<string | undefined>(
 		getBreakpoint()
@@ -38,10 +39,14 @@ export default function Dashboard() {
 
 	useEffect(() => {
 		window.addEventListener("resize", handleBreakpoint);
+		setHeaderTitle("Dashboard"); // Set the title when the component is mounted
+
+		// Optional: Reset the title when the component is unmounted
 		return () => {
 			window.removeEventListener("resize", handleBreakpoint);
+			setHeaderTitle("Default Title");
 		};
-	}, [breakpoint]);
+	}, [breakpoint,]);
 
 	return (
 		<div className="w-full bg-stone-800">

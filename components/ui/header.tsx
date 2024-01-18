@@ -30,6 +30,8 @@ export default function Header() {
 	const { modalLogin, setModalLogin } = useAppProvider();
 	const { isConnected: walletConnected } = useAccount();
 
+	const { headerTitle } = useAppProvider();
+
 	useEffect(() => {
 		setShowTwitterLogin(walletConnected && twitterStatus !== "authenticated");
 		setShowAccountButton(walletConnected && twitterStatus === "authenticated");
@@ -83,9 +85,9 @@ export default function Header() {
 
 							<span
 								className="text-sm font-medium text-white ml-3 duration-200"
-								//style={{ fontSize: '14px', fontWeight: 600, color: '#FFFFFF' }}
+							//style={{ fontSize: '14px', fontWeight: 600, color: '#FFFFFF' }}
 							>
-								Create NFT
+								{headerTitle}
 							</span>
 						</div>
 					</div>

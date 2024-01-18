@@ -1,5 +1,6 @@
 "use client"
-import React, { useState } from 'react';
+import { useAppProvider } from '@/app/app-provider';
+import React, { useEffect, useState } from 'react';
 
 // export const metadata = {
 //     title: 'NFT - Mosaic',
@@ -7,8 +8,18 @@ import React, { useState } from 'react';
 // }
 
 export default function NFT() {
+    const title = "NFT"
+    const { setHeaderTitle } = useAppProvider();
+
     const [category, setCategory] = useState('');
     const [queryRoyalties, setQueryRoyalties] = useState('');
+
+    useEffect(() => {
+        document.title = title;
+        setHeaderTitle(title);
+
+        return () => setHeaderTitle("Default Title");
+    }, []);
 
     return (
         <div className="flex flex-col sm:px-6 lg:px-8 py-8 bg-[#292D32]">

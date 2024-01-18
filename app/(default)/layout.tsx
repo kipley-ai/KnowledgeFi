@@ -4,8 +4,8 @@ import Header from '@/components/ui/header'
 export default function DefaultLayout({
   children,
 }: {
-  children: React.ReactNode
-}) {  
+  children: React.ReactNode,
+}) {
   return (
     <div className="flex h-[100dvh] overflow-hidden bg-neutral-900">
 
@@ -16,12 +16,12 @@ export default function DefaultLayout({
       <div className="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden bg-neutral-900 p-6 pl-0 border-gray-700 rounded-lg">
         <div className='border border-gray-700 rounded-lg'>
 
-        {/*  Site header */}
-        <Header />
+          {/*  Site header */}
+          <Header />
 
-        <main className="grow [&>*:first-child]:scroll-mt-16">
-          {children}
-        </main>        
+          <main className="grow [&>*:first-child]:scroll-mt-16">
+            {children}
+          </main>
         </div>
       </div>
 

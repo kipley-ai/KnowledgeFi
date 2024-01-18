@@ -1,7 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 const ChatBotForm = () => {
+    const title = "Create Chatbot";
+
     const [characterName, setCharacterName] = useState('');
     const [description, setDescription] = useState('');
     const [category, setCategory] = useState('');
@@ -38,6 +40,10 @@ const ChatBotForm = () => {
             router.push('/dashboard');
         }
     };
+
+    useEffect(() => {
+        document.title = title;
+    }, [title]);
 
     return (
         <div className="flex flex-col sm:px-6 lg:px-8 py-8 bg-[#292D32]">
