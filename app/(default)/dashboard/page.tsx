@@ -24,6 +24,7 @@ import { useAppProvider } from "@/app/app-provider";
 import { getBreakpoint } from "@/components/utils/utils";
 import { AnimationOnScroll } from "react-animation-on-scroll";
 import { accounts } from "@/components/utils/twitter-account";
+import { useChatSession } from "@/hooks/api/chatbox";
 
 export default function Dashboard() {
 	const { setHeaderTitle } = useAppProvider();
@@ -47,6 +48,16 @@ export default function Dashboard() {
 			setHeaderTitle("Default Title");
 		};
 	}, [breakpoint,]);
+
+	const chatSessionAPI = useChatSession({
+		user_id: 'test',
+		app_id: 'test',
+		page_num: 1,
+		page_size: 10,
+		// request_url:
+		//   appDetail?.data?.data.data.app_info.plugin_meta_data.chat_session_api
+		//     .request_url,
+	  });
 
 	return (
 		<div className="w-full bg-stone-800">

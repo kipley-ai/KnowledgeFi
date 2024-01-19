@@ -12,6 +12,7 @@ import { configureChains, createConfig, WagmiConfig } from "wagmi";
 import { mainnet, polygon, optimism, arbitrum, base, zora } from "wagmi/chains";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
+import { RQProviders } from "@/providers/react-query-provider";
 
 const { chains, publicClient } = configureChains(
 	[mainnet, polygon, optimism, arbitrum, base, zora],
@@ -45,6 +46,7 @@ export default function RootLayout({
 			<body
 				className={`${inter.variable} font-inter antialiased bg-slate-100 dark:bg-slate-900 text-slate-600 dark:text-slate-400`}
 			>
+				<RQProviders>
 				<Theme>
 					<AppProvider>
 						<NextAuthProvider>
@@ -56,6 +58,7 @@ export default function RootLayout({
 						</NextAuthProvider>
 					</AppProvider>
 				</Theme>
+				</RQProviders>
 			</body>
 		</html>
 	);
