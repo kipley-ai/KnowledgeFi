@@ -1,4 +1,12 @@
+import { useEffect } from "react";
+
 const Header = () => {
+    const title = "Levi Ackerman - Chatbot";
+
+    useEffect(() => {
+        document.title = title;
+    }, [title]);
+
     return (
         <div className="text-white flex justify-between items-center p-4">
             <div className="flex items-center">

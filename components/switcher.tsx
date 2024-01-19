@@ -8,7 +8,7 @@ const Switcher = ({texts=[],setWhich}:{texts : string[],setWhich: any}) => {
         setWhich(mode)
     },[mode])
     return ( 
-        <div className="bg-stone-700 w-[501px]  h-10 border border-stone-600 rounded-lg p-1">
+        <div className="bg-stone-700 w-[501px]  h-10 border border-stone-600 rounded-xl p-1">
             <div className="flex flex-row w-full relative">
                 <div className={`rounded-sm cursor-pointer z-10 py-1 px-4 w-1/5`}>
                     <h1 onClick={()=>setMode(0)} className={`text-neutral-500 font-semibold text-black text-center text-sm`}>{texts[0]}</h1>

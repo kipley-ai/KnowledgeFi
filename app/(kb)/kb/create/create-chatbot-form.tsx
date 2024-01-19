@@ -1,9 +1,17 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useAppProvider } from '@/app/app-provider';
 
 const ChatBotForm = () => {
     const title = "Create Chatbot";
+    const { setHeaderTitle } = useAppProvider();
 
+    useEffect(() => {
+        setHeaderTitle("Create Chatbot"); // Set the title when the component is mounted
+
+        // Optional: Reset the title when the component is unmounted
+        return () => setHeaderTitle("Default Title");
+    }, []); // Empty dependency array to run only once on mount
     const [characterName, setCharacterName] = useState('');
     const [description, setDescription] = useState('');
     const [category, setCategory] = useState('');
