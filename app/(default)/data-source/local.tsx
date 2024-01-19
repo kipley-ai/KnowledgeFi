@@ -45,6 +45,7 @@ export default function Local({
 				return;
 			}
 
+			// Check if there's actual new unprocessed new files
 			if (
 				newFileObjects &&
 				newFileObject &&
@@ -134,7 +135,7 @@ export default function Local({
 	};
 
 	const handleDrop = async (e: React.DragEvent<HTMLDivElement>) => {
-		console.log("Uploaded a new file from drop");
+		console.log("Inserted a new file from drop");
 		e.preventDefault();
 		e.stopPropagation();
 		setDragActive(false);
@@ -145,7 +146,7 @@ export default function Local({
 	};
 
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		console.log("Uploaded a new file from manual upload");
+		console.log("Insert a new file from manual upload");
 		e.preventDefault();
 
 		const newFileObjects = Array.from(e.target.files || []) as File[];
@@ -155,8 +156,6 @@ export default function Local({
 	const handleDelete =
 		(index: number) => async (e: React.MouseEvent<HTMLImageElement>) => {
 			const filename = files[index].filename
-			console.log(index)
-			console.log(filename)
 
 			files[index].aborter?.abort();
 
