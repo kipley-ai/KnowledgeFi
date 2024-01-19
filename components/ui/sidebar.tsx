@@ -16,6 +16,7 @@ import dynamic from "next/dynamic";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import ChatText from "public/images/chat-text.png"
 
 const GetInvolvedButton = dynamic(
 	() => import("../GetInvolvedButton/get-involved-button"),
@@ -170,34 +171,100 @@ export default function Sidebar() {
 							<ul className="">
 								{/* Inbox */}
 								<li
-									className={`px-3 py-2  mb-3 last:mb-0 ${
-										(segments.includes("home") ||
-											segments.includes("dashboard")) &&
+									className={`px-3 py-2  mb-3 last:mb-0 ${(segments.includes("home") ||
+										segments.includes("dashboard")) &&
 										"bg-slate-900"
-									} border-2 border-aqua-700 rounded-3xl py-1.5 px-2.5`}
+										} border-2 border-aqua-700 rounded-3xl py-1.5 px-2.5`}
 								>
 									{/* style={{ border: '2px solid #01F7FF', borderRadius: '24px', padding: '6px 10px' }}> */}
 									<SidebarLink href="/#">
 										<div className="flex items-center">
-											<Image className="h-9 w-9" alt="home" src={home_logo} />
-											{/* <svg className="shrink-0 h-6 w-6" viewBox="0 0 24 24" style={{ padding: '8px', margin: '0 8px' }}>
-                      <path className={`fill-current ${segments.includes('calendar') ? 'text-indigo-500' : 'text-slate-600'}`} d="M1 3h22v20H1z" />
-                      <path
-                        className={`fill-current ${segments.includes('calendar') ? 'text-indigo-300' : 'text-slate-400'}`}
-                        d="M21 3h2v4H1V3h2V1h4v2h10V1h4v2Z"
-                      />
-                    </svg> */}
+											<Image className="h-9 w-9" alt="home" src={ChatText} />
 											<span className="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200 text-[14px] font-semibold text-neutral-500">
-												Home
+												New Chat
 											</span>
 										</div>
 									</SidebarLink>
 								</li>
 								{/* Login */}
 								<li
-									className={`px-3 py-2  mb-0.5 last:mb-0 ${
-										segments.includes("login") && "bg-slate-900"
-									}`}
+									className={`px-3 py-2  mb-3 last:mb-0 ${(segments.includes("home") ||
+										segments.includes("dashboard")) &&
+										"bg-transparent"
+										} `}
+								>
+									{/* style={{ border: '2px solid #01F7FF', borderRadius: '24px', padding: '6px 10px' }}> */}
+									<SidebarLink href="/#">
+										<div className="flex items-center">
+											<span className="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200 text-[14px] font-semibold text-gray-500">
+												Chat List
+											</span>
+										</div>
+									</SidebarLink>
+								</li>
+								<li
+									className={`px-3 py-2  mb-3 last:mb-0 ${(segments.includes("home") ||
+										segments.includes("dashboard")) &&
+										"bg-transparent"
+										} `}
+								>
+									{/* style={{ border: '2px solid #01F7FF', borderRadius: '24px', padding: '6px 10px' }}> */}
+									<SidebarLink href="/#">
+										<div className="flex items-center">
+											<span className="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200 text-[14px] font-semibold text-neutral-500">
+												Cloud Server Security
+											</span>
+										</div>
+									</SidebarLink>
+								</li>
+								<li
+									className={`px-3 py-2  mb-3 last:mb-0 ${(segments.includes("home") ||
+										segments.includes("dashboard")) &&
+										"bg-transparent"
+										} `}
+								>
+									{/* style={{ border: '2px solid #01F7FF', borderRadius: '24px', padding: '6px 10px' }}> */}
+									<SidebarLink href="/#">
+										<div className="flex items-center">
+											<span className="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200 text-[14px] font-semibold text-neutral-500">
+												Favorites
+											</span>
+										</div>
+									</SidebarLink>
+								</li>
+								<li
+									className={`px-3 py-2  mb-3 last:mb-0 ${(segments.includes("home") ||
+										segments.includes("dashboard")) &&
+										"bg-transparent"
+										} `}
+								>
+									{/* style={{ border: '2px solid #01F7FF', borderRadius: '24px', padding: '6px 10px' }}> */}
+									<SidebarLink href="/#">
+										<div className="flex items-center">
+											<span className="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200 text-[14px] font-semibold text-neutral-500">
+												Production
+											</span>
+										</div>
+									</SidebarLink>
+								</li>
+								<li
+									className={`px-3 py-2  mb-3 last:mb-0 ${(segments.includes("home") ||
+										segments.includes("dashboard")) &&
+										"bg-transparent"
+										} `}
+								>
+									{/* style={{ border: '2px solid #01F7FF', borderRadius: '24px', padding: '6px 10px' }}> */}
+									<SidebarLink href="/#">
+										<div className="flex items-center">
+											<span className="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200 text-[14px] font-semibold text-neutral-500">
+												Writing Tips
+											</span>
+										</div>
+									</SidebarLink>
+								</li>
+								{/* <li
+									className={`px-3 py-2  mb-0.5 last:mb-0 ${segments.includes("login") && "bg-slate-900"
+										}`}
 								>
 									<Link
 										className="block text-slate-200 hover:text-white transition duration-150 truncate"
@@ -264,7 +331,7 @@ export default function Sidebar() {
 											)}
 										</div>
 									</Link>
-								</li>
+								</li> */}
 							</ul>
 						</div>
 					</div>

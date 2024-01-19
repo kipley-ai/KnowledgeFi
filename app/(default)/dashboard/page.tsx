@@ -27,6 +27,8 @@ import { accounts } from "@/components/utils/twitter-account";
 import { useChatSession } from "@/hooks/api/chatbox";
 
 export default function Dashboard() {
+	const title = "Dashboard";
+
 	const { setHeaderTitle } = useAppProvider();
 	const [mode, setMode] = useState(0);
 	const [breakpoint, setBreakpoint] = useState<string | undefined>(
@@ -46,6 +48,8 @@ export default function Dashboard() {
 		return () => {
 			window.removeEventListener("resize", handleBreakpoint);
 			setHeaderTitle("Default Title");
+
+			document.title = title;
 		};
 	}, [breakpoint,]);
 
