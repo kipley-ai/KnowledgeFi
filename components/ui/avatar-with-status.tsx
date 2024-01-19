@@ -1,22 +1,30 @@
 import React from 'react';
 import { useState, useRef, useEffect } from 'react';
 
+type StatusType = 'online' | 'busy' | 'away' | 'offline';
+
+interface AvatarWithStatusProps {
+    image: string;
+    status: StatusType;
+}
+
+// This is the color for the status
+const statusColor = {
+    online: "bg-green-500",
+    busy: "bg-red-500",
+    away: "bg-yellow-500",
+    offline: "bg-gray-500"
+};
+
 // The AvatarWithStatus component accepts the avatar image and the status as props
-const AvatarWithStatus = ({ image, status }: any) => {
+const AvatarWithStatus: React.FC<AvatarWithStatusProps> = ({ image, status }) => {
+
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-    const dropdownRef = useRef(null);
+    const dropdownRef = useRef<HTMLDivElement>(null);
 
     // This function toggles the dropdown's visibility
     const toggleDropdown = () => {
         setIsDropdownOpen(!isDropdownOpen);
-    };
-
-    // This is the color for the status
-    const statusColor = {
-        online: "bg-green-500",
-        busy: "bg-red-500",
-        away: "bg-yellow-500",
-        offline: "bg-gray-500"
     };
 
     // This will handle clicking outside the component to close the dropdown
