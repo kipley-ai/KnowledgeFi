@@ -15,12 +15,12 @@ export const constructHeader = (headers: Headers, ignoreLoginCheck: boolean = fa
   const userId = '' // wallet address;
 
   const commonHeaders = {
-    "x-kb-timestamp": nowTimestamp,
-    "x-kb-sign": createSign(appId + nowTimestamp + apiKey),
-    "x-kb-app-id": appId,
-    "x-kb-request-id": v4(),
-    "x-kb-user-id": userId || "",
-    "x-kb-user-sub": "",
+    "x-kf-timestamp": nowTimestamp,
+    "x-kf-sign": createSign(appId + nowTimestamp + apiKey),
+    "x-kf-app-id": appId,
+    "x-kf-request-id": v4(),
+    "x-kf-user-id": userId || "",
+    "x-kf-user-sub": "",
   };
 
   if (ignoreLoginCheck) {
