@@ -48,7 +48,7 @@ export default function Dashboard() {
 		return () => {
 			window.removeEventListener("resize", handleBreakpoint);
 			setHeaderTitle("Default Title");
-
+ 
 			document.title = title;
 		};
 	}, [breakpoint,]);
