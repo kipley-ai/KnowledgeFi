@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import Step1 from "./step-1";
 import Step2 from "./step-2";
-import uploadFile from "lib/upload";
+import { uploadFileS3 } from "@/app/api/upload/s3/helper";
 import { useSession } from "next-auth/react";
 import { useAppProvider } from "@/app/app-provider";
 import { useRouter } from "next/navigation";
@@ -14,6 +14,11 @@ export interface UIFile {
 	fileObject: File;
 }
 
+// Mohon dicocokkan sama yang ada di /app/(default)/data-source
+// Mohon dicocokkan sama yang ada di /app/(default)/data-source
+// Mohon dicocokkan sama yang ada di /app/(default)/data-source
+// Mohon dicocokkan sama yang ada di /app/(default)/data-source
+// Mohon dicocokkan sama yang ada di /app/(default)/data-source
 export default function DataSource() {
     const router = useRouter();
 	const [step, setStep] = useState(1);
@@ -33,7 +38,7 @@ export default function DataSource() {
 					}),
 				});
 
-				uploadFile(fileObject.fileObject, presignedUrl);
+				uploadFileS3(fileObject.fileObject, presignedUrl, null);
 			});
 		}
 	};

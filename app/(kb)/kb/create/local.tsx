@@ -3,10 +3,15 @@ import CrossIcon from "public/images/cross-icon.svg";
 import UploadIcon from "public/images/upload-icon.svg";
 import Image from "next/image";
 import React, { useCallback, useRef, useState } from "react";
-import uploadFile from "lib/upload";
+import { uploadFileS3 } from "@/app/api/upload/s3/helper";
 import type { UIFile } from "./page";
 import type { ReactSetter } from "lib/aliases";
 
+// Mohon dicocokkan sama yang ada di /app/(default)/data-source
+// Mohon dicocokkan sama yang ada di /app/(default)/data-source
+// Mohon dicocokkan sama yang ada di /app/(default)/data-source
+// Mohon dicocokkan sama yang ada di /app/(default)/data-source
+// Mohon dicocokkan sama yang ada di /app/(default)/data-source
 export default function Local({
 	files,
 	setFiles,
