@@ -19,15 +19,20 @@ export async function fetchPresignedUrlS3(
 	return (await resp.json()) as PresignedResponse;
 }
 
-export async function uploadFileS3(file: File, presignedUrl: string) {
+export async function uploadFileS3(
+	file: File,
+	presignedUrl: string,
+	aborter: AbortController | null
+) {
 	return await fetch(presignedUrl, {
 		method: "PUT",
 		// Include headers if required by the pre-signed URL parameters
 		headers: {
-			"Content-Type": file.type,
+			"Content-Type": "multipart/form-data",
 			"Content-Length": file.size + "",
 		},
 		body: file,
+		signal: aborter?.signal,
 	});
 }
 
@@ -35,7 +40,7 @@ export async function deleteFileS3(bucketPath: string) {
 	return await fetch("/api/upload/s3", {
 		method: "DELETE",
 		body: JSON.stringify({
-			bucketPath: bucketPath
+			bucketPath: bucketPath,
 		}),
 	});
 }

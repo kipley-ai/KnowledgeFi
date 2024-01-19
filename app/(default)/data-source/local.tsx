@@ -3,6 +3,7 @@ import {
 	fetchPresignedUrlS3,
 	uploadFileS3,
 } from "@/app/api/upload/s3/helper";
+import { formatBytes } from "lib/string";
 import type { ReactSetter } from "lib/aliases";
 import Image from "next/image";
 import CheckIcon from "public/images/check-icon.svg";
@@ -48,38 +49,47 @@ export default function Local({
 				newFileObjects &&
 				newFileObject &&
 				(files.length === 0 ||
-					files.filter((file) => file.fileObject.name == newFileObject.name)
-						.length > 0)
+					files.filter((file) => file.filename == newFileObject.name).length ==
+						0)
 			) {
+				console.log("New file detected")
 				const { presignedUrl, bucketPath } = await fetchPresignedUrlS3(
 					newFileObject.name
 				);
+
+				// Use aborter if the file is bigger than 10 MB
+				const aborter =
+					newFileObject.size > (1024 * 1024 * 10) ? new AbortController() : null;
+
+				console.log(presignedUrl, bucketPath)
 
 				setFiles((prevFiles) => {
 					return [
 						...prevFiles,
 						{
-							fileObject: newFileObject,
+							filename: newFileObject.name,
+							size: newFileObject.size,
+							status: "uploading",
 							bucketPath: bucketPath,
-							status: "loading",
 							link: `${process.env.KBFILES_S3_URL}/${bucketPath}`,
+							aborter: aborter,
 						},
 					];
 				});
 
-				await uploadFileS3(newFileObject, presignedUrl)
+				await uploadFileS3(newFileObject, presignedUrl, aborter)
 					.then(async (res) => {
 						if (res.ok) {
-							console.log("Uploading file succeed: " + newFileObject.name)
+							console.log("Uploading file succeed: " + newFileObject.name);
 							setFiles((prevFiles) => {
-								return prevFiles.map((file) => {
-									if (file.fileObject.name === newFileObject.name) {
+								return prevFiles.map((prevFile) => {
+									if (prevFile.filename === newFileObject.name) {
 										return {
-											...file,
-											status: "succeed",
+											...prevFile,
+											status: "success",
 										};
 									}
-									return file;
+									return prevFile;
 								});
 							});
 						}
@@ -87,10 +97,24 @@ export default function Local({
 					.catch((e) => {
 						console.error(e);
 
+						setFiles((prevFiles) => {
+							return prevFiles.map((file) => {
+								if (file.filename === newFileObject.name) {
+									file.aborter?.abort();
+
+									return {
+										...file,
+										status: "failed",
+									};
+								}
+								return file;
+							});
+						});
+
 						// TODO: Add toast
 						// setToastAttribute({
 						// 	open: true,
-						// 	message: "Upload failed",
+						// 	message: "Unpredictable error",
 						// 	type: "danger",
 						// 	noteElement: null,
 						// });
@@ -123,22 +147,28 @@ export default function Local({
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		console.log("Uploaded a new file from manual upload");
 		e.preventDefault();
-		const newFileObjects = Array.from(e.target.files || []) as File[];
 
+		const newFileObjects = Array.from(e.target.files || []) as File[];
 		handleNewFiles(newFileObjects);
 	};
 
 	const handleDelete =
-		(bucketPath: string) => async (e: React.MouseEvent<HTMLImageElement>) => {
-			console.log("Deleted the item: " + bucketPath);
+		(index: number) => async (e: React.MouseEvent<HTMLImageElement>) => {
+			const filename = files[index].filename
+			console.log(index)
+			console.log(filename)
+
+			files[index].aborter?.abort();
 
 			setFiles((prevFiles: UIFile[]) => {
-				return prevFiles.filter(
-					(prevFile) => prevFile.bucketPath !== bucketPath
-				);
+				return prevFiles.filter((prevFile, i) => {
+					return index !== i
+				})
 			});
 
-			await deleteFileS3(bucketPath);
+			await deleteFileS3(files[index].bucketPath);
+
+			console.log("Deleted the item: " + filename);
 		};
 
 	return (
@@ -181,7 +211,7 @@ export default function Local({
 				</p>
 			</div>
 			<div>
-				{files.map((file) => {
+				{files.map((file, index) => {
 					return (
 						<div
 							key={file.bucketPath}
@@ -190,13 +220,13 @@ export default function Local({
 							<div className="flex flex-row">
 								<Image src={CheckIcon} alt="Check Icon" />
 								<div className="flex flex-col ml-8">
-									<h3 className="font-semibold">{file.fileObject.name}</h3>
-									<p className="text-xs">{file.fileObject.size}</p>
+									<h3 className="font-semibold">{file.filename}</h3>
+									<p className="text-xs">{formatBytes(file.size)}</p>
 								</div>
 							</div>
-							{ file.status == "loading" && "Loading"}
+							{file.status}
 							<Image
-								onClick={handleDelete(file.bucketPath)}
+								onClick={handleDelete(index)}
 								src={CrossIcon}
 								alt="Cross Icon"
 							/>

@@ -6,10 +6,12 @@ import Step2 from "./step-2";
 type PossibleOptions = "files" | "twitter" | "notion" | "";
 
 export interface UIFile {
-	fileObject: File;
-	status: "loading" | "failed" | "succeed";
+	filename: string;
+	size: number;
+	status: "uploading" | "failed" | "success";
 	bucketPath: string;
 	link: string;
+	aborter: AbortController | null;
 }
 
 export default function DataSource() {
@@ -25,11 +27,14 @@ export default function DataSource() {
 			const stillHasLoading =
 				localFiles.filter((localFile) => {
 					// Keep the still loading files
-					return localFile.status === "loading";
+					return localFile.status === "uploading";
 				}).length !== 0;
 
 			setShowLoadingModal(stillHasLoading);
+			return;
 		}
+
+		// TODO: Do something with localFiles
 	};
 
 	return (
