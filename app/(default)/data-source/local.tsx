@@ -191,11 +191,19 @@ export default function Local({
 	const showStateIcon = (state: "uploading" | "success" | "failed") => {
 		switch (state) {
 			case "uploading":
-				return <Image className={"animate-spin"} src={UploadingIcon} alt="Loading Icon" />;
+				return (
+					<Image
+						width={30}
+						height={30}
+						className={"animate-spin"}
+						src={UploadingIcon}
+						alt="Loading Icon"
+					/>
+				);
 			case "failed":
-				return <Image src={FailedIcon} alt="Failed Icon" />;
+				return <Image width={30} height={30} src={FailedIcon} alt="Failed Icon" />;
 			case "success":
-				return <Image src={SuccessIcon} alt="Success Icon" />;
+				return <Image width={30} height={30} src={SuccessIcon} alt="Success Icon" />;
 		}
 	};
 
