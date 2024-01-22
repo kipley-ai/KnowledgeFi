@@ -159,7 +159,7 @@ User: Got it. And government's role in AI regulation?
                         onChange={(e) => setInstructions(e.target.value)}
                         placeholder="e.g. Tired of doing swaps, bridges, or lending in the hopes of getting an airdrop bigger than the gas and transaction fees you are spending? Check out these three novel platforms that are currently tokenless."
                         className="rounded-xl bg-transparent text-white mt-2 w-full border-2"
-                        rows="5"
+                        rows={5}
                     />
                     <div className="flex flex-row justify-between">
                         <p className="mt-2 text-xs text-gray-400">Describe your AI character.</p>
@@ -174,7 +174,7 @@ User: Got it. And government's role in AI regulation?
                         onChange={(e) => setExample(e.target.value)}
                         placeholder={examplePlaceholder}
                         className="rounded-xl bg-transparent text-white mt-2 w-full border-2"
-                        rows="11"
+                        rows={11}
                     />
                     <div className="flex flex-row justify-between">
                         <p className="mt-2 text-xs text-gray-400">Give an example of your conversation with your AI.</p>
