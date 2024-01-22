@@ -1,5 +1,6 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useAppProvider } from '@/app/app-provider';
 import Step1 from "./step-1";
 import Step2 from "./step-2";
 
@@ -15,6 +16,15 @@ export interface UIFile {
 }
 
 export default function DataSource() {
+	const { setHeaderTitle } = useAppProvider();
+	const title = "Data Sources";
+
+	useEffect(() => {
+			setHeaderTitle(title);
+			document.title = title;
+			return () => setHeaderTitle("Default Title");
+	}, []);
+
 	const [step, setStep] = useState(1);
 	const [selectedButton, setSelectedButton] = useState<PossibleOptions>("");
 	const [localFiles, setLocalFiles] = useState<UIFile[]>([]);
@@ -39,12 +49,12 @@ export default function DataSource() {
 
 	return (
 		<div className="flex flex-col sm:px-6 lg:px-8 py-8 bg-[#292D32]">
-			<div className="mx-64">
-				<h1 className="text-3xl font-semibold text-white">Data Sources</h1>
-				<h5 className="text-lg text-[#7C878E]">
-					Give some general information about your NFT
+			<div className="mx-56">
+				<h1 className="text-2xl font-semibold text-white">Data Sources</h1>
+				<h5 className="text-md text-[#7C878E]">
+					Give some general information about your NFT.
 				</h5>
-				<hr className="my-4" />
+				<hr className="my-4 border border-gray-600" />
 			</div>
 			{step === 1 ? (
 				<Step1
@@ -60,7 +70,7 @@ export default function DataSource() {
 			) : (
 				<></>
 			)}
-			<div className="flex justify-between mx-64">
+			<div className="flex justify-between mx-56">
 				<button
 					className="flex flex-row items-center justify-between  rounded-3xl p-2 px-5 mt-8 border-2 border-[#50575F]"
 					type="submit"
@@ -68,17 +78,17 @@ export default function DataSource() {
 						if (step > 0) setStep(step - 1);
 					}}
 				>
-					<h5 className="text-white font-semibold">Back</h5>
+					<h5 className="text-sm text-white font-semibold">Back</h5>
 				</button>
 				<button
-					className="flex flex-row items-center justify-between bg-[#01F7FF] rounded-3xl w-44 p-2 px-5 mt-8"
+					className="flex flex-row items-center justify-between bg-[#01F7FF] rounded-3xl w-36 p-2 px-5 mt-8"
 					type="submit"
 					onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
 						if (step < 2) setStep(step + 1);
 						if (step == 2) handleContinue(e);
 					}}
 				>
-					<h5 className="text-black font-semibold">Continue</h5>
+					<h5 className="text-sm text-black font-semibold">Continue</h5>
 					<svg
 						width="20"
 						height="10"
