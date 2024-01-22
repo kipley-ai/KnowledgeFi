@@ -17,6 +17,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import ChatText from "public/images/chat-text.png"
+import HomeIcon from "public/images/home-icon.svg"
 
 const GetInvolvedButton = dynamic(
 	() => import("../GetInvolvedButton/get-involved-button"),
@@ -171,17 +172,17 @@ export default function Sidebar() {
 							<ul className="">
 								{/* Inbox */}
 								<li
-									className={`px-3 py-2  mb-3 last:mb-0 ${(segments.includes("home") ||
+									className={`px-3 py-2  mb-10 last:mb-0 ${(segments.includes("home") ||
 										segments.includes("dashboard")) &&
 										"bg-slate-900"
 										} border-2 border-aqua-700 rounded-3xl py-1.5 px-2.5`}
 								>
 									{/* style={{ border: '2px solid #01F7FF', borderRadius: '24px', padding: '6px 10px' }}> */}
-									<SidebarLink href="/#">
+									<SidebarLink href="/dashboard">
 										<div className="flex items-center">
-											<Image className="h-9 w-9" alt="home" src={ChatText} />
-											<span className="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200 text-[14px] font-semibold text-neutral-500">
-												New Chat
+											<Image className="w-5 h-5 ml-0 lg:ml-0 2xl:ml-2" alt="home" src={HomeIcon} />
+											<span className="text-sm font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200 text-[14px] font-semibold text-neutral-500">
+												Explore
 											</span>
 										</div>
 									</SidebarLink>
