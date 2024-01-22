@@ -6,10 +6,13 @@ import {
 import { formatBytes } from "lib/string";
 import type { ReactSetter } from "lib/aliases";
 import Image from "next/image";
-import CheckIcon from "public/images/check-icon.svg";
+import SuccessIcon from "public/images/check-icon.svg";
 import CrossIcon from "public/images/cross-icon.svg";
+import UploadingIcon from "public/images/upload-file/uploading-icon-white.svg";
+import FailedIcon from "public/images/upload-file/failed-icon.svg";
 import UploadIcon from "public/images/upload-icon.svg";
-import React, { useState } from "react";
+import React, { useState, useRef, useCallback } from "react";
+import { useDebouncedCallback } from "use-debounce";
 import type { UIFile } from "./page";
 
 export default function Local({
@@ -21,6 +24,7 @@ export default function Local({
 }) {
 	const [showInvalidModal, setShowInvalidModal] = useState(false);
 	const [dragActive, setDragActive] = useState(false);
+	const fileInputRef = useRef<HTMLInputElement>(null);
 
 	const dummyFile = [
 		{ fileName: "file1.txt", fileSize: "10 KB" },
@@ -53,16 +57,16 @@ export default function Local({
 					files.filter((file) => file.filename == newFileObject.name).length ==
 						0)
 			) {
-				console.log("New file detected")
+				console.log("New file detected");
 				const { presignedUrl, bucketPath } = await fetchPresignedUrlS3(
 					newFileObject.name
 				);
 
 				// Use aborter if the file is bigger than 10 MB
 				const aborter =
-					newFileObject.size > (1024 * 1024 * 10) ? new AbortController() : null;
+					newFileObject.size > 1024 * 1024 * 10 ? new AbortController() : null;
 
-				console.log(presignedUrl, bucketPath)
+				console.log(presignedUrl, bucketPath);
 
 				setFiles((prevFiles) => {
 					return [
@@ -124,12 +128,12 @@ export default function Local({
 		});
 	};
 
-	const handleDrag = (event: React.DragEvent<HTMLDivElement>) => {
-		event.preventDefault();
-		event.stopPropagation();
-		if (event.type === "dragenter" || event.type === "dragover") {
+	const handleDrag = (e: React.DragEvent<HTMLDivElement>) => {
+		e.preventDefault();
+		e.stopPropagation();
+		if (e.type === "dragenter" || e.type === "dragover") {
 			setDragActive(true);
-		} else if (event.type === "dragleave") {
+		} else if (e.type === "dragleave") {
 			setDragActive(false);
 		}
 	};
@@ -148,6 +152,7 @@ export default function Local({
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		console.log("Insert a new file from manual upload");
 		e.preventDefault();
+		e.stopPropagation();
 
 		const newFileObjects = Array.from(e.target.files || []) as File[];
 		handleNewFiles(newFileObjects);
@@ -155,20 +160,44 @@ export default function Local({
 
 	const handleDelete =
 		(index: number) => async (e: React.MouseEvent<HTMLImageElement>) => {
-			const filename = files[index].filename
+			const filename = files[index].filename;
 
 			files[index].aborter?.abort();
 
 			setFiles((prevFiles: UIFile[]) => {
-				return prevFiles.filter((prevFile, i) => {
-					return index !== i
-				})
+				return prevFiles.filter((_, i) => {
+					return index !== i;
+				});
 			});
 
 			await deleteFileS3(files[index].bucketPath);
 
 			console.log("Deleted the item: " + filename);
 		};
+
+	const handleDivClick = useDebouncedCallback(
+		() => {
+			if (fileInputRef.current) {
+				fileInputRef.current.click();
+			}
+		},
+		300, // 300ms debounce time
+		{
+			leading: true,
+			trailing: false,
+		}
+	);
+
+	const showStateIcon = (state: "uploading" | "success" | "failed") => {
+		switch (state) {
+			case "uploading":
+				return <Image className={"animate-spin"} src={UploadingIcon} alt="Loading Icon" />;
+			case "failed":
+				return <Image src={FailedIcon} alt="Failed Icon" />;
+			case "success":
+				return <Image src={SuccessIcon} alt="Success Icon" />;
+		}
+	};
 
 	return (
 		<div className="mx-64">
@@ -178,14 +207,10 @@ export default function Local({
 				onDragOver={handleDrag}
 				onDragLeave={handleDrag}
 				onDrop={handleDrop}
-				onClick={() => {
-					const fileInput = document.getElementById("file-input");
-					if (fileInput) {
-						fileInput.click();
-					}
-				}}
+				onClick={handleDivClick}
 			>
 				<input
+					ref={fileInputRef}
 					type="file"
 					id="file-input"
 					multiple
@@ -195,10 +220,7 @@ export default function Local({
 				<div className="bg-white rounded-full p-6 mb-8">
 					<Image width={60} height={60} src={UploadIcon} alt="Upload Icon" />
 				</div>
-				<label
-					className="text-md mb-3 font-semibold cursor-pointer"
-					htmlFor="file-input"
-				>
+				<label className="text-md mb-3 font-semibold cursor-pointer">
 					Drop your files here OR{" "}
 					<span className="text-[#01F7FF]">Click here to browse</span>
 				</label>
@@ -217,13 +239,12 @@ export default function Local({
 							className="flex py-5 px-8 my-5 rounded-3xl text-white bg-neutral-900 justify-between"
 						>
 							<div className="flex flex-row">
-								<Image src={CheckIcon} alt="Check Icon" />
+								{showStateIcon(file.status)}
 								<div className="flex flex-col ml-8">
 									<h3 className="font-semibold">{file.filename}</h3>
 									<p className="text-xs">{formatBytes(file.size)}</p>
 								</div>
 							</div>
-							{file.status}
 							<Image
 								onClick={handleDelete(index)}
 								src={CrossIcon}
