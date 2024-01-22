@@ -8,16 +8,18 @@ const Header = () => {
     }, [title]);
 
     return (
-        <div className="text-white flex justify-between items-center p-4">
-            <div className="flex items-center">
+        <div className="text-white flex justify-between items-center">
+            <div className="flex items-center gap-6">
                 <button className="text-white text-2xl focus:outline-none">
                     <svg width="26" height="12" viewBox="0 0 26 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M8.02001 6.79012C7.10637 6.79012 6.36572 7.53077 6.36572 8.44441C6.36572 9.35805 7.10637 10.0987 8.02001 10.0987L24.3456 10.0987C25.2593 10.0987 25.9999 9.35805 25.9999 8.44441C25.9999 7.53077 25.2593 6.79011 24.3456 6.79011L8.02001 6.79012Z" fill="#01F7FF" />
                         <path d="M7.06796 6.99072C6.47814 7.63676 6.47814 8.6842 7.06796 9.33024C7.65778 9.97628 8.61406 9.97628 9.20388 9.33024L13.6053 4.50928C14.1951 3.86324 14.1951 2.8158 13.6053 2.16976C13.0155 1.52372 12.0592 1.52372 11.4694 2.16976L7.06796 6.99072Z" fill="#01F7FF" />
                     </svg>
                 </button>
-                <img src="images/user-32-03.jpg" alt="Profile" className="w-10 h-10 rounded-full mx-3" />
-                <h1 className="text-xl ml-4">Levi Ackerman</h1>
+                <div className="flex items-center gap-2">
+                    <img src="images/user-32-03.jpg" alt="Profile" className="w-8 h-8 rounded-full" />
+                    <h1 className="text-xl">Levi Ackerman</h1>
+                </div>
             </div>
             <div className="flex flex-row justify-between pb-5">
                 <button className="text-white text-2xl focus:outline-none pr-10 pt-5">

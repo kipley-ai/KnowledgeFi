@@ -200,9 +200,9 @@ export default function Local({
 	};
 
 	return (
-		<div className="mx-64">
+		<div className="mx-56">
 			<div
-				className="flex flex-col mt-5 mb-8 border border-dashed border-[#aaa] rounded-xl py-20 px-32 text-center items-center cursor-pointer color-[#aaa] font-inter text-white "
+				className="flex flex-col mt-5 mb-8 border-2 border-dashed border-[#aaa] rounded-3xl py-20 px-20 text-center items-center cursor-pointer color-[#aaa] font-inter text-white "
 				onDragEnter={handleDrag}
 				onDragOver={handleDrag}
 				onDragLeave={handleDrag}
@@ -217,8 +217,8 @@ export default function Local({
 					onChange={handleChange}
 					style={{ display: "none" }}
 				/>
-				<div className="bg-white rounded-full p-6 mb-8">
-					<Image width={60} height={60} src={UploadIcon} alt="Upload Icon" />
+				<div className="bg-white w-14 h-14 shrink-0 grow-0 rounded-full p-4 mb-8">
+					<Image width={30} height={30} src={UploadIcon} alt="Upload Icon" />
 				</div>
 				<label className="text-md mb-3 font-semibold cursor-pointer">
 					Drop your files here OR{" "}

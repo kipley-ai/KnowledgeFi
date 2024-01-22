@@ -51,7 +51,7 @@ export default function Dashboard() {
  
 			document.title = title;
 		};
-	}, [breakpoint,]);
+	}, [breakpoint,]); 
 
 	const chatSessionAPI = useChatSession({
 		user_id: 'test',

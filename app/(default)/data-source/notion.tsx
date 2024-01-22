@@ -1,7 +1,7 @@
 const Notion = ({ closeModal }: any) => {
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur flex items-center justify-center z-50 px-4">
-            <div className="bg-[#141416] text-white max-w-md w-full rounded-lg p-6 shadow-lg">
+            <div className="flex flex-col gap-8 bg-[#141416] text-white max-w-md w-full rounded-lg p-6 shadow-lg">
                 <div className="flex justify-between items-center">
                     <h2 className="text-xl font-semibold">Connect Notion</h2>
                     <button className="text-white hover:text-gray-400 focus:outline-none" onClick={closeModal}>
@@ -12,7 +12,7 @@ const Notion = ({ closeModal }: any) => {
                         </svg>
                     </button>
                 </div>
-                <div className="mt-4">
+                <div className="">
                     <label htmlFor="notion-url" className="block text-sm font-medium">
                         Notion URL
                     </label>
@@ -23,8 +23,8 @@ const Notion = ({ closeModal }: any) => {
                         className="mt-1 block w-full px-3 py-2 bg-transparent text-white rounded-md border border-gray-600 placeholder-gray-400 focus:outline-none focus:border-blue-500"
                     />
                 </div>
-                <div className="mt-4">
-                    <button className="flex items-center justify-center w-full px-4 py-2 bg-cyan-500 hover:bg-cyan-600 focus:outline-none focus:ring-2 focus:ring-cyan-300 rounded-full text-black">
+                <div className="">
+                    <button className="flex items-center justify-center w-full px-4 py-2 bg-cyan-500 hover:bg-cyan-600 focus:outline-none focus:ring-2 focus:ring-cyan-300 rounded-full text-sm font-semibold text-black">
                         Continue
                         {/* Continue arrow SVG */}
                         <svg className="ml-2" width="26" height="12" viewBox="0 0 26 12" fill="none" xmlns="http://www.w3.org/2000/svg">

@@ -16,7 +16,7 @@ export default function ChatBotPage() {
     }, []); // Empty dependency array to run only once on mount
 
     return (
-        <div className="flex flex-col sm:px-6 lg:px-8 py-8 bg-[#292D32]">
+        <div className="flex flex-col sm:px-6 lg:px-56 py-8 bg-[#292D32]">
             <Header />
             <MessageList />
             <MessageInput />

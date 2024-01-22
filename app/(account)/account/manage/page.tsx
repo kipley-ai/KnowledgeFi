@@ -37,7 +37,7 @@ const StatsCard = ({
 }): JSX.Element => (
 	<>
 		<div className="flex w-80 h-56 gap-4 ">
-			<div className="flex flex-col grow p-10 bg-gradient-to-r from-cyan-200 to-blue-200 rounded-2xl gap-6">
+			<div className="flex flex-col grow p-10 bg-gradient-to-r from-cyan-200 to-blue-200 rounded-2xl gap-4">
 				<Image
 					className="flex items-center justify-center w-10 h-10 p-2 bg-white rounded-xl shadow"
 					src={icon}
@@ -46,7 +46,7 @@ const StatsCard = ({
 					alt={`${title} icon`}
 				/>
 				{/* <div className="flex items-center justify-center w-10 h-10 p-2 bg-white rounded-xl shadow"></div> */}
-				<div className="flex flex-col justify-start items-start h-20 gap-1">
+				<div className="flex flex-col justify-start items-start h-20">
 					<div className="text-zinc-900 text-base font-semibold">{title}</div>
 					<div className="text-zinc-900 text-4xl font-semibold">{number}</div>
 				</div>
@@ -124,7 +124,7 @@ export default function AccountSettings() {
 				<h1 className="text-3xl font-semibold text-slate-100">Dashboard</h1>
 				<DateFilterComponent />
 			</div>
-			<div className="flex flex-wrap gap-4 py-3">
+			<div className="flex flex-wrap gap-4 my-8">
 				<StatsCard
 					title="Conversations"
 					number="3.8M"
