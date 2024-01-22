@@ -177,11 +177,11 @@ export default function Sidebar() {
 										} border-2 border-aqua-700 rounded-3xl py-1.5 px-2.5`}
 								>
 									{/* style={{ border: '2px solid #01F7FF', borderRadius: '24px', padding: '6px 10px' }}> */}
-									<SidebarLink href="/#">
+									<SidebarLink href="/dashboard">
 										<div className="flex items-center">
 											<Image className="h-9 w-9" alt="home" src={ChatText} />
 											<span className="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200 text-[14px] font-semibold text-neutral-500">
-												New Chat
+												Explore
 											</span>
 										</div>
 									</SidebarLink>
