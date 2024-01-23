@@ -3,6 +3,7 @@
 import { useEffect, useState, useRef } from "react";
 import { useAppProvider } from "@/app/app-provider";
 import { useAccount } from "wagmi";
+import Link from 'next/link'
 
 import DropdownTwitter from "@/components/dropdown-twitter";
 import SearchForm from "../search-form";
@@ -96,14 +97,15 @@ export default function Header() {
 					{/* Header: Right side */}
 					<div className="flex items-center">
 						{/* Create Chatbot Button */}
-						<button className="pr-3">
+						<Link href="/chatbot/create">
+						<button className="pr-3" >
 							<div
-								className="flex items-center border border-[#01F7FF] px-2 py-1 rounded-full"
+								className="flex items-center border border-[#01F7FF] px-1 py-1 rounded-full"
 							>
 								<svg
 									xmlns="http://www.w3.org/2000/svg"
-									width="36"
-									height="36"
+									width="28"
+									height="28"
 									fill="none"
 									viewBox="0 0 36 36"
 								>
@@ -121,10 +123,11 @@ export default function Header() {
 								</span>
 							</div>
 						</button>
+						</Link>
 						{/* My Bot Button */}
 						<button>
 							<div
-								className="flex items-center border border-[#01F7FF] px-3 py-3 rounded-full"
+								className="flex items-center border border-[#01F7FF] px-2 py-1.5 rounded-full"
 							>
 								<span className="text-sm font-medium mx-1 text-neutral-300 duration-200">
 									My Bots

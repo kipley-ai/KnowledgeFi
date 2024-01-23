@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useCreateChatbotAPI } from '@/hooks/api/chatbot';
+import { useCreateChatbotContext } from '../create-chatbot-context';
+import { useSession } from 'next-auth/react';
 
 const ChatBotForm = () => {
     const title = "Create Chatbot";
@@ -12,6 +15,9 @@ const ChatBotForm = () => {
     const [instructions, setInstructions] = useState('');
     const [example, setExample] = useState('');
     const router = useRouter();
+    const createChatbot = useCreateChatbotAPI()
+    const {createChatbot: chatbot}  = useCreateChatbotContext()
+    const { data: twitterSession } = useSession();
     // ... other form states for different inputs
 
     const handleImageChange = (event: any) => {
@@ -30,8 +36,18 @@ const ChatBotForm = () => {
         formData.append('characterName', characterName);
         formData.append('description', description);
         formData.append('category', category);
-        // Handle the form submission here
-        // You may want to send the data to a server or API endpoint
+        console.log(twitterSession?.user)
+        createChatbot.mutate({
+            "type": chatbot.type,
+            "profile_image": profileImage,
+            "username":twitterSession?.user?.name as string,
+            "category_id":category,
+            "name": characterName,
+            "description":description,
+            "instruction":instructions,
+            "example_conversation":example
+            
+        })
     };
 
     const handleCancel = () => {

@@ -1,11 +1,17 @@
+"use client"
 import Sidebar from '@/components/ui/sidebar'
 import Header from '@/components/ui/header'
-
+import { useAccount } from "wagmi";
+import { redirect } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 export default function DefaultLayout({
   children,
 }: {
   children: React.ReactNode,
 }) {
+  const { isConnected } = useAccount();
+  const pathname = usePathname();
+  if (isConnected) {
   return (
     <div className="flex h-[100dvh] overflow-hidden bg-neutral-900">
 
@@ -26,5 +32,8 @@ export default function DefaultLayout({
       </div>
 
     </div>
-  )
+  )} else {
+        console.log(isConnected)
+        redirect(`/dashboard?next=${pathname}`)
+      }
 }

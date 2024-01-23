@@ -33,7 +33,7 @@ export const constructHeader = (headers: Headers, ignoreLoginCheck: boolean = fa
 //	  commonHeaders["x-kb-user-sub"] = session.user.user_id;
 //	}
   }
-
+  console.log(commonHeaders)
   return commonHeaders;
 };
 

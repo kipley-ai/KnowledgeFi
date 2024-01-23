@@ -1,8 +1,11 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { useAppProvider } from '@/app/app-provider';
 import Step1 from "./step-1";
 import Step2 from "./step-2";
+import { useSession } from "next-auth/react";
+import { useAppProvider } from "@/app/app-provider";
+import { useRouter } from "next/navigation";
+import ChatBotForm from "./create-chatbot-form";
 
 type PossibleOptions = "files" | "twitter" | "notion" | "";
 
@@ -18,6 +21,7 @@ export interface UIFile {
 export default function DataSource() {
 	const { setHeaderTitle } = useAppProvider();
 	const title = "Data Sources";
+	const router = useRouter()
 
 	useEffect(() => {
 			setHeaderTitle(title);
@@ -31,6 +35,9 @@ export default function DataSource() {
 
 	// For future, can remove if unneeded
 	const [showLoadingModal, setShowLoadingModal] = useState(false);
+	const { status: twitterStatus } = useSession();
+    const { modalLogin: showTwitterLogin, setModalLogin: setShowTwitterLogin } =
+		useAppProvider();
 
 	const handleContinue = (e: React.MouseEvent<HTMLButtonElement>) => {
 		if (localFiles) {
@@ -68,7 +75,7 @@ export default function DataSource() {
 					selectedButton={selectedButton}
 				/>
 			) : (
-				<></>
+				<ChatBotForm/>
 			)}
 			<div className="flex justify-between mx-56">
 				<button
@@ -84,8 +91,17 @@ export default function DataSource() {
 					className="flex flex-row items-center justify-between bg-[#01F7FF] rounded-3xl w-36 p-2 px-5 mt-8"
 					type="submit"
 					onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
-						if (step < 2) setStep(step + 1);
-						if (step == 2) handleContinue(e);
+						if (selectedButton == "twitter") {
+							if (twitterStatus != "authenticated") {
+								setShowTwitterLogin(true);
+							} else {
+								setStep(3)
+							}
+						}
+						else {
+							if (step < 2) setStep(step + 1);
+							if (step == 2) handleContinue(e);
+						}
 					}}
 				>
 					<h5 className="text-sm text-black font-semibold">Continue</h5>
