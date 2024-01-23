@@ -34,6 +34,6 @@ export default function DefaultLayout({
     </div>
   )} else {
         console.log(isConnected)
-        redirect(`/dashboard?next=${pathname}`)
+        redirect(`/?next=${pathname}`)
       }
 }

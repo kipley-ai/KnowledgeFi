@@ -10,13 +10,7 @@ export default function DefaultLayout({
 }: {
   children: React.ReactNode,
 }) {
-  const { isConnected } = useAccount();
-  const searchParams = useSearchParams();
-
-  const nextUrl = searchParams.get("next") || "/discover";
-  if (isConnected) {
-    redirect(nextUrl);
-  } else {
+  
     return (
         <div className="flex h-[100dvh] overflow-hidden bg-neutral-900">
 
@@ -38,5 +32,5 @@ export default function DefaultLayout({
 
         </div>
     )
-    }
+    
 }
