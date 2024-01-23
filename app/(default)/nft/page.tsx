@@ -3,6 +3,7 @@ import { useAppProvider } from "@/app/app-provider";
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import LoadMoreButton from "@/components/load-more-button";
 
 type NFTCardProps = {
     id: string | number;
@@ -41,6 +42,10 @@ export default function NFT() {
         <NFTCard key={index} id={index} />
     ));
 
+    const handleLoadMore = () => {
+        console.log("Load More");
+    };
+
     useEffect(() => {
         document.title = title;
         setHeaderTitle(title);
@@ -52,6 +57,11 @@ export default function NFT() {
         <div className="flex flex-col gap-8 sm:px-6 lg:px-8 py-8 bg-[#292D32]">
             <h1 className="text-2xl font-semibold text-white">My NFT</h1>
             <div className="grid grid-cols-4 gap-x-6 gap-y-12">{NFTCards}</div>
+            <div className="flex justify-center">
+                <LoadMoreButton onClick={() => handleLoadMore()}>
+                    Load more
+                </LoadMoreButton>
+            </div>
         </div>
     );
 }
