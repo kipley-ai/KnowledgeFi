@@ -79,7 +79,7 @@ export default function DropdownTwitter({
 										: "text-indigo-500"
 								}`}
 								onClick={(e) => {
-                  e.preventDefault();
+									e.preventDefault();
 									signOut();
 								}}
 							>

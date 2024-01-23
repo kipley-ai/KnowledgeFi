@@ -3,17 +3,19 @@
 import { useEffect, useState, useRef } from "react";
 import { useAppProvider } from "@/app/app-provider";
 import { useAccount } from "wagmi";
-import Link from 'next/link'
+import Link from "next/link";
 
 import DropdownTwitter from "@/components/dropdown-twitter";
 import SearchForm from "../search-form";
 import GetInvolvedButton from "../GetInvolvedButton/get-involved-button";
 import ModalLoginTwitter from "@/components/modal-login-twitter";
+import UserAvatar from "@/public/images/user-avatar-32.png";
 import dynamic from "next/dynamic";
 import { useSession } from "next-auth/react";
 import { dataLength } from "ethers";
 import AvatarWithStatus from "./avatar-with-status";
 import defaultAvatar from "public/images/user-32-03.jpg";
+import { StaticImageData } from "next/image";
 
 // const GetInvolvedButton = dynamic(
 // 	() => import("../GetInvolvedButton/get-involved-button"),
@@ -25,19 +27,26 @@ import defaultAvatar from "public/images/user-32-03.jpg";
 export default function Header() {
 	const { sidebarOpen, setSidebarOpen } = useAppProvider();
 
-	const [showTwitterLogin, setShowTwitterLogin] = useState<boolean>(false);
-	const [showAccountButton, setShowAccountButton] = useState<boolean>(false);
+	// const [showTwitterLogin, setShowTwitterLogin] = useState<boolean>(false);
+	// const [showAccountButton, setShowAccountButton] = useState<boolean>(false);
 	const [searchModalOpen, setSearchModalOpen] = useState<boolean>(false);
 	const { data: twitterSession, status: twitterStatus } = useSession();
+	const [profileImage, setProfileImage] = useState<StaticImageData | string>(
+		""
+	);
 
 	const { modalLogin, setModalLogin } = useAppProvider();
 	const { isConnected: walletConnected } = useAccount();
+	const [hydrateSafeWalletConnected, setWalletConnected] = useState<boolean>(false);
+
 
 	const { headerTitle } = useAppProvider();
 
 	useEffect(() => {
-		setShowTwitterLogin(walletConnected && twitterStatus !== "authenticated");
-		setShowAccountButton(walletConnected && twitterStatus === "authenticated");
+		setWalletConnected(walletConnected)
+		// setShowTwitterLogin(walletConnected && twitterStatus !== "authenticated");
+		// setShowAccountButton(walletConnected && twitterStatus === "authenticated");
+		setProfileImage(twitterSession?.user?.image || "");
 
 		console.log(twitterSession);
 	}, [walletConnected, twitterStatus]);
@@ -86,9 +95,7 @@ export default function Header() {
 								/>
 							</svg>
 
-							<span
-								className="text-sm font-medium text-white ml-3 duration-200"
-							>
+							<span className="text-sm font-medium text-white ml-3 duration-200">
 								{headerTitle}
 							</span>
 						</div>
@@ -98,44 +105,40 @@ export default function Header() {
 					<div className="flex items-center">
 						{/* Create Chatbot Button */}
 						<Link href="/chatbot/create">
-						<button className="pr-3" >
-							<div
-								className="flex items-center border border-[#01F7FF] px-1 py-1 rounded-full"
-							>
-								<svg
-									xmlns="http://www.w3.org/2000/svg"
-									width="28"
-									height="28"
-									fill="none"
-									viewBox="0 0 36 36"
-								>
-									<path
-										fill="#F1F5F9"
-										fillRule="evenodd"
-										d="M18 7C11.925 7 7 11.925 7 18s4.925 11 11 11 11-4.925 11-11S24.075 7 18 7zm0 6a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3h-3a1 1 0 110-2h3v-3a1 1 0 011-1z"
-										clipRule="evenodd"
+							<button className="pr-3">
+								<div className="flex items-center border border-[#01F7FF] px-1 py-1 rounded-full">
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										width="28"
+										height="28"
+										fill="none"
+										viewBox="0 0 36 36"
 									>
-										{" "}
-									</path>
-								</svg>
-								<span className="text-sm font-medium ml-1 mr-2 text-neutral-300 duration-200">
-									Create chat bot
-								</span>
-							</div>
-						</button>
+										<path
+											fill="#F1F5F9"
+											fillRule="evenodd"
+											d="M18 7C11.925 7 7 11.925 7 18s4.925 11 11 11 11-4.925 11-11S24.075 7 18 7zm0 6a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3h-3a1 1 0 110-2h3v-3a1 1 0 011-1z"
+											clipRule="evenodd"
+										>
+											{" "}
+										</path>
+									</svg>
+									<span className="text-sm font-medium ml-1 mr-2 text-neutral-300 duration-200">
+										Create chat bot
+									</span>
+								</div>
+							</button>
 						</Link>
 						{/* My Bot Button */}
-						<button>
-							<div
-								className="flex items-center border border-[#01F7FF] px-2 py-1.5 rounded-full"
-							>
+						<button className="pr-3">
+							<div className="flex items-center border border-[#01F7FF] px-2 py-1.5 rounded-full">
 								<span className="text-sm font-medium mx-1 text-neutral-300 duration-200">
 									My Bots
 								</span>
 							</div>
 						</button>
 						{/* Connect Wallet Button */}
-						{!walletConnected &&
+						{!hydrateSafeWalletConnected && (
 							<GetInvolvedButton
 								buttonStyle="flex items-center border border-gray-700 rounded-full py-3 px-4 text-sm font-medium ml-3 text-neutral-300 duration-200 mr-3"
 								wrapStyle="flex items-center text-sm font-medium ml-3 text-neutral-300 duration-200"
@@ -164,9 +167,9 @@ export default function Header() {
 									</>
 								}
 							/>
-						}
+						)}
 						{/* Profile Picture */}
-						<AvatarWithStatus image="images/user-32-03.jpg" status="away" />
+						<AvatarWithStatus image={profileImage} status="away" />
 						{/* {showTwitterLogin && (
 							<>
 								<ModalLoginTwitter
