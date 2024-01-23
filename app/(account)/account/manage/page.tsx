@@ -1,4 +1,4 @@
-import DashboardCard05 from "@/app/(default)/dashboard/dashboard-card-05";
+import DashboardCard05 from "@/app/(dashboard)/dashboard/dashboard-card-05";
 import Image from "next/image";
 import ConvoCheckMarkIcon from "@/components/icon/convo.svg";
 import PersonIcon from "@/components/icon/person.svg";

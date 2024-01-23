@@ -10,6 +10,7 @@ import Earning from "./earning";
 import Withdraw from "./withdraw";
 import { useEffect } from "react";
 import { useAppProvider } from "@/app/app-provider";
+import CreatorOverview from "./creator";
 
 const Icon = ({active}:{active: boolean}) => {
     return (
@@ -32,9 +33,16 @@ export default function ManageAccount() {
             <Image className="bg-[#292D32] w-full" src={HeaderBg} alt="Header Background" />
             <div className="flex bg-[#292D32] -mt-20 mx-10 rounded-2xl border border-gray-700">
                 <div className="flex flex-col w-2/6 py-8 px-10 text-[#7C878E] font-semibold border-r border-gray-700 pb-32">
-                    <div className={`flex mb-2 cursor-pointer px-7 py-3`} onClick={() => setSelectedPage("dashboard")}>
-                        <Image src={PaperIcon} alt="Paper Icon" />
+                    <div className={`flex mb-2 cursor-pointer px-7 py-3 ${selectedPage == 'dashboard' ? 'border border-[#01F7FF] rounded-3xl text-[#01F7FF]' : ''}`} onClick={() => setSelectedPage("dashboard")}>
+                        <svg width="17" height="20" viewBox="0 0 17 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M14.6668 8.75033V5.66699C14.6668 4.26686 14.6668 3.5668 14.3943 3.03202C14.1547 2.56161 13.7722 2.17916 13.3018 1.93948C12.767 1.66699 12.067 1.66699 10.6668 1.66699H5.3335C3.93336 1.66699 3.2333 1.66699 2.69852 1.93948C2.22811 2.17916 1.84566 2.56161 1.60598 3.03202C1.3335 3.5668 1.3335 4.26686 1.3335 5.66699V14.3337C1.3335 15.7338 1.3335 16.4339 1.60598 16.9686C1.84566 17.439 2.22811 17.8215 2.69852 18.0612C3.2333 18.3337 3.93336 18.3337 5.3335 18.3337H8.00016M9.66683 9.16699H4.66683M6.3335 12.5003H4.66683M11.3335 5.83366H4.66683M13.0002 17.5003V12.5003M10.5002 15.0003H15.5002" 
+                            stroke={selectedPage == 'dashboard' ?"#01F7FF" :"#7C878E"} stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
                         <h3 className="ml-3">Dashboard</h3>
+                    </div>
+                    <div className={`flex my-2 cursor-pointer px-7 py-3 ${selectedPage == 'creator' ? 'border border-[#01F7FF] rounded-3xl text-[#01F7FF]' : ''}`} onClick={() => setSelectedPage("creator")}>
+                        <Icon active={selectedPage == 'creator' ? true : false} />
+                        <h3 className="ml-3">Creator Overview</h3>
                     </div>
                     <div className={`flex my-2 cursor-pointer px-7 py-3 ${selectedPage == 'earning' ? 'border border-[#01F7FF] rounded-3xl text-[#01F7FF]' : ''}`} onClick={() => setSelectedPage("earning")}>
                         <Icon active={selectedPage == 'earning' ? true : false} />
@@ -55,6 +63,7 @@ export default function ManageAccount() {
                 </div>
                 {
                     selectedPage === "credit" ? <Credit /> :
+                    selectedPage === "creator" ? <CreatorOverview/> :
                     selectedPage === "dashboard" ? <Dashboard /> :
                     selectedPage === "deposit" ? <Deposit /> :
                     selectedPage === "earning" ? <Earning /> :
