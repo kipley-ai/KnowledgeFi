@@ -4,6 +4,8 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import LoadMoreButton from "@/components/load-more-button";
+import { FaPlus } from "react-icons/fa6";
+import { IconContext } from "react-icons";
 
 type NFTCardProps = {
     id: string | number;
@@ -75,6 +77,32 @@ const BotCard = ({ id }: BotCardProps) => {
     );
 };
 
+type NoDataProps = {
+    item: string;
+};
+
+const NoData = ({ item }: NoDataProps) => {
+    return (
+        <div className="flex flex-col items-center justify-center gap-4">
+            <Image
+                src="/images/no-data.png"
+                width={167}
+                height={115}
+                alt={"No Data"}
+            />
+            <p className="text-lg font-semibold text-white">No data yet</p>
+            <div className="flex gap-2 items-center">
+                <IconContext.Provider value={{ color: "#01F7FF" }}>
+                    <div>
+                        <FaPlus />
+                    </div>
+                </IconContext.Provider>
+                <p className="text-sm text-[#01F7FF]">Create new {item}</p>
+            </div>
+        </div>
+    );
+};
+
 export default function NFT() {
     const title = "My NFT";
     const { setHeaderTitle } = useAppProvider();
@@ -101,7 +129,12 @@ export default function NFT() {
     return (
         <div className="flex flex-col gap-24 sm:px-6 lg:px-8 py-8 pb-32 bg-[#292D32]">
             <div className="flex flex-col gap-8">
-                <h1 className="text-2xl font-semibold text-white">My NFT</h1>
+                <div className="flex flex-col">
+                    <h1 className="text-2xl font-semibold text-white">
+                        My NFT
+                    </h1>
+                    <hr className="my-4 border border-gray-700" />
+                </div>
                 <div className="grid grid-cols-4 gap-x-6 gap-y-12">
                     {NFTCards}
                 </div>
@@ -112,7 +145,12 @@ export default function NFT() {
                 </div>
             </div>
             <div className="flex flex-col gap-8">
-                <h1 className="text-2xl font-semibold text-white">My Bots</h1>
+                <div className="flex flex-col">
+                    <h1 className="text-2xl font-semibold text-white">
+                        My Bots
+                    </h1>
+                    <hr className="my-4 border border-gray-700" />
+                </div>
                 <div className="grid grid-cols-4 gap-x-6 gap-y-12">
                     {BotCards}
                 </div>
