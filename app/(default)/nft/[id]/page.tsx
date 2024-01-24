@@ -7,14 +7,16 @@ import { useAppProvider } from "@/app/app-provider"
 import { useEffect } from "react"
 import link_nft_chatbot from "@/public/images/link-nft-chatbot.png"
 import { useCallback, useState } from 'react'
+import { useNFTDetail } from "@/hooks/api/nft"
+import { useChatbotDetail } from "@/hooks/api/chatbot"
   
-const NFTSection = ()=> {
+const NFTSection = ({nftDetail}:{nftDetail:any})=> {
     return(<div className="grid grid-cols-2 gap-[30px] text-white  pb-[50px]">
         <div>
             <Image src={nft1} alt={"nft image"}/>
         </div>
         <div>
-            <h1 className="text-4xl font-bold">ChatBot NFT</h1>
+            <h1 className="text-4xl font-bold">{nftDetail.name}</h1>
             <h4 className="text-[#01F7FF]">Token ID: 9501234</h4>
             <p className="my-[50px]">OpenAI has created a model that surpasses ChatGPT in several areas, like math and physics equations, creative writing, and other difficult tasks. </p>
             <div className="flex mb-[50px]">
@@ -35,7 +37,7 @@ const NFTSection = ()=> {
 
 }
 
-const ChatbotSection = () => {
+const ChatbotSection = ({chatbotDetail}:{chatbotDetail:any}) => {
     return (<div className="grid grid-cols-2 gap-x-[30px] gap-y-5 text-white mt-5 py-[50px] border-t border-[#474D54]">
         <div className="col-span-2 flex justify-between  items-center">
             <div className="flex items-center">
@@ -46,7 +48,7 @@ const ChatbotSection = () => {
                 src={keyboard}
                 alt={"chatbot image"}
                 />
-                <h1 className="text-4xl font-semibold">Chatbot 101</h1>
+                <h1 className="text-4xl font-semibold">{chatbotDetail.name}</h1>
             </div>
             <div>
                 <button className="rounded-full border border-[#01F7FF] text-[#01F7FF] flex px-7 py-1 items-center"> 
@@ -160,29 +162,35 @@ const NoChatbot = () => {
     )
 }
 
-const NFTDetail = () => {
+const NFTDetail = ({params}:{params:any}) => {
     
     const {setHeaderTitle} = useAppProvider()
     useEffect(()=> {
         setHeaderTitle("My NFT")
     },[])
-    const [nft,setNft] = useState(false)
+    const [nft,setNft] = useState(true)
     const [chatbot,setChatbot] = useState(true)
+    const { id } = params; 
+
+    const {data:nftData} = useNFTDetail({ sft_id:id})
+    const {data:chatbotData} = useChatbotDetail({chatbot_id:nftData?.data.data.chatbot_id})
+    
     return (
         <div className="p-12 bg-[#292D32]">
         {
-            nft?
-            <NFTSection/>:
+            nftData?
+            <NFTSection nftDetail={nftData?.data.data}/>:
             <NoNFT/>
         }
         {
-            chatbot ?
-            <ChatbotSection/>
+            chatbotData ?
+            <ChatbotSection chatbotDetail={chatbotData?.data.data}/>
             :<NoChatbot/>
         }
         
         
         </div>
-        )
+    )
+    
 }
 export default NFTDetail;

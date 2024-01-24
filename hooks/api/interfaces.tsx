@@ -23,4 +23,12 @@ export interface ICreateChatbotParams {
     description: string;
     instruction: string;
     example_conversation: string;
-  }
+}
+
+export interface INFTDetailParams {
+    sft_id: string;
+}
+
+export interface IChatbotDetailParams {
+    chatbot_id: string;
+}
