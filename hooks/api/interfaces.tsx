@@ -23,7 +23,24 @@ export interface ICreateChatbotParams {
     description: string;
     instruction: string;
     example_conversation: string;
-  }
+}
+
+export interface ICreateKBAndNFTParams {
+    type: string;
+    kb_data? : string;
+    username? : string;
+    name: string;
+    description: string
+    contract_address: string
+    wallet_address: string
+    supply: string
+    category: string
+    token_symbol: string
+    price_per_query: number
+    query_royalties: string
+    token_amount: number
+    url: string
+}
 
 // Used by hooks/api/nft/index.ts
 export interface INFTDetailParams {

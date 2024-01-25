@@ -2,6 +2,9 @@
 import { useAppProvider } from "@/providers/app-provider";
 import { mintNFT } from "@/smart-contract/kip-protocol-contract";
 import React, { useEffect, useState } from "react";
+import { useCreateChatbotContext } from "./create-chatbot-context";
+import { useCreateKBAndMintNFT } from "@/hooks/api/kb";
+import { useSession } from "next-auth/react";
 
 // export const metadata = {
 //     title: 'NFT - Mosaic',
@@ -10,18 +13,28 @@ import React, { useEffect, useState } from "react";
 
 interface Form {
 	name?: string;
+	description?:string;
 	symbol?: string;
 	slotValue?: number;
 	assetId?: string;
+	shareSupply?: string;
+	comissionRate?: number;
 }
+
+const noMoreThanCharacters = (number:number) => "no more than "+number+" characters"
+
 
 export default function NFT() {
 	const title = "Create NFT";
 	const { setHeaderTitle } = useAppProvider();
-
+	const createKBandMintNFT = useCreateKBAndMintNFT()
+	const {createKb,createNft} = useCreateChatbotContext()
 	const [category, setCategory] = useState("");
 	const [queryRoyalties, setQueryRoyalties] = useState("");
-
+	const {setStep} = useCreateChatbotContext()
+	const [errorMessage,setErrorMessage] = useState<any>({})
+	const [allowGenerate,setAllowGenerate] = useState(false)
+	const { data: twitterSession } = useSession();
 	const [form, setForm] = useState<Form>({ assetId: "123" });
 
 	const handleFormChange = (name: string, value: any) => {
@@ -40,6 +53,23 @@ export default function NFT() {
 
 	const handleMintNFT = async () => {
 		try {
+			console.log(createKb.type,twitterSession?.user)
+			createKBandMintNFT.mutate({
+				type:createKb.type,
+				kb_data: createKb.type =="files" ?createKb.kb_data :"",
+				username:createKb.type =="twitter" ? twitterSession?.user?.username as string : "",
+				name:form?.name as string,
+				description:form?.description as string,
+				contract_address:"",
+				wallet_address:"",
+				supply:form?.shareSupply as string,
+				category:"",
+				token_symbol:form?.symbol as string,
+				price_per_query:1,
+				query_royalties:"",
+				token_amount:1,
+				url:"",
+			})
 			const res = await mintNFT(
 				form.assetId!,
 				form.name!,
@@ -50,6 +80,60 @@ export default function NFT() {
 			console.log(error);
 		}
 	};
+
+	useEffect(()=> {
+		if (form.name && form.name.length > 100)
+			setErrorMessage({
+				...errorMessage,
+				"name": noMoreThanCharacters(100)
+			})
+		else {
+			setErrorMessage({
+				...errorMessage,
+				"name": ""
+			})
+		}
+	},[form.name])
+
+	useEffect(()=> {
+		if (form.description && form.description.length > 1000)
+			setErrorMessage({
+				...errorMessage,
+				"description": noMoreThanCharacters(1000)
+			})
+		else {
+			setErrorMessage({
+				...errorMessage,
+				"description": ""
+			})
+		}
+	},[form.description])
+
+	useEffect(()=> {
+		if (form.symbol && form.symbol.length > 10)
+			setErrorMessage({
+				...errorMessage,
+				"symbol": noMoreThanCharacters(10)
+			})
+		else {
+			setErrorMessage({
+				...errorMessage,
+				"symbol": ""
+			})
+		}
+	},[form.symbol])
+
+	useEffect(()=> {
+		if (errorMessage && !errorMessage.name && !errorMessage.description && !errorMessage.symbol){
+			setAllowGenerate(true)
+		}
+		else {
+			setAllowGenerate(false)
+		}
+	},[errorMessage])
+
+	
+
 
 	return (
 		<div className="flex flex-col sm:px-6 lg:px-8 py-8 bg-[#292D32]">
@@ -62,67 +146,92 @@ export default function NFT() {
 			</div>
 			<form className="flex flex-col gap-8 mt-4 mx-56">
 				<div className="flex flex-col gap-1">
-					<label className="font-semibold text-white">Name</label>
+					<label className="font-semibold text-[#DDD]">Name</label>
 					<input
-						className="rounded-xl bg-transparent text-white"
+						className="rounded-xl bg-transparent text-[#DDD]"
 						type="text"
 						name="name"
 						placeholder='e.g. "Redeemable KB Card with logo"'
 						value={form?.name}
 						onChange={(e) => handleFormChange("name", e.target.value)}
 					/>
+					{
+						errorMessage && errorMessage.name? 
+						<div className=" text-red-400">{errorMessage.name}</div>:<div className="opacity-0">a</div>
+					}
 				</div>
 
 				<div className="flex flex-col gap-1">
-					<label className="font-semibold text-white">Description</label>
+					<label className="font-semibold text-[#DDD]">Description</label>
 					<textarea
-						className="rounded-xl bg-transparent"
+						className="rounded-xl bg-transparent text-[#DDD] placeholder-text-[#7C878E]"
 						name="description"
 						placeholder='e.g. "After purchasing you will able to received the logo..."'
 						rows={4}
+						onChange={(e) => handleFormChange("description", e.target.value)}
 					/>
+					{
+						errorMessage && errorMessage.description? 
+						<div className=" text-red-400">{errorMessage.description}</div>:<div className="opacity-0">a</div>
+					}
 				</div>
 
 				<div className="flex flex-row">
 					<div className="flex flex-col gap-1 w-1/3">
-						<label className="font-semibold text-white">Supply</label>
+						<label className="font-semibold text-[#DDD] ">Token Symbol</label>
 						<input
-							className="rounded-xl bg-transparent w-11/12"
-							type="number"
-							name="supply"
-							placeholder="e.g. 66"
-							value={form?.slotValue}
-							onChange={(e) => handleFormChange("slotValue", e.target.value)}
-						/>
-					</div>
-					<div className="flex flex-col gap-1 w-1/3">
-						<label className="font-semibold text-white">Category</label>
-						<select
-							className="rounded-xl bg-transparent text-[#7C878E] w-11/12"
-							value={category}
-							onChange={(e) => setCategory(e.target.value)}
-						>
-							<option value="">Select Category</option>
-							<option value="category1">Category 1</option>
-							<option value="category2">Category 2</option>
-							<option value="category3">Category 3</option>
-						</select>
-					</div>
-					<div className="flex flex-col gap-1 w-1/3">
-						<label className="font-semibold text-white">Token Symbol</label>
-						<input
-							className="rounded-xl bg-transparent"
+							className="rounded-xl bg-transparent w-11/12 text-[#DDD] placeholder-text-[#7C878E]"
 							type="text"
 							name="tokenSymbol"
 							placeholder="e.g. SDKW7890"
 							value={form?.symbol}
 							onChange={(e) => handleFormChange("symbol", e.target.value)}
 						/>
+						{
+							errorMessage && errorMessage.symbol? 
+							<div className=" text-red-400">{errorMessage.symbol}</div>:<div className="opacity-0">a</div>
+						}
 					</div>
-				</div>
-				<div className="flex flex-row">
 					<div className="flex flex-col gap-1 w-1/3">
-						<label className="font-semibold text-white">Price Per Query</label>
+						<label className="font-semibold text-[#DDD]">Shares Supply</label>
+						<select
+							className="rounded-xl bg-transparent text-[#DDD] w-11/12"
+							value={form?.shareSupply}
+							onChange={(e) => handleFormChange("shareSupply", e.target.value)}
+						>
+							<option className="text-[#7C878E]" value="5000">5000</option>
+							<option className="text-[#7C878E]" value="10000">10000</option>
+							<option className="text-[#7C878E]" value="50000">50000</option>
+							<option className="text-[#7C878E]" value="100000">100000</option>
+						</select>
+					</div>
+					<div className="flex flex-col gap-1 w-1/3">
+						<label className="font-semibold text-[#DDD]">Commision Rate</label>
+						<div className="flex w-full items-center ">
+						<input
+							className="rounded-xl bg-transparent w-full text-[#DDD] placeholder-text-[#7C878E]"
+							type="number"
+							name="comissionRate"
+							placeholder="e.g. 5"
+							onChange={(e) => {
+								console.log(e.target.value,e.target.value > "99")
+								if (parseFloat(e.target.value)   < 0)
+									handleFormChange("comissionRate", 0)
+								else if (parseFloat(e.target.value)> 99)
+									handleFormChange("comissionRate", 99)
+								else
+									handleFormChange("comissionRate", e.target.value)
+							}}
+							value={form?.comissionRate}
+						/>
+						<div className="block text-[#DDD] w-fit ml-2">%</div>
+						</div>
+					</div>
+					
+				</div>
+				{/* <div className="flex flex-row">
+					<div className="flex flex-col gap-1 w-1/3">
+						<label className="font-semibold text-[#DDD]">Price Per Query</label>
 						<input
 							className="rounded-xl bg-transparent w-11/12"
 							type="number"
@@ -132,7 +241,7 @@ export default function NFT() {
 					</div>
 
 					<div className="flex flex-col gap-1 w-1/3">
-						<label className="font-semibold text-white">Query Royalties</label>
+						<label className="font-semibold text-[#DDD]">Query Royalties</label>
 						<select
 							className="rounded-xl bg-transparent text-[#7C878E] w-11/12"
 							value={queryRoyalties}
@@ -146,7 +255,7 @@ export default function NFT() {
 					</div>
 
 					<div className="flex flex-col gap-1 w-1/3">
-						<label className="font-semibold text-white">Price Per Query</label>
+						<label className="font-semibold text-[#DDD]">Price Per Query</label>
 						<input
 							className="rounded-xl bg-transparent"
 							type="number"
@@ -154,13 +263,22 @@ export default function NFT() {
 							placeholder="e.g. USDT 1000"
 						/>
 					</div>
-				</div>
-				<div className="flex flex-row-reverse">
-					<div></div>
+				</div> */}
+				<div className="flex justify-between">
 					<button
-						className="flex flex-row items-center justify-between bg-[#01F7FF] rounded-3xl w-44 p-2 px-5 mt-8"
+						className="flex flex-row items-center justify-between  rounded-3xl p-2 px-5 mt-8 border-2 border-[#50575F]"
+						type="submit"
+						onClick={() => {
+							setStep("data_source");
+						}}
+					>
+						<h5 className="text-sm text-white font-semibold">Back</h5>
+					</button>
+					<button
+						className="flex flex-row items-center justify-between bg-[#01F7FF] disabled:bg-gray-500  rounded-3xl w-44 p-2 px-5 mt-8"
 						onClick={handleMintNFT}
 						type="button"
+						disabled={!allowGenerate}
 					>
 						<h5 className="text-sm text-black font-semibold">Generate NFT</h5>
 						<svg
