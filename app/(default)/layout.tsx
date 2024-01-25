@@ -5,6 +5,7 @@ import { useAccount } from "wagmi";
 import { redirect } from "next/navigation";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
+
 export default function DefaultLayout({
 	children,
 }: {

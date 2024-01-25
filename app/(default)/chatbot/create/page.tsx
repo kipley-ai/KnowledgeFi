@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import Step1 from "./step-1";
 import Step2 from "./step-2";
 import { useSession } from "next-auth/react";
-import { useAppProvider } from "@/app/app-provider";
+import { useAppProvider } from "@/providers/app-provider";
 import { useRouter } from "next/navigation";
 import ChatBotForm from "./create-chatbot-form";
 

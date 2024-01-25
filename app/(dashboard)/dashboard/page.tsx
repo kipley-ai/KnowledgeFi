@@ -20,7 +20,7 @@ import { useEffect, useState } from "react";
 import chat_image from "@/public/images/chat-image.png";
 import Image from "next/image";
 import ModalLoginTwitter from "@/components/modal-login-twitter";
-import { useAppProvider } from "@/app/app-provider";
+import { useAppProvider } from "@/providers/app-provider";
 import { getBreakpoint } from "@/components/utils/utils";
 import { AnimationOnScroll } from "react-animation-on-scroll";
 import { accounts } from "@/components/utils/twitter-account";
@@ -48,20 +48,20 @@ export default function Dashboard() {
 		return () => {
 			window.removeEventListener("resize", handleBreakpoint);
 			setHeaderTitle("Default Title");
- 
+
 			document.title = title;
 		};
-	}, [breakpoint,]); 
+	}, [breakpoint]);
 
 	const chatSessionAPI = useChatSession({
-		user_id: 'test',
-		app_id: 'test',
+		user_id: "test",
+		app_id: "test",
 		page_num: 1,
 		page_size: 10,
 		// request_url:
 		//   appDetail?.data?.data.data.app_info.plugin_meta_data.chat_session_api
 		//     .request_url,
-	  });
+	});
 
 	return (
 		<div className="w-full bg-stone-800">

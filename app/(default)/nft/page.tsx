@@ -1,5 +1,5 @@
 "use client";
-import { useAppProvider } from "@/app/app-provider";
+import { useAppProvider } from "@/providers/app-provider";
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";

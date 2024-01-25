@@ -9,7 +9,7 @@ import Deposit from "./deposit";
 import Earning from "./earning";
 import Withdraw from "./withdraw";
 import { useEffect } from "react";
-import { useAppProvider } from "@/app/app-provider";
+import { useAppProvider } from "@/providers/app-provider";
 import CreatorOverview from "./creator";
 
 const Icon = ({active}:{active: boolean}) => {

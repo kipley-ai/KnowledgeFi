@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
-import { useAppProvider } from "@/app/app-provider";
+import { useAppProvider } from "@/providers/app-provider";
 import { useAccount } from "wagmi";
 import Link from "next/link";
 
@@ -36,20 +36,19 @@ export default function Header() {
 	);
 
 	const { modalLogin, setModalLogin } = useAppProvider();
-	const { isConnected: walletConnected } = useAccount();
-	const [hydrateSafeWalletConnected, setWalletConnected] = useState<boolean>(false);
-
+	const { isConnected } = useAccount();
+	const [isConnected_, setIsConnected_] = useState<boolean>(false);
 
 	const { headerTitle } = useAppProvider();
 
 	useEffect(() => {
-		setWalletConnected(walletConnected)
+		setIsConnected_(isConnected);
 		// setShowTwitterLogin(walletConnected && twitterStatus !== "authenticated");
 		// setShowAccountButton(walletConnected && twitterStatus === "authenticated");
 		setProfileImage(twitterSession?.user?.image || "");
 
 		console.log(twitterSession);
-	}, [walletConnected, twitterStatus]);
+	}, [isConnected, twitterStatus]);
 
 	return (
 		<header
@@ -138,7 +137,7 @@ export default function Header() {
 							</div>
 						</button>
 						{/* Connect Wallet Button */}
-						{!hydrateSafeWalletConnected && (
+						{!isConnected_ && (
 							<GetInvolvedButton
 								buttonStyle="flex items-center border border-gray-700 rounded-full py-3 px-4 text-sm font-medium ml-3 text-neutral-300 duration-200 mr-3"
 								wrapStyle="flex items-center text-sm font-medium ml-3 text-neutral-300 duration-200"
