@@ -24,3 +24,8 @@ export interface ICreateChatbotParams {
     instruction: string;
     example_conversation: string;
   }
+
+// Used by hooks/api/nft/index.ts
+export interface INftParams {
+    "sft_id": string;
+}
