@@ -6,7 +6,6 @@ import Image from "next/image";
 import { useCreateChatbotContext } from "../[id]/create-chatbot-context";
 
 export default function Step1({ selectedButton, setSelectedButton }: { selectedButton: string, setSelectedButton: Function }) {
-    console.log(selectedButton)
     const {handleChange} = useCreateChatbotContext()
     return (
         <div className="mx-56 grid grid-cols-2 gap-4 text-white font-bold mt-10">

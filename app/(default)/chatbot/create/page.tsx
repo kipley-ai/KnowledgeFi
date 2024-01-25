@@ -7,6 +7,7 @@ import { useSession } from "next-auth/react";
 import { useAppProvider } from "@/app/app-provider";
 import { useRouter } from "next/navigation";
 import ChatBotForm from "./create-chatbot-form";
+import NFTForm from "./create-nft-form";
 import { createKB } from "@/app/api/kb/helper";
 import Toast from "@/components/toast";
 
@@ -21,18 +22,26 @@ export interface UIFile {
 	aborter: AbortController | null;
 }
 
-export default function DataSource() {
+export function Main() {
+	return (
+		<div className="flex flex-col sm:px-6 lg:px-8 py-8 bg-[#292D32]">
+			
+		</div>
+	)
+}
+
+export function DataSource() {
 	const { setHeaderTitle } = useAppProvider();
 	const title = "Data Sources";
-	const router = useRouter();
+	const [kbId, setKbId] = useState("");
 	const [showToast, setShowToast] = useState(false);
 
     const { address: walletAddress } = useAccount();
 
 	useEffect(() => {
-			setHeaderTitle(title);
-			document.title = title;
-			return () => setHeaderTitle("Default Title");
+		setHeaderTitle(title);
+		document.title = title;
+		return () => setHeaderTitle("Default Title");
 	}, []);
 
 	const [step, setStep] = useState(1);
@@ -86,7 +95,7 @@ export default function DataSource() {
 				</h5>
 				<hr className="my-4 border border-gray-600" />
 			</div>
-			{step === 1 ? (
+			{step === 1? (
 				<Step1
 					selectedButton={selectedButton}
 					setSelectedButton={setSelectedButton}
@@ -98,7 +107,7 @@ export default function DataSource() {
 					selectedButton={selectedButton}
 				/>
 			) : (
-				<ChatBotForm/>
+				<NFTForm/>
 			)}
 			<div className="flex justify-between mx-56">
 				<button
@@ -149,3 +158,5 @@ export default function DataSource() {
 		</div>
 	);
 }
+
+export default DataSource;
