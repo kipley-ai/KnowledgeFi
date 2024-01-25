@@ -39,7 +39,7 @@ export const useChatboxWS = (socketUrl: string) => {
 
 	const sendValidatedMessage = (message: ChatPayload) => {
 		try {
-			chatPayloadSchema.parse(message);
+			// chatPayloadSchema.parse(message);
 
 			sendMessage(JSON.stringify(message));
 		} catch (error) {

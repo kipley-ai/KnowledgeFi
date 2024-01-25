@@ -1,5 +1,5 @@
 
-import { CreateChatbotProvider } from "./create-chatbot-context";
+import { CreateChatbotProvider } from "./create-knowledge-context";
 
   
 export default function CreateChatbotLayout({

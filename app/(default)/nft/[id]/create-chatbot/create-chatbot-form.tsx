@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useCreateChatbotAPI } from "@/hooks/api/chatbot";
-import { useCreateChatbotContext } from "../[id]/create-chatbot-context";
+import { useCreateChatbotContext } from "./create-chatbot-context";
 import { useSession } from "next-auth/react";
+import { useNftDetail } from "@/hooks/api/nft";
 
 const ChatBotForm = () => {
 	const title = "Create Chatbot";
@@ -17,6 +18,9 @@ const ChatBotForm = () => {
 	const router = useRouter();
 	const createChatbot = useCreateChatbotAPI();
 	const { createChatbot: chatbot } = useCreateChatbotContext();
+	const {id} = useParams()
+	const {data:nftData} = useNftDetail({ sft_id:id as string})
+	
 
 	const { data: twitterSession } = useSession();
 
@@ -45,14 +49,14 @@ const ChatBotForm = () => {
 		console.log(twitterSession?.user);
 
 		createChatbot.mutate({
-			type: chatbot.type,
-			profile_image: twitterSession?.user?.image as string,
-			username: twitterSession?.user?.username as string,
+			profile_image: "",
 			category_id: category,
 			name: characterName,
 			description: description,
 			instruction: instructions,
 			example_conversation: example,
+			sft_id:id as string,
+			kb_id:nftData?.data.data.kb_id
 		});
 	};
 

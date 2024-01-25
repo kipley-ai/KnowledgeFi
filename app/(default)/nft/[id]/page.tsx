@@ -9,6 +9,8 @@ import link_nft_chatbot from "@/public/images/link-nft-chatbot.png"
 import { useCallback, useState } from 'react'
 import { useNftDetail } from "@/hooks/api/nft"
 import { useChatbotDetail } from "@/hooks/api/chatbot"
+import { useParams } from "next/navigation"
+import Link from "next/link"
   
 const NFTSection = ({nftDetail}:{nftDetail:any})=> {
     return(<div className="grid grid-cols-2 gap-[30px] text-white  pb-[50px]">
@@ -143,6 +145,7 @@ const NoNFT = () => {
 const NoChatbot = () => {
     // const [imageRef, { width:imageWidth, height:imageHeight }] = useElementSize()
     // const [containerRef, { width:containerWidth, height:containerHeight }] = useElementSize()
+    const {id} = useParams()
     return (
     <div className="h-full" >
     <div className="relative  w-full bg-[#151515] rounded-3xl">
@@ -154,7 +157,9 @@ const NoChatbot = () => {
             transform: "translate(-50%, -50%)"
         }}>
             <h1 className="text-[48px] font-extrabold text-white mb-[30px]">Connect with AI Chat Bot</h1>
+            <Link href={"/nft/"+id+"/create-chatbot"}>
             <h1 className="text-[#292D32] font-semibold bg-[#01F7FF] rounded-full py-3 px-8 w-fit">Link Your NFT to Chatbot</h1>
+            </Link>
         </div>
     </div>
     

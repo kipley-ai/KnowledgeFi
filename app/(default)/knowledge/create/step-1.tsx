@@ -3,7 +3,7 @@ import XIcon from "public/images/X-icon.svg";
 import NotionIcon from "public/images/notion.svg";
 import FolderAddIcon from "public/images/folder-add.svg";
 import Image from "next/image";
-import { useCreateChatbotContext } from "./create-chatbot-context";
+import { useCreateChatbotContext } from "./create-knowledge-context";
 
 export default function Step1({ selectedButton, setSelectedButton }: { selectedButton: string, setSelectedButton: Function }) {
     const {handleChangeKb} = useCreateChatbotContext()

@@ -14,7 +14,7 @@ import UploadIcon from "public/images/upload-icon.svg";
 import React, { useState, useRef, useCallback, useEffect } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import type { UIFile } from "./page";
-import { useCreateChatbotContext } from "./create-chatbot-context";
+import { useCreateChatbotContext } from "./create-knowledge-context";
 import Toast from "@/components/toast";
 import { useAppProvider } from "@/providers/app-provider";
 

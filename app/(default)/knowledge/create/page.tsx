@@ -6,11 +6,10 @@ import Step2 from "./step-2";
 import { useSession } from "next-auth/react";
 import { useAppProvider } from "@/providers/app-provider";
 import { useRouter } from "next/navigation";
-import ChatBotForm from "./create-chatbot-form";
 import NFTForm from "./create-nft-form";
 import { createKB } from "@/app/api/kb/helper";
 import Toast from "@/components/toast";
-import { useCreateChatbotContext } from "./create-chatbot-context";
+import { useCreateChatbotContext } from "./create-knowledge-context";
 import Local from "./local";
 import Notion from "./notion";
 

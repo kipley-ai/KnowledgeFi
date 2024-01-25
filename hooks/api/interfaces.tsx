@@ -15,14 +15,14 @@ export interface IChatBoxHistoryParams {
 }
 
 export interface ICreateChatbotParams {
-    type: string;
     profile_image: string;
-    username: string;
     category_id: string;
     name: string;
     description: string;
     instruction: string;
     example_conversation: string;
+    sft_id: string;
+    kb_id:string;
 }
 
 export interface ICreateKBAndNFTParams {

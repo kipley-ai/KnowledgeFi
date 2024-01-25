@@ -1,4 +1,8 @@
+import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCreateChatbotContext } from "./create-chatbot-context";
+import { uuid } from "uuidv4";
+import { useAccount } from "wagmi";
+import { useChatbotDetail } from "@/hooks/api/chatbot";
 
 const MessageInput = () => {
 	const {
@@ -13,6 +17,15 @@ const MessageInput = () => {
 		// Loading
 		setReplyStatus,
 	} = useCreateChatbotContext();
+	const searchParams = useSearchParams();
+	const objParams = new URLSearchParams(searchParams.toString());
+	const router = useRouter();
+	const pathname = usePathname();
+	const {address} = useAccount()
+	const {id} = useParams()
+	const {data:chatbotData} = useChatbotDetail({
+		chatbot_id:id as string
+	})
 
 	return (
 		<div className="flex items-center rounded-xl border border-gray-600 focus-within:border-[#01F7FF] bg-dark-blue px-4 py-2 mt-6 w-full">
@@ -33,15 +46,21 @@ const MessageInput = () => {
 				<button
 					className="text-light-blue mr-4"
 					onClick={(e) => {
+						console.log({
+							question: newQuestion,
+							chatbot_id: id as string,
+							session_id: "a",
+							// type: "twitter",
+							user_id: address as string,
+							plugin_config:'{"model":"gpt-3.5-turbo","prompt_template":"'+chatbotData?.data.data.instructions as string +'\n{context}\\r\\n\\r\\nQuestion: {question}\\r\\nHelpful Answer:","model_temperature":0,"top_p":1,"frequency_penalty":0,"presence_penalty":0,"top_k_docs":10}',
+						})
 						sendValidatedMessage({
 							question: newQuestion,
-							chatbot_id: "1234",
-							username: "elonmusk",
+							chatbot_id: id as string,
 							session_id: "a",
-							type: "twitter",
-							user_id: "12",
-							plugin_config:
-								'{"model":"gpt-3.5-turbo","prompt_template":"Use the following pieces of context to answer the question at the end. If you don\'t know the answer, just say that you don\'t know, don\'t try to make up an answer.\\r\\n\\r\\n{context}\\r\\n\\r\\nQuestion: {question}\\r\\nHelpful Answer:","model_temperature":0,"top_p":1,"frequency_penalty":0,"presence_penalty":0,"top_k_docs":10}',
+							// type: "twitter",
+							user_id: address as string,
+							plugin_config:'{"model":"gpt-3.5-turbo","prompt_template":"'+chatbotData?.data.data.instructions as string +'\n{context}\\r\\n\\r\\nQuestion: {question}\\r\\nHelpful Answer:","model_temperature":0,"top_p":1,"frequency_penalty":0,"presence_penalty":0,"top_k_docs":10}',
 						});
 						setMessageHistory((prevHistory) => [
 							...prevHistory,

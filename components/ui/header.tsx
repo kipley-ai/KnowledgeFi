@@ -103,7 +103,7 @@ export default function Header() {
 					{/* Header: Right side */}
 					<div className="flex items-center">
 						{/* Create Chatbot Button */}
-						<Link href="/chatbot/create">
+						<Link href="/knowledge/create">
 							<button className="pr-3">
 								<div className="flex items-center border border-[#01F7FF] px-1 py-1 rounded-full">
 									<svg

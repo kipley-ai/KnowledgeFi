@@ -2,7 +2,7 @@
 import { useAppProvider } from "@/providers/app-provider";
 import { mintNFT } from "@/smart-contract/kip-protocol-contract";
 import React, { useEffect, useState } from "react";
-import { useCreateChatbotContext } from "./create-chatbot-context";
+import { useCreateChatbotContext } from "./create-knowledge-context";
 import { useCreateKBAndMintNFT } from "@/hooks/api/kb";
 import { useSession } from "next-auth/react";
 

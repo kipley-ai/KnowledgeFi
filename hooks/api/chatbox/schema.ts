@@ -13,9 +13,9 @@ const pluginConfigSchema = z.object({
 export const chatPayloadSchema = z.object({
 	question: z.string(),
 	chatbot_id: z.string(),
-	username: z.string(),
+	// username: z.string(),
 	session_id: z.string(),
-	type: z.string(),
+	// type: z.string(),
 	user_id: z.string(),
 	plugin_config: pluginConfigSchema.or(z.string()).transform((arg) => {
 		if (typeof arg === "string") {
