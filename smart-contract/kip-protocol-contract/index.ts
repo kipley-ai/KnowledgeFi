@@ -1,6 +1,11 @@
 import { ethers } from "ethers";
 import abi from "./abi.json";
 import { getSigner } from "..";
+import {
+  generateRandomDigitInteger,
+  hashUUIDToInteger,
+  hashUUIDToIntegerV2,
+} from "@/utils/utils";
 
 export async function getKipProtocolContract() {
   const contractAddress =
@@ -23,14 +28,18 @@ export async function getKipProtocolContract() {
 }
 
 export async function mintNFT(
-  assetId: number,
+  kbId: string,
   name: string,
   symbol: string,
   slotValue: number
 ) {
+  let assetId = hashUUIDToIntegerV2(kbId);
+  if (kbId === "") {
+    assetId = generateRandomDigitInteger();
+  }
+
   const signer = await getSigner();
   const { contractWrite } = await getKipProtocolContract();
-
   return await contractWrite.createSFT(
     name,
     symbol,
