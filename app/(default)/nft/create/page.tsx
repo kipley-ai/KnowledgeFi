@@ -12,7 +12,7 @@ interface Form {
   name?: string;
   symbol?: string;
   slotValue?: number;
-  assetId?: number;
+  kbId?: string;
 }
 
 export default function NFT() {
@@ -22,7 +22,9 @@ export default function NFT() {
   const [category, setCategory] = useState("");
   const [queryRoyalties, setQueryRoyalties] = useState("");
 
-  const [form, setForm] = useState<Form>({ assetId: 123 });
+  const [form, setForm] = useState<Form>({
+    kbId: "",
+  });
 
   const handleFormChange = (name: string, value: any) => {
     setForm({
@@ -41,7 +43,7 @@ export default function NFT() {
   const handleMintNFT = async () => {
     try {
       const res = await mintNFT(
-        form.assetId!,
+        form.kbId!,
         form.name!,
         form.symbol!,
         form.slotValue!
