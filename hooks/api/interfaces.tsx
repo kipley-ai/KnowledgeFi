@@ -26,6 +26,10 @@ export interface ICreateChatbotParams {
   }
 
 // Used by hooks/api/nft/index.ts
-export interface INftParams {
-    "sft_id": string;
+export interface INFTDetailParams {
+    sft_id: string;
+}
+
+export interface IChatbotDetailParams {
+    chatbot_id: string;
 }

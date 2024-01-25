@@ -1,4 +1,5 @@
 "use client";
+import { useAccount } from "wagmi";
 import React, { useState, useEffect } from "react";
 import Step1 from "./step-1";
 import Step2 from "./step-2";
@@ -6,6 +7,9 @@ import { useSession } from "next-auth/react";
 import { useAppProvider } from "@/providers/app-provider";
 import { useRouter } from "next/navigation";
 import ChatBotForm from "./create-chatbot-form";
+import NFTForm from "./create-nft-form";
+import { createKB } from "@/app/api/kb/helper";
+import Toast from "@/components/toast";
 
 type PossibleOptions = "files" | "twitter" | "notion" | "";
 
@@ -18,15 +22,26 @@ export interface UIFile {
 	aborter: AbortController | null;
 }
 
+// export function Main() {
+// 	return (
+// 		<div className="flex flex-col sm:px-6 lg:px-8 py-8 bg-[#292D32]">
+			
+// 		</div>
+// 	)
+// }
+
 export default function DataSource() {
 	const { setHeaderTitle } = useAppProvider();
 	const title = "Data Sources";
-	const router = useRouter()
+	const [kbId, setKbId] = useState("");
+	const [showToast, setShowToast] = useState(false);
+
+    const { address: walletAddress } = useAccount();
 
 	useEffect(() => {
-			setHeaderTitle(title);
-			document.title = title;
-			return () => setHeaderTitle("Default Title");
+		setHeaderTitle(title);
+		document.title = title;
+		return () => setHeaderTitle("Default Title");
 	}, []);
 
 	const [step, setStep] = useState(1);
@@ -39,7 +54,7 @@ export default function DataSource() {
     const { modalLogin: showTwitterLogin, setModalLogin: setShowTwitterLogin } =
 		useAppProvider();
 
-	const handleContinue = (e: React.MouseEvent<HTMLButtonElement>) => {
+	const handleContinue = async (e: React.MouseEvent<HTMLButtonElement>) => {
 		if (localFiles) {
 			const stillHasLoading =
 				localFiles.filter((localFile) => {
@@ -48,14 +63,31 @@ export default function DataSource() {
 				}).length !== 0;
 
 			setShowLoadingModal(stillHasLoading);
-			return;
+			if (stillHasLoading) {
+				e.preventDefault();
+				return;
+			}
 		}
 
 		// TODO: Do something with localFiles
+		if(localFiles){
+			const createKbParams = localFiles.map((file: UIFile) => {
+				return {
+					"name": file.filename,
+					"type": "file",
+					"file": file.bucketPath,
+				}
+			});
+			const response = await createKB("files", createKbParams, walletAddress || "");
+			if (response.status === "success") {
+				setShowToast(true)
+			} 
+		}
 	};
 
 	return (
 		<div className="flex flex-col sm:px-6 lg:px-8 py-8 bg-[#292D32]">
+			<Toast children={"KB creation successful"} open={showToast} setOpen={setShowToast} className="mx-auto" />
 			<div className="mx-56">
 				<h1 className="text-2xl font-semibold text-white">Data Sources</h1>
 				<h5 className="text-md text-[#7C878E]">
@@ -63,7 +95,7 @@ export default function DataSource() {
 				</h5>
 				<hr className="my-4 border border-gray-600" />
 			</div>
-			{step === 1 ? (
+			{step === 1? (
 				<Step1
 					selectedButton={selectedButton}
 					setSelectedButton={setSelectedButton}
@@ -75,7 +107,7 @@ export default function DataSource() {
 					selectedButton={selectedButton}
 				/>
 			) : (
-				<ChatBotForm/>
+				<NFTForm/>
 			)}
 			<div className="flex justify-between mx-56">
 				<button

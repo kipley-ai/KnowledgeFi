@@ -3,6 +3,8 @@ import { redirect, useSearchParams } from "next/navigation";
 import { useAccount } from "wagmi";
 import { useEffect, useState } from "react";
 
+import Dashboard from "./dashboard";
+import LayoutDashboard from "./layout-dashboard";
 export default function Home() {
 	const { isConnected } = useAccount();
 	useEffect(() => {
@@ -17,11 +19,15 @@ export default function Home() {
 	const nextUrl = searchParams.get("next") || "/dashboard";
 	console.log(isConnected);
 
-	// Alfath: `isConnected` will always return false for me even with metamask ready
-	// if (isConnected_) {
-	// 	console.log(nextUrl);
+	if (isConnected) {
 		redirect(nextUrl);
-	// } else {
-	// 	return <></>;
-	// }
+	} else {
+		return (
+			<>
+				<LayoutDashboard>
+					<Dashboard />
+				</LayoutDashboard>
+			</>
+		);
+	}
 }

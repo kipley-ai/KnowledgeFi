@@ -99,7 +99,7 @@ const MessageList = () => {
 					</>
 				);
 			})}
-			{answersStream.length == 0 ? (
+			{replyStatus == "idle" ? (
 				<></>
 			) : (
 				<LastMessage
