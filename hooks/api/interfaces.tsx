@@ -37,7 +37,7 @@ export interface ICreateKBAndNFTParams {
     category: string
     token_symbol: string
     price_per_query: number
-    query_royalties: string
+    query_royalties: number
     token_amount: number
     url: string
 }

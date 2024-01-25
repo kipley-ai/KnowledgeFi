@@ -129,6 +129,7 @@ export default function Header() {
 							</button>
 						</Link>
 						{/* My Bot Button */}
+						<Link href="/nft">
 						<button className="pr-3">
 							<div className="flex items-center border border-[#01F7FF] px-2 py-1.5 rounded-full">
 								<span className="text-sm font-medium mx-1 text-neutral-300 duration-200">
@@ -136,6 +137,7 @@ export default function Header() {
 								</span>
 							</div>
 						</button>
+						</Link>
 						{/* Connect Wallet Button */}
 						{!isConnected_ && (
 							<GetInvolvedButton

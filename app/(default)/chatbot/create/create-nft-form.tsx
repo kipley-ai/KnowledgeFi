@@ -35,7 +35,7 @@ export default function NFT() {
 	const [errorMessage,setErrorMessage] = useState<any>({})
 	const [allowGenerate,setAllowGenerate] = useState(false)
 	const { data: twitterSession } = useSession();
-	const [form, setForm] = useState<Form>({ assetId: "123" });
+	const [form, setForm] = useState<Form>({ assetId: "123",shareSupply:"5000" });
 
 	const handleFormChange = (name: string, value: any) => {
 		setForm({
@@ -56,7 +56,7 @@ export default function NFT() {
 			console.log(createKb.type,twitterSession?.user)
 			createKBandMintNFT.mutate({
 				type:createKb.type,
-				kb_data: createKb.type =="files" ?createKb.kb_data :"",
+				kb_data: createKb.type =="files" ?createKb.kb_data :[],
 				username:createKb.type =="twitter" ? twitterSession?.user?.username as string : "",
 				name:form?.name as string,
 				description:form?.description as string,
@@ -66,7 +66,7 @@ export default function NFT() {
 				category:"",
 				token_symbol:form?.symbol as string,
 				price_per_query:1,
-				query_royalties:"",
+				query_royalties:0,
 				token_amount:1,
 				url:"",
 			})

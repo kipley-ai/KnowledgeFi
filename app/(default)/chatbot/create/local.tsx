@@ -11,7 +11,7 @@ import CrossIcon from "public/images/cross-icon.svg";
 import UploadingIcon from "public/images/upload-file/uploading-icon-white.svg";
 import FailedIcon from "public/images/upload-file/failed-icon.svg";
 import UploadIcon from "public/images/upload-icon.svg";
-import React, { useState, useRef, useCallback } from "react";
+import React, { useState, useRef, useCallback, useEffect } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import type { UIFile } from "./page";
 import { useCreateChatbotContext } from "./create-chatbot-context";
@@ -28,8 +28,10 @@ export default function Local({
 	const [showInvalidModal, setShowInvalidModal] = useState(false);
 	const [dragActive, setDragActive] = useState(false);
 	const fileInputRef = useRef<HTMLInputElement>(null);
-	const {setStep} = useCreateChatbotContext()
+	const {createKb,handleChangeKb,setStep} = useCreateChatbotContext()
 	const {toast,setToast} = useAppProvider()
+
+	
 
 	const dummyFile = [
 		{ fileName: "file1.txt", fileSize: "10 KB" },
@@ -81,7 +83,7 @@ export default function Local({
 							size: newFileObject.size,
 							status: "uploading",
 							bucketPath: bucketPath,
-							link: `${process.env.KBFILES_S3_URL}/${bucketPath}`,
+							link: `${process.env.NEXT_PUBLIC_KBFILES_S3_URL}/${bucketPath}`,
 							aborter: aborter,
 						},
 					];
@@ -212,6 +214,10 @@ export default function Local({
 		}
 	};
 
+	useEffect(()=> {
+		console.log(files)
+	},[files])
+
 	return (
 		<div className="flex flex-col sm:px-6 lg:px-8 py-8 bg-[#292D32]">
 			<Toast children={"KB creation successful"} open={toast} setOpen={setToast} className="mx-auto" />
@@ -291,6 +297,13 @@ export default function Local({
 				className="flex flex-row items-center justify-between bg-[#01F7FF] rounded-3xl w-36 p-2 px-5 mt-8"
 				type="submit"
 				onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+					handleChangeKb("kb_data",files.map((file)=>{
+						return {
+							"type":"file",
+							"name":file.filename,
+							"file":file.bucketPath,
+						}
+					}))
 					setStep("mint_nft")
 				}}
 			>
