@@ -1,7 +1,7 @@
 import { useAccount } from "wagmi";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import axios from "axios";
-import { ICreateChatbotParams } from "../interfaces";
+import { ICreateChatbotParams, IChatbotDetailParams } from "../interfaces";
 
 export const useCreateChatbotAPI = () => {
     const { address  } = useAccount();
@@ -14,3 +14,16 @@ export const useCreateChatbotAPI = () => {
       })
     );
   };
+
+
+export const useChatbotDetail = (params:IChatbotDetailParams) => {
+  const { address  } = useAccount();
+
+  return useQuery(['chatbot',params.chatbot_id],() =>
+    axios.post("/api/chatbot/detail", params, {
+      headers: {
+        "x-kf-user-id": address,
+      },
+    })
+  );
+};
