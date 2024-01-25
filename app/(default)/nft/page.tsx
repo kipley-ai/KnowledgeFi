@@ -6,12 +6,19 @@ import Link from "next/link";
 import LoadMoreButton from "@/components/load-more-button";
 import { FaPlus } from "react-icons/fa6";
 import { IconContext } from "react-icons";
+import axios from "axios";
+import { axiosAPI, constructHeader } from "../../api/utils";
+import { useQueries } from "@tanstack/react-query";
 
 type NFTCardProps = {
     id: string | number;
+    name: string;
+    price: number;
+    tokenSymbol: string;
+    category: string;
 };
 
-const NFTCard = ({ id }: NFTCardProps) => {
+const NFTCard = ({ id, name, price, tokenSymbol, category }: NFTCardProps) => {
     return (
         <div className="group relative flex flex-col bg-[#222325] rounded-3xl">
             <Image
@@ -22,9 +29,11 @@ const NFTCard = ({ id }: NFTCardProps) => {
                 alt={"NFT Card"}
             />
             <div className="flex flex-col gap-1 px-4 pb-5">
-                <p className="text-sm text-white">Lil Pudgy #9946</p>
-                <p className="text-sm text-white">1.819 ETH</p>
-                <p className="text-xs text-gray-400">Category</p>
+                <p className="text-sm text-white">{name}</p>
+                <p className="text-sm text-white">
+                    {price} {tokenSymbol}
+                </p>
+                <p className="text-xs text-gray-400">{category}</p>
             </div>
             <Link href={`/nft/${id}`}>
                 <div className="hidden group-hover:flex absolute justify-center items-center bottom-0 bg-[#01F7FF] w-full h-12 rounded-b-2xl">
@@ -39,9 +48,11 @@ const NFTCard = ({ id }: NFTCardProps) => {
 
 type BotCardProps = {
     id: string | number;
+    name: string;
+    category: string;
 };
 
-const BotCard = ({ id }: BotCardProps) => {
+const BotCard = ({ id, name, category }: BotCardProps) => {
     return (
         <div className="group relative flex flex-col gap-3 bg-[#222325] rounded-3xl">
             <Image
@@ -52,8 +63,8 @@ const BotCard = ({ id }: BotCardProps) => {
                 alt={"Bot Card"}
             />
             <div className="flex flex-col gap-2 px-4 pb-8">
-                <p className="text-md text-white">Immaterial Adana</p>
-                <p className="text-xs text-gray-400">Category</p>
+                <p className="text-md text-white">{name}</p>
+                <p className="text-xs text-gray-400">{category}</p>
             </div>
             <div className="hidden group-hover:flex divide-x-2 divide-[#01F7FF] absolute bottom-0 bg-[#222325] border border-[#01F7FF] border-2 text-[#01F7FF] w-full h-12 rounded-b-2xl">
                 <Link
@@ -79,9 +90,10 @@ const BotCard = ({ id }: BotCardProps) => {
 
 type NoDataProps = {
     item: string;
+    url: string;
 };
 
-const NoData = ({ item }: NoDataProps) => {
+const NoData = ({ item, url }: NoDataProps) => {
     return (
         <div className="flex flex-col items-center justify-center gap-4">
             <Image
@@ -91,14 +103,16 @@ const NoData = ({ item }: NoDataProps) => {
                 alt={"No Data"}
             />
             <p className="text-lg font-semibold text-white">No data yet</p>
-            <div className="flex gap-2 items-center">
-                <IconContext.Provider value={{ color: "#01F7FF" }}>
-                    <div>
-                        <FaPlus />
-                    </div>
-                </IconContext.Provider>
-                <p className="text-sm text-[#01F7FF]">Create new {item}</p>
-            </div>
+            <Link href={url}>
+                <div className="flex gap-2 items-center">
+                    <IconContext.Provider value={{ color: "#01F7FF" }}>
+                        <div>
+                            <FaPlus />
+                        </div>
+                    </IconContext.Provider>
+                    <p className="text-sm text-[#01F7FF]">Create new {item}</p>
+                </div>
+            </Link>
         </div>
     );
 };
@@ -107,17 +121,43 @@ export default function NFT() {
     const title = "My NFT";
     const { setHeaderTitle } = useAppProvider();
 
-    const NFTCards = Array.from({ length: 8 }, (_, index) => (
-        <NFTCard key={index} id={index} />
-    ));
-
-    const BotCards = Array.from({ length: 8 }, (_, index) => (
-        <BotCard key={index} id={index} />
-    ));
-
-    const handleLoadMore = () => {
-        console.log("Load More");
+    const fetchNFTs = async () => {
+        try {
+            const response = await axios.post("/api/nft/list", {
+                page: 1,
+                page_size: 8,
+                sort_by: "created",
+            });
+            // console.log("response.data NFT:>> ", response.data);
+            return response.data;
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        }
     };
+
+    const fetchBots = async () => {
+        try {
+            const response = await axios.post("/api/chatbot/list", {
+                page: 1,
+                page_size: 8,
+                sort_by: "created_at",
+            });
+            // console.log("response.data bot:>> ", response.data);
+            return response.data;
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        }
+    };
+
+    const results = useQueries({
+        queries: [
+            { queryKey: ["nfts"], queryFn: fetchNFTs },
+            { queryKey: ["bots"], queryFn: fetchBots },
+        ],
+    });
+
+    const nftsResult = results[0];
+    const botsResult = results[1];
 
     useEffect(() => {
         document.title = title;
@@ -136,12 +176,24 @@ export default function NFT() {
                     <hr className="my-4 border border-gray-700" />
                 </div>
                 <div className="grid grid-cols-4 gap-x-6 gap-y-12">
-                    {NFTCards}
-                </div>
-                <div className="flex justify-center">
-                    <LoadMoreButton onClick={() => handleLoadMore()}>
-                        Load more
-                    </LoadMoreButton>
+                    {nftsResult.isLoading ? (
+                        <div>Loading NFTs...</div>
+                    ) : nftsResult.error ? (
+                        <div>Error: {nftsResult.error.message}</div>
+                    ) : nftsResult.data.data.length > 0 ? (
+                        nftsResult.data.data.map((nft: any) => (
+                            <NFTCard
+                                key={nft.sft_id}
+                                id={nft.sft_id}
+                                name={nft.name}
+                                price={nft.price_per_query}
+                                tokenSymbol={nft.token_symbol}
+                                category={nft.category}
+                            />
+                        ))
+                    ) : (
+                        <NoData item="NFT" url="/nft/create" />
+                    )}
                 </div>
             </div>
             <div className="flex flex-col gap-8">
@@ -151,13 +203,24 @@ export default function NFT() {
                     </h1>
                     <hr className="my-4 border border-gray-700" />
                 </div>
+
                 <div className="grid grid-cols-4 gap-x-6 gap-y-12">
-                    {BotCards}
-                </div>
-                <div className="flex justify-center">
-                    <LoadMoreButton onClick={() => handleLoadMore()}>
-                        Load more
-                    </LoadMoreButton>
+                    {botsResult.isLoading ? (
+                        <div>Loading Bots...</div>
+                    ) : botsResult.error ? (
+                        <div>Error: {botsResult.error.message}</div>
+                    ) : botsResult.data.data.length > 0 ? (
+                        botsResult.data.data.map((bot: any) => (
+                            <BotCard
+                                key={bot.chatbot_id}
+                                id={bot.chatbot_id}
+                                name={bot.name}
+                                category={bot.category_id}
+                            />
+                        ))
+                    ) : (
+                        <NoData item="Bot" url="/chatbot/create" />
+                    )}
                 </div>
             </div>
         </div>
