@@ -2,9 +2,9 @@ import { NextResponse } from "next/server";
 import { axiosAPI, constructHeader } from "../../utils";
 
 export async function POST(req: Request) {
-  const headers = constructHeader(req.headers);
+  const headers = await constructHeader(req.headers);
   const data = await req.json();
-  const url = "https://knowledgefi-backend.fly.dev/chat_session";
+  const url = "https://knowledgefi-backend.fly.dev/chat_history";
 
   const res = await axiosAPI(url, {
     method: "POST",
