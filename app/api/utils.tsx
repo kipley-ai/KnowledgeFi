@@ -12,7 +12,7 @@ export const constructHeader = (headers: Headers, ignoreLoginCheck: boolean = fa
   const apiKey = process.env.API_KEY as string;
   const nowTimestamp = Math.floor(new Date().getTime() / 1000).toString();
 
-  const userId = '' // wallet address;
+  const userId = headers.get('x-kf-user-id');
 
   const commonHeaders = {
     "x-kf-timestamp": nowTimestamp,
