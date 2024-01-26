@@ -1,4 +1,9 @@
-import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation";
+import {
+	useParams,
+	usePathname,
+	useRouter,
+	useSearchParams,
+} from "next/navigation";
 import { useCreateChatbotContext } from "./create-chatbot-context";
 import { uuid } from "uuidv4";
 import { useAccount } from "wagmi";
@@ -19,18 +24,15 @@ const MessageInput = () => {
 		setReplyStatus,
 	} = useCreateChatbotContext();
 
-	
 	const searchParams = useSearchParams();
 	const objParams = new URLSearchParams(searchParams.toString());
 	const router = useRouter();
 	const pathname = usePathname();
-	const {address} = useAccount()
-	const {id} = useParams()
-	const {data:chatbotData , isSuccess} = useChatbotDetail({
-		chatbot_id:id as string
-	})
-
-	
+	const { address } = useAccount();
+	const { id } = useParams();
+	const { data: chatbotData, isSuccess } = useChatbotDetail({
+		chatbot_id: id as string,
+	});
 
 	return (
 		<div className="flex items-center rounded-xl border border-gray-600 focus-within:border-[#01F7FF] bg-dark-blue px-4 py-2 mt-6 w-full">
@@ -51,15 +53,18 @@ const MessageInput = () => {
 				<button
 					className="text-light-blue mr-4"
 					onClick={(e) => {
-						console.log(chatbotData?.data.data,address)
+						console.log(chatbotData?.data.data, address);
 						sendValidatedMessage({
 							question: newQuestion,
 							chatbot_id: id as string,
 							session_id: chatbotData?.data.data.session_id as string,
-							kb_id:chatbotData?.data.data.kb_id as string,
+							kb_id: chatbotData?.data.data.kb_id as string,
 							// type: "twitter",
 							user_id: address as string,
-							plugin_config:'{"model":"gpt-3.5-turbo","prompt_template":"'+chatbotData?.data.data.instruction as string +'\n{context}\\r\\n\\r\\nQuestion: {question}\\r\\nHelpful Answer:","model_temperature":0,"top_p":1,"frequency_penalty":0,"presence_penalty":0,"top_k_docs":10}',
+							plugin_config:
+								(('{"model":"gpt-3.5-turbo","prompt_template":"' +
+									chatbotData?.data.data.instruction) as string) +
+								'\n{context}\\r\\n\\r\\nQuestion: {question}\\r\\nHelpful Answer:","model_temperature":0,"top_p":1,"frequency_penalty":0,"presence_penalty":0,"top_k_docs":10}',
 						});
 						setMessageHistory((prevHistory) => [
 							...prevHistory,

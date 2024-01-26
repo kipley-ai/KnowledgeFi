@@ -1,4 +1,8 @@
-import { useChatHistory, useChatSession, useChatboxWS } from "@/hooks/api/chatbox";
+import {
+	useChatHistory,
+	useChatSession,
+	useChatboxWS,
+} from "@/hooks/api/chatbox";
 import { useNftDetail } from "@/hooks/api/nft";
 import { useEffect, useState, useRef } from "react";
 import { useCreateChatbotContext } from "./create-chatbot-context";
@@ -18,18 +22,19 @@ const MessageList = () => {
 		readyState,
 		sendValidatedMessage,
 
-        replyStatus,
-        setReplyStatus,
+		replyStatus,
+		setReplyStatus,
 
 		messageHistory,
 		setMessageHistory,
 	} = useCreateChatbotContext();
 
-	const {id} = useParams()
+	const { id } = useParams();
 
-	const {data:chatbotData , isSuccess: chatbotDetailIsSuccess} = useChatbotDetail({
-		chatbot_id:id as string
-	})
+	const { data: chatbotData, isSuccess: chatbotDetailIsSuccess } =
+		useChatbotDetail({
+			chatbot_id: id as string,
+		});
 
 	const chatHistoryAPI = useChatHistory({
 		session_id: chatbotData?.data.data.session_id,
@@ -43,18 +48,17 @@ const MessageList = () => {
 
 	useEffect(() => {
 		if (chatbotDetailIsSuccess && chatHistoryAPI.isSuccess) {
-			
-		  // if (chatHistoryAPI.data.data.length) {
-		  //   setChatList(chatHistoryAPI.data.data);
-		  // }
-		  if (chatHistoryAPI.data?.data.length) {
-			console.log(chatHistoryAPI.data?.data)
-			setMessageHistory(chatHistoryAPI.data?.data.reverse());
-		  }
-		  setAnswersStream([]);
+			// if (chatHistoryAPI.data.data.length) {
+			//   setChatList(chatHistoryAPI.data.data);
+			// }
+			if (chatHistoryAPI.data?.data.length) {
+				console.log(chatHistoryAPI.data?.data);
+				setMessageHistory(chatHistoryAPI.data?.data.reverse());
+			}
+			setAnswersStream([]);
 		}
-	  // }, [chatHistoryAPI.isSuccess, chatHistoryAPI.data?.data]);
-	  }, [chatbotDetailIsSuccess,chatHistoryAPI.isSuccess]);
+		// }, [chatHistoryAPI.isSuccess, chatHistoryAPI.data?.data]);
+	}, [chatbotDetailIsSuccess, chatHistoryAPI.isSuccess]);
 
 	useEffect(() => {
 		fieldRef.current?.scrollIntoView({
@@ -66,7 +70,7 @@ const MessageList = () => {
 
 		if (lastJsonMessage !== null && lastJsonMessage.type !== "error") {
 			if (lastJsonMessage.type === "end") {
-				chatHistoryAPI.refetch()
+				chatHistoryAPI.refetch();
 
 				const fullBotAnswer = answersStream
 					.slice(0, -2)

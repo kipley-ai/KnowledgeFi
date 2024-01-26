@@ -118,6 +118,7 @@ const chatData = [
 ];
 
 export default function AccountSettings() {
+	
 	return (
 		<>
 			<div className="flex justify-between items-center">
