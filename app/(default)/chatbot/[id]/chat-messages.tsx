@@ -5,13 +5,25 @@ import { useCreateChatbotContext } from "./create-chatbot-context";
 import LastMessage from "./last-message";
 import { useChatbotDetail } from "@/hooks/api/chatbot";
 import { useParams } from "next/navigation";
+import { useSession } from "next-auth/react";
+import { useAccount } from "wagmi";
 import Image from "next/image";
 import AvatarDummy from "public/images/avatar-bot-dummy.svg";
 import AvatarDummy2 from "public/images/avatar-user-dummy.svg";
+import { StaticImageData } from "next/image";
 
 const MessageList = () => {
 	const [answersStream, setAnswersStream] = useState<string[]>([]);
 	const fieldRef = useRef<HTMLInputElement>(null);
+	const [profileImage, setProfileImage] = useState<StaticImageData | string>("");
+	const { data: twitterSession, status: twitterStatus } = useSession();
+	const { isConnected } = useAccount();
+	const [isConnected_, setIsConnected_] = useState<boolean>(false);
+
+	useEffect(() => {
+		setIsConnected_(isConnected);
+		setProfileImage(twitterSession?.user?.image || "");
+	}, [isConnected, twitterStatus]);
 
 	const {
 		newQuestion,
@@ -111,7 +123,7 @@ const MessageList = () => {
 				return index < messageHistory.length - 1 || message.sender == "user" ? (
 					<>
 						<div className="flex items-start space-x-3 my-4">
-							<Image src={message.sender == "bot" ? AvatarDummy : AvatarDummy2} alt="Profile" className="w-8 h-8 rounded-full mr-5" />
+							<Image src={profileImage} alt="User avatar" className="w-8 h-8 rounded-full mr-5" />
 							<div className="text-white text-sm w-full">
 								<h6 className="mb-5 mt-1">{message.sender == "bot" ? "Levi Ackerman" : "You"}</h6>
 								<p>{message.message}</p>
