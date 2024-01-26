@@ -117,6 +117,7 @@ type BotCardProps = {
     id: string | number;
     name: string;
     category: string;
+    sftId: string;
 };
 
 const BotCard = ({ id, name, category, sftId }: BotCardProps) => {

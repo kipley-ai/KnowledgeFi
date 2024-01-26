@@ -30,7 +30,7 @@ const MessageInput = () => {
 		chatbot_id:id as string
 	})
 
-	
+	const promptTemplate: string = chatbotData?.data.data.instruction as string + "\n\nAct as the person described above, and utilize the available information below to answer the question.\nRemember, the user is looking for assistance, so keep your responses natural, concise, accurate, and informative. If you are uncertain about a query or if the user asked something which is unidentified by you, prompt the user to rephrase it.\nHere is the available information: \n{context}\n\nHere is user's question:\n{question}"
 
 	return (
 		<div className="flex items-center rounded-xl border border-gray-600 focus-within:border-[#01F7FF] bg-dark-blue px-4 py-2 mt-6 w-full">
@@ -59,7 +59,7 @@ const MessageInput = () => {
 							kb_id:chatbotData?.data.data.kb_id as string,
 							// type: "twitter",
 							user_id: address as string,
-							plugin_config:'{"model":"gpt-3.5-turbo","prompt_template":"'+chatbotData?.data.data.instruction as string +'\n{context}\\r\\n\\r\\nQuestion: {question}\\r\\nHelpful Answer:","model_temperature":0,"top_p":1,"frequency_penalty":0,"presence_penalty":0,"top_k_docs":10}',
+							plugin_config:'{"model":"gpt-3.5-turbo","prompt_template":' + promptTemplate + ',"model_temperature":0,"top_p":1,"frequency_penalty":0,"presence_penalty":0,"top_k_docs":10}',
 						});
 						setMessageHistory((prevHistory) => [
 							...prevHistory,

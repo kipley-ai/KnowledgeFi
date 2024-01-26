@@ -13,7 +13,7 @@ export default function ModalBlank({
 }: ModalBlankProps) {
   return (
     <Transition appear show={isOpen}>
-      <Dialog as="div" onClose={() => setIsOpen(false)}>
+      <Dialog as="div" onClose={() => {}}>
         <Transition.Child
           className="fixed inset-0 bg-stone-800 bg-opacity-100 z-50 transition-opacity"
           enter="transition ease-out duration-200"
@@ -33,7 +33,7 @@ export default function ModalBlank({
           leaveFrom="opacity-100 translate-y-0"
           leaveTo="opacity-0 translate-y-4"
         >
-          <Dialog.Panel className="bg-neutral-900 dark:bg-slate-800 rounded-2xl shadow-lg overflow-auto max-w-xl w-full max-h-full">
+          <Dialog.Panel className="bg-neutral-900 dark:bg-slate-800 rounded-2xl shadow-lg overflow-auto max-w-xl max-h-full">
             {children}
           </Dialog.Panel>
         </Transition.Child>

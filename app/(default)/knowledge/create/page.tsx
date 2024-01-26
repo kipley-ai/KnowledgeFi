@@ -8,7 +8,6 @@ import { useAppProvider } from "@/providers/app-provider";
 import { useRouter } from "next/navigation";
 import NFTForm from "./create-nft-form";
 import { createKB } from "@/app/api/kb/helper";
-import Toast from "@/components/toast";
 import { useCreateChatbotContext } from "./create-knowledge-context";
 import Local from "./local";
 import Notion from "./notion";
@@ -102,7 +101,6 @@ export default function DataSource() {
 			step == "data_source" ?
 		
 			<div className="flex flex-col sm:px-6 lg:px-8 py-8 bg-[#292D32]">
-				<Toast children={"KB creation successful"} open={toast} setOpen={setToast} className="mx-auto" />
 				<div className="mx-56">
 					<h1 className="text-2xl font-semibold text-white">Data Sources</h1>
 					<h5 className="text-md text-[#7C878E]">
