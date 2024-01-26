@@ -28,15 +28,16 @@ export async function getKipProtocolContract() {
 }
 
 export async function mintNFT(
-  kbId: string,
+  // kbId: string,
   name: string,
   symbol: string,
-  slotValue: number
+  slotValue: number,
+  assetId: number
 ) {
-  let assetId = hashUUIDToIntegerV2(kbId);
-  if (kbId === "") {
-    assetId = generateRandomDigitInteger();
-  }
+  // let assetId = hashUUIDToIntegerV2(kbId);
+  // if (kbId === "") {
+  //   assetId = generateRandomDigitInteger();
+  // }
 
   const signer = await getSigner();
   const { contractWrite } = await getKipProtocolContract();
