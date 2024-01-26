@@ -9,6 +9,37 @@ import { IconContext } from "react-icons";
 import axios from "axios";
 import { axiosAPI, constructHeader } from "../../api/utils";
 import { useQueries } from "@tanstack/react-query";
+import { useNFTList } from "@/hooks/api/nft";
+import { useChatbotList } from "@/hooks/api/chatbot";
+
+type NoDataProps = {
+    item: string;
+    url: string;
+};
+
+const NoData = ({ item, url }: NoDataProps) => {
+    return (
+        <div className="flex flex-col items-center justify-center gap-4">
+            <Image
+                src="/images/no-data.png"
+                width={167}
+                height={115}
+                alt={"No Data"}
+            />
+            <p className="text-lg font-semibold text-white">No data yet</p>
+            <Link href={url}>
+                <div className="flex gap-2 items-center hover:brightness-75">
+                    <IconContext.Provider value={{ color: "#01F7FF" }}>
+                        <div>
+                            <FaPlus />
+                        </div>
+                    </IconContext.Provider>
+                    <p className="text-sm text-[#01F7FF]">Create new {item}</p>
+                </div>
+            </Link>
+        </div>
+    );
+};
 
 type NFTCardProps = {
     id: string | number;
@@ -46,13 +77,49 @@ const NFTCard = ({ id, name, price, tokenSymbol, category }: NFTCardProps) => {
     );
 };
 
+const NFTList = () => {
+    const nftsQuery = useNFTList({
+        page: 1,
+        page_size: 8,
+        sort_by: "created",
+    });
+
+    if (nftsQuery.data) {
+        const nftsData = nftsQuery.data?.data.data;
+
+        if (nftsData !== undefined && nftsData.length > 0) {
+            return (
+                <div className="grid grid-cols-4 gap-x-6 gap-y-12">
+                    {nftsData.map((nft: any) => (
+                        <NFTCard
+                            key={nft.sft_id}
+                            id={nft.sft_id}
+                            name={nft.name}
+                            price={nft.price_per_query}
+                            tokenSymbol={nft.token_symbol}
+                            category={nft.category_name}
+                        />
+                    ))}
+                </div>
+            );
+        }
+        return <NoData item="NFT" url="/nft/create" />;
+    }
+
+    if (nftsQuery.isError) {
+        return <div>Error: {nftsQuery.error.message}</div>;
+    }
+
+    return <div>Loading NFTs...</div>;
+};
+
 type BotCardProps = {
     id: string | number;
     name: string;
     category: string;
 };
 
-const BotCard = ({ id, name, category }: BotCardProps) => {
+const BotCard = ({ id, name, category, sftId }: BotCardProps) => {
     return (
         <div className="group relative flex flex-col gap-3 bg-[#222325] rounded-3xl">
             <Image
@@ -69,7 +136,7 @@ const BotCard = ({ id, name, category }: BotCardProps) => {
             <div className="hidden group-hover:flex divide-x-2 divide-[#01F7FF] absolute bottom-0 bg-[#222325] border border-[#01F7FF] border-2 text-[#01F7FF] w-full h-12 rounded-b-2xl">
                 <Link
                     className="hover:bg-[#01F7FF] hover:text-black flex-1 flex justify-center items-center rounded-bl-xl"
-                    href={`/bot/${id}`}
+                    href={`/nft/${sftId}`}
                 >
                     <p className="text-sm font-semibold text-center">
                         View More
@@ -77,7 +144,7 @@ const BotCard = ({ id, name, category }: BotCardProps) => {
                 </Link>
                 <Link
                     className="hover:bg-[#01F7FF] hover:text-black flex-1 flex justify-center items-center rounded-br-xl"
-                    href={`/bot/${id}/mint`}
+                    href={`/nft`}   // TODO: change to mint nft page
                 >
                     <p className="text-sm font-semibold text-center">
                         Mint NFT
@@ -88,76 +155,44 @@ const BotCard = ({ id, name, category }: BotCardProps) => {
     );
 };
 
-type NoDataProps = {
-    item: string;
-    url: string;
-};
+const BotList = () => {
+    const botsQuery = useChatbotList({
+        page: 1,
+        page_size: 8,
+        sort_by: "created_at",
+    });
 
-const NoData = ({ item, url }: NoDataProps) => {
-    return (
-        <div className="flex flex-col items-center justify-center gap-4">
-            <Image
-                src="/images/no-data.png"
-                width={167}
-                height={115}
-                alt={"No Data"}
-            />
-            <p className="text-lg font-semibold text-white">No data yet</p>
-            <Link href={url}>
-                <div className="flex gap-2 items-center">
-                    <IconContext.Provider value={{ color: "#01F7FF" }}>
-                        <div>
-                            <FaPlus />
-                        </div>
-                    </IconContext.Provider>
-                    <p className="text-sm text-[#01F7FF]">Create new {item}</p>
+    if (botsQuery.data) {
+        const botsData = botsQuery.data?.data.data;
+
+        if (botsData !== undefined && botsData.length > 0) {
+            return (
+                <div className="grid grid-cols-4 gap-x-6 gap-y-12">
+                    {botsData.map((bot: any) => (
+                        <BotCard
+                            key={bot.chatbot_id}
+                            id={bot.chatbot_id}
+                            name={bot.name}
+                            category={bot.category_name}
+                            sftId={bot.sft_id}
+                        />
+                    ))}
                 </div>
-            </Link>
-        </div>
-    );
+            );
+        }
+        return <NoData item="Bot" url="/chatbot/create" />;
+    }
+
+    if (botsQuery.isError) {
+        return <div>Error: {botsQuery.error.message}</div>;
+    }
+
+    return <div>Loading Bots...</div>;
 };
 
 export default function NFT() {
-    const title = "My NFT";
+    const title = "My NFTs";
     const { setHeaderTitle } = useAppProvider();
-
-    const fetchNFTs = async () => {
-        try {
-            const response = await axios.post("/api/nft/list", {
-                page: 1,
-                page_size: 8,
-                sort_by: "created",
-            });
-            // console.log("response.data NFT:>> ", response.data);
-            return response.data;
-        } catch (error) {
-            console.error("Error fetching data:", error);
-        }
-    };
-
-    const fetchBots = async () => {
-        try {
-            const response = await axios.post("/api/chatbot/list", {
-                page: 1,
-                page_size: 8,
-                sort_by: "created_at",
-            });
-            // console.log("response.data bot:>> ", response.data);
-            return response.data;
-        } catch (error) {
-            console.error("Error fetching data:", error);
-        }
-    };
-
-    const results = useQueries({
-        queries: [
-            { queryKey: ["nfts"], queryFn: fetchNFTs },
-            { queryKey: ["bots"], queryFn: fetchBots },
-        ],
-    });
-
-    const nftsResult = results[0];
-    const botsResult = results[1];
 
     useEffect(() => {
         document.title = title;
@@ -171,30 +206,11 @@ export default function NFT() {
             <div className="flex flex-col gap-8">
                 <div className="flex flex-col">
                     <h1 className="text-2xl font-semibold text-white">
-                        My NFT
+                        My NFTs
                     </h1>
                     <hr className="my-4 border border-gray-700" />
                 </div>
-                <div className="grid grid-cols-4 gap-x-6 gap-y-12">
-                    {nftsResult.isLoading ? (
-                        <div>Loading NFTs...</div>
-                    ) : nftsResult.error ? (
-                        <div>Error: {nftsResult.error.message}</div>
-                    ) : nftsResult.data.data.length > 0 ? (
-                        nftsResult.data.data.map((nft: any) => (
-                            <NFTCard
-                                key={nft.sft_id}
-                                id={nft.sft_id}
-                                name={nft.name}
-                                price={nft.price_per_query}
-                                tokenSymbol={nft.token_symbol}
-                                category={nft.category}
-                            />
-                        ))
-                    ) : (
-                        <NoData item="NFT" url="/nft/create" />
-                    )}
-                </div>
+                <NFTList />
             </div>
             <div className="flex flex-col gap-8">
                 <div className="flex flex-col">
@@ -203,25 +219,7 @@ export default function NFT() {
                     </h1>
                     <hr className="my-4 border border-gray-700" />
                 </div>
-
-                <div className="grid grid-cols-4 gap-x-6 gap-y-12">
-                    {botsResult.isLoading ? (
-                        <div>Loading Bots...</div>
-                    ) : botsResult.error ? (
-                        <div>Error: {botsResult.error.message}</div>
-                    ) : botsResult.data.data.length > 0 ? (
-                        botsResult.data.data.map((bot: any) => (
-                            <BotCard
-                                key={bot.chatbot_id}
-                                id={bot.chatbot_id}
-                                name={bot.name}
-                                category={bot.category_id}
-                            />
-                        ))
-                    ) : (
-                        <NoData item="Bot" url="/chatbot/create" />
-                    )}
-                </div>
+                <BotList />
             </div>
         </div>
     );

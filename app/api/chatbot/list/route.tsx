@@ -7,7 +7,7 @@ export async function POST(req: Request) {
 
   const res = await axiosAPI(url, {
     method: "POST",
-    headers: constructHeader(req.headers),
+    headers: await constructHeader(req.headers),
     data,
   });
   return NextResponse.json(res.data);
