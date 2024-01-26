@@ -38,7 +38,7 @@ export default function AppProvider({
 	const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
 	const [headerTitle, setHeaderTitle] = useState("");
 	const [modalLogin, setModalLogin] = useState(false);
-	const [toast, setToast] = useState(false);
+	const [toast, setToast] = useState(false); 
 
 	return (
 		<AppContext.Provider
