@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import { useCreateChatbotContext } from "./create-knowledge-context";
 import { useCreateKBAndMintNFT } from "@/hooks/api/kb";
 import { useSession } from "next-auth/react";
+import MintNFTModal from "@/components/toast-4";
 
 // export const metadata = {
 //     title: 'NFT - Mosaic',
@@ -24,7 +25,8 @@ const noMoreThanCharacters = (number: number) =>
 
 export default function NFT() {
   const title = "Create NFT";
-  const { setHeaderTitle } = useAppProvider();
+  const { setHeaderTitle, toast, setToast } = useAppProvider();
+	const [showModal, setShowModal] = useState(false);
   const createKBandMintNFT = useCreateKBAndMintNFT();
   const { createKb, createNft } = useCreateChatbotContext();
   const [category, setCategory] = useState("");
@@ -74,13 +76,14 @@ export default function NFT() {
         },
         {
           async onSuccess(data, variables, context) {
-            const { kb_id } = data.data;
-            await mintNFT(
-              kb_id,
-              form.name!,
-              form.symbol!,
-              parseInt(form.shareSupply!)
-            );
+            // const { kb_id } = data.data;
+            // await mintNFT(
+            //   kb_id,
+            //   form.name!,
+            //   form.symbol!,
+            //   parseInt(form.shareSupply!)
+            // );
+			setShowModal(true);
           },
         }
       );
@@ -145,6 +148,11 @@ export default function NFT() {
   }, [errorMessage]);
 
   return (
+	<>
+	<button onClick={() => setShowModal(true)}>
+		aaaaaaaaaaaa
+	</button>
+	<MintNFTModal children={"Your Knowledge Asset is created successfully"} open={showModal} setOpen={setShowModal} />
     <div className="flex flex-col sm:px-6 lg:px-8 py-8 bg-[#292D32]">
       <div className="mx-56">
         <h1 className="text-2xl font-semibold text-white">Create NFT</h1>
@@ -319,5 +327,6 @@ export default function NFT() {
         </div>
       </form>
     </div>
+	</>
   );
 }
