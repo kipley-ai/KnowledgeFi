@@ -149,9 +149,6 @@ export default function NFT() {
 
   return (
 	<>
-	<button onClick={() => setShowModal(true)}>
-		aaaaaaaaaaaa
-	</button>
 	<MintNFTModal children={"Your Knowledge Asset is created successfully"} open={showModal} setOpen={setShowModal} />
     <div className="flex flex-col sm:px-6 lg:px-8 py-8 bg-[#292D32]">
       <div className="mx-56">
