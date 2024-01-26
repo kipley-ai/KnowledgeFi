@@ -1,44 +1,44 @@
-"use client"
-import Sidebar from '@/components/ui/sidebar'
-import Header from '@/components/ui/header'
+"use client";
+import Sidebar from "@/components/ui/sidebar";
+import Header from "@/components/ui/header";
 import { useAccount } from "wagmi";
 import { redirect } from "next/navigation";
 import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function DefaultLayout({
-  children,
+	children,
 }: {
-  children: React.ReactNode,
+	children: React.ReactNode;
 }) {
+	const { isConnected } = useAccount();
+	const [isConnected_, setIsConnected_] = useState<boolean>(false);
+	const pathname = usePathname();
 
-  const { isConnected } = useAccount();
-  const pathname = usePathname();
-//   console.log(isConnected)
+	useEffect(() => {
+		setIsConnected_(isConnected);
+	}, [isConnected]);
 
-//   if (isConnected) {
-    return (
-        <div className="flex h-[100dvh] overflow-hidden bg-neutral-900">
+	return (
+		<div className="flex h-[100dvh] overflow-hidden bg-neutral-900">
+			{/* Sidebar */}
+			<Sidebar />
 
-        {/* Sidebar */}
-        <Sidebar />
+			{/* Content area */}
+			<div className="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden bg-neutral-900 p-6 pl-0 border-gray-700 rounded-lg">
+				<div className="border border-gray-700 rounded-lg">
+					{/*  Site header */}
+					<Header />
 
-        {/* Content area */}
-        <div className="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden bg-neutral-900 p-6 pl-0 border-gray-700 rounded-lg">
-            <div className='border border-gray-700 rounded-lg'>
-
-            {/*  Site header */}
-            <Header />
-
-            <main className="grow [&>*:first-child]:scroll-mt-16">
-                {children}
-            </main>
-            </div>
-        </div>
-
-        </div>
-    )
-//   } else {
-//     console.log(isConnected)
-//     redirect(`/dashboard?next=${pathname}`)
-//   }
+					<main className="grow [&>*:first-child]:scroll-mt-16">
+						{children}
+					</main>
+				</div>
+			</div>
+		</div>
+	);
+	//   } else {
+	//     console.log(isConnected)
+	//     redirect(`/dashboard?next=${pathname}`)
+	//   }
 }

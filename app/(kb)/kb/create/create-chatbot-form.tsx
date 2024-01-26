@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAppProvider } from '@/app/app-provider';
+import { useAppProvider } from '@/providers/app-provider';
 
 const ChatBotForm = () => {
     const title = "Create Chatbot";

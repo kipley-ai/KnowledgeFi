@@ -4,7 +4,7 @@ import Step1 from "./step-1";
 import Step2 from "./step-2";
 import { uploadFileS3 } from "@/app/api/upload/s3/helper";
 import { useSession } from "next-auth/react";
-import { useAppProvider } from "@/app/app-provider";
+import { useAppProvider } from "@/providers/app-provider";
 import { useRouter } from "next/navigation";
 
 type PossibleOptions = "files" | "twitter" | "notion" | "";

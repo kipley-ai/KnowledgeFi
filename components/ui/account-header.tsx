@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useAppProvider } from "@/app/app-provider";
+import { useAppProvider } from "@/providers/app-provider";
 
 import SearchModal from "@/components/search-modal";
 import Notifications from "@/components/dropdown-notifications";

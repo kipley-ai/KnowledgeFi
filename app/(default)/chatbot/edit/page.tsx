@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { useAppProvider } from "@/app/app-provider";
+import { useAppProvider } from "@/providers/app-provider";
 import ChatBotSettings from "./chatbot-settings";
 import ManageDataSources from "./manage-data-source";
 

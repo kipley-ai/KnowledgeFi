@@ -2,9 +2,9 @@
 import "./css/style.css";
 
 import { Inter } from "next/font/google";
-import Theme from "./theme-provider";
-import AppProvider from "./app-provider";
-import NextAuthProvider from "./session-provider";
+import Theme from "../providers/theme-provider";
+import AppProvider from "../providers/app-provider";
+import NextAuthProvider from "../providers/session-provider";
 
 import "@rainbow-me/rainbowkit/styles.css";
 import {

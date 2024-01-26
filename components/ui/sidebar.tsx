@@ -1,7 +1,7 @@
 "use client";
 
 import React, { MouseEventHandler, useEffect, useRef, useState } from "react";
-import { useAppProvider } from "@/app/app-provider";
+import { useAppProvider } from "@/providers/app-provider";
 import { redirect, useSelectedLayoutSegments } from "next/navigation";
 import { Transition } from "@headlessui/react";
 import { getBreakpoint } from "../utils/utils";
@@ -16,8 +16,8 @@ import dynamic from "next/dynamic";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import ChatText from "public/images/chat-text.png"
-import HomeIcon from "public/images/home-icon.svg"
+import ChatText from "public/images/chat-text.png";
+import HomeIcon from "public/images/home-icon.svg";
 
 const GetInvolvedButton = dynamic(
 	() => import("../GetInvolvedButton/get-involved-button"),
@@ -40,11 +40,11 @@ export default function Sidebar() {
 		!sidebarExpanded && (breakpoint === "lg" || breakpoint === "xl");
 
 	// Wallet logic and modal
-	const [walletReady, setWalletReady] = useState<boolean>(false);
+	const [isConnected_, setIsConnected_] = useState<boolean>(false);
 	const { isConnected } = useAccount();
 
 	useEffect(() => {
-		setWalletReady(isConnected);
+		setIsConnected_(isConnected);
 	}, [isConnected]);
 
 	// Twitter logic and modal
@@ -61,12 +61,12 @@ export default function Sidebar() {
 	};
 
 	const handleChatbotClick = (e: React.MouseEvent) => {
-		if (!(twitterStatus == "authenticated" && walletReady)) {
+		if (!(twitterStatus == "authenticated" && isConnected_)) {
 			e.preventDefault();
 			e.stopPropagation();
 			e.nativeEvent.stopImmediatePropagation();
 		}
-	}
+	};
 
 	// close on click outside
 	useEffect(() => {
@@ -172,15 +172,20 @@ export default function Sidebar() {
 							<ul className="">
 								{/* Inbox */}
 								<li
-									className={`px-3 py-2  mb-10 last:mb-0 ${(segments.includes("home") ||
-										segments.includes("dashboard")) &&
+									className={`px-3 py-2  mb-10 last:mb-0 ${
+										(segments.includes("home") ||
+											segments.includes("dashboard")) &&
 										"bg-slate-900"
-										} border-2 border-aqua-700 rounded-3xl py-1.5 px-2.5`}
+									} border-2 border-aqua-700 rounded-3xl py-1.5 px-2.5`}
 								>
 									{/* style={{ border: '2px solid #01F7FF', borderRadius: '24px', padding: '6px 10px' }}> */}
 									<SidebarLink href="/dashboard">
 										<div className="flex items-center">
-											<Image className="w-5 h-5 ml-0 lg:ml-0 2xl:ml-2" alt="home" src={HomeIcon} />
+											<Image
+												className="w-5 h-5 ml-0 lg:ml-0 2xl:ml-2"
+												alt="home"
+												src={HomeIcon}
+											/>
 											<span className="text-sm font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200 text-[14px] font-semibold text-neutral-500">
 												Explore
 											</span>
@@ -189,10 +194,11 @@ export default function Sidebar() {
 								</li>
 								{/* Login */}
 								<li
-									className={`px-3 py-2  mb-3 last:mb-0 ${(segments.includes("home") ||
-										segments.includes("dashboard")) &&
+									className={`px-3 py-2  mb-3 last:mb-0 ${
+										(segments.includes("home") ||
+											segments.includes("dashboard")) &&
 										"bg-transparent"
-										} `}
+									} `}
 								>
 									{/* style={{ border: '2px solid #01F7FF', borderRadius: '24px', padding: '6px 10px' }}> */}
 									<SidebarLink href="/#">
@@ -204,10 +210,11 @@ export default function Sidebar() {
 									</SidebarLink>
 								</li>
 								<li
-									className={`px-3 py-2  mb-3 last:mb-0 ${(segments.includes("home") ||
-										segments.includes("dashboard")) &&
+									className={`px-3 py-2  mb-3 last:mb-0 ${
+										(segments.includes("home") ||
+											segments.includes("dashboard")) &&
 										"bg-transparent"
-										} `}
+									} `}
 								>
 									{/* style={{ border: '2px solid #01F7FF', borderRadius: '24px', padding: '6px 10px' }}> */}
 									<SidebarLink href="/#">
@@ -219,10 +226,11 @@ export default function Sidebar() {
 									</SidebarLink>
 								</li>
 								<li
-									className={`px-3 py-2  mb-3 last:mb-0 ${(segments.includes("home") ||
-										segments.includes("dashboard")) &&
+									className={`px-3 py-2  mb-3 last:mb-0 ${
+										(segments.includes("home") ||
+											segments.includes("dashboard")) &&
 										"bg-transparent"
-										} `}
+									} `}
 								>
 									{/* style={{ border: '2px solid #01F7FF', borderRadius: '24px', padding: '6px 10px' }}> */}
 									<SidebarLink href="/#">
@@ -234,10 +242,11 @@ export default function Sidebar() {
 									</SidebarLink>
 								</li>
 								<li
-									className={`px-3 py-2  mb-3 last:mb-0 ${(segments.includes("home") ||
-										segments.includes("dashboard")) &&
+									className={`px-3 py-2  mb-3 last:mb-0 ${
+										(segments.includes("home") ||
+											segments.includes("dashboard")) &&
 										"bg-transparent"
-										} `}
+									} `}
 								>
 									{/* style={{ border: '2px solid #01F7FF', borderRadius: '24px', padding: '6px 10px' }}> */}
 									<SidebarLink href="/#">
@@ -249,10 +258,11 @@ export default function Sidebar() {
 									</SidebarLink>
 								</li>
 								<li
-									className={`px-3 py-2  mb-3 last:mb-0 ${(segments.includes("home") ||
-										segments.includes("dashboard")) &&
+									className={`px-3 py-2  mb-3 last:mb-0 ${
+										(segments.includes("home") ||
+											segments.includes("dashboard")) &&
 										"bg-transparent"
-										} `}
+									} `}
 								>
 									{/* style={{ border: '2px solid #01F7FF', borderRadius: '24px', padding: '6px 10px' }}> */}
 									<SidebarLink href="/#">

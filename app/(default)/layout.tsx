@@ -4,6 +4,7 @@ import Header from '@/components/ui/header'
 import { useAccount } from "wagmi";
 import { redirect } from "next/navigation";
 import { usePathname, useRouter } from "next/navigation";
+
 export default function DefaultLayout({
   children,
 }: {

@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import chat_image from "@/public/images/chat-image.png";
 import Image from "next/image";
 import ModalLoginTwitter from "@/components/modal-login-twitter";
-import { useAppProvider } from "@/app/app-provider";
+import { useAppProvider } from "@/providers/app-provider";
 import { getBreakpoint } from "@/components/utils/utils";
 import { AnimationOnScroll } from "react-animation-on-scroll";
 import { accounts } from "@/components/utils/twitter-account";

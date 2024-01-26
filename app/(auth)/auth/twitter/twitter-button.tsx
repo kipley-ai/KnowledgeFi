@@ -1,7 +1,7 @@
 "use client";
 import LoginModal from "@/components/modal-login-twitter";
 import LogoutModal from "@/components/modal-logout-twitter";
-import { useAppProvider } from "@/app/app-provider";
+import { useAppProvider } from "@/providers/app-provider";
 import type { Session } from "next-auth";
 
 export default function TwitterButton({

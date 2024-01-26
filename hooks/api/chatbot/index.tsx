@@ -4,26 +4,41 @@ import axios from "axios";
 import { ICreateChatbotParams, IChatbotDetailParams } from "../interfaces";
 
 export const useCreateChatbotAPI = () => {
-    const { address  } = useAccount();
-  
-    return useMutation((params: ICreateChatbotParams) =>
-      axios.post("/api/chatbot/create", params, {
-        headers: {
-          "x-kf-user-id": address,
-        },
-      })
-    );
-  };
+	const { address } = useAccount();
 
+	return useMutation({
+		mutationFn: (params: ICreateChatbotParams) =>
+			axios.post("/api/chatbot/create", params, {
+				headers: {
+					"x-kf-user-id": address,
+				},
+			}),
+	});
+};
 
-export const useChatbotDetail = (params:IChatbotDetailParams) => {
-  const { address  } = useAccount();
+export const useChatbotDetail = (params: IChatbotDetailParams) => {
+	const { address } = useAccount();
 
-  return useQuery(['chatbot',params.chatbot_id],() =>
-    axios.post("/api/chatbot/detail", params, {
-      headers: {
-        "x-kf-user-id": address,
-      },
-    })
-  );
+	return useQuery({
+		queryKey: ["chatbot", params.chatbot_id],
+		queryFn: () =>
+			axios.post("/api/chatbot/detail", params, {
+				headers: {
+					"x-kf-user-id": address,
+				},
+			}),
+	});
+};
+
+export const useNewSession = () => {
+	const { address } = useAccount();
+
+	return useMutation({
+		mutationFn: (params: IChatbotDetailParams) =>
+			axios.post("/api/chatbot/new_session", params, {
+				headers: {
+					"x-kf-user-id": address,
+				},
+			}),
+	});
 };

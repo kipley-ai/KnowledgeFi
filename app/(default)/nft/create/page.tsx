@@ -1,5 +1,5 @@
 "use client";
-import { useAppProvider } from "@/app/app-provider";
+import { useAppProvider } from "@/providers/app-provider";
 import { mintNFT } from "@/smart-contract/kip-protocol-contract";
 import React, { useEffect, useState } from "react";
 

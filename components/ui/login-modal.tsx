@@ -5,7 +5,7 @@ import TwitterXIcon from "@/components/icon/twitter-x.png";
 import Image from "next/image";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { Dialog, Transition } from "@headlessui/react";
-import { useAppProvider } from "@/app/app-provider";
+import { useAppProvider } from "@/providers/app-provider";
 
 interface SessionData {
 	user: string;

@@ -1,9 +1,5 @@
-"use client"
 import Sidebar from '@/components/ui/sidebar'
 import Header from '@/components/ui/header'
-import { useAccount } from "wagmi";
-import { redirect, useSearchParams } from "next/navigation";
-import { usePathname, useRouter } from "next/navigation";
 
 export default function DefaultLayout({
   children,

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
-import { useAppProvider } from "@/app/app-provider";
+import { useAppProvider } from "@/providers/app-provider";
 import { useAccount } from "wagmi";
 import Link from "next/link";
 
@@ -36,20 +36,19 @@ export default function Header() {
 	);
 
 	const { modalLogin, setModalLogin } = useAppProvider();
-	const { isConnected: walletConnected } = useAccount();
-	const [hydrateSafeWalletConnected, setWalletConnected] = useState<boolean>(false);
-
+	const { isConnected } = useAccount();
+	const [isConnected_, setIsConnected_] = useState<boolean>(false);
 
 	const { headerTitle } = useAppProvider();
 
 	useEffect(() => {
-		setWalletConnected(walletConnected)
+		setIsConnected_(isConnected);
 		// setShowTwitterLogin(walletConnected && twitterStatus !== "authenticated");
 		// setShowAccountButton(walletConnected && twitterStatus === "authenticated");
 		setProfileImage(twitterSession?.user?.image || "");
 
 		console.log(twitterSession);
-	}, [walletConnected, twitterStatus]);
+	}, [isConnected, twitterStatus]);
 
 	return (
 		<header
@@ -104,7 +103,7 @@ export default function Header() {
 					{/* Header: Right side */}
 					<div className="flex items-center">
 						{/* Create Chatbot Button */}
-						<Link href="/chatbot/create">
+						<Link href="/knowledge/create">
 							<button className="pr-3">
 								<div className="flex items-center border border-[#01F7FF] px-1 py-1 rounded-full">
 									<svg
@@ -130,6 +129,7 @@ export default function Header() {
 							</button>
 						</Link>
 						{/* My Bot Button */}
+						<Link href="/nft">
 						<button className="pr-3">
 							<div className="flex items-center border border-[#01F7FF] px-2 py-1.5 rounded-full">
 								<span className="text-sm font-medium mx-1 text-neutral-300 duration-200">
@@ -137,8 +137,9 @@ export default function Header() {
 								</span>
 							</div>
 						</button>
+						</Link>
 						{/* Connect Wallet Button */}
-						{!hydrateSafeWalletConnected && (
+						{!isConnected_ && (
 							<GetInvolvedButton
 								buttonStyle="flex items-center border border-gray-700 rounded-full py-3 px-4 text-sm font-medium ml-3 text-neutral-300 duration-200 mr-3"
 								wrapStyle="flex items-center text-sm font-medium ml-3 text-neutral-300 duration-200"
