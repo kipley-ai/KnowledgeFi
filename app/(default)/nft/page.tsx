@@ -58,6 +58,7 @@ const NFTCard = ({ id, name, price, tokenSymbol, category }: NFTCardProps) => {
                 width={300}
                 height={300}
                 alt={"NFT Card"}
+                priority
             />
             <div className="flex flex-col gap-1 px-4 pb-5">
                 <p className="text-sm text-white">{name}</p>
@@ -90,9 +91,9 @@ const NFTList = () => {
         if (nftsData !== undefined && nftsData.length > 0) {
             return (
                 <div className="grid grid-cols-4 gap-x-6 gap-y-12">
-                    {nftsData.map((nft: any) => (
+                    {nftsData.map((nft: any, index: number) => (
                         <NFTCard
-                            key={nft.sft_id}
+                            key={index}
                             id={nft.sft_id}
                             name={nft.name}
                             price={nft.price_per_query}
@@ -169,9 +170,9 @@ const BotList = () => {
         if (botsData !== undefined && botsData.length > 0) {
             return (
                 <div className="grid grid-cols-4 gap-x-6 gap-y-12">
-                    {botsData.map((bot: any) => (
+                    {botsData.map((bot: any, index: number) => (
                         <BotCard
-                            key={bot.chatbot_id}
+                            key={index}
                             id={bot.chatbot_id}
                             name={bot.name}
                             category={bot.category_name}
