@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useState } from "react";
 import { ReactSetter } from "@/lib/aliases";
-import { useChatSession, useChatboxWS } from "@/hooks/api/chatbox";
+import { useChatHistory, useChatSession, useChatboxWS } from "@/hooks/api/chatbox";
 import { ChatPayload, LastMessagePayload } from "@/hooks/api/chatbox/schema";
 import { useNftDetail } from "@/hooks/api/nft";
 
@@ -49,6 +49,8 @@ export const CreateChatbotProvider = ({
 		example_conversation: "",
 	});
 	const [newQuestion, setNewQuestion] = useState("");
+	
+
 	const [messageHistory, setMessageHistory] = useState<Message[]>([]);
 	const { lastJsonMessage, readyState, sendValidatedMessage } = useChatboxWS(
 		"wss://knowledgefi-backend.fly.dev/chat_with_kb"

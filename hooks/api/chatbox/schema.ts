@@ -16,6 +16,7 @@ export const chatPayloadSchema = z.object({
 	// username: z.string(),
 	session_id: z.string(),
 	// type: z.string(),
+	kb_id:z.string(),
 	user_id: z.string(),
 	plugin_config: pluginConfigSchema.or(z.string()).transform((arg) => {
 		if (typeof arg === "string") {

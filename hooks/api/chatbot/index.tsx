@@ -29,3 +29,16 @@ export const useChatbotDetail = (params: IChatbotDetailParams) => {
 			}),
 	});
 };
+
+export const useNewSession = () => {
+	const { address } = useAccount();
+
+	return useMutation({
+		mutationFn: (params: IChatbotDetailParams) =>
+			axios.post("/api/chatbot/new_session", params, {
+				headers: {
+					"x-kf-user-id": address,
+				},
+			}),
+	});
+};

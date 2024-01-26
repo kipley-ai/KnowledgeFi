@@ -1,8 +1,10 @@
-import { useChatSession, useChatboxWS } from "@/hooks/api/chatbox";
+import { useChatHistory, useChatSession, useChatboxWS } from "@/hooks/api/chatbox";
 import { useNftDetail } from "@/hooks/api/nft";
 import { useEffect, useState, useRef } from "react";
 import { useCreateChatbotContext } from "./create-chatbot-context";
 import LastMessage from "./last-message";
+import { useChatbotDetail } from "@/hooks/api/chatbot";
+import { useParams } from "next/navigation";
 
 const MessageList = () => {
 	const [answersStream, setAnswersStream] = useState<string[]>([]);
@@ -23,6 +25,37 @@ const MessageList = () => {
 		setMessageHistory,
 	} = useCreateChatbotContext();
 
+	const {id} = useParams()
+
+	const {data:chatbotData , isSuccess: chatbotDetailIsSuccess} = useChatbotDetail({
+		chatbot_id:id as string
+	})
+
+	const chatHistoryAPI = useChatHistory({
+		session_id: chatbotData?.data.data.session_id,
+		app_id: id as string,
+		page_num: 1,
+		page_size: 10,
+		// request_url:
+		//   appDetail?.data?.data.data.app_info.plugin_meta_data.chat_history_api
+		//     .request_url,
+	});
+
+	useEffect(() => {
+		if (chatbotDetailIsSuccess && chatHistoryAPI.isSuccess) {
+			
+		  // if (chatHistoryAPI.data.data.length) {
+		  //   setChatList(chatHistoryAPI.data.data);
+		  // }
+		  if (chatHistoryAPI.data?.data.length) {
+			console.log(chatHistoryAPI.data?.data)
+			setMessageHistory(chatHistoryAPI.data?.data.reverse());
+		  }
+		  setAnswersStream([]);
+		}
+	  // }, [chatHistoryAPI.isSuccess, chatHistoryAPI.data?.data]);
+	  }, [chatbotDetailIsSuccess,chatHistoryAPI.isSuccess]);
+
 	useEffect(() => {
 		fieldRef.current?.scrollIntoView({
 			behavior: "smooth",
@@ -33,7 +66,7 @@ const MessageList = () => {
 
 		if (lastJsonMessage !== null && lastJsonMessage.type !== "error") {
 			if (lastJsonMessage.type === "end") {
-				// chatSessionResult.refetch();
+				chatHistoryAPI.refetch()
 
 				const fullBotAnswer = answersStream
 					.slice(0, -2)
