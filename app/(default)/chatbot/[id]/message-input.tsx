@@ -38,7 +38,7 @@ const MessageInput = () => {
 	return (
 		<div className="flex items-center rounded-full border border-gray-600 focus-within:border-[#01F7FF] bg-dark-blue px-4 py-2 mt-6 w-full">
 			{/* Profile picture placeholder */}
-			<Image src={Avatar} alt="Profile" className="w-8 h-8 rounded-full mr-4" />
+			{/* <Image src={Avatar} alt="Profile" className="w-8 h-8 rounded-full mr-4" /> */}
 			{/* Input Field */}
 			<input
 				type="text"
