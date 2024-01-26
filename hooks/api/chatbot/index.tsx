@@ -3,6 +3,15 @@ import { useQuery, useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { ICreateChatbotParams, IChatbotDetailParams } from "../interfaces";
 
+export const useChatbotList = (params: any) => {
+	const appId = process.env.APP_ID;
+
+	return useQuery({
+		queryKey: ["nft", "list", params.page],
+		queryFn: () => axios.post("/api/chatbot/list", params),
+	});
+};
+
 export const useCreateChatbotAPI = () => {
 	const { address } = useAccount();
 

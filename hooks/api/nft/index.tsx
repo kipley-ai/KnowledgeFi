@@ -4,16 +4,14 @@ import axios from "axios";
 import { INFTDetailParams } from "../interfaces";
 
 export const useNFTList = (params: any) => {
-  const { address } = useAccount();
+  const appId = process.env.APP_ID;
 
-  return useQuery(['nfts'], () =>
-    axios.post("/api/nft/list", params, {
-      headers: {
-        "x-kf-user-id": address,
-      },
-    })
-  );
-}
+  return useQuery({
+		queryKey: ["nft", "list", params.page],
+		queryFn: () => axios.post("/api/nft/list", params),
+	});
+};
+
 export const useNftDetail = (params: INFTDetailParams) => {
 	const { address } = useAccount();
 
