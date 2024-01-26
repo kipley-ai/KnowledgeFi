@@ -5,6 +5,9 @@ import { useCreateChatbotContext } from "./create-chatbot-context";
 import LastMessage from "./last-message";
 import { useChatbotDetail } from "@/hooks/api/chatbot";
 import { useParams } from "next/navigation";
+import Image from "next/image";
+import AvatarDummy from "public/images/avatar-bot-dummy.svg";
+import AvatarDummy2 from "public/images/avatar-user-dummy.svg";
 
 const MessageList = () => {
 	const [answersStream, setAnswersStream] = useState<string[]>([]);
@@ -103,24 +106,17 @@ const MessageList = () => {
 	}, [lastJsonMessage]);
 
 	return (
-		<div className="flex flex-col p-4 space-y-4 overflow-auto border border-gray-600">
+		<div className="flex flex-col p-4 space-y-4 overflow-auto">
 			{messageHistory.map((message, index) => {
 				return index < messageHistory.length - 1 || message.sender == "user" ? (
 					<>
-						<div className="flex items-start space-x-2">
-							<div className="flex-none">
-								<div className="rounded-full bg-gray-300 w-8 h-8"></div>
-							</div>
-							<div className="flex-grow">
-								<div className="text-xs text-gray-400 mb-1">
-									{message.sender}
-								</div>
-								<div className="text-white text-sm rounded-lg py-2 w-full">
-									{message.message}
-								</div>
+						<div className="flex items-start space-x-3 my-4">
+							<Image src={message.sender == "bot" ? AvatarDummy : AvatarDummy2} alt="Profile" className="w-8 h-8 rounded-full mr-5" />
+							<div className="text-white text-sm w-full">
+								<h6 className="mb-5 mt-1">{message.sender == "bot" ? "Levi Ackerman" : "You"}</h6>
+								<p>{message.message}</p>
 							</div>
 						</div>
-						<hr className="border-t border-gray-600 mx-[-1rem]" />
 					</>
 				) : (
 					<>

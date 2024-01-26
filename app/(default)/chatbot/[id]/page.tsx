@@ -9,6 +9,8 @@ import { useParams, usePathname } from "next/navigation";
 import { useChatHistory, useChatSession, useChatboxWS } from "@/hooks/api/chatbox";
 import { CreateChatbotProvider } from "./create-chatbot-context";
 import { useChatbotDetail } from "@/hooks/api/chatbot";
+import Description from "./description";
+import CreditBalance from "./credit-balance";
 
 export default function ChatBotPage() {
 	const { setHeaderTitle } = useAppProvider();
@@ -24,12 +26,18 @@ export default function ChatBotPage() {
 	}, []); // Empty dependency array to run only once on mount
 
 	return (
-		<div className="flex flex-col sm:px-6 lg:px-56 py-8 bg-[#292D32]">
-			<CreateChatbotProvider>
-				<Header />
-				<MessageList />
-				<MessageInput />
-			</CreateChatbotProvider>
+		<div className="flex flex-row divide-x-2 divide-[#393E44]">
+			<div className="flex flex-col sm:px-6 lg:px-16 py-8 bg-[#292D32] w-3/4">
+				<CreateChatbotProvider>
+					<Header />
+					<MessageList />
+					<MessageInput />
+				</CreateChatbotProvider>
+			</div>
+			<div className="flex flex-col w-1/4 items-center bg-[#292D32] py-7 divide-y-2 divide-[#393E44]">
+				<Description />
+				<CreditBalance />
+			</div>
 		</div>
 	);
 }

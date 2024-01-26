@@ -4,6 +4,8 @@ import { uuid } from "uuidv4";
 import { useAccount } from "wagmi";
 import { useChatbotDetail } from "@/hooks/api/chatbot";
 import { useEffect } from "react";
+import Image from "next/image";
+import Avatar from "public/images/avatar-gradient-icon.svg";
 
 const MessageInput = () => {
 	const {
@@ -35,12 +37,12 @@ const MessageInput = () => {
 	return (
 		<div className="flex items-center rounded-xl border border-gray-600 focus-within:border-[#01F7FF] bg-dark-blue px-4 py-2 mt-6 w-full">
 			{/* Profile picture placeholder */}
-			<div className="rounded-full bg-gray-300 w-8 h-8 mr-4"></div>
+			<Image src={Avatar} alt="Profile" className="w-8 h-8 rounded-full mr-4" />
 			{/* Input Field */}
 			<input
 				type="text"
 				placeholder="Ask me anything"
-				className="flex-grow bg-transparent text-white placeholder-gray-300 border-0 outline-none rounded-full focus:ring-0"
+				className="flex-grow bg-transparent text-white placeholder-gray-300 border-0 outline-none rounded-full focus:ring-0 caret-[#01F7FF]"
 				value={newQuestion}
 				onChange={(e) => {
 					setNewQuestion(e.target.value);

@@ -1,3 +1,7 @@
+import Image from "next/image";
+import AvatarDummy from "public/images/avatar-bot-dummy.svg";
+import LoadingIcon from "public/images/loading-icon.svg";
+
 const LastAnswer = ({
 	sender,
 	message,
@@ -11,46 +15,22 @@ const LastAnswer = ({
 
 	return (
 		<>
-			<hr className="border-t border-gray-600 mx-[-1rem]" />
-			<div className="flex flex-col space-y-2">
+			<div className="flex flex-col space-y-2 pt-5">
 				{/* Loading icon and generating text */}
 				{isGenerating && (
-					<div className="flex items-center text-gray-400 text-sm mb-2">
-						<svg
-							className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
-							xmlns="http://www.w3.org/2000/svg"
-							fill="none"
-							viewBox="0 0 24 24"
-						>
-							<circle
-								className="opacity-25"
-								cx="12"
-								cy="12"
-								r="10"
-								stroke="currentColor"
-								strokeWidth="4"
-							></circle>
-							<path
-								className="opacity-75"
-								fill="currentColor"
-								d="M4 12c0-4.418 3.582-8 8-8v8h8c0 4.418-3.582 8-8 8s-8-3.582-8-8z"
-							></path>
-						</svg>
+					<div className="flex items-center text-gray-400 text-sm mb-2 space-x-3">
+						<Image src={LoadingIcon} alt="Profile" className="animate-spin mr-10 h-5 w-5 ml-1 text-white" />
 						Generating answers for you...
 					</div>
 				)}
 				{/* Message bubble */}
 				<div className="flex flex-col space-y-2">
 					{/* Message bubble */}
-					<div className="flex items-start space-x-2">
-						<div className="flex-none">
-							<div className="rounded-full bg-gray-300 w-8 h-8"></div>
-						</div>
-						<div className="flex-grow">
-							<div className="text-xs text-gray-400 mb-1">{sender}</div>
-							<div className="text-white text-sm rounded-lg py-2 w-full">
-								{isStream ? message.slice(0, -2).join("") : message}
-							</div>
+					<div className="flex items-start space-x-3">
+						<Image src={AvatarDummy} alt="Profile" className="w-8 h-8 rounded-full mr-5" />
+						<div className="text-white text-sm w-full">
+							<h6 className="mb-5 mt-1">Levi Ackerman</h6>
+							<p>{isStream ? message.slice(0, -2).join("") : message}</p>
 						</div>
 					</div>
 
