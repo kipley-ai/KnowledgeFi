@@ -33,16 +33,15 @@ export interface UIFile {
 
 export default function DataSource() {
 	const { setHeaderTitle, toast, setToast } = useAppProvider();
-	const title = "Data Sources";
-	const [kbId, setKbId] = useState("");
 	
+	const [kbId, setKbId] = useState("");
 
-    const { address: walletAddress } = useAccount();
+  const { address: walletAddress } = useAccount();
 
 	useEffect(() => {
-		setHeaderTitle(title);
+		const title = "Add Knowledge Assets";
 		document.title = title;
-		return () => setHeaderTitle("Default Title");
+		return () => setHeaderTitle("");
 	}, []);
 
 	
@@ -102,10 +101,7 @@ export default function DataSource() {
 		
 			<div className="flex flex-col sm:px-6 lg:px-8 py-8 bg-[#292D32]">
 				<div className="mx-56">
-					<h1 className="text-2xl font-semibold text-white">Data Sources</h1>
-					<h5 className="text-md text-[#7C878E]">
-						Give some general information about your NFT.
-					</h5>
+					<h1 className="text-2xl font-semibold text-white">Add Knowledge Assets</h1>
 					<hr className="my-4 border border-gray-600" />
 				</div>
 				<Step1

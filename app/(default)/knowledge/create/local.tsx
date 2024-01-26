@@ -222,10 +222,7 @@ export default function Local({
 		<div className="flex flex-col sm:px-6 lg:px-8 py-8 bg-[#292D32]">
 			<Toast children={"KB creation successful"} open={toast} setOpen={setToast} className="mx-auto" />
 			<div className="mx-56">
-				<h1 className="text-2xl font-semibold text-white">Data Sources</h1>
-				<h5 className="text-md text-[#7C878E]">
-					Give some general information about your NFT.
-				</h5>
+				<h1 className="text-2xl font-semibold text-white">Upload Knowledge Files</h1>
 				<hr className="my-4 border border-gray-600" />
 			</div>
 			<div className="mx-56">
