@@ -76,13 +76,13 @@ export default function NFT() {
         },
         {
           async onSuccess(data, variables, context) {
-            // const { kb_id } = data.data;
-            // await mintNFT(
-            //   kb_id,
-            //   form.name!,
-            //   form.symbol!,
-            //   parseInt(form.shareSupply!)
-            // );
+            const { kb_id } = data.data;
+            await mintNFT(
+              kb_id,
+              form.name!,
+              form.symbol!,
+              parseInt(form.shareSupply!)
+            );
 			setShowModal(true);
           },
         }
