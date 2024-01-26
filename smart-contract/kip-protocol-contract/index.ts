@@ -46,7 +46,7 @@ export async function mintNFT(
     symbol,
     slotValue,
     1,
-    assetId,
+    BigInt(assetId),
     signer.address
   );
 }
