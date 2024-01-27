@@ -86,7 +86,7 @@ export default function RootLayout({
     },
 
     createMessage: ({ nonce, address, chainId }) => {
-      return "Welcome to KnowledgeFi.xyz!\nNonce: xxxxxxx";
+      return "Welcome to KnowledgeFi.xyz!";
     },
 
     getMessageBody: ({ message }) => {
