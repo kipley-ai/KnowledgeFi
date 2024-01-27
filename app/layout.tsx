@@ -53,7 +53,7 @@ const connectors = connectorsForWallets([
     wallets: [
       okxWallet({ projectId, chains }),
       trustWallet({ projectId, chains }),
-      phantomWallet({ projectId, chains }),
+      phantomWallet({ chains }),
       oneKeyWallet({ chains }),
       ledgerWallet({ projectId, chains }),
       bitKeepWallet({ projectId, chains }),
