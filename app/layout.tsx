@@ -13,6 +13,7 @@ import {
   createAuthenticationAdapter,
   RainbowKitAuthenticationProvider,
   AuthenticationStatus,
+  connectorsForWallets,
 } from "@rainbow-me/rainbowkit";
 import {
   configureChains,
@@ -25,16 +26,41 @@ import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
 import { RQProviders } from "@/providers/react-query-provider";
 import { useState } from "react";
+import { okxWallet } from "@rainbow-me/rainbowkit/wallets";
+import { trustWallet } from "@rainbow-me/rainbowkit/wallets";
+import { phantomWallet } from "@rainbow-me/rainbowkit/wallets";
+import { oneKeyWallet } from "@rainbow-me/rainbowkit/wallets";
+import { ledgerWallet } from "@rainbow-me/rainbowkit/wallets";
+import { bitKeepWallet } from "@rainbow-me/rainbowkit/wallets";
 
 const { chains, publicClient } = configureChains(
   [mainnet, polygon, optimism, arbitrum, base, zora],
   [publicProvider()]
 );
-const { connectors } = getDefaultWallets({
+
+const projectId = "f53ae5cdc0007d6f85bd532c0edf4d3d";
+
+const { wallets } = getDefaultWallets({
   appName: "KIP Protocol",
-  projectId: "f53ae5cdc0007d6f85bd532c0edf4d3d",
+  projectId,
   chains,
 });
+
+const connectors = connectorsForWallets([
+  ...wallets,
+  {
+    groupName: "More",
+    wallets: [
+      okxWallet({ projectId, chains }),
+      trustWallet({ projectId, chains }),
+      phantomWallet({ projectId, chains }),
+      oneKeyWallet({ chains }),
+      ledgerWallet({ projectId, chains }),
+      bitKeepWallet({ projectId, chains }),
+    ],
+  },
+]);
+
 const wagmiConfig = createConfig({
   autoConnect: true,
   connectors,
