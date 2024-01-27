@@ -47,7 +47,7 @@ export default function Header() {
 		// setShowAccountButton(walletConnected && twitterStatus === "authenticated");
 		setProfileImage(twitterSession?.user?.image || "");
 
-		console.log(twitterSession);
+		// console.log(twitterSession);
 	}, [isConnected, twitterStatus]);
 
 	return (
@@ -141,7 +141,7 @@ export default function Header() {
 						{/* Connect Wallet Button */}
 						{!isConnected_ && (
 							<GetInvolvedButton
-								buttonStyle="flex items-center border border-gray-700 rounded-full py-3 px-4 text-sm font-medium ml-3 text-neutral-300 duration-200 mr-3"
+								buttonStyle="flex items-center border border-gray-700 rounded-full py-3 px-4 text-sm font-medium text-neutral-300 duration-200"
 								wrapStyle="flex items-center text-sm font-medium ml-3 text-neutral-300 duration-200"
 								chainStyle="flex items-center text-sm font-medium ml-3 text-neutral-300 duration-200"
 								content={
@@ -170,7 +170,9 @@ export default function Header() {
 							/>
 						)}
 						{/* Profile Picture */}
-						<AvatarWithStatus image={profileImage} status="away" />
+						{isConnected_  && (
+							<AvatarWithStatus image={profileImage} status="away" />
+						)}
 						{/* {showTwitterLogin && (
 							<>
 								<ModalLoginTwitter

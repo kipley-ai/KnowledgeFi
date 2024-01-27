@@ -4,6 +4,7 @@ import { StaticImageData } from "next/image";
 import Image from "next/image";
 import { signOut } from "next-auth/react";
 import { useDisconnect } from "wagmi";
+import defaultAvatar from "@/public/images/avatar-default-02.svg"
 
 type StatusType = "online" | "busy" | "away" | "offline";
 
@@ -52,6 +53,15 @@ const AvatarWithStatus: React.FC<AvatarWithStatusProps> = ({
     <div className="relative inline-block" ref={dropdownRef}>
       <div onClick={toggleDropdown} className="cursor-pointer">
         {/* <img src={image} alt="Avatar" className="w-12 h-12 rounded-full" /> */}
+        {image === "" ? (
+          <Image
+            src={defaultAvatar}
+            width={42}
+            height={42}
+            alt="Avatar"
+            className="w-10 h-10 rounded-full"
+          />
+        ) : (
         <Image
           src={image}
           width={42}
@@ -59,6 +69,7 @@ const AvatarWithStatus: React.FC<AvatarWithStatusProps> = ({
           alt="Avatar"
           className="w-10 h-10 rounded-full"
         />
+        )}
         <span
           className={`absolute top-0 right-0 w-3 h-3 rounded-full border-2 border-white ${statusColor[status]}`}
         ></span>
