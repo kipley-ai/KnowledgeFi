@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 import { useCreateChatbotContext } from "./create-knowledge-context";
 import { useCreateKBAndMintNFT } from "@/hooks/api/kb";
 import { useSession } from "next-auth/react";
-import MintNFTModal from "@/components/toast-4";
+import MintNFTModal from "./mint-nft-modal";
 import ImageInput from "@/components/image-input";
 import LoadingIcon from "public/images/loading-icon.svg";
 
@@ -39,6 +39,7 @@ export default function NFT() {
   const { data: twitterSession } = useSession();
   const [form, setForm] = useState<Form>({ shareSupply: "5000" });
   const [selectedFile, setSelectedFile] = useState<any>(LoadingIcon)
+  const [kbIdCreated,setKbIdCreated] = useState("")
 
   const handleFormChange = (name: string, value: any) => {
     setForm({
@@ -80,6 +81,7 @@ export default function NFT() {
         {
           async onSuccess(data, variables, context) {
             const { kb_id, asset_id } = data.data;
+            setKbIdCreated(kb_id)
             await mintNFT(
               // kb_id,
               form.name!,
@@ -157,6 +159,7 @@ export default function NFT() {
         children={"Your Knowledge Asset is created successfully"}
         open={showModal}
         setOpen={setShowModal}
+        kbIdCreated={kbIdCreated}
       />
       <div className="flex flex-col sm:px-6 lg:px-8 py-8 pb-16 bg-[#292D32]">
         <div className="mx-56">
