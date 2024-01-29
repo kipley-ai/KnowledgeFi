@@ -3,6 +3,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useCreateChatbotAPI } from "@/hooks/api/chatbot";
 import { useCreateChatbotContext } from "./create-chatbot-context";
 import { useSession } from "next-auth/react";
+import CreateChatbotModal from "@/components/toast-4";
 import { useNftDetail } from "@/hooks/api/nft";
 
 const ChatBotForm = () => {
@@ -13,6 +14,7 @@ const ChatBotForm = () => {
 	const [category, setCategory] = useState("");
 	const [profileImage, setProfileImage] = useState("");
 	const [profileImageUrl, setProfileImageUrl] = useState("");
+	const [showModal, setShowModal] = useState(false);
 	const [instructions, setInstructions] = useState("");
 	const [example, setExample] = useState("");
 	const router = useRouter();
@@ -57,6 +59,11 @@ const ChatBotForm = () => {
 			example_conversation: example,
 			sft_id:id as string,
 			kb_id:nftData?.data.data.kb_id
+		},
+		{
+			async onSuccess(){
+				setShowModal(true)
+			}
 		});
 	};
 
@@ -95,6 +102,12 @@ const ChatBotForm = () => {
 	}, [title]);
 
 	return (
+		<>
+		<CreateChatbotModal 
+			children={"Your chatbot has been created successfully!"}
+			open={showModal}
+			setOpen={setShowModal}
+		/>
 		<div className="flex flex-col sm:px-6 lg:px-0 py-8 bg-[#292D32]">
 			<div className="mx-64">
 				<h1 className="text-2xl font-semibold text-white">
@@ -300,6 +313,7 @@ const ChatBotForm = () => {
 				</div>
 			</form>
 		</div>
+		</>
 	);
 };
 
