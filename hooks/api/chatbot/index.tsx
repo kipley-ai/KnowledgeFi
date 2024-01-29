@@ -44,7 +44,7 @@ export const useUpdateChatbotAPI = () => {
 
 	return useMutation({
 		mutationFn: (params: IUpdateChatbotParams) =>
-			axios.post("/api/chatbot/create", params, {
+			axios.post("/api/chatbot/edit", params, {
 				headers: {
 					"x-kf-user-id": address,
 				},

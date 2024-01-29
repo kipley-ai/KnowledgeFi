@@ -3,7 +3,7 @@ import { axiosAPI, constructHeader } from "../../utils";
 
 export async function POST(req: Request) {
     const data = await req.json();
-    const url = "https://knowledgefi-backend.fly.dev/api_v1/chatbot/edit";
+    const url = "https://knowledgefi-backend.fly.dev/api_v1/chatbot/update";
     console.log(url, " param ", data);
 
     const res = await axiosAPI(url, {

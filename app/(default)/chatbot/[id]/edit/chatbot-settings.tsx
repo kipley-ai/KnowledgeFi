@@ -1,24 +1,57 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
-import userAvatar from "public/images/user-64-05.jpg";
+import { useUpdateChatbotAPI } from '@/hooks/api/chatbot';
+import defaulUserAvatar from "public/images/user-64-05.jpg";
+import { useParams } from 'next/navigation';
 
+interface Form {
+    category_id: string;
+    chatbot_id: string;
+    name: string;
+    description: string;
+    instruction: string;
+    example_conversation: string;
+    profile_image: string;
+}
 
 const ChatbotSettings = () => {
-    const [formData, setFormData] = useState({
-        name: '',
-        description: '',
-        category: '',
-        prompt: '',
-    });
+    const updateChatbot = useUpdateChatbotAPI();
+    const { id } = useParams();
+    const [form, setForm] = useState<Form>(
+        {
+            category_id: "",
+            chatbot_id: "",
+            name: "",
+            description: "",
+            instruction: "",
+            example_conversation: "",
+            profile_image: "",
+        }
+    );
 
-    //This is backend to handle chatbot information change
-    const handleChange = (e: any) => {
-        //Write the logic here
+    const handleFormChange = (name: string, value: any) => {
+        setForm({
+            ...form,
+            [name]: value,
+        });
     };
 
-    // This is backend to handle Avatar Change
-    const handleAvatarChange = (e: any) => {
-        // Handle avatar file change
+    const handleUpdateChatbot = async () => {
+        try {
+            updateChatbot.mutate(
+                {
+                    category_id: form.category_id as string,
+                    chatbot_id: id as string,
+                    name: form.name as string,
+                    description: form.description as string,
+                    instruction: form.instruction as string,
+                    example_conversation: "",
+                    profile_image: "",
+                },
+            );
+        } catch (error: any) {
+            console.log(error);
+        }
     };
 
     return (
@@ -33,7 +66,7 @@ const ChatbotSettings = () => {
                 <div className="flex flex-row items-start justify-center py-8 mx-64">
                     {/* Left side - Image container */}
                     <div className="w-32 h-32 bg-[#292D32] rounded-lg overflow-hidden mr-8">
-                        <Image src={userAvatar} alt="User Avatar" width={800} height={800} className="user-avatar" />
+                        <Image src={defaulUserAvatar} alt="User Avatar" width={800} height={800} className="user-avatar" />
                     </div>
                     {/* Right side - Text and Upload button */}
                     <div className="flex flex-col justify-center self-center">
@@ -67,9 +100,10 @@ const ChatbotSettings = () => {
                         <input
                             id="characterName"
                             type="text"
-                            value="Chatbot 101"
+                            value={form.name}
                             className="rounded-xl bg-transparent mt-2 text-white w-full border-2"
                             placeholder="e.g. Sam Altman"
+                            onChange={(e) => handleFormChange("name", e.target.value)}
                         />
                     </div>
                     <p className="mt-2 text-xs text-gray-400">
@@ -89,9 +123,10 @@ const ChatbotSettings = () => {
                         <input
                             id="description"
                             type="text"
-                            value="OpenAI has created a model that surpasses ChatGPT in several areas, like math and physics equations, creative writing, and other difficult tasks."
+                            value={form.description}
                             className="rounded-xl bg-transparent mt-2 text-white w-full border-2"
                             placeholder="e.g. CEO of OpenAI"
+                            onChange={(e) => handleFormChange("description", e.target.value)}
                         />
                     </div>
                     <p className="mt-2 text-xs text-gray-400">
@@ -109,8 +144,9 @@ const ChatbotSettings = () => {
                     </label>
                     <select
                         id="category"
-                        value="Production"
+                        value={form.category_id}
                         className="rounded-xl bg-[#292D32] mt-2 text-white w-full border-2"
+                        onChange={(e) => handleFormChange("category_id", e.target.value)}
                     >
                         <option value="">Production</option>
                         <option value="">Select a category</option>
@@ -124,15 +160,16 @@ const ChatbotSettings = () => {
                 <div className="mx-64">
                     <label
                         className="flex flex-col font-semibold text-white mt-4"
-                        htmlFor="example"
+                        htmlFor="prompt"
                     >
-                        Example Conversation
+                        Prompt
                     </label>
                     <textarea
-                        id="example"
-                        value="Tired of doing swaps, bridges, or lending in the hopes of getting an airdrop bigger than the gas and transaction fees you are spending? Check out these three novel platforms that are currently tokenless."
+                        id="prompt"
+                        value={form.instruction}
                         placeholder="Hey! AI in healthcare is thrilling—improving imaging, drug discovery, and personalized medicine!"
                         className="rounded-xl bg-transparent text-white mt-2 w-full border-2"
+                        onChange={(e) => handleFormChange("instruction", e.target.value)}
                     />
                     <div className="flex flex-row justify-between">
                         <p className="mt-2 text-xs text-gray-400">
@@ -155,6 +192,10 @@ const ChatbotSettings = () => {
                     <button
                         className="flex items-center justify-center bg-[#01F7FF] rounded-3xl py-1 px-5 mt-8"
                         type="submit"
+                        onClick={(e) => {
+                            e.preventDefault();
+                            handleUpdateChatbot();
+                        }}
                     >
                         <h5 className="text-sm text-black font-semibold flex-grow">
                             Save changes
