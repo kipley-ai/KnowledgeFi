@@ -64,3 +64,17 @@ export const useNewSession = () => {
 			}),
 	});
 };
+
+export const useGetSession = (params: IChatbotDetailParams) => {
+	const { address } = useAccount();
+
+	return useQuery({
+		queryKey: ["session", params.chatbot_id],
+		queryFn: () =>
+			axios.post("/api/chatbot/get_session", params, {
+				headers: {
+					"x-kf-user-id": address,
+				},
+			}),
+	});
+};

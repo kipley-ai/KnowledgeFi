@@ -2,7 +2,7 @@ import { useParams, usePathname, useRouter, useSearchParams } from "next/navigat
 import { useCreateChatbotContext } from "./create-chatbot-context";
 import { uuid } from "uuidv4";
 import { useAccount } from "wagmi";
-import { useChatbotDetail } from "@/hooks/api/chatbot";
+import { useChatbotDetail, useGetSession } from "@/hooks/api/chatbot";
 import { useEffect } from "react";
 import Image from "next/image";
 import Avatar from "public/images/avatar-gradient-icon.svg";
@@ -29,6 +29,7 @@ const MessageInput = () => {
 	const pathname = usePathname();
 	const {address} = useAccount()
 	const {id} = useParams()
+	const chatSession = useGetSession({chatbot_id:id as string})
 	const {data:chatbotData , isSuccess} = useChatbotDetail({
 		chatbot_id:id as string
 	})
@@ -58,7 +59,7 @@ const MessageInput = () => {
 						sendValidatedMessage({
 							question: newQuestion,
 							chatbot_id: id as string,
-							session_id: chatbotData?.data.data.session_id as string,
+							session_id: chatSession.data?.data.session_id as string,
 							kb_id:chatbotData?.data.data.kb_id as string,
 							// type: "twitter",
 							user_id: address as string,
