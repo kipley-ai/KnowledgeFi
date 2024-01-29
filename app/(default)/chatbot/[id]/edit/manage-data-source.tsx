@@ -3,6 +3,9 @@ import { useState, useEffect } from 'react';
 import CheckIcon from 'public/images/check-icon-2.svg';
 import ArrowIcon from 'public/images/arrow-3-icon.svg';
 import Image from 'next/image';
+import { useChatbotDetail } from '@/hooks/api/chatbot';
+import { useParams } from 'next/navigation';
+import { useKBItem } from '@/hooks/api/kb';
 
 const ManageDataSources = () => {
     const [checkHeader, setCheckHeader] = useState(false);
@@ -15,6 +18,15 @@ const ManageDataSources = () => {
         { from: 'Twitter', type: 'File', size: '5 Bytes', lastUpdated: '2024-02-11 08:12:09 UTC', status: 'Completed' },
         // ... more data
     ];
+    const {id} = useParams()
+
+    const chatbotDetail = useChatbotDetail({
+		chatbot_id:id as string
+	})
+
+    const kbItem = useKBItem({kb_id:chatbotDetail.data?.data.data.kb_id as string})
+
+    
 
     const handleCheckRow = (index: number) => {
         let temp = [...checkRow];
@@ -30,8 +42,8 @@ const ManageDataSources = () => {
     }
 
     useEffect(() => {
-
-    }, [])
+        kbItem.refetch()
+    }, [chatbotDetail.data?.data.data.kb_id])
 
     return (
         <div className="flex flex-col sm:px-6 lg:px-0 text-[#7C878E] py-20 font-semibold">
@@ -86,14 +98,14 @@ const ManageDataSources = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {data.map((row, index) => (
+                        {kbItem.data?.data.data.map((row:any, index:any) => (
                             <tr key={index}>
                                 <td className="py-7 px-3">
                                     <div className={`rounded  ${checkRow[index] ? "bg-[#01F7FF]" : "bg-transparent border-2 border-[#7C878E]"} w-4 h-4 flex items-center justify-center`} onClick={() => handleCheckRow(index)}>
                                         <Image src={CheckIcon} className={`${checkRow[index] ? "" : "hidden"}`} alt="Check Icon"/>
                                     </div>
                                 </td> {/* Row Checkbox */}
-                                <td className="">{row.from}</td>
+                                <td className="">{row.item_name}</td>
                                 <td className="">{row.type}</td>
                                 <td className="">{row.size}</td>
                                 <td className="">{row.lastUpdated}</td>

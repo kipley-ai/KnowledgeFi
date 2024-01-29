@@ -60,3 +60,13 @@ export interface IUpdateChatbotParams {
     example_conversation: string;
     profile_image: string;
 }
+
+export interface IPaginate {
+    page?: number;
+    page_size?: number;
+    sort_by?: string;
+}
+
+export interface IKBItem extends IPaginate{
+    kb_id: string;
+}
