@@ -5,6 +5,8 @@ import { useCreateChatbotContext } from "./create-chatbot-context";
 import { useSession } from "next-auth/react";
 import CreateChatbotModal from "@/components/toast-4";
 import { useNftDetail } from "@/hooks/api/nft";
+import LoadingIcon from "public/images/loading-icon.svg";
+import ImageInput from "@/components/image-input-2";
 
 const ChatBotForm = () => {
 	const title = "Create Chatbot";
@@ -22,6 +24,8 @@ const ChatBotForm = () => {
 	const { createChatbot: chatbot } = useCreateChatbotContext();
 	const {id} = useParams()
 	const {data:nftData} = useNftDetail({ sft_id:id as string})
+	const [selectedFile, setSelectedFile] = useState<any>(LoadingIcon)
+
 	
 
 	const { data: twitterSession } = useSession();
@@ -49,9 +53,10 @@ const ChatBotForm = () => {
 		formData.append("description", description);
 		formData.append("category", category);
 		console.log(twitterSession?.user);
+		console.log(selectedFile)
 
 		createChatbot.mutate({
-			profile_image: "",
+			profile_image: selectedFile,
 			category_id: category,
 			name: characterName,
 			description: description,
@@ -120,41 +125,10 @@ const ChatBotForm = () => {
 			</div>
 			<form className="flex flex-col gap-5" onSubmit={handleSubmit}>
 				<div className="flex flex-col items-center justify-center py-8 mx-64">
-					<label
-						htmlFor="profileImage"
-						className="flex flex-col items-center justify-center w-full h-32 bg-gray-800 rounded-lg border-2 border-gray-300 border-dashed cursor-pointer hover:bg-gray-700"
-					>
-						<div className="flex flex-col items-center justify-center pt-5 pb-6">
-							<svg
-								className="mb-3 w-10 h-10 text-gray-400"
-								fill="none"
-								stroke="currentColor"
-								viewBox="0 0 24 24"
-								xmlns="http://www.w3.org/2000/svg"
-							>
-								<path
-									strokeLinecap="round"
-									strokeLinejoin="round"
-									strokeWidth="2"
-									d="M12 4v16m8-8H4"
-								/>
-							</svg>
-							<p className="mb-2 text-sm text-gray-400">
-								<span className="font-semibold">Click to upload</span> or drag
-								and drop
-							</p>
-							<p className="text-xs text-gray-400">
-								800x800 PNG, JPG is recommended. Maximum file size: 2 MB
-							</p>
-						</div>
-						<input
-							id="profileImage"
-							type="file"
-							className="hidden"
-							onChange={handleImageChange}
-							accept="image/png, image/jpeg"
-						/>
-					</label>
+					<ImageInput 
+						selectedFile={selectedFile}
+						setSelectedFile={setSelectedFile}
+					/>
 				</div>
 
 				<div className="grid grid-cols-1 md:grid-cols-2 mb-4 gap-5 mx-64">
