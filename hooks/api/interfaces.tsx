@@ -22,13 +22,13 @@ export interface ICreateChatbotParams {
     instruction: string;
     example_conversation: string;
     sft_id: string;
-    kb_id:string;
+    kb_id: string;
 }
 
 export interface ICreateKBAndNFTParams {
     type: string;
-    kb_data? : string;
-    username? : string;
+    kb_data?: string;
+    username?: string;
     name: string;
     description: string
     contract_address: string
@@ -49,4 +49,14 @@ export interface INFTDetailParams {
 
 export interface IChatbotDetailParams {
     chatbot_id: string;
+}
+
+export interface IUpdateChatbotParams {
+    category_id: string;
+    chatbot_id: string;
+    name: string;
+    description: string;
+    instruction: string;
+    example_conversation: string;
+    profile_image: string;
 }

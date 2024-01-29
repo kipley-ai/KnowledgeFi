@@ -1,7 +1,7 @@
 import { useAccount } from "wagmi";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import axios from "axios";
-import { ICreateChatbotParams, IChatbotDetailParams } from "../interfaces";
+import { ICreateChatbotParams, IChatbotDetailParams, IUpdateChatbotParams } from "../interfaces";
 
 export const useChatbotList = (params: any) => {
 	const appId = process.env.APP_ID;
@@ -32,6 +32,19 @@ export const useChatbotDetail = (params: IChatbotDetailParams) => {
 		queryKey: ["chatbot", params.chatbot_id],
 		queryFn: () =>
 			axios.post("/api/chatbot/detail", params, {
+				headers: {
+					"x-kf-user-id": address,
+				},
+			}),
+	});
+};
+
+export const useUpdateChatbotAPI = () => {
+	const { address } = useAccount();
+
+	return useMutation({
+		mutationFn: (params: IUpdateChatbotParams) =>
+			axios.post("/api/chatbot/create", params, {
 				headers: {
 					"x-kf-user-id": address,
 				},
