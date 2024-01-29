@@ -111,11 +111,11 @@ const ChatBotForm = () => {
 		<div className="flex flex-col sm:px-6 lg:px-0 py-8 bg-[#292D32]">
 			<div className="mx-64">
 				<h1 className="text-2xl font-semibold text-white">
-					General Information
+					Create Chatbot
 				</h1>
-				<h5 className="text-md text-[#7C878E]">
+				{/* <h5 className="text-md text-[#7C878E]">
 					Give some general information about your character.
-				</h5>
+				</h5> */}
 				<hr className="my-4 border border-gray-600" />
 			</div>
 			<form className="flex flex-col gap-5" onSubmit={handleSubmit}>
@@ -172,36 +172,13 @@ const ChatBotForm = () => {
 								value={characterName}
 								onChange={(e) => setCharacterName(e.target.value)}
 								className="rounded-xl bg-transparent mt-2 text-white w-full border-2"
-								placeholder="e.g. Sam Altman"
+								placeholder="Name your Chatbot"
 							/>
 						</div>
-						<p className="mt-2 text-xs text-gray-400">
+						{/* <p className="mt-2 text-xs text-gray-400">
 							The name of your AI character.
-						</p>
+						</p> */}
 					</div>
-					<div>
-						<label
-							htmlFor="description"
-							className="block text-sm font-semibold text-white"
-						>
-							Description
-						</label>
-						<div className="mt-1">
-							<input
-								id="description"
-								type="text"
-								value={description}
-								onChange={(e) => setDescription(e.target.value)}
-								className="rounded-xl bg-transparent mt-2 text-white w-full border-2"
-								placeholder="e.g. CEO of OpenAI"
-							/>
-						</div>
-						<p className="mt-2 text-xs text-gray-400">
-							Description of your AI character.
-						</p>
-					</div>
-				</div>
-				<div className="grid grid-cols-1 md:grid-cols-2 mb-4 gap-5 mx-64">
 					<div>
 						<label
 							className="flex flex-col text-sm font-semibold text-white w-1/3"
@@ -220,14 +197,47 @@ const ChatBotForm = () => {
 							<option value="">Select a category</option>
 							{/* ... other options */}
 						</select>
-						<p className="mt-2 text-xs text-gray-400">Category of your AI.</p>
+						{/* <p className="mt-2 text-xs text-gray-400">Category of your AI.</p> */}
 					</div>
 				</div>
+				
+				<div className="grid grid-cols-1 md:grid-cols-2 mb-4 gap-5 mx-64">
+					<div className="col-span-2">
+						<label
+							htmlFor="description"
+							className="block text-sm font-semibold text-white"
+						>
+							Description
+						</label>
+						<div className="mt-1">
+							{/* <input
+								id="description"
+								type="text"
+								value={description}
+								onChange={(e) => setDescription(e.target.value)}
+								className="rounded-xl bg-transparent mt-2 text-white w-full border-2"
+								placeholder="Describe your Chatbot"
+							/> */}
+							<textarea
+								id="description"
+								value={description}
+								onChange={(e) => setDescription(e.target.value)}
+								placeholder={'Describe your Chatbot'}
+								className="rounded-xl bg-transparent text-white mt-2 w-full border-2"
+								rows={11}
+							/>
+						</div>
+						{/* <p className="mt-2 text-xs text-gray-400">
+							Description of your AI character.
+						</p> */}
+					</div>
+					
+				</div>
 				<div className="mx-64 mt-10">
-					<h1 className="text-2xl font-semibold text-white">Configuration</h1>
-					<h5 className="text-md text-[#7C878E]">
+					<h1 className="text-2xl font-semibold text-white">Chatbot Configuration</h1>
+					{/* <h5 className="text-md text-[#7C878E]">
 						Configuration defining AI behavior.
-					</h5>
+					</h5> */}
 					<hr className="my-4 border border-gray-700" />
 				</div>
 				<div className="mx-64">
@@ -241,42 +251,42 @@ const ChatBotForm = () => {
 						id="instructions"
 						value={instructions}
 						onChange={(e) => setInstructions(e.target.value)}
-						placeholder="e.g. Tired of doing swaps, bridges, or lending in the hopes of getting an airdrop bigger than the gas and transaction fees you are spending? Check out these three novel platforms that are currently tokenless."
+						placeholder="Give Instructions and Personality to your Chatbot"
 						className="rounded-xl bg-transparent text-white mt-2 w-full border-2"
 						rows={5}
 					/>
-					<div className="flex flex-row justify-between">
+					{/* <div className="flex flex-row justify-between">
 						<p className="mt-2 text-xs text-gray-400">
 							Describe your AI character.
 						</p>
 						<p className="mt-2 text-xs text-gray-400">
 							Enter at least 200 more characters.
 						</p>
-					</div>
+					</div> */}
 				</div>
 				<div className="mx-64">
 					<label
 						className="flex flex-col font-semibold text-white mt-4"
 						htmlFor="example"
 					>
-						Example Conversation
+						Conversation Starters
 					</label>
 					<textarea
 						id="example"
 						value={example}
 						onChange={(e) => setExample(e.target.value)}
-						placeholder={examplePlaceholder}
+						placeholder={'Examples for users to start the conversation'}
 						className="rounded-xl bg-transparent text-white mt-2 w-full border-2"
 						rows={11}
 					/>
-					<div className="flex flex-row justify-between">
+					{/* <div className="flex flex-row justify-between">
 						<p className="mt-2 text-xs text-gray-400">
 							Give an example of your conversation with your AI.
 						</p>
 						<p className="mt-2 text-xs text-gray-400">
 							Enter at least 200 more characters.
 						</p>
-					</div>
+					</div> */}
 				</div>
 				<div className="form-actions mx-64 flex flex-row justify-between">
 					<button
@@ -290,7 +300,7 @@ const ChatBotForm = () => {
 						type="submit"
 					>
 						<h5 className="text-sm text-black font-semibold flex-grow">
-							Bring my character to life
+							Bring my chatbot to life
 						</h5>
 						<svg
 							width="20"
