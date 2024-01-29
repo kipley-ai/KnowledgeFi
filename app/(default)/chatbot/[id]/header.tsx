@@ -1,4 +1,4 @@
-import { useNewSession } from "@/hooks/api/chatbot";
+import { useGetSession, useNewSession } from "@/hooks/api/chatbot";
 import { useParams } from "next/navigation";
 import { useEffect } from "react";
 import Image from "next/image";
@@ -19,6 +19,7 @@ const Header = () => {
 
     const newSession = useNewSession()
     const {id} = useParams()
+    const chatSession = useGetSession({chatbot_id:id as string})
 
     return (
         <div className="text-white flex justify-between items-center border-b border-b-gray-600 py-6">
@@ -43,7 +44,11 @@ const Header = () => {
                 </button>
                 <button className="text-gray-400 hover:text-blue-500 self-end ml-3 rounded-full" 
                 onClick={()=> {
-                    newSession.mutate({chatbot_id:id as string})
+                    newSession.mutate({chatbot_id:id as string}, {
+                        onSuccess(data, variables, context) {
+                            chatSession.refetch()
+                        },
+                    })
                 }}>
                     <svg
                         width="40"

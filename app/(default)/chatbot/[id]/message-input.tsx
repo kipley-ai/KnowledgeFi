@@ -55,11 +55,11 @@ const MessageInput = () => {
 				<button
 					className="text-light-blue"
 					onClick={(e) => {
-						console.log(chatbotData?.data.data,address)
+						console.log(chatSession.data?.data.data.session_id)
 						sendValidatedMessage({
 							question: newQuestion,
 							chatbot_id: id as string,
-							session_id: chatSession.data?.data.session_id as string,
+							session_id: chatSession.data?.data.data.session_id as string,
 							kb_id:chatbotData?.data.data.kb_id as string,
 							// type: "twitter",
 							user_id: address as string,
