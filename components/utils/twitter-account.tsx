@@ -1,39 +1,39 @@
 export const accounts = [
     {
-        image: "/images/twitter-profile/@0xFinish.jpg",
-        name: "0xFinish",
+        image: "/images/twitter-profile/@CryptoDefiLord.png",
+        name: "CryptoDefiLord",
     },
     {
-        image: "/images/twitter-profile/@0xJok9r.jpg",
-        name: "0xJok9r",
+        image: "/images/twitter-profile/@0x_Sats.jpg",
+        name: "0x_Sats",
     },
     {
-        image: "/images/twitter-profile/@0xKillTheWolf.jpg",
-        name: "0xKillTheWolf",
+        image: "/images/twitter-profile/@AIprojecthub.jpg",
+        name: "AIprojecthub",
     },
     {
-        image: "/images/twitter-profile/@0xprerich.jpg",
-        name: "0xprerich",
+        image: "/images/twitter-profile/@ysiu.jpg",
+        name: "Yat Siu",
     },
     {
-        image: "/images/twitter-profile/@0xSalazar.jpg",
-        name: "0xSalazar",
+        image: "/images/twitter-profile/@TheLabsWolf.jpg",
+        name: "TheLabsWolf",
     },
     {
-        image: "/images/twitter-profile/@33NFT.jpg",
-        name: "33NFT",
+        image: "/images/twitter-profile/@cr_zilla.jpg",
+        name: "cr_zilla",
     },
     {
-        image: "/images/twitter-profile/@alpha_pls.jpg",
-        name: "alpha_pls",
+        image: "/images/twitter-profile/@fitforcrypto_.jpg",
+        name: "fitforcrypto_",
     },
     {
-        image: "/images/twitter-profile/@arndxt_xo.jpg",
-        name: "arndxt_xo",
+        image: "/images/twitter-profile/@Fibonaccious.jpg",
+        name: "Fibonaccious",
     },
     {
-        image: "/images/twitter-profile/@Auri_0x.jpg",
-        name: "Auri_0x",
+        image: "/images/twitter-profile/@james@animoca_ventures.jpeg",
+        name: "JAMES @ ANIMOCA VENTURES",
     },
     {
         image: "/images/twitter-profile/@balajis.jpg",
