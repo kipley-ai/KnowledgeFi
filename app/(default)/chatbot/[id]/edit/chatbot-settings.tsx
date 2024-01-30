@@ -120,7 +120,7 @@ const ChatbotSettings = () => {
                             type="text"
                             value={form.name}
                             className="rounded-xl bg-transparent mt-2 text-white w-full border-2 border-[#50575F]"
-                            placeholder="e.g. Sam Altman"
+                            placeholder="Name your Chatbot"
                             onChange={(e) => handleFormChange("name", e.target.value)}
                         />
                     </div>
@@ -143,7 +143,7 @@ const ChatbotSettings = () => {
                             type="text"
                             value={form.description}
                             className="rounded-xl bg-transparent mt-2 text-white w-full border-2 border-[#50575F]"
-                            placeholder="e.g. CEO of OpenAI"
+                            placeholder="Describe your Chatbot"
                             onChange={(e) => handleFormChange("description", e.target.value)}
                         />
                     </div>
