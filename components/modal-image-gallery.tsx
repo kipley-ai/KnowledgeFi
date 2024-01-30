@@ -8,6 +8,7 @@ interface ModalImageGalleryProps {
   isOpen: boolean;
   setIsOpen: (value: boolean) => void;
   setImage: (value: string | undefined) => void;
+  setUploadedFile?: (value: string | null) => void;
 }
 
 export default function ModalImageGallery({
@@ -15,6 +16,7 @@ export default function ModalImageGallery({
   isOpen,
   setIsOpen,
   setImage,
+  setUploadedFile,
 }: ModalImageGalleryProps) {
   const [selectedImage, setSelectedImage] = useState<string | undefined>();
 
@@ -96,6 +98,7 @@ export default function ModalImageGallery({
                 className="bg-[#01F7FF] text-black hover:brightness-75 rounded-3xl px-4 py-2 font-semibold"
                 onClick={() => {
                   setImage(selectedImage);
+                  setUploadedFile(null);
                   setIsOpen(false);
                 }}
               >

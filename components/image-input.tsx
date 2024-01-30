@@ -4,46 +4,12 @@ import axios from "axios";
 import Dropzone from "react-dropzone";
 import ModalImageGallery from "@/components/modal-image-gallery";
 import GalleryImages from "@/public/json/image-gallery-app.json";
-import UploadingIcon from "public/images/upload-file/uploading-icon-white.svg";
 import LoadingIcon from "public/images/loading-icon.svg";
 
-const ImageInput = ({ selectedFile, setSelectedFile }: any) => {
+const ImageInput = ({ selectedFile, setSelectedFile, setUploadedFile }: any) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [loadingCover, setLoadingCover] = useState(false);
-  const [isImageModalOpen, setIsImageModalOpen] = useState(false);
-
-  const uploadFile = async (newFile: any, callback: any) => {
-    try {
-      const response = await axios.post("/api/upload/s3", newFile);
-
-      if (response.status === 200) {
-        const data = response.data;
-        callback(data.link);
-        return data;
-      }
-    } catch (error) {
-      console.error("Error uploading file:", error);
-    }
-  };
-
-  const handleCoverChange = function (e: React.ChangeEvent<HTMLInputElement>) {
-    e.preventDefault();
-    if (e.target.files) {
-      // console.log(e.target.files)
-      Array.from(e.target.files).map((newFileObj) => {
-        const newFile = new FormData();
-        // return
-        newFile.append("input-file-upload", newFileObj);
-        newFile.append("file-dir", "cover_image/nft");
-        setLoadingCover(true);
-        const uploadedFile = uploadFile(newFile, (uploadedFile: string) => {
-          setSelectedFile(uploadedFile);
-          setLoadingCover(false);
-        });
-      });
-      // handleFiles(e.target.files);
-    }
-  };
+  const [isGalleryModalOpen, setIsGalleryModalOpen] = useState(false);
 
   const handleFileDrop = (acceptedFiles: any) => {
     if (acceptedFiles && acceptedFiles.length > 0) {
@@ -58,16 +24,32 @@ const ImageInput = ({ selectedFile, setSelectedFile }: any) => {
     }
   };
 
-  const handleChangeImage = (e: any) => {
+  const handleGalleryCover = (e: any) => {
+    e.preventDefault();
+    setIsGalleryModalOpen(true);
+  };
+
+  const handleDeviceCover = (e: any) => {
     e.preventDefault();
     if (inputRef.current) {
       inputRef.current.click();
     }
   };
 
+  const handleCoverChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    if (e.target.files) {
+      for (const file of e.target.files) {
+        setSelectedFile(URL.createObjectURL(file));
+        setUploadedFile(file);
+      }
+    }
+  };
+
   const handleRandomCover = () => {
     const randomIndex = Math.floor(Math.random() * GalleryImages.length);
     setSelectedFile(GalleryImages[randomIndex]);
+    setUploadedFile(null);
   };
 
   useEffect(() => {
@@ -76,18 +58,20 @@ const ImageInput = ({ selectedFile, setSelectedFile }: any) => {
 
   return (
     <div className="flex flex-col justify-between gap-2">
-      <label className="form-label font-semibold text-[#DDD]" htmlFor="email">
-        Cover Image
-      </label>
+      <label className="font-semibold text-[#DDD]">Cover Image</label>
       <Dropzone
         onDrop={handleFileDrop}
         accept={{ "image/*": [] }}
         multiple={false}
+        maxFiles={1}
+        maxSize={2000000}
+        disabled
       >
         {({ getRootProps, getInputProps }) => (
-          <div className="dropzone cursor-pointer mx-auto" {...getRootProps()}>
+          <div className="px-auto" {...getRootProps()}>
             <input
               {...getInputProps()}
+              accept="image/*"
               onChange={handleCoverChange}
               ref={inputRef}
             />
@@ -95,7 +79,6 @@ const ImageInput = ({ selectedFile, setSelectedFile }: any) => {
               <Image
                 width={30}
                 height={30}
-                className={"animate-spin"}
                 src={LoadingIcon}
                 alt="Loading Icon"
               />
@@ -114,32 +97,30 @@ const ImageInput = ({ selectedFile, setSelectedFile }: any) => {
       </Dropzone>
       <div className="flex flex-col gap-2">
         <button
-          onClick={(e) => {
-            e.preventDefault();
-            setIsImageModalOpen(true);
-          }}
+          onClick={handleGalleryCover}
           className="font-semibold text-black rounded-md bg-[#01F7FF] hover:brightness-75 py-2 px-1"
         >
           Choose Image from Gallery
         </button>
         <button
-          onClick={handleChangeImage}
+          onClick={handleDeviceCover}
           className="font-semibold text-black rounded-md bg-[#01F7FF] hover:brightness-75 py-2 px-1"
         >
           Choose Image from Device
         </button>
         <div
-          className="w-full bg-slate-400 hover:brightness-75 cursor-pointer rounded-md font-bold text-center py-1 text-black"
           onClick={handleRandomCover}
+          className="w-full bg-slate-400 hover:brightness-75 cursor-pointer rounded-md font-bold text-center py-1 text-black"
         >
           Random
         </div>
       </div>
       <ModalImageGallery
-        isOpen={isImageModalOpen}
-        setIsOpen={setIsImageModalOpen}
+        isOpen={isGalleryModalOpen}
+        setIsOpen={setIsGalleryModalOpen}
         title="Cover Image Gallery"
         setImage={setSelectedFile}
+        setUploadedFile={setUploadedFile}
       />
     </div>
   );

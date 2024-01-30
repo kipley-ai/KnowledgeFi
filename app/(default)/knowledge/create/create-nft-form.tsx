@@ -2,9 +2,11 @@
 import { useAppProvider } from "@/providers/app-provider";
 import { mintNFT } from "@/smart-contract/kip-protocol-contract";
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 import { useCreateChatbotContext } from "./create-knowledge-context";
 import { useCreateKBAndMintNFT } from "@/hooks/api/kb";
 import { useSession } from "next-auth/react";
+import { uploadFileS3 } from "@/app/api/upload/s3/helper";
 import MintNFTModal from "./mint-nft-modal";
 import ImageInput from "@/components/image-input";
 import LoadingIcon from "public/images/loading-icon.svg";
@@ -38,7 +40,10 @@ export default function NFT() {
   const [allowGenerate, setAllowGenerate] = useState(false);
   const { data: twitterSession } = useSession();
   const [form, setForm] = useState<Form>({ shareSupply: "5000" });
-  const [selectedFile, setSelectedFile] = useState<any>(LoadingIcon)
+  const [selectedFile, setSelectedFile] = useState<any>(
+    "https://kipley-assets-public.gumlet.io/random_cover/app.2023.09.22/106225_Symbolic_representation_of_heartbeats__white_waves_xl_1024_v1_0.png?width=600",
+  );
+  const [uploadedFile, setUploadedFile] = useState<any>(null);
   const [nftIdCreated,setNftIdCreated] = useState("")
 
   const handleFormChange = (name: string, value: any) => {
@@ -57,6 +62,17 @@ export default function NFT() {
 
   const handleMintNFT = async () => {
     try {
+      let presignedUrl;
+
+      if (uploadedFile) {
+        const response = await axios.post("/api/upload/s3", {
+          filename: uploadedFile.name,
+        });
+        presignedUrl = response.data.presignedUrl;
+        console.log("presignedUrl :>> ", presignedUrl);
+        await uploadFileS3(uploadedFile, presignedUrl, null);
+      }
+
       console.log(createKb.type, twitterSession?.user);
       createKBandMintNFT.mutate(
         {
@@ -77,6 +93,7 @@ export default function NFT() {
           query_royalties: 0,
           token_amount: 1,
           url: "",
+          profile_image: uploadedFile ? presignedUrl : selectedFile,
         },
         {
           async onSuccess(data, variables, context) {
@@ -153,6 +170,8 @@ export default function NFT() {
     }
   }, [errorMessage]);
 
+  console.log("uploadedFile :>> ", uploadedFile);
+
   return (
     <>
       <MintNFTModal
@@ -166,10 +185,11 @@ export default function NFT() {
           <h1 className="text-2xl font-semibold text-white">Mint NFT</h1>
           <hr className="my-4 border border-gray-600" />
         </div>
-        <form className="flex flex-row gap-10 mt-4 mx-56">
-          <ImageInput 
+        <form className="flex flex-row gap-8 mt-4 mx-56">
+          <ImageInput
             selectedFile={selectedFile}
             setSelectedFile={setSelectedFile}
+            setUploadedFile={setUploadedFile}
           />
           <div className="flex flex-col">
             <div className="flex flex-col gap-1">
