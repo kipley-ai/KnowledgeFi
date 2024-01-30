@@ -8,7 +8,7 @@ interface ModalImageGalleryProps {
   isOpen: boolean;
   setIsOpen: (value: boolean) => void;
   setImage: (value: string | undefined) => void;
-  setUploadedFile?: (value: string | null) => void;
+  setUploadedFile: (value: File | null) => void;
 }
 
 export default function ModalImageGallery({

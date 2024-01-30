@@ -142,6 +142,7 @@ const ImageInput = ({ selectedFile, setSelectedFile }: any) => {
         setIsOpen={setIsImageModalOpen}
         title="Cover Image Gallery"
         setImage={setSelectedFile}
+        setUploadedFile={setSelectedFile}
       />
     </div>
     </>

@@ -40,6 +40,7 @@ export interface ICreateKBAndNFTParams {
     query_royalties: number
     token_amount: number
     url: string
+    profile_image: string
 }
 
 // Used by hooks/api/nft/index.ts

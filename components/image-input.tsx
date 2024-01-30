@@ -6,7 +6,17 @@ import ModalImageGallery from "@/components/modal-image-gallery";
 import GalleryImages from "@/public/json/image-gallery-app.json";
 import LoadingIcon from "public/images/loading-icon.svg";
 
-const ImageInput = ({ selectedFile, setSelectedFile, setUploadedFile }: any) => {
+type ImageInputProps = {
+  selectedFile: string;
+  setSelectedFile: (value: any) => void;
+  setUploadedFile: (value: File | null) => void;
+};
+
+const ImageInput = ({
+  selectedFile,
+  setSelectedFile,
+  setUploadedFile,
+}: ImageInputProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [loadingCover, setLoadingCover] = useState(false);
   const [isGalleryModalOpen, setIsGalleryModalOpen] = useState(false);
@@ -39,10 +49,10 @@ const ImageInput = ({ selectedFile, setSelectedFile, setUploadedFile }: any) => 
   const handleCoverChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     if (e.target.files) {
-      for (const file of e.target.files) {
+      Array.from(e.target.files).forEach((file) => {
         setSelectedFile(URL.createObjectURL(file));
         setUploadedFile(file);
-      }
+      });
     }
   };
 
