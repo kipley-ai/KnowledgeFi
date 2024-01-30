@@ -70,7 +70,7 @@ const Header = () => {
                         onSuccess(data, variables, context) {
                             chatSession.refetch()
                             chatHistoryAPI.refetch()
-                            setButtonSession((prev)=>!prev)
+                            setButtonSession((prev:boolean)=>!prev)
                         },
                     })
                 }}>
