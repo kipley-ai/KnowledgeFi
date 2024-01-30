@@ -188,7 +188,7 @@ const NFTDetail = ({params}:{params:any}) => {
             <NoNFT/>
         }
         {
-            chatbotData ?
+            nftData?.data.data.chatbot_id && chatbotData ?
             <ChatbotSection chatbotDetail={chatbotData?.data.data}/>
             :<NoChatbot/>
         }
