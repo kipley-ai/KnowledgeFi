@@ -3,7 +3,7 @@ import { useNftDetail } from "@/hooks/api/nft";
 import { useEffect, useState, useRef } from "react";
 import { useCreateChatbotContext } from "./create-chatbot-context";
 import LastMessage from "./last-message";
-import { useChatbotDetail } from "@/hooks/api/chatbot";
+import { useChatbotDetail, useGetSession } from "@/hooks/api/chatbot";
 import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useAccount } from "wagmi";
@@ -38,6 +38,8 @@ const MessageList = () => {
 
 		messageHistory,
 		setMessageHistory,
+
+		buttonSession
 	} = useCreateChatbotContext();
 
 	const {id} = useParams()
@@ -45,9 +47,10 @@ const MessageList = () => {
 	const {data:chatbotData , isSuccess: chatbotDetailIsSuccess} = useChatbotDetail({
 		chatbot_id:id as string
 	})
+	const chatSession = useGetSession({chatbot_id:id as string})
 
 	const chatHistoryAPI = useChatHistory({
-		session_id: chatbotData?.data.data.session_id,
+		session_id: chatSession.data?.data.data?.session_id,
 		app_id: id as string,
 		page_num: 1,
 		page_size: 10,
@@ -57,19 +60,21 @@ const MessageList = () => {
 	});
 
 	useEffect(() => {
+		console.log(chatbotDetailIsSuccess && chatHistoryAPI.isSuccess)
 		if (chatbotDetailIsSuccess && chatHistoryAPI.isSuccess) {
 			
-		  // if (chatHistoryAPI.data.data.length) {
-		  //   setChatList(chatHistoryAPI.data.data);
-		  // }
+		  console.log(chatHistoryAPI.data?.data.length)
 		  if (chatHistoryAPI.data?.data.length) {
 			console.log(chatHistoryAPI.data?.data)
 			setMessageHistory(chatHistoryAPI.data?.data.reverse());
+		  } else if (chatHistoryAPI.data?.data.length === 0) {
+			setMessageHistory(chatHistoryAPI.data?.data)
 		  }
 		  setAnswersStream([]);
 		}
+		
 	  // }, [chatHistoryAPI.isSuccess, chatHistoryAPI.data?.data]);
-	  }, [chatbotDetailIsSuccess,chatHistoryAPI.isSuccess]);
+	  }, [chatbotDetailIsSuccess,chatHistoryAPI.isSuccess,buttonSession]);
 
 	useEffect(() => {
 		fieldRef.current?.scrollIntoView({
@@ -125,7 +130,7 @@ const MessageList = () => {
 						<div className="flex items-start space-x-3 my-4">
 							<Image src={profileImage} alt="User avatar" className="w-8 h-8 rounded-full mr-5" />
 							<div className="text-white text-sm w-full">
-								<h6 className="mb-5 mt-1">{message.sender == "bot" ? "Levi Ackerman" : "You"}</h6>
+								<h6 className="mb-5 mt-1">{message.sender == "bot" ? chatbotData?.data.data.name : "You"}</h6>
 								<p>{message.message}</p>
 							</div>
 						</div>

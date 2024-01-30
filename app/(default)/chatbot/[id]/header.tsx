@@ -1,9 +1,11 @@
-import { useGetSession, useNewSession } from "@/hooks/api/chatbot";
+import { useChatbotDetail, useGetSession, useNewSession } from "@/hooks/api/chatbot";
 import { useParams } from "next/navigation";
 import { useEffect } from "react";
 import Image from "next/image";
 import ProfileImageDummy from "public/images/avatar-bot-dummy.svg";
 import { Archivo } from "next/font/google";
+import { useChatHistory } from "@/hooks/api/chatbox";
+import { useCreateChatbotContext } from "./create-chatbot-context";
 
 const archivo = Archivo({
     weight: ["400", "600"],
@@ -11,16 +13,36 @@ const archivo = Archivo({
 });
 
 const Header = () => {
-    const title = "Levi Ackerman - Chatbot";
-
-    useEffect(() => {
-        document.title = title;
-    }, [title]);
+    
+    const {buttonSession,setButtonSession} = useCreateChatbotContext()
 
     const newSession = useNewSession()
     const {id} = useParams()
-    const chatSession = useGetSession({chatbot_id:id as string})
 
+    const {data:chatbotData , isSuccess: chatbotDetailIsSuccess} = useChatbotDetail({
+		chatbot_id:id as string
+	})
+
+    const title = chatbotData?.data.data.name + " - Chatbot";
+
+    useEffect(() => {
+        
+        document.title = title;
+    }, [title]);
+
+    useEffect(()=> {
+        console.log(chatbotData?.data.data.name)
+    },[chatbotDetailIsSuccess])
+    const chatSession = useGetSession({chatbot_id:id as string})
+    const chatHistoryAPI = useChatHistory({
+		session_id: chatSession.data?.data.data?.session_id,
+		app_id: id as string,
+		page_num: 1,
+		page_size: 10,
+		// request_url:
+		//   appDetail?.data?.data.data.app_info.plugin_meta_data.chat_history_api
+		//     .request_url,
+	});
     return (
         <div className="text-white flex justify-between items-center border-b border-b-gray-600 py-6">
             <div className="flex items-center gap-6">
@@ -32,7 +54,7 @@ const Header = () => {
                 </button>
                 <div className="flex items-center gap-2">
                     <Image src={ProfileImageDummy} alt="Profile" className="w-8 h-8 rounded-full" />
-                    <h1 className={`text-xl ${archivo.className} font-semibold`}>Levi Ackerman</h1>
+                    <h1 className={`text-xl ${archivo.className} font-semibold`}>{chatbotData?.data.data.name }</h1>
                 </div>
             </div>
             <div className="flex justify-between">
@@ -47,6 +69,8 @@ const Header = () => {
                     newSession.mutate({chatbot_id:id as string}, {
                         onSuccess(data, variables, context) {
                             chatSession.refetch()
+                            chatHistoryAPI.refetch()
+                            setButtonSession((prev:boolean)=>!prev)
                         },
                     })
                 }}>

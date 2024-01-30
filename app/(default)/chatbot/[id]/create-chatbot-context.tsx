@@ -22,6 +22,9 @@ interface CreateChatbotContextProps {
 
 	messageHistory: Message[];
 	setMessageHistory: ReactSetter<Message[]>;
+
+	buttonSession: any;
+	setButtonSession: any;
 }
 
 interface Message {
@@ -49,6 +52,7 @@ export const CreateChatbotProvider = ({
 		example_conversation: "",
 	});
 	const [newQuestion, setNewQuestion] = useState("");
+	const [buttonSession,setButtonSession] = useState(false)
 	
 
 	const [messageHistory, setMessageHistory] = useState<Message[]>([]);
@@ -92,6 +96,9 @@ export const CreateChatbotProvider = ({
 				// Chat history
 				messageHistory,
 				setMessageHistory,
+
+				buttonSession,
+				setButtonSession
 			}}
 		>
 			{children}
