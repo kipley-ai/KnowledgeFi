@@ -106,9 +106,9 @@ const ManageDataSources = () => {
                                     </div>
                                 </td> {/* Row Checkbox */}
                                 <td className="">{row.item_name}</td>
-                                <td className="">{row.type}</td>
+                                <td className="">{row.item_type}</td>
                                 <td className="">{row.size}</td>
-                                <td className="">{row.lastUpdated}</td>
+                                <td className="">{row.created_at}</td>
                                 <td className="">
                                     <span className={`text-left inline-flex leading-5 rounded-full ${row.status === 'Completed' ? 'text-[#BDFF9E]' : 'text-[#F85C72]'}`}>
                                         {row.status}
