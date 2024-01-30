@@ -66,18 +66,27 @@ const ManageDataSources = () => {
             {/* Selected count and Delete Button */}
             <div className="my-4 flex justify-end items-center">
                 {   
-                    checkRow.includes(true) && (
+                    checkRow.includes(true) ? (
+                        <div className="flex items-center">
                         <span className="mr-10">{checkRow.filter((value) => value === true).length} selected</span>
-                    )
+                        <button
+                            className="flex items-center justify-center bg-transparent rounded-3xl border-2 border-[#FF6C3E] py-2 px-9"
+                            type="submit"
+                        >
+                            <h5 className="text-sm text-[#FF6C3E] font-semibold flex-grow">
+                                Delete
+                            </h5>
+                        </button>
+                        </div>
+                    ): <div>
+                        <button
+                            className="opacity-0 flex items-center justify-center bg-transparent rounded-3xl border-2 border-[#FF6C3E] py-2 px-9"
+                        ><h5 className="text-sm text-[#FF6C3E] font-semibold flex-grow">
+                            Delete
+                        </h5></button>
+                    </div>
                 }
-                <button
-                    className="flex items-center justify-center bg-transparent rounded-3xl border-2 border-[#FF6C3E] py-2 px-9"
-                    type="submit"
-                >
-                    <h5 className="text-sm text-[#FF6C3E] font-semibold flex-grow">
-                        Delete
-                    </h5>
-                </button>
+                
             </div>
 
             {/* Table */}

@@ -16,6 +16,19 @@ export const useCreateKBAndMintNFT = () => {
 	});
 };
 
+export const useMintNFT = () => {
+	const { address } = useAccount();
+
+	return useMutation({
+		mutationFn: (params: {kb_id:string}) =>
+			axios.post("/api/kb/mint_nft", params, {
+				headers: {
+					"x-kf-user-id": address,
+				},
+			}),
+	});
+};
+
 export const useKBItem = (params: IKBItem) => {
 	const { address } = useAccount();
 

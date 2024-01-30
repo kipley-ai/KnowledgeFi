@@ -4,12 +4,14 @@ import { mintNFT } from "@/smart-contract/kip-protocol-contract";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useCreateChatbotContext } from "./create-knowledge-context";
-import { useCreateKBAndMintNFT } from "@/hooks/api/kb";
+import { useCreateKBAndMintNFT, useMintNFT } from "@/hooks/api/kb";
 import { useSession } from "next-auth/react";
 import { uploadFileS3 } from "@/app/api/upload/s3/helper";
 import MintNFTModal from "./mint-nft-modal";
 import ImageInput from "@/components/image-input";
 import LoadingIcon from "public/images/loading-icon.svg";
+
+
 
 // export const metadata = {
 //     title: 'NFT - Mosaic',
@@ -45,6 +47,7 @@ export default function NFT() {
   );
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [nftIdCreated,setNftIdCreated] = useState("")
+  const  mintNFTAPI = useMintNFT()
 
   const handleFormChange = (name: string, value: any) => {
     setForm({
@@ -62,6 +65,7 @@ export default function NFT() {
 
   const handleMintNFT = async () => {
     try {
+      console.log(createKb.type, twitterSession?.user);
       let presignedUrl;
 
       if (uploadedFile) {
@@ -73,7 +77,6 @@ export default function NFT() {
         await uploadFileS3(uploadedFile, presignedUrl, null);
       }
 
-      console.log(createKb.type, twitterSession?.user);
       createKBandMintNFT.mutate(
         {
           type: createKb.type,
@@ -99,14 +102,19 @@ export default function NFT() {
           async onSuccess(data, variables, context) {
             const { kb_id, nft_id, asset_id } = data.data;
             setNftIdCreated(nft_id)
-            await mintNFT(
-              // kb_id,
-              form.name!,
-              form.symbol!,
-              parseInt(form.shareSupply!),
-              asset_id,
-            );
-            setShowModal(true);
+            try{
+              await mintNFT(
+                // kb_id,
+                form.name!,
+                form.symbol!,
+                parseInt(form.shareSupply!),
+                asset_id,
+              );
+              mintNFTAPI.mutate({kb_id:kb_id})
+              setShowModal(true);
+            } catch(error: any) {
+              console.log(error)
+            }
           },
         },
       );
@@ -170,8 +178,6 @@ export default function NFT() {
     }
   }, [errorMessage]);
 
-  console.log("uploadedFile :>> ", uploadedFile);
-
   return (
     <>
       <MintNFTModal
@@ -186,7 +192,7 @@ export default function NFT() {
           <hr className="my-4 border border-gray-600" />
         </div>
         <form className="flex flex-row gap-8 mt-4 mx-56">
-          <ImageInput
+          <ImageInput 
             selectedFile={selectedFile}
             setSelectedFile={setSelectedFile}
             setUploadedFile={setUploadedFile}
