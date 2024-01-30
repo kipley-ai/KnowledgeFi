@@ -2,7 +2,7 @@ import { useParams, usePathname, useRouter, useSearchParams } from "next/navigat
 import { useCreateChatbotContext } from "./create-chatbot-context";
 import { uuid } from "uuidv4";
 import { useAccount } from "wagmi";
-import { useChatbotDetail, useGetSession } from "@/hooks/api/chatbot";
+import { useChatbotDetail, useGetSession, useNewSession } from "@/hooks/api/chatbot";
 import { useEffect } from "react";
 import Image from "next/image";
 import Avatar from "public/images/avatar-gradient-icon.svg";
@@ -30,11 +30,17 @@ const MessageInput = () => {
 	const {address} = useAccount()
 	const {id} = useParams()
 	const chatSession = useGetSession({chatbot_id:id as string})
+	const newSession = useNewSession()
+
 	const {data:chatbotData , isSuccess} = useChatbotDetail({
 		chatbot_id:id as string
 	})
 
-	const promptTemplate: string = chatbotData?.data.data.instruction as string + "\n\nAct as the person described above, and utilize the available information below to answer the question.\nRemember, the user is looking for assistance, so keep your responses natural, concise, accurate, and informative. If you are uncertain about a query or if the user asked something which is unidentified by you, prompt the user to rephrase it.\nHere is the available information: \n{context}\n\nHere is user's question:\n{question}"
+	useEffect(()=> {
+		console.log(!chatSession.data?.data.data?.session_id)
+	},[chatSession.isSuccess])
+
+	const promptTemplate: string = "\""+ chatbotData?.data.data.instruction as string + "\n\nAct as the person described above, and utilize the available information below to answer the question.\nRemember, the user is looking for assistance, so keep your responses natural, concise, accurate, and informative. If you are uncertain about a query or if the user asked something which is unidentified by you, prompt the user to rephrase it.\nHere is the available information: \n{context}\n\nHere is user's question:\n{question}" +"\""
 
 	return (
 		<div className="flex items-center rounded-full border border-gray-600 focus-within:border-[#01F7FF] bg-dark-blue px-4 py-2 mt-6 w-full">
@@ -55,22 +61,45 @@ const MessageInput = () => {
 				<button
 					className="text-light-blue"
 					onClick={(e) => {
-						console.log(chatSession.data?.data.data.session_id)
-						sendValidatedMessage({
-							question: newQuestion,
-							chatbot_id: id as string,
-							session_id: chatSession.data?.data.data.session_id as string,
-							kb_id:chatbotData?.data.data.kb_id as string,
-							// type: "twitter",
-							user_id: address as string,
-							plugin_config:'{"model":"gpt-3.5-turbo","prompt_template":' + promptTemplate + ',"model_temperature":0,"top_p":1,"frequency_penalty":0,"presence_penalty":0,"top_k_docs":10}',
-						});
-						setMessageHistory((prevHistory) => [
-							...prevHistory,
-							{ sender: "user", message: newQuestion },
-						]);
-						setNewQuestion("");
-						setReplyStatus("answering");
+						if(!chatSession.data?.data.data.session_id){
+							newSession.mutate({chatbot_id:id as string}, {
+								onSuccess(data, variables, context) {
+									console.log(data)
+									chatSession.refetch()
+									sendValidatedMessage({
+										question: newQuestion,
+										chatbot_id: id as string,
+										session_id: data?.data.session_id as string,
+										kb_id:chatbotData?.data.data.kb_id as string,
+										// type: "twitter",
+										user_id: address as string,
+										plugin_config:'{"model":"gpt-3.5-turbo","prompt_template":' + promptTemplate + ',"model_temperature":0,"top_p":1,"frequency_penalty":0,"presence_penalty":0,"top_k_docs":10}',
+									});
+									setMessageHistory((prevHistory) => [
+										...prevHistory,
+										{ sender: "user", message: newQuestion },
+									]);
+									setNewQuestion("");
+									setReplyStatus("answering");
+								},
+							})
+						} else {
+							sendValidatedMessage({
+								question: newQuestion,
+								chatbot_id: id as string,
+								session_id: chatSession.data?.data.data.session_id as string,
+								kb_id:chatbotData?.data.data.kb_id as string,
+								// type: "twitter",
+								user_id: address as string,
+								plugin_config:'{"model":"gpt-3.5-turbo","prompt_template":' + promptTemplate + ',"model_temperature":0,"top_p":1,"frequency_penalty":0,"presence_penalty":0,"top_k_docs":10}',
+							});
+							setMessageHistory((prevHistory) => [
+								...prevHistory,
+								{ sender: "user", message: newQuestion },
+							]);
+							setNewQuestion("");
+							setReplyStatus("answering");
+						}
 					}}
 				>
 					<Image src={EnterIcon} alt="Submit"/>

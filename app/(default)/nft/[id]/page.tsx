@@ -53,12 +53,14 @@ const ChatbotSection = ({chatbotDetail}:{chatbotDetail:any}) => {
                 <h1 className="text-4xl font-semibold">{chatbotDetail.name}</h1>
             </div>
             <div>
-                <button className="rounded-full border border-[#01F7FF] text-[#01F7FF] flex px-7 py-1 items-center"> 
+                <Link href={'/chatbot/'+chatbotDetail.chatbot_id+'/edit'}>
+                <button className="rounded-full border border-[#01F7FF] text-[#01F7FF] flex px-7 py-1 items-center" > 
                 <svg className="mr-1" width="15" height="14" viewBox="0 0 15 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M10.4274 0.513214L9.10264 1.83799L12.6609 5.39627L13.9857 4.07149C14.67 3.38721 14.67 2.27867 13.9857 1.59438L12.9073 0.513214C12.223 -0.171071 11.1144 -0.171071 10.4302 0.513214H10.4274ZM8.48405 2.45658L2.10377 8.83959C1.81911 9.12425 1.61109 9.47735 1.49613 9.86328L0.527182 13.1561C0.458753 13.3887 0.521707 13.6378 0.69141 13.8075C0.861113 13.9772 1.11019 14.0402 1.34011 13.9745L4.63289 13.0055C5.01883 12.8906 5.37192 12.6825 5.65658 12.3979L12.0423 6.01486L8.48405 2.45658Z" fill="#01F7FF"/>
                 </svg>
                     Edit
                 </button>
+                </Link>
             </div>
 
         </div>

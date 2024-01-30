@@ -7,7 +7,7 @@ export const useChatbotList = (params: any) => {
 	const appId = process.env.APP_ID;
 
 	return useQuery({
-		queryKey: ["nft", "list", params.page],
+		queryKey: ["chatbot", "list", params.page],
 		queryFn: () => axios.post("/api/chatbot/list", params),
 	});
 };
