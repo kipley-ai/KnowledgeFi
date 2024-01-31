@@ -42,6 +42,7 @@ const NoData = ({ item, url }: NoDataProps) => {
 };
 
 type NFTCardProps = {
+    nft: any;
     id: string | number;
     name: string;
     price: number;
@@ -49,11 +50,11 @@ type NFTCardProps = {
     category: string;
 };
 
-const NFTCard = ({ id, name, price, tokenSymbol, category }: NFTCardProps) => {
+const NFTCard = ({nft, id, name, price, tokenSymbol, category }: NFTCardProps) => {
     return (
         <div className="group relative flex flex-col bg-[#222325] rounded-3xl">
             <Image
-                src="/images/nft-default-thumb.png"
+                src={nft.profile_image}
                 className="rounded-t-2xl p-2"
                 width={300}
                 height={300}
@@ -93,6 +94,7 @@ const NFTList = () => {
                 <div className="grid grid-cols-4 gap-x-6 gap-y-12">
                     {nftsData.map((nft: any, index: number) => (
                         <NFTCard
+                            nft={nft}
                             key={index}
                             id={nft.sft_id}
                             name={nft.name}
@@ -115,17 +117,18 @@ const NFTList = () => {
 };
 
 type BotCardProps = {
+    bot: any;
     id: string | number;
     name: string;
     category: string;
     sftId: string;
 };
 
-const BotCard = ({ id, name, category, sftId }: BotCardProps) => {
+const BotCard = ({ bot, id, name, category, sftId }: BotCardProps) => {
     return (
         <div className="group relative flex flex-col gap-3 bg-[#222325] rounded-3xl">
             <Image
-                src="/images/bot-default-thumb.png"
+                src={bot.profile_image}
                 className="rounded-t-2xl p-1"
                 width={300}
                 height={200}
@@ -141,15 +144,15 @@ const BotCard = ({ id, name, category, sftId }: BotCardProps) => {
                     href={`/nft/${sftId}`}
                 >
                     <p className="text-sm font-semibold text-center">
-                        View More
+                        View Details
                     </p>
                 </Link>
                 <Link
                     className="hover:bg-[#01F7FF] hover:text-black flex-1 flex justify-center items-center rounded-br-xl"
-                    href={`/nft`}   // TODO: change to mint nft page
+                    href={`/chatbot/`+id}   // TODO: change to mint nft page
                 >
                     <p className="text-sm font-semibold text-center">
-                        Mint NFT
+                        Chat
                     </p>
                 </Link>
             </div>
@@ -172,6 +175,7 @@ const BotList = () => {
                 <div className="grid grid-cols-4 gap-x-6 gap-y-12">
                     {botsData.map((bot: any, index: number) => (
                         <BotCard
+                            bot={bot}
                             key={index}
                             id={bot.chatbot_id}
                             name={bot.name}
