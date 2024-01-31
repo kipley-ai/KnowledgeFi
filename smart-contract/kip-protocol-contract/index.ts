@@ -50,3 +50,8 @@ export async function mintNFT(
     signer.address
   );
 }
+
+export async function recharge(amount: number) {
+  const { contractWrite } = await getKipProtocolContract();
+  return await contractWrite.recharge(amount);
+}
