@@ -5,6 +5,8 @@ import Image from "next/image";
 import { signOut } from "next-auth/react";
 import { useDisconnect } from "wagmi";
 import defaultAvatar from "@/public/images/avatar-default-02.svg"
+import { useAppProvider } from "@/providers/app-provider";
+import ModalTopUp from "../modal-top-up";
 
 type StatusType = "online" | "busy" | "away" | "offline";
 
@@ -29,6 +31,7 @@ const AvatarWithStatus: React.FC<AvatarWithStatusProps> = ({
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const { disconnect } = useDisconnect();
+	const { modalTopUp, setModalTopUp } = useAppProvider();
 
   // This function toggles the dropdown's visibility
   const toggleDropdown = () => {
@@ -51,6 +54,7 @@ const AvatarWithStatus: React.FC<AvatarWithStatusProps> = ({
 
   return (
     <div className="relative inline-block" ref={dropdownRef}>
+      <ModalTopUp isOpen={modalTopUp} setIsOpen={setModalTopUp} />
       <div onClick={toggleDropdown} className="cursor-pointer">
         {/* <img src={image} alt="Avatar" className="w-12 h-12 rounded-full" /> */}
         {image === "" ? (
@@ -84,6 +88,13 @@ const AvatarWithStatus: React.FC<AvatarWithStatusProps> = ({
               <div className="text-sm font-medium text-[#FCFCFD]">Balance</div>
               <div className="text-lg font-semibold text-[#FCFCFD]">
                 512 credits
+              </div>
+              <div className="mt-2 flex items-center border border-[#01F7FF] px-1 py-1 rounded-full">
+                <button className="w-full" onClick={() => setModalTopUp(true)}>
+                    <span className="text-sm font-bold text-[#FCFCFD] duration-200">
+                      Top up credits
+                    </span>
+                </button>
               </div>
             </div>
           </div>
