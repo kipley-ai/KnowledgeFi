@@ -4,6 +4,8 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import LoadMoreButton from "@/components/load-more-button";
+import { useSearchParams } from "next/navigation";
+import { PaginationController } from "@/components/pagination/controller";
 
 type NFTCardProps = {
     id: string | number;
@@ -79,13 +81,27 @@ export default function NFT() {
     const title = "My NFT";
     const { setHeaderTitle } = useAppProvider();
 
+	const searchParams = useSearchParams();
+
+	const nftPage = searchParams.get("nftPage") ?? "1";
+	const nftPerPage = searchParams.get("nftPerPage") ?? "4";
+	const botPage = searchParams.get("botPage") ?? "1";
+	const botPerPage = searchParams.get("botPerPage") ?? "4";
+
+	const nftStart = (Number(nftPage) - 1) * Number(nftPerPage);
+	const nftEnd = nftStart + Number(nftPerPage);
+	const botStart = (Number(botPage) - 1) * Number(botPerPage);
+	const botEnd = botStart + Number(botPerPage);
+
     const NFTCards = Array.from({ length: 8 }, (_, index) => (
         <NFTCard key={index} id={index} />
     ));
+    const nftTotalPages = Math.ceil(Number(NFTCards.length) / Number(nftPerPage))
 
     const BotCards = Array.from({ length: 8 }, (_, index) => (
         <BotCard key={index} id={index} />
     ));
+    const botTotalPages = Math.ceil(Number(BotCards.length) / Number(botPerPage))
 
     const handleLoadMore = () => {
         console.log("Load More");
@@ -103,24 +119,30 @@ export default function NFT() {
             <div className="flex flex-col gap-8">
                 <h1 className="text-2xl font-semibold text-white">My NFT</h1>
                 <div className="grid grid-cols-4 gap-x-6 gap-y-12">
-                    {NFTCards}
+                    {NFTCards.slice(nftStart, nftEnd)}
                 </div>
                 <div className="flex justify-center">
+                    <PaginationController totalPages={nftTotalPages} pageQuery={"nftPage"} />
+                </div>
+                {/* <div className="flex justify-center">
                     <LoadMoreButton onClick={() => handleLoadMore()}>
                         Load more
                     </LoadMoreButton>
-                </div>
+                </div> */}
             </div>
             <div className="flex flex-col gap-8">
                 <h1 className="text-2xl font-semibold text-white">My Bots</h1>
                 <div className="grid grid-cols-4 gap-x-6 gap-y-12">
-                    {BotCards}
+                    {BotCards.slice(botStart, botEnd)}
                 </div>
                 <div className="flex justify-center">
+                    <PaginationController totalPages={botTotalPages} pageQuery={"botPage"} />
+                </div>
+                {/* <div className="flex justify-center">
                     <LoadMoreButton onClick={() => handleLoadMore()}>
                         Load more
                     </LoadMoreButton>
-                </div>
+                </div> */}
             </div>
         </div>
     );

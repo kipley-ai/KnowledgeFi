@@ -1,13 +1,19 @@
 "use client";
 
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 import { ReactSetter } from "@/lib/aliases";
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
 
-export type TabIdentifier = "db" | "co" | "wh" | "dh" | "cu";
+export type TabIdentifier =
+	| "dashboard"
+	| "creator"
+	| "earning"
+	| "withdraw"
+	| "deposit"
+	| "credit";
 
 interface ManageAccountContextProps {
-	currentTab: TabIdentifier;
-	setCurrentTab: ReactSetter<TabIdentifier>;
+	null_: null;
 }
 
 const ManageAccountContext = createContext<
@@ -19,13 +25,12 @@ export const ManageAccountProvider = ({
 }: {
 	children: React.ReactNode;
 }) => {
-	const [currentTab, setCurrentTab] = useState<TabIdentifier>("db");
+	const null_ = null;
 
 	return (
 		<ManageAccountContext.Provider
 			value={{
-				currentTab,
-				setCurrentTab,
+				null_,
 			}}
 		>
 			{children}
