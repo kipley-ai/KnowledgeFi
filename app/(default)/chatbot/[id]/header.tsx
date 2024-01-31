@@ -1,19 +1,50 @@
-import { useNewSession } from "@/hooks/api/chatbot";
+import { useChatbotDetail, useGetSession, useNewSession } from "@/hooks/api/chatbot";
 import { useParams } from "next/navigation";
 import { useEffect } from "react";
+import Image from "next/image";
+import ProfileImageDummy from "public/images/avatar-bot-dummy.svg";
+import { Archivo } from "next/font/google";
+import { useChatHistory } from "@/hooks/api/chatbox";
+import { useCreateChatbotContext } from "./create-chatbot-context";
+
+const archivo = Archivo({
+    weight: ["400", "600"],
+    subsets: ["latin"],
+});
 
 const Header = () => {
-    const title = "Levi Ackerman - Chatbot";
-
-    useEffect(() => {
-        document.title = title;
-    }, [title]);
+    
+    const {buttonSession,setButtonSession} = useCreateChatbotContext()
 
     const newSession = useNewSession()
     const {id} = useParams()
 
+    const {data:chatbotData , isSuccess: chatbotDetailIsSuccess} = useChatbotDetail({
+		chatbot_id:id as string
+	})
+
+    const title = chatbotData?.data.data.name + " - Chatbot";
+
+    useEffect(() => {
+        
+        document.title = title;
+    }, [title]);
+
+    useEffect(()=> {
+        console.log(chatbotData?.data.data.name)
+    },[chatbotDetailIsSuccess])
+    const chatSession = useGetSession({chatbot_id:id as string})
+    const chatHistoryAPI = useChatHistory({
+		session_id: chatSession.data?.data.data?.session_id,
+		app_id: id as string,
+		page_num: 1,
+		page_size: 10,
+		// request_url:
+		//   appDetail?.data?.data.data.app_info.plugin_meta_data.chat_history_api
+		//     .request_url,
+	});
     return (
-        <div className="text-white flex justify-between items-center">
+        <div className="text-white flex justify-between items-center border-b border-b-gray-600 py-6">
             <div className="flex items-center gap-6">
                 <button className="text-white text-2xl focus:outline-none">
                     <svg width="26" height="12" viewBox="0 0 26 12" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -22,40 +53,42 @@ const Header = () => {
                     </svg>
                 </button>
                 <div className="flex items-center gap-2">
-                    <img src="images/user-32-03.jpg" alt="Profile" className="w-8 h-8 rounded-full" />
-                    <h1 className="text-xl">Levi Ackerman</h1>
+                    <Image src={chatbotData?.data.data.profile_image} alt="Profile" className="w-8 h-8 rounded-full" />
+                    <h1 className={`text-xl ${archivo.className} font-semibold`}>{chatbotData?.data.data.name }</h1>
                 </div>
             </div>
-            <div className="flex flex-row justify-between pb-5">
-                <button className="text-white text-2xl focus:outline-none pr-10 pt-5">
-                    ...
-                </button>
-                <button className="flex items-center justify-center bg-[#FFFFFF] rounded-3xl p-2 px-5 mt-8" type="submit">
-                    <h5 className="text-black font-semibold flex-grow pr-2">Share</h5>
+            <div className="flex justify-between">
+                {/* <button className="flex items-center justify-center rounded-3xl p-2 px-5 border-2 border-[#393E44]" type="submit">
+                    <h5 className="text-[#7C878E] font-semibold flex-grow pr-2">Share</h5>
                     <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M16.3261 9.50616C16.5296 9.33179 16.6313 9.24461 16.6686 9.14086C16.7013 9.04979 16.7013 8.95019 16.6686 8.85913C16.6313 8.75538 16.5296 8.66819 16.3261 8.49382L9.26719 2.4433C8.917 2.14314 8.74191 1.99306 8.59367 1.98938C8.46483 1.98618 8.34177 2.04278 8.26035 2.14268C8.16667 2.25763 8.16667 2.48824 8.16667 2.94947V6.52885C6.38777 6.84006 4.75966 7.74146 3.54976 9.09488C2.23069 10.5704 1.50103 12.4799 1.5 14.4591V14.9691C2.37445 13.9157 3.46626 13.0638 4.70063 12.4716C5.78891 11.9495 6.96535 11.6403 8.16667 11.5588V15.0505C8.16667 15.5117 8.16667 15.7424 8.26035 15.8573C8.34177 15.9572 8.46483 16.0138 8.59367 16.0106C8.74191 16.0069 8.917 15.8568 9.26719 15.5567L16.3261 9.50616Z" stroke="#292D32" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        <path d="M16.3261 9.50616C16.5296 9.33179 16.6313 9.24461 16.6686 9.14086C16.7013 9.04979 16.7013 8.95019 16.6686 8.85913C16.6313 8.75538 16.5296 8.66819 16.3261 8.49382L9.26719 2.4433C8.917 2.14314 8.74191 1.99306 8.59367 1.98938C8.46483 1.98618 8.34177 2.04278 8.26035 2.14268C8.16667 2.25763 8.16667 2.48824 8.16667 2.94947V6.52885C6.38777 6.84006 4.75966 7.74146 3.54976 9.09488C2.23069 10.5704 1.50103 12.4799 1.5 14.4591V14.9691C2.37445 13.9157 3.46626 13.0638 4.70063 12.4716C5.78891 11.9495 6.96535 11.6403 8.16667 11.5588V15.0505C8.16667 15.5117 8.16667 15.7424 8.26035 15.8573C8.34177 15.9572 8.46483 16.0138 8.59367 16.0106C8.74191 16.0069 8.917 15.8568 9.26719 15.5567L16.3261 9.50616Z" stroke="#7C878E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                     </svg>
-                </button>
-                <button className="text-gray-400 hover:text-blue-500 self-end" 
+                </button> */}
+                <button className="text-gray-400 hover:text-blue-500 self-end ml-3 rounded-full" 
                 onClick={()=> {
-                    newSession.mutate({chatbot_id:id as string})
+                    newSession.mutate({chatbot_id:id as string}, {
+                        onSuccess(data, variables, context) {
+                            chatSession.refetch()
+                            chatHistoryAPI.refetch()
+                            setButtonSession((prev:boolean)=>!prev)
+                        },
+                    })
                 }}>
-                    {/* Insert regenerate icon here */}
-                    <svg
+                    <h5 className="text-[#7C878E] font-semibold flex-grow  rounded-3xl p-1 px-5 border-2 border-[#393E44]">Refresh</h5>
+                    {/* <svg
                         width="40"
                         height="40"
                         viewBox="0 0 40 40"
                         fill="none"
                         xmlns="http://www.w3.org/2000/svg"
+                        className="rounded-full"
                     >
-                        <rect
-                            x="0.75"
-                            y="0.75"
-                            width="38.5"
-                            height="38.5"
-                            rx="11.25"
+                        <circle
+                            cx="20"
+                            cy="20"
+                            r="18.5"
                             stroke="#393E44"
-                            stroke-width="1.5"
+                            stroke-width="2"
                         />
                         <g clip-path="url(#clip0_201_34)">
                             <path
@@ -76,7 +109,7 @@ const Header = () => {
                                 />
                             </clipPath>
                         </defs>
-                    </svg>
+                    </svg> */}
                 </button>
             </div>
         </div>

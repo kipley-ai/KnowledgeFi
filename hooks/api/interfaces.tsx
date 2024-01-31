@@ -22,13 +22,13 @@ export interface ICreateChatbotParams {
     instruction: string;
     example_conversation: string;
     sft_id: string;
-    kb_id:string;
+    kb_id: string;
 }
 
 export interface ICreateKBAndNFTParams {
     type: string;
-    kb_data? : string;
-    username? : string;
+    kb_data?: string;
+    username?: string;
     name: string;
     description: string
     contract_address: string
@@ -40,6 +40,7 @@ export interface ICreateKBAndNFTParams {
     query_royalties: number
     token_amount: number
     url: string
+    profile_image: string
 }
 
 // Used by hooks/api/nft/index.ts
@@ -49,4 +50,24 @@ export interface INFTDetailParams {
 
 export interface IChatbotDetailParams {
     chatbot_id: string;
+}
+
+export interface IUpdateChatbotParams {
+    category_id: string;
+    chatbot_id: string;
+    name: string;
+    description: string;
+    instruction: string;
+    example_conversation: string;
+    profile_image: string;
+}
+
+export interface IPaginate {
+    page?: number;
+    page_size?: number;
+    sort_by?: string;
+}
+
+export interface IKBItem extends IPaginate{
+    kb_id: string;
 }

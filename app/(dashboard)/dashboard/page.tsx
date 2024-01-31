@@ -106,8 +106,9 @@ export default function Dashboard() {
 								>
 									<Image
 										src={person.image}
-										layout="fill"
-										objectFit="cover"
+										fill
+										style={{ objectFit: "cover" }}
+										sizes="138px"
 										alt="Avatar"
 									/>
 								</div>

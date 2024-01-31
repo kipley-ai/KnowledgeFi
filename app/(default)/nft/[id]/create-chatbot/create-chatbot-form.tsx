@@ -3,7 +3,10 @@ import { useParams, useRouter } from "next/navigation";
 import { useCreateChatbotAPI } from "@/hooks/api/chatbot";
 import { useCreateChatbotContext } from "./create-chatbot-context";
 import { useSession } from "next-auth/react";
+import CreateChatbotModal from "@/components/toast-4";
 import { useNftDetail } from "@/hooks/api/nft";
+import LoadingIcon from "public/images/loading-icon.svg";
+import ImageInput from "@/components/image-input-2";
 
 const ChatBotForm = () => {
 	const title = "Create Chatbot";
@@ -13,6 +16,7 @@ const ChatBotForm = () => {
 	const [category, setCategory] = useState("");
 	const [profileImage, setProfileImage] = useState("");
 	const [profileImageUrl, setProfileImageUrl] = useState("");
+	const [showModal, setShowModal] = useState(false);
 	const [instructions, setInstructions] = useState("");
 	const [example, setExample] = useState("");
 	const router = useRouter();
@@ -20,6 +24,8 @@ const ChatBotForm = () => {
 	const { createChatbot: chatbot } = useCreateChatbotContext();
 	const {id} = useParams()
 	const {data:nftData} = useNftDetail({ sft_id:id as string})
+	const [selectedFile, setSelectedFile] = useState<any>(LoadingIcon)
+
 	
 
 	const { data: twitterSession } = useSession();
@@ -47,9 +53,10 @@ const ChatBotForm = () => {
 		formData.append("description", description);
 		formData.append("category", category);
 		console.log(twitterSession?.user);
+		console.log(selectedFile)
 
 		createChatbot.mutate({
-			profile_image: "",
+			profile_image: selectedFile,
 			category_id: category,
 			name: characterName,
 			description: description,
@@ -57,6 +64,11 @@ const ChatBotForm = () => {
 			example_conversation: example,
 			sft_id:id as string,
 			kb_id:nftData?.data.data.kb_id
+		},
+		{
+			async onSuccess(){
+				setShowModal(true)
+			}
 		});
 	};
 
@@ -95,53 +107,28 @@ const ChatBotForm = () => {
 	}, [title]);
 
 	return (
+		<>
+		<CreateChatbotModal 
+			children={"Your chatbot has been created successfully!"}
+			open={showModal}
+			setOpen={setShowModal}
+		/>
 		<div className="flex flex-col sm:px-6 lg:px-0 py-8 bg-[#292D32]">
 			<div className="mx-64">
 				<h1 className="text-2xl font-semibold text-white">
-					General Information
+					Create Chatbot
 				</h1>
-				<h5 className="text-md text-[#7C878E]">
+				{/* <h5 className="text-md text-[#7C878E]">
 					Give some general information about your character.
-				</h5>
+				</h5> */}
 				<hr className="my-4 border border-gray-600" />
 			</div>
 			<form className="flex flex-col gap-5" onSubmit={handleSubmit}>
 				<div className="flex flex-col items-center justify-center py-8 mx-64">
-					<label
-						htmlFor="profileImage"
-						className="flex flex-col items-center justify-center w-full h-32 bg-gray-800 rounded-lg border-2 border-gray-300 border-dashed cursor-pointer hover:bg-gray-700"
-					>
-						<div className="flex flex-col items-center justify-center pt-5 pb-6">
-							<svg
-								className="mb-3 w-10 h-10 text-gray-400"
-								fill="none"
-								stroke="currentColor"
-								viewBox="0 0 24 24"
-								xmlns="http://www.w3.org/2000/svg"
-							>
-								<path
-									strokeLinecap="round"
-									strokeLinejoin="round"
-									strokeWidth="2"
-									d="M12 4v16m8-8H4"
-								/>
-							</svg>
-							<p className="mb-2 text-sm text-gray-400">
-								<span className="font-semibold">Click to upload</span> or drag
-								and drop
-							</p>
-							<p className="text-xs text-gray-400">
-								800x800 PNG, JPG is recommended. Maximum file size: 2 MB
-							</p>
-						</div>
-						<input
-							id="profileImage"
-							type="file"
-							className="hidden"
-							onChange={handleImageChange}
-							accept="image/png, image/jpeg"
-						/>
-					</label>
+					<ImageInput 
+						selectedFile={selectedFile}
+						setSelectedFile={setSelectedFile}
+					/>
 				</div>
 
 				<div className="grid grid-cols-1 md:grid-cols-2 mb-4 gap-5 mx-64">
@@ -159,36 +146,13 @@ const ChatBotForm = () => {
 								value={characterName}
 								onChange={(e) => setCharacterName(e.target.value)}
 								className="rounded-xl bg-transparent mt-2 text-white w-full border-2"
-								placeholder="e.g. Sam Altman"
+								placeholder="Name your Chatbot"
 							/>
 						</div>
-						<p className="mt-2 text-xs text-gray-400">
+						{/* <p className="mt-2 text-xs text-gray-400">
 							The name of your AI character.
-						</p>
+						</p> */}
 					</div>
-					<div>
-						<label
-							htmlFor="description"
-							className="block text-sm font-semibold text-white"
-						>
-							Description
-						</label>
-						<div className="mt-1">
-							<input
-								id="description"
-								type="text"
-								value={description}
-								onChange={(e) => setDescription(e.target.value)}
-								className="rounded-xl bg-transparent mt-2 text-white w-full border-2"
-								placeholder="e.g. CEO of OpenAI"
-							/>
-						</div>
-						<p className="mt-2 text-xs text-gray-400">
-							Description of your AI character.
-						</p>
-					</div>
-				</div>
-				<div className="grid grid-cols-1 md:grid-cols-2 mb-4 gap-5 mx-64">
 					<div>
 						<label
 							className="flex flex-col text-sm font-semibold text-white w-1/3"
@@ -207,14 +171,47 @@ const ChatBotForm = () => {
 							<option value="">Select a category</option>
 							{/* ... other options */}
 						</select>
-						<p className="mt-2 text-xs text-gray-400">Category of your AI.</p>
+						{/* <p className="mt-2 text-xs text-gray-400">Category of your AI.</p> */}
 					</div>
 				</div>
+				
+				<div className="grid grid-cols-1 md:grid-cols-2 mb-4 gap-5 mx-64">
+					<div className="col-span-2">
+						<label
+							htmlFor="description"
+							className="block text-sm font-semibold text-white"
+						>
+							Description
+						</label>
+						<div className="mt-1">
+							{/* <input
+								id="description"
+								type="text"
+								value={description}
+								onChange={(e) => setDescription(e.target.value)}
+								className="rounded-xl bg-transparent mt-2 text-white w-full border-2"
+								placeholder="Describe your Chatbot"
+							/> */}
+							<textarea
+								id="description"
+								value={description}
+								onChange={(e) => setDescription(e.target.value)}
+								placeholder={'Describe your Chatbot'}
+								className="rounded-xl bg-transparent text-white mt-2 w-full border-2"
+								rows={11}
+							/>
+						</div>
+						{/* <p className="mt-2 text-xs text-gray-400">
+							Description of your AI character.
+						</p> */}
+					</div>
+					
+				</div>
 				<div className="mx-64 mt-10">
-					<h1 className="text-2xl font-semibold text-white">Configuration</h1>
-					<h5 className="text-md text-[#7C878E]">
+					<h1 className="text-2xl font-semibold text-white">Chatbot Configuration</h1>
+					{/* <h5 className="text-md text-[#7C878E]">
 						Configuration defining AI behavior.
-					</h5>
+					</h5> */}
 					<hr className="my-4 border border-gray-700" />
 				</div>
 				<div className="mx-64">
@@ -228,42 +225,42 @@ const ChatBotForm = () => {
 						id="instructions"
 						value={instructions}
 						onChange={(e) => setInstructions(e.target.value)}
-						placeholder="e.g. Tired of doing swaps, bridges, or lending in the hopes of getting an airdrop bigger than the gas and transaction fees you are spending? Check out these three novel platforms that are currently tokenless."
+						placeholder="Give Instructions and Personality to your Chatbot"
 						className="rounded-xl bg-transparent text-white mt-2 w-full border-2"
 						rows={5}
 					/>
-					<div className="flex flex-row justify-between">
+					{/* <div className="flex flex-row justify-between">
 						<p className="mt-2 text-xs text-gray-400">
 							Describe your AI character.
 						</p>
 						<p className="mt-2 text-xs text-gray-400">
 							Enter at least 200 more characters.
 						</p>
-					</div>
+					</div> */}
 				</div>
 				<div className="mx-64">
 					<label
 						className="flex flex-col font-semibold text-white mt-4"
 						htmlFor="example"
 					>
-						Example Conversation
+						Conversation Starters
 					</label>
 					<textarea
 						id="example"
 						value={example}
 						onChange={(e) => setExample(e.target.value)}
-						placeholder={examplePlaceholder}
+						placeholder={'Examples for users to start the conversation'}
 						className="rounded-xl bg-transparent text-white mt-2 w-full border-2"
 						rows={11}
 					/>
-					<div className="flex flex-row justify-between">
+					{/* <div className="flex flex-row justify-between">
 						<p className="mt-2 text-xs text-gray-400">
 							Give an example of your conversation with your AI.
 						</p>
 						<p className="mt-2 text-xs text-gray-400">
 							Enter at least 200 more characters.
 						</p>
-					</div>
+					</div> */}
 				</div>
 				<div className="form-actions mx-64 flex flex-row justify-between">
 					<button
@@ -277,7 +274,7 @@ const ChatBotForm = () => {
 						type="submit"
 					>
 						<h5 className="text-sm text-black font-semibold flex-grow">
-							Bring my character to life
+							Bring my chatbot to life
 						</h5>
 						<svg
 							width="20"
@@ -300,6 +297,7 @@ const ChatBotForm = () => {
 				</div>
 			</form>
 		</div>
+		</>
 	);
 };
 

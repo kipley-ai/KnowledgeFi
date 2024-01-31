@@ -6,13 +6,32 @@ import {
 import { useNftDetail } from "@/hooks/api/nft";
 import { useEffect, useState, useRef } from "react";
 import { useCreateChatbotContext } from "./create-chatbot-context";
-import LastMessage from "./last-message";
-import { useChatbotDetail } from "@/hooks/api/chatbot";
+import LastMessage, { CopyButton } from "./last-message";
+import { useChatbotDetail, useGetSession } from "@/hooks/api/chatbot";
 import { useParams } from "next/navigation";
+import { useSession } from "next-auth/react";
+import { useAccount } from "wagmi";
+import Image from "next/image";
+import AvatarDummy from "public/images/avatar-bot-dummy.svg";
+import AvatarDummy2 from "public/images/avatar-user-dummy.svg";
+import { StaticImageData } from "next/image";
+import ChatMessage from "./chat-message";
+import FirstAnswer from "./first-message";
 
 const MessageList = () => {
 	const [answersStream, setAnswersStream] = useState<string[]>([]);
 	const fieldRef = useRef<HTMLInputElement>(null);
+	const [profileImage, setProfileImage] = useState<StaticImageData | string>("");
+	
+	const { data: twitterSession, status: twitterStatus } = useSession();
+	const { isConnected } = useAccount();
+	const [isConnected_, setIsConnected_] = useState<boolean>(false);
+	
+
+	useEffect(() => {
+		setIsConnected_(isConnected);
+		setProfileImage(twitterSession?.user?.image || "");
+	}, [isConnected, twitterStatus]);
 
 	const {
 		newQuestion,
@@ -27,17 +46,19 @@ const MessageList = () => {
 
 		messageHistory,
 		setMessageHistory,
+
+		buttonSession
 	} = useCreateChatbotContext();
 
 	const { id } = useParams();
 
-	const { data: chatbotData, isSuccess: chatbotDetailIsSuccess } =
-		useChatbotDetail({
-			chatbot_id: id as string,
-		});
+	const {data:chatbotData , isSuccess: chatbotDetailIsSuccess} = useChatbotDetail({
+		chatbot_id:id as string
+	})
+	const chatSession = useGetSession({chatbot_id:id as string})
 
 	const chatHistoryAPI = useChatHistory({
-		session_id: chatbotData?.data.data.session_id,
+		session_id: chatSession.data?.data.data?.session_id,
 		app_id: id as string,
 		page_num: 1,
 		page_size: 10,
@@ -47,18 +68,21 @@ const MessageList = () => {
 	});
 
 	useEffect(() => {
+		console.log(chatbotDetailIsSuccess && chatHistoryAPI.isSuccess)
 		if (chatbotDetailIsSuccess && chatHistoryAPI.isSuccess) {
-			// if (chatHistoryAPI.data.data.length) {
-			//   setChatList(chatHistoryAPI.data.data);
-			// }
-			if (chatHistoryAPI.data?.data.length) {
-				console.log(chatHistoryAPI.data?.data);
-				setMessageHistory(chatHistoryAPI.data?.data.reverse());
-			}
-			setAnswersStream([]);
+			
+		  console.log(chatHistoryAPI.data?.data.length)
+		  if (chatHistoryAPI.data?.data.length) {
+			console.log(chatHistoryAPI.data?.data)
+			setMessageHistory(chatHistoryAPI.data?.data.reverse());
+		  } else if (chatHistoryAPI.data?.data.length === 0) {
+			setMessageHistory(chatHistoryAPI.data?.data)
+		  }
+		  setAnswersStream([]);
 		}
-		// }, [chatHistoryAPI.isSuccess, chatHistoryAPI.data?.data]);
-	}, [chatbotDetailIsSuccess, chatHistoryAPI.isSuccess]);
+		
+	  // }, [chatHistoryAPI.isSuccess, chatHistoryAPI.data?.data]);
+	  }, [chatbotDetailIsSuccess,chatHistoryAPI.isSuccess,buttonSession]);
 
 	useEffect(() => {
 		fieldRef.current?.scrollIntoView({
@@ -105,30 +129,36 @@ const MessageList = () => {
 			});
 		}
 	}, [lastJsonMessage]);
+	
 
 	return (
-		<div className="flex flex-col p-4 space-y-4 overflow-auto border border-gray-600">
+		<div className="flex flex-col p-4 space-y-4 overflow-auto">
+			<FirstAnswer 
+				profileImage={chatbotData?.data.data.profile_image}
+				sender={"bot"}
+				message={chatbotData?.data.data.example_conversation}
+				isGenerating={replyStatus == "answering"}
+			/>
 			{messageHistory.map((message, index) => {
 				return index < messageHistory.length - 1 || message.sender == "user" ? (
-					<>
-						<div className="flex items-start space-x-2">
-							<div className="flex-none">
-								<div className="rounded-full bg-gray-300 w-8 h-8"></div>
-							</div>
-							<div className="flex-grow">
-								<div className="text-xs text-gray-400 mb-1">
-									{message.sender}
-								</div>
-								<div className="text-white text-sm rounded-lg py-2 w-full">
-									{message.message}
-								</div>
-							</div>
-						</div>
-						<hr className="border-t border-gray-600 mx-[-1rem]" />
-					</>
+					<ChatMessage chatbotData={chatbotData} message={message}/>
+					// <div onMouseOver={}>
+					// 	<div className="flex items-start space-x-3 ">
+					// 		<Image src={chatbotData?.data.data.profile_image} alt="User avatar" className="w-8 h-8 rounded-full mr-5" />
+					// 		<div className="text-white text-sm w-full">
+					// 			<h6 className="mb-5 mt-1">{message.sender == "bot" ? chatbotData?.data.data.name : "You"}</h6>
+					// 			<p>{message.message}</p>
+					// 		</div>
+							
+					// 	</div>
+					// 	<div className="flex items-center justify-end pl-10">
+					// 		<CopyButton message={message.message}/>
+					// 	</div>
+					// </div>
 				) : (
 					<>
 						<LastMessage
+							profileImage={chatbotData?.data.data.profile_image}
 							sender={"bot"}
 							message={message.message}
 							isGenerating={replyStatus == "answering"}
@@ -140,6 +170,7 @@ const MessageList = () => {
 				<></>
 			) : (
 				<LastMessage
+					profileImage={chatbotData?.data.data.profile_image}
 					sender={"bot"}
 					message={answersStream}
 					isGenerating={replyStatus == "answering"}
