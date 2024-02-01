@@ -5,7 +5,8 @@ import ArrowIcon from 'public/images/arrow-3-icon.svg';
 import Image from 'next/image';
 import { useChatbotDetail } from '@/hooks/api/chatbot';
 import { useParams } from 'next/navigation';
-import { useKBItem } from '@/hooks/api/kb';
+import { useKBDetail, useKBItem } from '@/hooks/api/kb';
+import Link from 'next/link';
 
 const ManageDataSources = () => {
     const [checkHeader, setCheckHeader] = useState(false);
@@ -45,22 +46,30 @@ const ManageDataSources = () => {
         kbItem.refetch()
     }, [chatbotDetail.data?.data.data.kb_id])
 
+    
+
+	const kbDetail = useKBDetail({kb_id:chatbotDetail.data?.data.data.kb_id as string})
+
     return (
         <div className="flex flex-col sm:px-6 lg:px-0 text-[#7C878E] py-20 font-semibold">
             <div className="flex justify-between items-center mb-4">
                 <h1 className="text-2xl font-normal">All Data Sources</h1>
                 {/* Add New Button */}
-                <button
-                    className="flex items-center justify-center bg-[#01F7FF] rounded-3xl py-2 px-8"
-                    type="submit"
-                >
-                    <h5 className="text-sm text-black flex-grow mr-3">
-                        Add New
-                    </h5>
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M10.0001 4.16602V15.8327M4.16675 9.99935H15.8334" stroke="#292D32" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
-                    </svg>
-                </button>
+                {
+                    kbDetail.data?.data.data.type !== 'twitter' && <Link href={'/chatbot/'+id+'/add'}>
+                        <button
+                            className="flex items-center justify-center bg-[#01F7FF] rounded-3xl py-2 px-8"
+                            type="submit"
+                        >
+                            <h5 className="text-sm text-black flex-grow mr-3">
+                                Add New
+                            </h5>
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M10.0001 4.16602V15.8327M4.16675 9.99935H15.8334" stroke="#292D32" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </button>
+                        </Link>
+                }
             </div>
 
             {/* Selected count and Delete Button */}

@@ -71,3 +71,7 @@ export interface IPaginate {
 export interface IKBItem extends IPaginate{
     kb_id: string;
 }
+
+export interface IKBDetail{
+    kb_id: string;
+}
