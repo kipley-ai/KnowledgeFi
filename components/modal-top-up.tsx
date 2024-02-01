@@ -2,6 +2,8 @@
 
 import ModalBlank from "@/components/modal-blank-2";
 import { recharge } from "@/smart-contract/kip-protocol-contract";
+import { allowance, approve } from "@/smart-contract/kip-token";
+import { KIP_TOKEN_APPROVE_VALUE } from "@/utils/constants";
 import { useState } from "react";
 
 interface Form {
@@ -30,8 +32,14 @@ export default function ModalTopUp({
     }
 
     try {
+      const allw = await allowance();
+      console.log("allw", allw);
+      if (allw == 0) {
+        const appr = await approve(KIP_TOKEN_APPROVE_VALUE);
+        console.log("appr", appr);
+      }
       const res = await recharge(form.amount!);
-      console.log(res);
+      console.log("res", res);
 
       setIsOpen(false);
     } catch (error) {
