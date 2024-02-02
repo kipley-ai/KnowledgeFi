@@ -3,7 +3,7 @@ import {
   useGetSession,
   useNewSession,
 } from "@/hooks/api/chatbot";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect } from "react";
 import Image from "next/image";
 import ProfileImageDummy from "public/images/avatar-bot-dummy.svg";
@@ -22,6 +22,7 @@ const Header = () => {
 
   const newSession = useNewSession();
   const { id } = useParams();
+  const router = useRouter();
 
   const { data: chatbotData, isSuccess: chatbotDetailIsSuccess } =
     useChatbotDetail({
@@ -50,7 +51,10 @@ const Header = () => {
   return (
     <div className="text-white flex justify-between items-center border-b border-b-gray-600 py-6">
       <div className="flex items-center gap-6">
-        <button className="text-white text-2xl focus:outline-none">
+        <button
+          onClick={() => router.back()}
+          className="text-white text-2xl focus:outline-none"
+        >
           <svg
             width="26"
             height="12"
@@ -99,7 +103,7 @@ const Header = () => {
                   chatHistoryAPI.refetch();
                   setButtonSession((prev: boolean) => !prev);
                 },
-              }
+              },
             );
           }}
         >
