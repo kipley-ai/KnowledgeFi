@@ -28,7 +28,7 @@ import {
   arbitrum,
   base,
   zora,
-  zkSyncSepoliaTestnet,
+  sepolia,
 } from "wagmi/chains";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
@@ -42,8 +42,8 @@ import { ledgerWallet } from "@rainbow-me/rainbowkit/wallets";
 import { bitKeepWallet } from "@rainbow-me/rainbowkit/wallets";
 
 const { chains, publicClient } = configureChains(
-  [mainnet, polygon, optimism, arbitrum, base, zora, zkSyncSepoliaTestnet],
-  [publicProvider()],
+  [mainnet, polygon, optimism, arbitrum, base, zora, sepolia],
+  [publicProvider()]
 );
 
 const projectId = "f53ae5cdc0007d6f85bd532c0edf4d3d";
@@ -132,7 +132,11 @@ export default function RootLayout({
                   >
                     <RainbowKitProvider
                       chains={chains}
-                      initialChain={zkSyncSepoliaTestnet}
+                      initialChain={
+                        process.env.NEXT_PUBLIC_ENV_DEV == "1"
+                          ? sepolia
+                          : mainnet
+                      }
                     >
                       {children}
                     </RainbowKitProvider>

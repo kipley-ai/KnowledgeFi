@@ -123,7 +123,7 @@ const ManageDataSources = () => {
                                         <Image src={CheckIcon} className={`${checkRow[index] ? "" : "hidden"}`} alt="Check Icon"/>
                                     </div>
                                 </td> {/* Row Checkbox */}
-                                <td className="">{row.item_name}</td>
+                                <td className="max-w-44 truncate pr-3">{row.item_name}</td>
                                 <td className="">{row.item_type}</td>
                                 <td className="">{row.size}</td>
                                 <td className="">{row.created_at}</td>

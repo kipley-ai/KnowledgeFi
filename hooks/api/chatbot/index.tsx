@@ -100,3 +100,17 @@ export const useGetSession = (params: IChatbotDetailParams) => {
       }),
   });
 };
+
+export const useChatbotChatList = () => {
+	const { address } = useAccount();
+
+	return useQuery({
+		queryKey: ["chatbot", "chat_list"],
+		queryFn: () =>
+			axios.post("/api/chatbot/chat_list", {}, {
+				headers: {
+					"x-kf-user-id": address,
+				},
+			}),
+	});
+};
