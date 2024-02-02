@@ -7,6 +7,7 @@ import { useParams } from "next/navigation";
 import { useEffect } from "react";
 import Image from "next/image";
 import ProfileImageDummy from "public/images/avatar-bot-dummy.svg";
+import Refresh from "public/images/refresh.png";
 import { Archivo } from "next/font/google";
 import { useChatHistory } from "@/hooks/api/chatbox";
 import { useCreateChatbotContext } from "./create-chatbot-context";
@@ -102,9 +103,9 @@ const Header = () => {
             );
           }}
         >
-          <h5 className="text-[#7C878E] font-semibold flex-grow  rounded-3xl p-1 px-5 border-2 border-[#393E44]">
-            Refresh
-          </h5>
+          <div className="font-semibold rounded-full p-2 border-2 border-[#393E44]">
+            <Image width={20} height={20} src={Refresh} alt="Refresh" />
+          </div>
           {/* <svg
                         width="40"
                         height="40"

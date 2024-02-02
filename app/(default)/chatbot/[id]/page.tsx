@@ -34,7 +34,7 @@ export default function ChatBotPage() {
 					<MessageInput />
 				</CreateChatbotProvider>
 			</div>
-			<div className="flex flex-col w-1/4 items-center bg-[#292D32] py-7 divide-y-2 divide-[#393E44]">
+			<div className="flex flex-col w-1/4 items-center bg-[#292D32] divide-y-2 divide-[#393E44]">
 				<Description />
 				<CreditBalance />
 			</div>
