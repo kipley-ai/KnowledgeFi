@@ -53,6 +53,8 @@
     "@types/react-flatpickr": "^3.8.8",
     "autoprefixer": "^10.4.14",
     "postcss": "^8.4.24",
+    "prettier": "^3.2.4",
+    "prettier-plugin-tailwindcss": "^0.5.11",
     "tailwindcss": "^3.3.2"
   }
 }
