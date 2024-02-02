@@ -2,7 +2,7 @@
 
 import React, { MouseEventHandler, useEffect, useRef, useState } from "react";
 import { useAppProvider } from "@/providers/app-provider";
-import { redirect, useSelectedLayoutSegments } from "next/navigation";
+import { redirect, useSearchParams, useSelectedLayoutSegments } from "next/navigation";
 import { Transition } from "@headlessui/react";
 import { getBreakpoint } from "../utils/utils";
 import SidebarLinkGroup from "./sidebar-link-group";
@@ -18,6 +18,8 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import ChatText from "public/images/chat-text.png";
 import HomeIcon from "public/images/home-icon.svg";
+import { useChatbotChatList } from "@/hooks/api/chatbot";
+import { PaginationController } from "../pagination/controller";
 
 const GetInvolvedButton = dynamic(
 	() => import("../GetInvolvedButton/get-involved-button"),
@@ -25,6 +27,56 @@ const GetInvolvedButton = dynamic(
 		ssr: false,
 	}
 );
+
+const ChatHistoryList = () => {
+	const searchParams = useSearchParams();
+	const segments = useSelectedLayoutSegments();
+	const chatbotListQuery = useChatbotChatList();
+	// const chatbotListPage = searchParams.get("chatbotListPage") ?? "1";
+	// const chatbotListPerPage = searchParams.get("chatbotListPerPage") ?? "10";
+	// const chatbotListStart = (Number(chatbotListPage) - 1) * Number(chatbotListPerPage);
+	// const chatbotListEnd = chatbotListStart + Number(chatbotListPerPage);
+
+	if (chatbotListQuery.data) {
+		const chatbotListData = chatbotListQuery.data?.data.data;
+		// const chatbotListTotalPages = Math.ceil(
+		// 	Number(chatchatbotListListData.length) / Number(chatbotListPerPage)
+		// );
+
+		if (chatbotListData !== undefined && chatbotListData.length > 0) {
+			return (
+				<>
+					{/* {chatbotListData.slice(chatbotListStart, chatbotListEnd).map((chatbot: any, index: number) => ( */}
+					{chatbotListData.map((chatbot: any, index: number) => (
+						<li className={`px-3 py-2  mb-3 last:mb-0 hover:bg-stone-600 hover:rounded-3xl hover:text-white ${
+							(segments.includes("home") ||
+								segments.includes("dashboard")) &&
+							"bg-transparent"
+						}`}>
+						<SidebarLink href={`/chatbot/${chatbot.chatbot_id}`}>
+							<div className="flex items-center">
+								<span className="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200 text-[14px] font-semibold text-neutral-500">
+									{chatbot.name}
+								</span>
+							</div>
+						</SidebarLink></li>
+					))}
+					{/* <PaginationController
+						totalPages={chatbotListTotalPages}
+						pageQuery={"chatbotListPage"}
+					/> */}
+				</>
+			);
+		}
+		return;
+	}
+
+	if (chatbotListQuery.isError) {
+		return <div>Error: {chatbotListQuery.error.message}</div>;
+	}
+
+	return <div className="text-center">Loading Chat History...</div>;
+};
 
 export default function Sidebar() {
 	const router = useRouter();
@@ -209,14 +261,15 @@ export default function Sidebar() {
 										</div>
 									</SidebarLink>
 								</li>
-								<li
+								<ChatHistoryList/>
+								{/* <li
 									className={`px-3 py-2  mb-3 last:mb-0 ${
 										(segments.includes("home") ||
 											segments.includes("dashboard")) &&
 										"bg-transparent"
 									} `}
 								>
-									{/* style={{ border: '2px solid #01F7FF', borderRadius: '24px', padding: '6px 10px' }}> */}
+									style={{ border: '2px solid #01F7FF', borderRadius: '24px', padding: '6px 10px' }}>
 									<SidebarLink href="/#">
 										<div className="flex items-center">
 											<span className="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200 text-[14px] font-semibold text-neutral-500">
@@ -232,7 +285,7 @@ export default function Sidebar() {
 										"bg-transparent"
 									} `}
 								>
-									{/* style={{ border: '2px solid #01F7FF', borderRadius: '24px', padding: '6px 10px' }}> */}
+									style={{ border: '2px solid #01F7FF', borderRadius: '24px', padding: '6px 10px' }}>
 									<SidebarLink href="/#">
 										<div className="flex items-center">
 											<span className="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200 text-[14px] font-semibold text-neutral-500">
@@ -248,7 +301,7 @@ export default function Sidebar() {
 										"bg-transparent"
 									} `}
 								>
-									{/* style={{ border: '2px solid #01F7FF', borderRadius: '24px', padding: '6px 10px' }}> */}
+									style={{ border: '2px solid #01F7FF', borderRadius: '24px', padding: '6px 10px' }}>
 									<SidebarLink href="/#">
 										<div className="flex items-center">
 											<span className="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200 text-[14px] font-semibold text-neutral-500">
@@ -264,7 +317,7 @@ export default function Sidebar() {
 										"bg-transparent"
 									} `}
 								>
-									{/* style={{ border: '2px solid #01F7FF', borderRadius: '24px', padding: '6px 10px' }}> */}
+									style={{ border: '2px solid #01F7FF', borderRadius: '24px', padding: '6px 10px' }}>
 									<SidebarLink href="/#">
 										<div className="flex items-center">
 											<span className="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200 text-[14px] font-semibold text-neutral-500">
@@ -272,7 +325,7 @@ export default function Sidebar() {
 											</span>
 										</div>
 									</SidebarLink>
-								</li>
+								</li> */}
 								{/* <li
 									className={`px-3 py-2  mb-0.5 last:mb-0 ${segments.includes("login") && "bg-slate-900"
 										}`}
