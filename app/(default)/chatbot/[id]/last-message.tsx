@@ -75,7 +75,7 @@ const LastAnswer = ({
   return (
     <>
       <div
-        className="flex flex-col space-y-2 pt-5"
+        className="flex flex-col space-y-2 pt-5 mb-12"
         onMouseEnter={() => setShowCopy(true)}
         onMouseLeave={() => setShowCopy(false)}
       >
