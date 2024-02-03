@@ -5,12 +5,13 @@ import ArrowIcon from 'public/images/arrow-3-icon.svg';
 import Image from 'next/image';
 import { useChatbotDetail } from '@/hooks/api/chatbot';
 import { useParams } from 'next/navigation';
-import { useKBDetail, useKBItem } from '@/hooks/api/kb';
+import { useKBDetail, useKBItem, useDeleteKBItem } from '@/hooks/api/kb';
 import Link from 'next/link';
 
 const ManageDataSources = () => {
     const [checkHeader, setCheckHeader] = useState(false);
-    const [checkRow, setCheckRow] = useState([false, false, false, false, false]);
+    const [checkRow, setCheckRow] = useState<boolean[]>([]);
+    const deleteItemAPI = useDeleteKBItem();
     const data = [
         { from: 'Twitter', type: 'File', size: '5 Bytes', lastUpdated: '2024-02-11 08:12:09 UTC', status: 'Completed' },
         { from: 'Twitter', type: 'File', size: '5 Bytes', lastUpdated: '2024-02-11 08:12:09 UTC', status: 'Failed' },
@@ -27,7 +28,12 @@ const ManageDataSources = () => {
 
     const kbItem = useKBItem({kb_id:chatbotDetail.data?.data.data.kb_id as string})
 
-    
+    useEffect(() => {
+        if(kbItem.status === 'success') {
+            let temp = kbItem.data?.data.data.kb_item_data.map(() => false);
+            setCheckRow(temp);
+        }
+    }, [kbItem.data?.data.data.kb_item_data])
 
     const handleCheckRow = (index: number) => {
         let temp = [...checkRow];
@@ -42,11 +48,19 @@ const ManageDataSources = () => {
         setCheckHeader(!checkHeader);
     }
 
-    useEffect(() => {
-        kbItem.refetch()
-    }, [chatbotDetail.data?.data.data.kb_id])
+    const handleDelete = () => {
+        const selectedIndexes = checkRow.reduce((acc: number[], value, index) => { if (value) { acc.push(index); } return acc; }, []);
+        const selectedItem = selectedIndexes.map((index) => kbItem.data?.data.data.kb_item_data[index].item_name);
 
-    
+        deleteItemAPI.mutate({
+            kb_id:chatbotDetail.data?.data.data.kb_id, 
+            items_name:selectedItem
+        },{
+            onSuccess: () => {
+                kbItem.refetch()
+            }
+        })
+    }
 
 	const kbDetail = useKBDetail({kb_id:chatbotDetail.data?.data.data.kb_id as string})
 
@@ -80,7 +94,7 @@ const ManageDataSources = () => {
                         <span className="mr-10">{checkRow.filter((value) => value === true).length} selected</span>
                         <button
                             className="flex items-center justify-center bg-transparent rounded-3xl border-2 border-[#FF6C3E] py-2 px-9"
-                            type="submit"
+                            type="submit" onClick={handleDelete}
                         >
                             <h5 className="text-sm text-[#FF6C3E] font-semibold flex-grow">
                                 Delete
@@ -116,7 +130,7 @@ const ManageDataSources = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {kbItem.data?.data.data.map((row:any, index:any) => (
+                        {kbItem.data?.data.data.kb_item_data.map((row:any, index:any) => (
                             <tr key={index}>
                                 <td className="py-7 px-3">
                                     <div className={`rounded  ${checkRow[index] ? "bg-[#01F7FF]" : "bg-transparent border-2 border-[#7C878E]"} w-4 h-4 flex items-center justify-center`} onClick={() => handleCheckRow(index)}>
