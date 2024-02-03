@@ -16,8 +16,13 @@ export type ChatbotData = {
   category_name: string | null;
 };
 
+export type ChatbotDataList = {
+  chatbot_count: number;
+  chatbot_data: ChatbotData[];
+};
+
 export type ChatbotDataListResponse = {
-  data: ChatbotData[];
+  data: ChatbotDataList;
 };
 
 export type NftData = {
