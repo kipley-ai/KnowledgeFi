@@ -41,11 +41,11 @@ const FirstAnswer = ({
         {/* Message bubble */}
         <div className="flex flex-col space-y-2">
           {/* Message bubble */}
-          <div className="flex items-start space-x-3">
+          <div className="flex items-start space-x-4">
             <Image
               src={profileImage}
               alt="Profile"
-              className="w-8 h-8 rounded-full mr-5"
+              className="w-8 h-8 rounded-full"
               width={50}
               height={50}
             />

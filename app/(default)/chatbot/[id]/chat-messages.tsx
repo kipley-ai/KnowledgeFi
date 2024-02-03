@@ -165,7 +165,7 @@ const MessageList = () => {
   }, [lastJsonMessage]);
 
   return (
-    <div className="flex flex-col p-4 space-y-4 overflow-auto">
+    <div className="flex flex-col md:p-4 gap-2 md:space-y-4 overflow-auto">
       <FirstAnswer
         profileImage={chatbotData?.data.data.profile_image}
         sender={"bot"}

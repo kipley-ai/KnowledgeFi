@@ -4,13 +4,16 @@ import {
   useNewSession,
 } from "@/hooks/api/chatbot";
 import { useParams, useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import ProfileImageDummy from "public/images/avatar-bot-dummy.svg";
 import Refresh from "public/images/refresh.png";
 import { Archivo } from "next/font/google";
 import { useChatHistory } from "@/hooks/api/chatbox";
 import { useCreateChatbotContext } from "./create-chatbot-context";
+import SidebarRight from "@/components/ui/sidebar-right";
+import Description from "./description";
+import CreditBalance from "./credit-balance";
 
 const archivo = Archivo({
   weight: ["400", "600"],
@@ -31,6 +34,16 @@ const Header = () => {
 
   const title = chatbotData?.data.data.name + " - Chatbot";
 
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
+
+  const closeSidebar = () => {
+    setIsSidebarOpen(false);
+  };
+
   useEffect(() => {
     document.title = title;
   }, [title]);
@@ -49,11 +62,11 @@ const Header = () => {
     //     .request_url,
   });
   return (
-    <div className="text-white flex justify-between items-center border-b border-b-gray-600 py-6">
-      <div className="flex items-center gap-6">
+    <div className="relative flex items-center justify-between border-b border-b-gray-600 text-white md:px-4 py-2 md:py-6">
+      <div className="flex items-center gap-5">
         <button
           onClick={() => router.back()}
-          className="text-white text-2xl focus:outline-none"
+          className="text-2xl text-white focus:outline-none"
         >
           <svg
             width="26"
@@ -76,7 +89,7 @@ const Header = () => {
           <Image
             src={chatbotData?.data.data.profile_image}
             alt="Profile"
-            className="w-8 h-8 rounded-full"
+            className="h-8 w-8 rounded-full"
             width={50}
             height={50}
           />
@@ -93,7 +106,7 @@ const Header = () => {
                     </svg>
                 </button> */}
         <button
-          className="text-gray-400 hover:text-blue-500 self-end ml-3 rounded-full"
+          className="ml-3 self-end rounded-full text-gray-400 hover:text-blue-500"
           onClick={() => {
             newSession.mutate(
               { chatbot_id: id as string },
@@ -107,8 +120,8 @@ const Header = () => {
             );
           }}
         >
-          <div className="font-semibold rounded-full p-2 border-2 border-[#393E44]">
-            <Image width={20} height={20} src={Refresh} alt="Refresh" />
+          <div className="rounded-full border-2 border-gray-500 p-2 font-semibold">
+            <Image width={16} height={16} src={Refresh} alt="Refresh" />
           </div>
           {/* <svg
                         width="40"
@@ -146,7 +159,17 @@ const Header = () => {
                         </defs>
                     </svg> */}
         </button>
+        <button
+          className="ml-4 rounded-2xl border border-2 border-gray-500 px-3 text-base text-gray-400 md:hidden"
+          onClick={toggleSidebar}
+        >
+          Info
+        </button>
       </div>
+      <SidebarRight isOpen={isSidebarOpen} onClose={closeSidebar}>
+        <Description />
+        <CreditBalance />
+      </SidebarRight>
     </div>
   );
 };
