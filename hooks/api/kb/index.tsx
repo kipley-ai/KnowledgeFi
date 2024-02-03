@@ -2,6 +2,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { useAccount } from "wagmi";
 import axios from "axios";
 import { ICreateKBAndNFTParams, IKBDetail, IKBItem } from "../interfaces";
+import { KBItemResponse } from "@/lib/types";
 
 export const useCreateKBAndMintNFT = () => {
 	const { address } = useAccount();
@@ -42,13 +43,26 @@ export const useUpdateKB = () => {
 	});
 };
 
+export const useDeleteKBItem = () => {
+	const { address } = useAccount();
+
+	return useMutation({
+		mutationFn: (params: {kb_id:string, items_name:string[]}) =>
+			axios.post("/api/kb/delete-item", params, {
+				headers: {
+					"x-kf-user-id": address,
+				},
+			}),
+	});
+}
+
 export const useKBItem = (params: IKBItem) => {
 	const { address } = useAccount();
 
 	return useQuery({
 		queryKey: ["kb-item", params.kb_id],
 		queryFn: () =>
-			axios.post("/api/kb/item", params, {
+			axios.post<KBItemResponse>("/api/kb/item", params, {
 				headers: {
 					"x-kf-user-id": address,
 				},

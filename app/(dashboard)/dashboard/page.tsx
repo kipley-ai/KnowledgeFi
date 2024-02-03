@@ -106,7 +106,7 @@ export default function Dashboard() {
         {/* <div className="grid-cols-4 gap-4 mx-[-22px] my-[8px]"> */}
         <div className="justify-left my-[8px] flex w-full flex-wrap">
           {/* <div className="grid grid-cols-6"> */}
-          {botsQuery.data
+          {botsQuery.data?.data.data
             ? botsQuery.data.data.data.chatbot_data.map((botData) => {
                 return <BotItem botData={botData} onClick={() => {}} />;
               })

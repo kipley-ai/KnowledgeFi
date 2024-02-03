@@ -1,33 +1,119 @@
 "use client";
 
-import React from "react";
-import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
-import { configureChains, createConfig, WagmiConfig } from "wagmi";
-import { mainnet, polygon, optimism, arbitrum, base, zora } from "wagmi/chains";
-import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
+import "@rainbow-me/rainbowkit/styles.css";
+import {
+  getDefaultWallets,
+  RainbowKitProvider,
+  createAuthenticationAdapter,
+  RainbowKitAuthenticationProvider,
+  AuthenticationStatus,
+  connectorsForWallets,
+} from "@rainbow-me/rainbowkit";
+import {
+  configureChains,
+  createConfig,
+  WagmiConfig,
+  useDisconnect,
+} from "wagmi";
+import {
+  mainnet,
+  polygon,
+  optimism,
+  arbitrum,
+  base,
+  zora,
+  sepolia,
+} from "wagmi/chains";
+import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
+import { RQProviders } from "@/providers/react-query-provider";
+import { useState } from "react";
+import { okxWallet } from "@rainbow-me/rainbowkit/wallets";
+import { trustWallet } from "@rainbow-me/rainbowkit/wallets";
+import { phantomWallet } from "@rainbow-me/rainbowkit/wallets";
+import { oneKeyWallet } from "@rainbow-me/rainbowkit/wallets";
+import { ledgerWallet } from "@rainbow-me/rainbowkit/wallets";
+import { bitKeepWallet } from "@rainbow-me/rainbowkit/wallets";
 
 const { chains, publicClient } = configureChains(
-	[mainnet, polygon, optimism, arbitrum, base, zora],
-	[publicProvider()]
+  [mainnet, polygon, optimism, arbitrum, base, zora, sepolia],
+  [publicProvider()],
 );
 
-const { connectors } = getDefaultWallets({
-	appName: "KIP Protocol",
-	projectId: "f53ae5cdc0007d6f85bd532c0edf4d3d",
-	chains,
+const projectId = "f53ae5cdc0007d6f85bd532c0edf4d3d";
+
+const { wallets } = getDefaultWallets({
+  appName: "KIP Protocol",
+  projectId,
+  chains,
 });
 
+const connectors = connectorsForWallets([
+  ...wallets,
+  {
+    groupName: "More",
+    wallets: [
+      okxWallet({ projectId, chains }),
+      trustWallet({ projectId, chains }),
+      phantomWallet({ chains }),
+      oneKeyWallet({ chains }),
+      ledgerWallet({ projectId, chains }),
+      bitKeepWallet({ projectId, chains }),
+    ],
+  },
+]);
+
 const wagmiConfig = createConfig({
-	autoConnect: true,
-	connectors,
-	publicClient,
+  autoConnect: true,
+  connectors,
+  publicClient,
 });
 
 export function CryptoProvider({ children }: React.PropsWithChildren) {
-	return (
-		<WagmiConfig config={wagmiConfig}>
-			<RainbowKitProvider chains={chains}>{children}</RainbowKitProvider>
-		</WagmiConfig>
-	);
+  const [status, setStatus] = useState<AuthenticationStatus>("unauthenticated");
+
+  const authenticationAdapter = createAuthenticationAdapter({
+    getNonce: async () => {
+      return "x";
+    },
+
+    createMessage: ({ nonce, address, chainId }) => {
+      return "Welcome to KnowledgeFi.xyz!";
+    },
+
+    getMessageBody: ({ message }) => {
+      return message;
+    },
+
+    verify: async ({ message, signature }) => {
+      localStorage.setItem("kip-protocol-signature", signature);
+
+      setStatus("authenticated");
+      return true;
+    },
+
+    signOut: async () => {
+      localStorage.setItem("kip-protocol-signature", "");
+
+      setStatus("unauthenticated");
+    },
+  });
+
+  return (
+    <WagmiConfig config={wagmiConfig}>
+      <RainbowKitAuthenticationProvider
+        adapter={authenticationAdapter}
+        status={status}
+      >
+        <RainbowKitProvider
+          chains={chains}
+          initialChain={
+            process.env.NEXT_PUBLIC_ENV_DEV == "1" ? sepolia : mainnet
+          }
+        >
+          {children}
+        </RainbowKitProvider>
+      </RainbowKitAuthenticationProvider>
+    </WagmiConfig>
+  );
 }

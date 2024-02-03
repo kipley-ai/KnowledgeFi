@@ -113,7 +113,7 @@ const NFTList = () => {
   if (data) {
     const nftsData = data?.data.data.nft_data;
 
-    if (nftsData !== undefined && nftsData.length > 0) {
+    if (nftsData !== undefined && nftsData.nft_count > 0) {
       return (
         <>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-x-4 md:gap-x-6 gap-y-4 md:gap-y-8 lg:gap-y-12">
@@ -210,9 +210,9 @@ const BotList = () => {
   };
 
   if (data) {
-    const botsData = data?.data.data.chatbot_data;
+    const botsData = data.data.data;
 
-    if (botsData !== undefined && botsData.length > 0) {
+    if (botsData !== undefined && botsData.chatbot_count > 0) {
       return (
         <>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-x-4 md:gap-x-6 gap-y-4 md:gap-y-8 lg:gap-y-12">
