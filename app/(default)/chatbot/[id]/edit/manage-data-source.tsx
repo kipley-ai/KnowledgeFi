@@ -7,6 +7,7 @@ import { useChatbotDetail } from "@/hooks/api/chatbot";
 import { useParams } from "next/navigation";
 import { useKBDetail, useKBItem } from "@/hooks/api/kb";
 import Link from "next/link";
+import { KBItem } from "@/lib/types";
 
 const ManageDataSources = () => {
   const [checkHeader, setCheckHeader] = useState(false);
@@ -83,7 +84,7 @@ const ManageDataSources = () => {
   return (
     <div className="flex flex-col py-20 font-semibold text-[#7C878E] sm:px-6 lg:px-0">
       <div className="mb-4 flex items-center justify-between">
-        <h1 className="text-2xl font-normal">All Data Sources</h1>
+        <h1 className="text-2xl font-normal">Manage Data Sources</h1>
         {/* Add New Button */}
         {kbDetail.data?.data.data.type !== "twitter" && (
           <Link href={"/chatbot/" + id + "/add"}>
@@ -165,7 +166,7 @@ const ManageDataSources = () => {
             </tr>
           </thead>
           <tbody>
-            {kbItem.data?.data.kb_item_data.map((row: any, index: any) => (
+            {kbItem.data?.data.kb_item_data.map((row: KBItem, index: any) => (
               <tr key={index}>
                 <td className="px-3 py-7">
                   <div
@@ -182,7 +183,8 @@ const ManageDataSources = () => {
                 {/* Row Checkbox */}
                 <td className="max-w-44 truncate pr-3">{row.item_name}</td>
                 <td className="">{row.item_type}</td>
-                <td className="">{row.size}</td>
+                {/* <td className="">{row.size}</td> */}
+                <td className="">0</td>
                 <td className="">{row.created_at}</td>
                 <td className="">
                   <span

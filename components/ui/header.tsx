@@ -94,7 +94,7 @@ export default function Header() {
 								/>
 							</svg>
 
-							<span className="text-sm font-medium text-white ml-3 duration-200">
+							<span className="text-sm lg:text-sm font-medium text-white mx-3 duration-200">
 								{headerTitle}
 							</span>
 						</div>
@@ -122,8 +122,8 @@ export default function Header() {
 											{" "}
 										</path>
 									</svg>
-									<span className="text-sm font-medium ml-1 mr-2 text-neutral-300 duration-200">
-										Create chat bot
+									<span className="text-xs lg:text-sm font-medium ml-1 mr-2 text-neutral-300 duration-200">
+										Create Knowledge Assets
 									</span>
 								</div>
 							</button>
@@ -132,8 +132,8 @@ export default function Header() {
 						<Link href="/nft">
 						<button className="pr-3">
 							<div className="flex items-center border border-[#01F7FF] px-2 py-1.5 rounded-full">
-								<span className="text-sm font-medium mx-1 text-neutral-300 duration-200">
-									My Bots
+								<span className="text-xs lg:text-sm font-medium mx-1 text-neutral-300 duration-200">
+									My Assets
 								</span>
 							</div>
 						</button>

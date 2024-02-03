@@ -55,7 +55,7 @@ const AvatarWithStatus: React.FC<AvatarWithStatusProps> = ({
   return (
     <div className="relative inline-block" ref={dropdownRef}>
       <ModalTopUp isOpen={modalTopUp} setIsOpen={setModalTopUp} />
-      <div onClick={toggleDropdown} className="cursor-pointer">
+      <div onClick={toggleDropdown} className="cursor-pointer min-w-10">
         {/* <img src={image} alt="Avatar" className="w-12 h-12 rounded-full" /> */}
         {image === "" ? (
           <Image

@@ -16,6 +16,11 @@ export type ChatbotData = {
   category_name: string | null;
 };
 
+export type ChatbotDataList = {
+  chatbot_count: number;
+  chatbot_data: ChatbotData[];
+};
+
 export type ChatbotDataListResponse = {
   data: {
     chatbot_data: ChatbotData[];
@@ -54,7 +59,7 @@ export type NftDataListResponse = {
   };
 };
 
-type KBItem = {
+export type KBItem = {
   item_id: string;
   kb_id: string;
   item_name: string;

@@ -19,6 +19,8 @@ import ChatMessage from "./chat-message";
 import FirstAnswer from "./first-message";
 import { useCreditDeduction } from "@/hooks/api/credit";
 import { useAppProvider } from "@/providers/app-provider";
+import { useCreditBalanceContext } from "./credit-balance-context";
+import { useCreditBalance } from "@/hooks/api/credit";
 
 const MessageList = () => {
   const [answersStream, setAnswersStream] = useState<string[]>([]);
@@ -72,6 +74,7 @@ const MessageList = () => {
     //     .request_url,
   });
 
+  const { setCreditBalance } = useCreditBalanceContext();
   const { setModalTopUp } = useAppProvider();
   const creditDeduction = useCreditDeduction();
 
@@ -130,6 +133,11 @@ const MessageList = () => {
           question: lastQuestion,
           chatbot_id: id as string,
           session_id: chatSession.data?.data.data?.session_id,
+        }, {
+          onSuccess: () => {
+            const creditBalance = useCreditBalance().data?.data.data.credit_balance;
+            setCreditBalance(creditBalance);
+          },
         });
 
         return;
