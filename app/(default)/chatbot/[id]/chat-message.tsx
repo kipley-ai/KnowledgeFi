@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { CopyButton } from "./last-message";
 import { useState } from "react";
+import AvatarDummy from "public/images/avatar-user-dummy.svg";
 
 const ChatMessage = ({
   chatbotData,
@@ -17,7 +18,7 @@ const ChatMessage = ({
     >
       <div className="flex items-start space-x-3 ">
         <Image
-          src={chatbotData?.data.data.profile_image}
+          src={message.sender == "bot" ? chatbotData?.data.data.profile_image : AvatarDummy}
           alt="User avatar"
           className="w-8 h-8 rounded-full mr-5"
           width={50}
