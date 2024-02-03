@@ -43,6 +43,19 @@ export const useUpdateKB = () => {
 	});
 };
 
+export const useDeleteKBItem = () => {
+	const { address } = useAccount();
+
+	return useMutation({
+		mutationFn: (params: {kb_id:string, items_name:string[]}) =>
+			axios.post("/api/kb/delete-item", params, {
+				headers: {
+					"x-kf-user-id": address,
+				},
+			}),
+	});
+}
+
 export const useKBItem = (params: IKBItem) => {
 	const { address } = useAccount();
 

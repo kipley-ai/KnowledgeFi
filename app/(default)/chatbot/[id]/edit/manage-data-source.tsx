@@ -5,13 +5,14 @@ import ArrowIcon from "public/images/arrow-3-icon.svg";
 import Image from "next/image";
 import { useChatbotDetail } from "@/hooks/api/chatbot";
 import { useParams } from "next/navigation";
-import { useKBDetail, useKBItem } from "@/hooks/api/kb";
+import { useKBDetail, useKBItem, useDeleteKBItem } from "@/hooks/api/kb";
 import Link from "next/link";
 import { KBItem } from "@/lib/types";
 
 const ManageDataSources = () => {
   const [checkHeader, setCheckHeader] = useState(false);
-  const [checkRow, setCheckRow] = useState([false, false, false, false, false]);
+  const [checkRow, setCheckRow] = useState<boolean[]>([]);
+  const deleteItemAPI = useDeleteKBItem();
   const data = [
     {
       from: "Twitter",
@@ -60,6 +61,13 @@ const ManageDataSources = () => {
     kb_id: chatbotDetail.data?.data.data.kb_id as string,
   });
 
+  useEffect(() => {
+    if (kbItem.status === "success") {
+      let temp = kbItem.data?.data.data.kb_item_data.map(() => false);
+      setCheckRow(temp);
+    }
+  }, [kbItem.data?.data.data.kb_item_data]);
+
   const handleCheckRow = (index: number) => {
     let temp = [...checkRow];
     temp[index] = !temp[index];
@@ -73,9 +81,29 @@ const ManageDataSources = () => {
     setCheckHeader(!checkHeader);
   };
 
-  useEffect(() => {
-    kbItem.refetch();
-  }, [chatbotDetail.data?.data.data.kb_id]);
+  const handleDelete = () => {
+    const selectedIndexes = checkRow.reduce((acc: number[], value, index) => {
+      if (value) {
+        acc.push(index);
+      }
+      return acc;
+    }, []);
+    const selectedItem = selectedIndexes.map(
+      (index) => kbItem.data?.data.data.kb_item_data[index].item_name!!,
+    );
+
+    deleteItemAPI.mutate(
+      {
+        kb_id: chatbotDetail.data?.data.data.kb_id,
+        items_name: selectedItem,
+      },
+      {
+        onSuccess: () => {
+          kbItem.refetch();
+        },
+      },
+    );
+  };
 
   const kbDetail = useKBDetail({
     kb_id: chatbotDetail.data?.data.data.kb_id as string,
@@ -123,6 +151,7 @@ const ManageDataSources = () => {
             <button
               className="flex items-center justify-center rounded-3xl border-2 border-[#FF6C3E] bg-transparent px-9 py-2"
               type="submit"
+              onClick={handleDelete}
             >
               <h5 className="flex-grow text-sm font-semibold text-[#FF6C3E]">
                 Delete
@@ -166,7 +195,7 @@ const ManageDataSources = () => {
             </tr>
           </thead>
           <tbody>
-            {kbItem.data?.data.kb_item_data.map((row: KBItem, index: any) => (
+            {kbItem.data?.data.data.kb_item_data.map((row: KBItem, index: any) => (
               <tr key={index}>
                 <td className="px-3 py-7">
                   <div
@@ -183,8 +212,7 @@ const ManageDataSources = () => {
                 {/* Row Checkbox */}
                 <td className="max-w-44 truncate pr-3">{row.item_name}</td>
                 <td className="">{row.item_type}</td>
-                {/* <td className="">{row.size}</td> */}
-                <td className="">0</td>
+                <td className="">{row.size}</td>
                 <td className="">{row.created_at}</td>
                 <td className="">
                   <span

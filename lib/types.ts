@@ -68,9 +68,12 @@ export type KBItem = {
   created_at: string;
   twitter_username: string | null;
   status: string;
+	size: number;
 };
 
 export type KBItemResponse = {
-  kb_item_data: KBItem[];
-  kb_item_count: number;
+  data: {
+    kb_item_data: KBItem[];
+    kb_item_count: number;
+  };
 };
