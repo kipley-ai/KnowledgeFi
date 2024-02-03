@@ -48,7 +48,3 @@ export type NftData = {
   token_amount: number;
   profile_image: string;
 };
-
-export type NftDataListResponse = {
-  data: NftData[];
-};

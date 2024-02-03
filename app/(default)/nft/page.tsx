@@ -65,7 +65,6 @@ const NFTCard = ({
         width={300}
         height={300}
         alt={"NFT Card"}
-        priority
       />
       <div className="flex flex-col gap-1 px-4 pb-5">
         <p className="text-sm text-white">{name}</p>
@@ -87,10 +86,12 @@ const NFTCard = ({
 
 const NFTList = () => {
   const incrementAmount = 8;
+  const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(8);
-  const nftsQuery = useNFTList(
+
+  const { data, isFetching, isError, error } = useNFTList(
     {
-      page: 1,
+      page: currentPage,
       page_size: pageSize,
       sort_by: "created",
     },
@@ -101,8 +102,8 @@ const NFTList = () => {
     setPageSize((prevSize) => prevSize + incrementAmount);
   };
 
-  if (nftsQuery.data) {
-    const nftsData = nftsQuery.data?.data.data;
+  if (data) {
+    const nftsData = data?.data.data.nft_data;
 
     if (nftsData !== undefined && nftsData.length > 0) {
       return (
@@ -120,7 +121,7 @@ const NFTList = () => {
               />
             ))}
           </div>
-          {nftsQuery.isFetching ? (
+          {isFetching ? (
             <LoadMoreSpinner />
           ) : (
             <LoadMore handleLoadMore={handleLoadMore} />
@@ -131,8 +132,8 @@ const NFTList = () => {
     return <NoData item="NFT" url="/nft/create" />;
   }
 
-  if (nftsQuery.isError) {
-    return <div>Error: {nftsQuery.error.message}</div>;
+  if (isError) {
+    return <div>Error: {error.message}</div>;
   }
 
   return <div>Loading NFTs...</div>;
@@ -180,12 +181,13 @@ const BotCard = ({ bot, id, name, category, sftId }: BotCardProps) => {
 
 const BotList = () => {
   const incrementAmount = 8;
+  const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(8);
 
-  const botsQuery = useChatbotList(
+  const { data, isFetching, isError, error } = useChatbotList(
     {
-      page: 1,
-      page_size: pageSize, // AL: Set this so that we can get the total bots count for proper client side pagination for now
+      page: currentPage,
+      page_size: pageSize,
       sort_by: "created_at",
     },
     keepPreviousData,
@@ -195,8 +197,8 @@ const BotList = () => {
     setPageSize((prevSize) => prevSize + incrementAmount);
   };
 
-  if (botsQuery.data) {
-    const botsData = botsQuery.data?.data.data;
+  if (data) {
+    const botsData = data?.data.data.chatbot_data;
 
     if (botsData !== undefined && botsData.length > 0) {
       return (
@@ -213,7 +215,7 @@ const BotList = () => {
               />
             ))}
           </div>
-          {botsQuery.isFetching ? (
+          {isFetching ? (
             <LoadMoreSpinner />
           ) : (
             <LoadMore handleLoadMore={handleLoadMore} />
@@ -224,8 +226,8 @@ const BotList = () => {
     return <NoData item="Bot" url="/chatbot/create" />;
   }
 
-  if (botsQuery.isError) {
-    return <div>Error: {botsQuery.error.message}</div>;
+  if (isError) {
+    return <div>Error: {error.message}</div>;
   }
 
   return <div>Loading Bots...</div>;
