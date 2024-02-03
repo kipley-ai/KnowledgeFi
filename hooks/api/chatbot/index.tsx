@@ -114,3 +114,17 @@ export const useChatbotChatList = () => {
 			}),
 	});
 };
+
+export const useGetCategory = () => {
+	const { address } = useAccount();
+
+	return useQuery({
+		queryKey: ["chatbot", "category"],
+		queryFn: () =>
+			axios.post("/api/chatbot/category", {}, {
+				headers: {
+					"x-kf-user-id": address,
+				},
+			}),
+	});
+};
