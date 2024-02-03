@@ -147,6 +147,7 @@ const ChatBotForm = () => {
 								onChange={(e) => setCharacterName(e.target.value)}
 								className="rounded-xl bg-transparent mt-2 text-white w-full border-2"
 								placeholder="Name your Chatbot"
+								maxLength={100}
 							/>
 						</div>
 						{/* <p className="mt-2 text-xs text-gray-400">
@@ -199,6 +200,7 @@ const ChatBotForm = () => {
 								placeholder={'Describe your Chatbot'}
 								className="rounded-xl bg-transparent text-white mt-2 w-full border-2"
 								rows={11}
+								maxLength={1000}
 							/>
 						</div>
 						{/* <p className="mt-2 text-xs text-gray-400">
@@ -228,6 +230,7 @@ const ChatBotForm = () => {
 						placeholder="Give Instructions and Personality to your Chatbot"
 						className="rounded-xl bg-transparent text-white mt-2 w-full border-2"
 						rows={5}
+						maxLength={1000}
 					/>
 					{/* <div className="flex flex-row justify-between">
 						<p className="mt-2 text-xs text-gray-400">
@@ -251,7 +254,7 @@ const ChatBotForm = () => {
 						onChange={(e) => setExample(e.target.value)}
 						placeholder={'Examples for users to start the conversation'}
 						className="rounded-xl bg-transparent text-white mt-2 w-full border-2"
-						rows={11}
+						rows={5}
 					/>
 					{/* <div className="flex flex-row justify-between">
 						<p className="mt-2 text-xs text-gray-400">

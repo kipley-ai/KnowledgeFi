@@ -63,34 +63,22 @@ export default function DataSource() {
 	
 	const {step,setStep} = useCreateChatbotContext()
 
-	const handleContinue = async (e: React.MouseEvent<HTMLButtonElement>) => {
-		if (localFiles) {
-			const stillHasLoading =
-				localFiles.filter((localFile) => {
-					// Keep the still loading files
-					return localFile.status === "uploading";
-				}).length !== 0;
+	const comingSoon = ['notion']
 
-			setShowLoadingModal(stillHasLoading);
-			if (stillHasLoading) {
-				e.preventDefault();
-				return;
+	const handleContinue = async (e: React.MouseEvent<HTMLButtonElement>) => {
+		if(comingSoon.includes(selectedButton)) return
+
+		if (selectedButton == "twitter") {
+			if (twitterStatus != "authenticated") {
+				setShowTwitterLogin(true);
+			} else {
+				setStep("mint_nft")
 			}
 		}
-
-		// TODO: Do something with localFiles
-		if(localFiles){
-			const createKbParams = localFiles.map((file: UIFile) => {
-				return {
-					"name": file.filename,
-					"type": "file",
-					"file": file.bucketPath,
-				}
-			});
-			const response = await createKB("files", createKbParams, walletAddress || "");
-			if (response.status === "success") {
-				setToast(true)
-			} 
+		else if (selectedButton == "notion"){
+			setStep("notion")
+		} else if (selectedButton == "files"){
+			setStep("upload_files")
 		}
 	};
 
@@ -136,20 +124,7 @@ export default function DataSource() {
 					<button
 						className="flex flex-row items-center justify-between bg-[#01F7FF] rounded-3xl w-36 p-2 px-5 mt-8"
 						type="submit"
-						onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
-							if (selectedButton == "twitter") {
-								if (twitterStatus != "authenticated") {
-									setShowTwitterLogin(true);
-								} else {
-									setStep("mint_nft")
-								}
-							}
-							else if (selectedButton == "notion"){
-								setStep("notion")
-							} else if (selectedButton == "files"){
-								setStep("upload_files")
-							}
-						}}
+						onClick={handleContinue}
 					>
 						<h5 className="text-sm text-black font-semibold">Continue</h5>
 						<svg

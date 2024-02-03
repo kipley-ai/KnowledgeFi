@@ -13,12 +13,13 @@ import { useParams } from "next/navigation";
 import Link from "next/link";
 import { useKBDetail } from "@/hooks/api/kb";
 import { useCreditBalance } from "@/hooks/api/credit";
+import defaultAvatar from "@/public/images/avatar-default-02.svg"
 
 const NFTSection = ({ nftDetail }: { nftDetail: any }) => {
   return (
     <div className="grid grid-cols-2 gap-[30px] text-white  pb-[50px]">
       <div>
-        <Image src={nft1} alt={"nft image"} />
+        <Image className="rounded-2xl" src={nftDetail.profile_image} alt={"nft image"} width={551} height={551}/>
       </div>
       <div>
         <h1 className="text-4xl font-bold">{nftDetail.name}</h1>
@@ -29,7 +30,7 @@ const NFTSection = ({ nftDetail }: { nftDetail: any }) => {
             width={50}
             height={50}
             className="rounded-full mr-3"
-            src={nftDetail.profile_image}
+            src={defaultAvatar}
             alt={"creator image"}
           />
           <div className="">
@@ -115,11 +116,11 @@ const ChatbotSection = ({
             </p>
           </div>
         </div>
-        <p className="text-[#7C878E] mb-4 mt-[30px] font-semibold">Prompt</p>
+        <p className="text-[#7C878E] mb-4 mt-[30px] font-semibold">Instructions</p>
         <p className="font-medium">{chatbotDetail.instruction}</p>
       </div>
       <div className="col-span-1 bg-[#1A1D1F] rounded-2xl p-12 ">
-        <h1 className="mb-8 font-semibold text-lg">KB Info</h1>
+        <h1 className="mb-8 font-semibold text-lg">Knowldege Asset Info</h1>
         <div className="grid grid-cols-1 gap-3 text-[#FCFCFC]">
           <div className="flex justify-between pb-4 border-b border-[#202326]">
             <p className="text-[#6F767E] font-semibold">Name</p>

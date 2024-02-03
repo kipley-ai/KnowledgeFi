@@ -20,6 +20,7 @@ import { useAppProvider } from "@/providers/app-provider";
 import { useKBDetail, useUpdateKB } from "@/hooks/api/kb";
 import { useParams } from "next/navigation";
 import { useChatbotDetail } from "@/hooks/api/chatbot";
+import CreateChatbotModal from "@/components/toast-4";
 
 export default function Local({
 	files,
@@ -34,6 +35,7 @@ export default function Local({
 	const {createKb,handleChangeKb,setStep} = useCreateChatbotContext()
 	const {toast,setToast} = useAppProvider()
 	const updateKB = useUpdateKB()
+	const [showModal, setShowModal] = useState(false);
 
 	const {id} = useParams()
     const chatbotDetail = useChatbotDetail({
@@ -66,7 +68,9 @@ export default function Local({
 					"file":file.bucketPath,
 				}
 			}),
-		})
+		},{onSuccess(data, variables, context) {
+			setShowModal(true)
+		},})
 	}
 
 	const formats =
@@ -249,8 +253,15 @@ export default function Local({
 	},[files])
 
 	return (
+		<>
+		<CreateChatbotModal
+			children={"Your data source has been updated successfully!"}
+			open={showModal}
+			setOpen={setShowModal}
+		/>
+		
 		<div className="flex flex-col sm:px-6 lg:px-8 py-8 bg-[#292D32]">
-			<Toast children={"KB creation successful"} open={toast} setOpen={setToast} className="mx-auto" />
+			{/* <Toast children={"KB creation successful"} open={toast} setOpen={setToast} className="mx-auto" /> */}
 			<div className="mx-56">
 				<h1 className="text-2xl font-semibold text-white">Upload Knowledge Files</h1>
 				<hr className="my-4 border border-gray-600" />
@@ -349,5 +360,6 @@ export default function Local({
 			</button>
 		</div>
 	</div>
+	</>
 	);
 }

@@ -53,7 +53,7 @@ const ManageDataSources = () => {
     return (
         <div className="flex flex-col sm:px-6 lg:px-0 text-[#7C878E] py-20 font-semibold">
             <div className="flex justify-between items-center mb-4">
-                <h1 className="text-2xl font-normal">All Data Sources</h1>
+                <h1 className="text-2xl font-normal">Manage Data Sources</h1>
                 {/* Add New Button */}
                 {
                     kbDetail.data?.data.data.type !== 'twitter' && <Link href={'/chatbot/'+id+'/add'}>

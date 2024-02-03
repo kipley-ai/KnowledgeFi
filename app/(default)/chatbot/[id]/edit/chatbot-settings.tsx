@@ -6,6 +6,7 @@ import { useParams } from 'next/navigation';
 import { useDebouncedCallback } from "use-debounce";
 import ImageInput from "@/components/image-input-2";
 import LoadingIcon from "public/images/loading-icon.svg";
+import CreateChatbotModal from "@/components/toast-4";
 
 interface Form {
     category_id: string;
@@ -35,6 +36,7 @@ const ChatbotSettings = () => {
     );
     const [selectedFile, setSelectedFile] = useState<any>(LoadingIcon)
     const fileInputRef = useRef<HTMLInputElement>(null);
+    const [showModal, setShowModal] = useState(false);
 
     const handleDivClick = useDebouncedCallback(
 		() => {
@@ -68,6 +70,9 @@ const ChatbotSettings = () => {
                     example_conversation: form.example_conversation as string,
                     profile_image: selectedFile,
                 },
+                {onSuccess(data, variables, context) {
+                    setShowModal(true)
+                },}
             );
         } catch (error: any) {
             console.log(error);
@@ -82,6 +87,12 @@ const ChatbotSettings = () => {
     },[chatbotDetail.isSuccess])
 
     return (
+        <>
+        <CreateChatbotModal
+			children={"Your chatbot has been updated successfully!"}
+			open={showModal}
+			setOpen={setShowModal}
+		/>
         <div className="flex flex-col sm:px-6 lg:px-0 py-8 bg-[#292D32]">
             <form className="flex flex-col gap-5 space-y-4">
                 {/* Profile Picture */}
@@ -134,6 +145,7 @@ const ChatbotSettings = () => {
                             className="rounded-xl bg-transparent mt-2 text-white w-full border-2 border-[#50575F]"
                             placeholder="Name your Chatbot"
                             onChange={(e) => handleFormChange("name", e.target.value)}
+                            maxLength={100}
                         />
                     </div>
                     {/* <p className="mt-2 text-xs text-gray-400">
@@ -178,6 +190,7 @@ const ChatbotSettings = () => {
                             className="rounded-xl bg-transparent mt-2 text-white w-full border-2 border-[#50575F]"
                             placeholder="Describe your Chatbot"
                             onChange={(e) => handleFormChange("description", e.target.value)}
+                            maxLength={1000}
                         />
                     </div>
                     {/* <p className="mt-2 text-xs text-gray-400">
@@ -200,9 +213,10 @@ const ChatbotSettings = () => {
                         id="prompt"
                         value={form.instruction}
                         placeholder="Give Instructions and Personality to your Chatbot"
-                        className="rounded-xl bg-transparent text-white mt-2 w-full h-24 border-2 border-[#50575F]"
+                        className="rounded-xl bg-transparent text-white mt-2 w-full border-2 border-[#50575F]"
                         onChange={(e) => handleFormChange("instruction", e.target.value)}
-                        rows={11}
+                        rows={5}
+                        maxLength={1000}
                     />
                     {/* <div className="flex flex-row justify-between">
                         <p className="mt-2 text-xs text-gray-400">
@@ -226,7 +240,8 @@ const ChatbotSettings = () => {
 						onChange={(e) => handleFormChange("example_conversation", e.target.value)}
 						placeholder={'Examples for users to start the conversation'}
 						className="rounded-xl bg-transparent text-white mt-2 w-full border-2"
-						rows={11}
+						rows={5}
+                        maxLength={1000}
 					/>
 					{/* <div className="flex flex-row justify-between">
 						<p className="mt-2 text-xs text-gray-400">
@@ -278,6 +293,7 @@ const ChatbotSettings = () => {
                 </div>
             </form>
         </div>
+        </>
     );
 };
 
