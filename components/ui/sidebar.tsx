@@ -211,7 +211,7 @@ export default function Sidebar() {
 						</button>
 						{/* Logo */}
 						<h2 className="text-slate-500 font-semibold pl-3">
-							<span className="lg:hidden lg:sidebar-expanded:block 2xl:block text-[28px] font-black text-neutral-300">
+							<span className="lg:hidden lg:sidebar-expanded:block 2xl:block text-xl lg:text-[28px] font-black text-neutral-300">
 								KnowledgeFi
 							</span>
 						</h2>
@@ -238,7 +238,7 @@ export default function Sidebar() {
 												alt="home"
 												src={HomeIcon}
 											/>
-											<span className="text-sm font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200 text-[14px] font-semibold text-neutral-500">
+											<span className="text-xs lg:text-sm ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200 text-[14px] font-semibold text-neutral-500">
 												Explore
 											</span>
 										</div>
@@ -255,7 +255,7 @@ export default function Sidebar() {
 									{/* style={{ border: '2px solid #01F7FF', borderRadius: '24px', padding: '6px 10px' }}> */}
 									<SidebarLink href="/#">
 										<div className="flex items-center">
-											<span className="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200 text-[14px] font-semibold text-gray-500">
+											<span className="text-xs lg:text-sm ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200 text-[14px] font-semibold text-gray-500">
 												Chat List
 											</span>
 										</div>
@@ -401,7 +401,7 @@ export default function Sidebar() {
 					</div>
 
 					{/* Expand / collapse button */}
-					<div className="pt-3 hidden lg:inline-flex 2xl:hidden justify-end mt-auto">
+					{/* <div className="pt-3 hidden lg:inline-flex 2xl:hidden justify-end mt-auto">
 						<div className="px-3 py-2">
 							<button onClick={() => setSidebarExpanded(!sidebarExpanded)}>
 								<span className="sr-only">Expand / collapse sidebar</span>
@@ -417,7 +417,7 @@ export default function Sidebar() {
 								</svg>
 							</button>
 						</div>
-					</div>
+					</div> */}
 				</Transition>
 			</div>
 		</>
