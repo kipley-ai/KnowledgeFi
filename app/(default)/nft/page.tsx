@@ -101,14 +101,14 @@ const NFTList = () => {
     setPageSize((prevSize) => prevSize + incrementAmount);
   };
 
-  if (nftsQuery.data) {
+  if (nftsQuery.data?.data.data) {
     const nftsData = nftsQuery.data?.data.data;
 
-    if (nftsData !== undefined && nftsData.length > 0) {
+    if (nftsData !== undefined && nftsData.nft_count > 0) {
       return (
         <>
           <div className="grid grid-cols-4 gap-x-6 gap-y-12">
-            {nftsData.map((nft: NftData, index: number) => (
+            {nftsData.nft_data.map((nft: NftData, index: number) => (
               <NFTCard
                 nft={nft}
                 key={index}
@@ -195,14 +195,14 @@ const BotList = () => {
     setPageSize((prevSize) => prevSize + incrementAmount);
   };
 
-  if (botsQuery.data) {
-    const botsData = botsQuery.data?.data.data;
+  if (botsQuery.data?.data.data) {
+    const botsData = botsQuery.data.data.data;
 
-    if (botsData !== undefined && botsData.length > 0) {
+    if (botsData !== undefined && botsData.chatbot_count > 0) {
       return (
         <>
           <div className="grid grid-cols-4 gap-x-6 gap-y-12">
-            {botsData.map((bot: ChatbotData, index: number) => (
+            {botsData.chatbot_data.map((bot: ChatbotData, index: number) => (
               <BotCard
                 bot={bot}
                 key={index}

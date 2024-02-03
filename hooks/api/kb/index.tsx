@@ -2,6 +2,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { useAccount } from "wagmi";
 import axios from "axios";
 import { ICreateKBAndNFTParams, IKBDetail, IKBItem } from "../interfaces";
+import { KBItemResponse } from "@/lib/types";
 
 export const useCreateKBAndMintNFT = () => {
 	const { address } = useAccount();
@@ -48,7 +49,7 @@ export const useKBItem = (params: IKBItem) => {
 	return useQuery({
 		queryKey: ["kb-item", params.kb_id],
 		queryFn: () =>
-			axios.post("/api/kb/item", params, {
+			axios.post<KBItemResponse>("/api/kb/item", params, {
 				headers: {
 					"x-kf-user-id": address,
 				},
