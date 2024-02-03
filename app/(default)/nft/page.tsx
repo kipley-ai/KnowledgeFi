@@ -57,21 +57,29 @@ const NFTCard = ({
   tokenSymbol,
   category,
 }: NFTCardProps) => {
+  if (!category) {
+    category = "Uncategorised";
+  }
+
   return (
     <div className="group relative flex flex-col rounded-3xl bg-[#222325]">
       <Image
-        src={nft.profile_image}
-        className="rounded-t-2xl p-2"
+        src={
+          nft.profile_image
+            ? nft.profile_image
+            : "/images/nft-default-thumb.png"
+        }
+        className="rounded-t-3xl mx-auto p-1 pb-0 h-full object-cover"
         width={300}
         height={300}
         alt={"NFT Card"}
       />
-      <div className="flex flex-col gap-1 px-4 pb-5">
-        <p className="text-sm text-white">{name}</p>
-        <p className="text-sm text-white">
+      <div className="flex flex-col gap-1 px-4 py-4">
+        <p className="text-sm text-white line-clamp-1">{name}</p>
+        <p className="text-sm text-white line-clamp-1">
           {price} {tokenSymbol}
         </p>
-        <p className="text-xs text-gray-400">{category}</p>
+        <p className="text-[12px] text-gray-400 line-clamp-1">{category}</p>
       </div>
       <Link href={`/nft/${id}`}>
         <div className="absolute bottom-0 hidden h-12 w-full items-center justify-center rounded-b-2xl bg-[#01F7FF] group-hover:flex">
@@ -108,7 +116,7 @@ const NFTList = () => {
     if (nftsData !== undefined && nftsData.length > 0) {
       return (
         <>
-          <div className="grid grid-cols-4 gap-x-6 gap-y-12">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-x-4 md:gap-x-6 gap-y-4 md:gap-y-8 lg:gap-y-12">
             {nftsData.map((nft: NftData, index: number) => (
               <NFTCard
                 nft={nft}
@@ -148,22 +156,26 @@ type BotCardProps = {
 };
 
 const BotCard = ({ bot, id, name, category, sftId }: BotCardProps) => {
+  if (!category) {
+    category = "Uncategorised";
+  }
+
   return (
-    <div className="group relative flex flex-col gap-3 rounded-3xl bg-[#222325]">
+    <div className="group relative flex flex-col rounded-3xl bg-[#222325]">
       <Image
-        src={bot.profile_image}
-        className="rounded-t-2xl p-1"
+        src={bot.profile_image ? bot.profile_image : "/images/bot-default-thumb.png"}
+        className="rounded-t-3xl mx-auto p-1 pb-0 h-4/5 object-cover"
         width={300}
-        height={200}
+        height={300}
         alt={"Bot Card"}
       />
-      <div className="flex flex-col gap-2 px-4 pb-8">
-        <p className="text-md text-white">{name}</p>
-        <p className="text-xs text-gray-400">{category}</p>
+      <div className="flex flex-col gap-1 px-4 py-4 pb-6">
+        <p className="text-md text-white line-clamp-1">{name}</p>
+        <p className="text-xs text-gray-400 line-clamp-1">{category}</p>
       </div>
       <div className="absolute bottom-0 hidden h-12 w-full divide-x-2 divide-[#01F7FF] rounded-b-2xl border border-2 border-[#01F7FF] bg-[#222325] text-[#01F7FF] group-hover:flex">
         <Link
-          className="flex flex-1 items-center justify-center rounded-bl-xl hover:bg-[#01F7FF] hover:text-black"
+          className="flex flex-1 items-center justify-center px-1 rounded-bl-xl hover:bg-[#01F7FF] hover:text-black"
           href={`/nft/${sftId}`}
         >
           <p className="text-center text-sm font-semibold">View Details</p>
@@ -203,7 +215,7 @@ const BotList = () => {
     if (botsData !== undefined && botsData.length > 0) {
       return (
         <>
-          <div className="grid grid-cols-4 gap-x-6 gap-y-12">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-x-4 md:gap-x-6 gap-y-4 md:gap-y-8 lg:gap-y-12">
             {botsData.map((bot: ChatbotData, index: number) => (
               <BotCard
                 bot={bot}
@@ -249,15 +261,15 @@ export default function NFT() {
   }, []);
 
   return (
-    <div className="flex flex-col gap-24 bg-[#292D32] py-8 pb-32 sm:px-6 lg:px-8">
-      <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-12 bg-[#292D32] pt-8 px-4 md:px-6 lg:px-8 pb-32">
+      <div className="flex flex-col gap-2 lg:gap-8">
         <div className="flex flex-col">
           <h1 className="text-2xl font-semibold text-white">My NFTs</h1>
           <hr className="my-4 border border-gray-700" />
         </div>
         <NFTList />
       </div>
-      <div className="flex flex-col gap-8">
+      <div className="flex flex-col gap-2 lg:gap-8">
         <div className="flex flex-col">
           <h1 className="text-2xl font-semibold text-white">My Bots</h1>
           <hr className="my-4 border border-gray-700" />
