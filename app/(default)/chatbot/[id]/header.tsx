@@ -62,7 +62,7 @@ const Header = () => {
     //     .request_url,
   });
   return (
-    <div className="sticky top-0 lg:-top-8 flex items-center justify-between bg-stone-800 border-b border-b-gray-600 text-white md:px-4 py-2 md:py-6">
+    <div className="sticky top-0 lg:-top-8 flex items-center justify-between bg-stone-800 border-b border-b-gray-600 text-white py-3 xl:py-6">
       <div className="flex items-center gap-5">
         <button
           onClick={() => router.back()}

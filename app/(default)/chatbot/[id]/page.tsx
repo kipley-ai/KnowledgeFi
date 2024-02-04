@@ -28,15 +28,15 @@ export default function ChatBotPage() {
 	return (
 		<div className="flex flex-col h-full md:flex-row px-4 md:px-0">
 			<CreditBalanceProvider>
-				<div className="flex flex-col md:px-4 lg:px-16 bg-[#292D32] w-full md:w-3/4 md:border-r-2 border-[#393E44]">
+				<div className="flex flex-col md:px-6 xl:px-16 pb-4 bg-[#292D32] h-[calc(100vh-70px)] lg:h-[calc(100vh-120px)] w-full md:w-3/4 md:border-r-2 border-[#393E44]">
 					<CreateChatbotProvider>
 						<Header />
 						<MessageList />
 						<MessageInput />
 					</CreateChatbotProvider>
 				</div>
-				<div className="hidden md:flex flex-col w-1/4 items-center bg-[#292D32]">
-					<div className="sticky top-0 lg:-top-8 h-fit w-full flex flex-col items-center divide-y-2 divide-[#393E44]">
+				<div className="hidden md:flex flex-col w-1/4 bg-[#292D32]">
+					<div className="sticky top-0 lg:-top-8 h-fit w-full flex flex-col items-start divide-y-2 divide-[#393E44]">
 						<Description />
 						<CreditBalance />
 					</div>

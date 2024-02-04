@@ -17,7 +17,7 @@ export default function CreditBalance() {
   }, [])
 
   return (
-    <div className="flex flex-col justify-start gap-2 w-full text-white py-6 px-8">
+    <div className="flex flex-col justify-start gap-2 w-full text-white p-6">
       <ModalTopUp isOpen={modalTopUp} setIsOpen={setModalTopUp} />
       <div className="flex gap-3 items-center">
         <Image
