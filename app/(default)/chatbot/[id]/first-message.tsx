@@ -50,7 +50,7 @@ const FirstAnswer = ({
               height={50}
             />
             <div className="text-white text-sm w-full">
-              <h6 className="mb-5 mt-1">{chatbotData?.data.data.name}</h6>
+              <h6 className="mb-5 mt-1 font-semibold">{chatbotData?.data.data.name}</h6>
               <p>{isStream ? message.slice(0, -2).join("") : message}</p>
             </div>
           </div>
