@@ -62,7 +62,7 @@ const Header = () => {
     //     .request_url,
   });
   return (
-    <div className="relative flex items-center justify-between border-b border-b-gray-600 text-white md:px-4 py-2 md:py-6">
+    <div className="sticky top-0 lg:-top-8 flex items-center justify-between bg-stone-800 border-b border-b-gray-600 text-white md:px-4 py-2 md:py-6">
       <div className="flex items-center gap-5">
         <button
           onClick={() => router.back()}
@@ -93,7 +93,7 @@ const Header = () => {
             width={50}
             height={50}
           />
-          <h1 className={`text-xl ${archivo.className} font-semibold`}>
+          <h1 className={`md:text-xl ${archivo.className} font-semibold`}>
             {chatbotData?.data.data.name}
           </h1>
         </div>

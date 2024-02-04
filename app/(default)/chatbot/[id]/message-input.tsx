@@ -108,7 +108,7 @@ const MessageInput = () => {
     '"';
 
   return (
-    <div className="fixed bottom-4 inset-x-0 mx-auto md:relative flex items-center rounded-full border border-gray-600 focus-within:border-[#01F7FF] bg-stone-800 px-4 py-2 mt-6 w-11/12 md:w-full">
+    <div className="sticky bottom-4 lg:bottom-0 inset-x-0 flex items-center rounded-full border border-gray-600 focus-within:border-[#01F7FF] bg-stone-800 px-4 py-2 mt-6 w-auto lg:w-full">
       {/* Profile picture placeholder */}
       {/* <Image src={Avatar} alt="Profile" className="w-8 h-8 rounded-full mr-4" /> */}
       {/* Input Field */}
