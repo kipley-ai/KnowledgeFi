@@ -49,7 +49,7 @@ const ChatHistoryList = () => {
 				<>
 					{/* {chatbotListData.slice(chatbotListStart, chatbotListEnd).map((chatbot: any, index: number) => ( */}
 					{chatbotListData.map((chatbot: any, index: number) => (
-						<li className={`px-3 py-2  mb-3 last:mb-0 hover:bg-stone-600 hover:rounded-3xl hover:text-white ${
+						<li key={chatbot.chatbot_id} className={`px-3 py-2  mb-3 last:mb-0 hover:bg-stone-600 hover:rounded-3xl hover:text-white ${
 							(segments.includes("home") ||
 								segments.includes("dashboard")) &&
 							"bg-transparent"
@@ -211,11 +211,13 @@ export default function Sidebar() {
 							</svg>
 						</button>
 						{/* Logo */}
-						<h2 className="text-slate-500 font-semibold pl-3">
-							<span className="lg:hidden lg:sidebar-expanded:block 2xl:block text-xl lg:text-[28px] font-black text-neutral-300">
-								KnowledgeFi
-							</span>
-						</h2>
+						<Link href="/dashboard">
+							<h2 className="text-slate-500 font-semibold pl-3">
+								<span className="lg:hidden lg:sidebar-expanded:block 2xl:block text-xl lg:text-[28px] font-black text-neutral-300">
+									KnowledgeFi
+								</span>
+							</h2>
+						</Link>
 					</div>
 
 					{/* Links */}
@@ -233,7 +235,7 @@ export default function Sidebar() {
 								>
 									{/* style={{ border: '2px solid #01F7FF', borderRadius: '24px', padding: '6px 10px' }}> */}
 									<SidebarLink href="/dashboard">
-										<div className="flex items-center">
+										<div className="flex items-center px-3 py-1">
 											<Image
 												className="w-5 h-5 ml-0 lg:ml-0 2xl:ml-2"
 												alt="home"
@@ -254,13 +256,11 @@ export default function Sidebar() {
 									} `}
 								>
 									{/* style={{ border: '2px solid #01F7FF', borderRadius: '24px', padding: '6px 10px' }}> */}
-									<SidebarLink href="/#">
-										<div className="flex items-center">
-											<span className="text-xs lg:text-sm ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200 text-[14px] font-semibold text-gray-500">
-												Chat List
-											</span>
-										</div>
-									</SidebarLink>
+									<div className="flex items-center">
+										<span className="text-sm lg:text-sm ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200 text-[14px] font-semibold text-gray-400">
+											Chat List
+										</span>
+									</div>
 								</li>
 								<ChatHistoryList/>
 								{/* <li

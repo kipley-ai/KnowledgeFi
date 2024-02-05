@@ -109,7 +109,7 @@ export default function Dashboard() {
           {/* <div className="grid grid-cols-6"> */}
           {botsQuery.data?.data.data
             ? botsQuery.data.data.data.chatbot_data.map((botData) => {
-                return <BotItem botData={botData} onClick={() => {}} />;
+                return <BotItem key={botData.chatbot_id} botData={botData} onClick={() => {}} />;
               })
             : null}
         </div>
