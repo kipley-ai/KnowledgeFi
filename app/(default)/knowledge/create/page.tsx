@@ -32,6 +32,7 @@ export interface UIFile {
 // }
 
 export default function DataSource() {
+	const title = "Create Knowledge Assets";
 	const { setHeaderTitle, toast, setToast } = useAppProvider();
 	
 	const [kbId, setKbId] = useState("");
@@ -39,9 +40,10 @@ export default function DataSource() {
   const { address: walletAddress } = useAccount();
 
 	useEffect(() => {
-		const title = "Add Knowledge Assets";
 		document.title = title;
-		return () => setHeaderTitle("");
+		setHeaderTitle("");
+
+		return () => setHeaderTitle("Default Title");
 	}, []);
 
 	
@@ -89,7 +91,7 @@ export default function DataSource() {
 		
 			<div className="flex flex-col sm:px-6 lg:px-8 py-8 bg-[#292D32]">
 				<div className="mx-56">
-					<h1 className="text-2xl font-semibold text-white">Add Knowledge Assets</h1>
+					<h1 className="text-2xl font-semibold text-white">Create Knowledge Assets</h1>
 					<hr className="my-4 border border-gray-600" />
 				</div>
 				<Step1
