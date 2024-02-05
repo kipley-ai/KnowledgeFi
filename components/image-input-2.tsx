@@ -14,7 +14,7 @@ const ImageInput = ({ selectedFile, setSelectedFile }: any) => {
 
   const uploadFile = async (newFile: any, callback: any) => {
     try {
-      const response = await axios.post("/api/upload/s3", newFile);
+      const response = await axios.post("/api/upload/s3/asset", newFile);
 
       if (response.status === 200) {
         const data = response.data;
