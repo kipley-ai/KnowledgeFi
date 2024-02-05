@@ -5,29 +5,32 @@ import { useEffect, useState } from "react";
 
 import Dashboard from "./(dashboard)/dashboard/page";
 import LayoutDashboard from "./(dashboard)/dashboard/layout";
-export default function Home() {
-	const { isConnected } = useAccount();
-	useEffect(() => {
-		setIsConnected_(isConnected);
-	}, [isConnected]);
 
-	// Hydrate safe
-	const [isConnected_, setIsConnected_] = useState<boolean>(false);
+export default function Home() {
+  const [isDefinitelyConnected, setIsDefinitelyConnected] = useState(false);
+
+  const { address, isConnected } = useAccount();
 
 	const searchParams = useSearchParams();
+  const nextUrl = searchParams.get("next") || "/dashboard";
 
-	const nextUrl = searchParams.get("next") || "/dashboard";
-	console.log(isConnected);
+  useEffect(() => {
+    if (isConnected) {
+      setIsDefinitelyConnected(true);
+    } else {
+      setIsDefinitelyConnected(false);
+    }
+  }, [address]);
 
-	if (isConnected) {
-		redirect(nextUrl);
-	} else {
-		return (
-			<>
-				<LayoutDashboard>
-					<Dashboard />
-				</LayoutDashboard>
-			</>
-		);
-	}
+  if (isConnected) {
+    redirect(nextUrl);
+  } else {
+    return (
+      <>
+        <LayoutDashboard>
+          <Dashboard />
+        </LayoutDashboard>
+      </>
+    );
+  }
 }
