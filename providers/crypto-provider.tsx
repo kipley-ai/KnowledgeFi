@@ -27,13 +27,14 @@ import {
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
 import { RQProviders } from "@/providers/react-query-provider";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { okxWallet } from "@rainbow-me/rainbowkit/wallets";
 import { trustWallet } from "@rainbow-me/rainbowkit/wallets";
 import { phantomWallet } from "@rainbow-me/rainbowkit/wallets";
 import { oneKeyWallet } from "@rainbow-me/rainbowkit/wallets";
 import { ledgerWallet } from "@rainbow-me/rainbowkit/wallets";
 import { bitKeepWallet } from "@rainbow-me/rainbowkit/wallets";
+import { useAxios } from "@/hooks/useAxios";
 
 const { chains, publicClient } = configureChains(
   [mainnet, polygon, optimism, arbitrum, base, zora, sepolia],
@@ -71,6 +72,20 @@ const wagmiConfig = createConfig({
 
 export function CryptoProvider({ children }: React.PropsWithChildren) {
   const [status, setStatus] = useState<AuthenticationStatus>("unauthenticated");
+  const [address,setAddress] = useState("")
+  const { response, error, loading, sendRequest } = useAxios();
+  useEffect(()=> {
+    // console.log(address,"address")
+    if(status == 'authenticated' && address!=''){
+      sendRequest({
+          method: "POST",
+          url: "/api/user/create",
+          data: {wallet_addr:address},
+          headers: {'x-kf-user-id':address}
+        })
+    }
+
+  },[address,status])
 
   const authenticationAdapter = createAuthenticationAdapter({
     getNonce: async () => {
@@ -78,6 +93,7 @@ export function CryptoProvider({ children }: React.PropsWithChildren) {
     },
 
     createMessage: ({ nonce, address, chainId }) => {
+      setAddress(address)
       return "Welcome to KnowledgeFi.xyz!";
     },
 

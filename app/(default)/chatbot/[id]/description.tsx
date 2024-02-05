@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import DummyImage from "public/images/michael-unsplash-1.png";
 
 export default function ChatbotDescription() {
+  const tokenSymbol = "$KIP";
   const { id } = useParams();
   const { data: chatbotData } = useChatbotDetail({ chatbot_id: id as string });
   const { data: nftData } = useNftDetail({
@@ -23,7 +24,10 @@ export default function ChatbotDescription() {
         <p className="text-sm">{nftData?.data.data.name}</p>
         <p className="text-[11px]">
           <span className="text-[#777E90]">Stored Value</span>{" "}
-          {nftData?.data.data.token_amount} {nftData?.data.data.token_symbol}
+          {/* Token amount with Token Symbol from API */}
+          {/* {nftData?.data.data.token_amount} {nftData?.data.data.token_symbol} */}
+          {/* Token amount with $KIP token symbol */}
+          {nftData?.data.data.token_amount} {tokenSymbol}
         </p>
       </div>
     </div>
