@@ -28,15 +28,6 @@ const nextConfig = {
       "knowledgefi-assets-test.kip.pro"
     ],
   },
-  async redirects() {
-    return [
-      {
-        source: '/',
-        destination: '/dashboard',
-        permanent: true,
-      },
-    ];
-  },
 };
 
 module.exports = nextConfig;
