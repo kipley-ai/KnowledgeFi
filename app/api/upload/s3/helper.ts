@@ -55,7 +55,7 @@ function getFormattedDate(date: Date) {
 	return `${year}${month}/${day}`;
 }
 
-export function getFinalFilepath(filename: string) {
+export function getFinalFilepath(filename: string, dir: any) {
 	const date = getFormattedDate(new Date());
 	const filenameArray = filename.split(".");
 	const fileformat = filenameArray.pop();
@@ -67,5 +67,5 @@ export function getFinalFilepath(filename: string) {
 		"." +
 		fileformat;
 
-	return "kb-files/" + date + "/" + newFilename;
+	return dir + "/" + date + "/" + newFilename;
 }

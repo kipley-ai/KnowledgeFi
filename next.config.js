@@ -25,6 +25,7 @@ const nextConfig = {
       "kipley-assets-public.gumlet.io",
       "digitaloceanspaces.com",
       "knowledgefi-kb-files-test.e8cf6e5ae8cb4fd0df33a1fef8bbba19.r2.cloudflarestorage.com",
+      "knowledgefi-assets-test.kip.pro"
     ],
   },
 };
