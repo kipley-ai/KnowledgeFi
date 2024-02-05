@@ -243,11 +243,11 @@ const NFTDetail = ({ params }: { params: any }) => {
 
   const { data: nftData } = useNftDetail({ sft_id: id });
   const { data: chatbotData } = useChatbotDetail({
-    chatbot_id: nftData?.data.data.chatbot_id,
+    chatbot_id: nftData?.data.data.chatbot_id as string,
   });
 
   const { data: kbDetail } = useKBDetail({
-    kb_id: nftData?.data.data.kb_id,
+    kb_id: nftData?.data.data.kb_id as string,
   });
 
   return (
