@@ -74,9 +74,9 @@ const AvatarWithStatus: React.FC<AvatarWithStatusProps> = ({
           className="w-10 h-10 rounded-full"
         />
         )}
-        <span
+        {/* <span
           className={`absolute top-0 right-0 w-3 h-3 rounded-full border-2 border-white ${statusColor[status]}`}
-        ></span>
+        ></span> */}
       </div>
       {isDropdownOpen && (
         <div className="absolute right-0 mt-2 py-2 w-48 bg-[#151515] rounded-md shadow-xl z-50">

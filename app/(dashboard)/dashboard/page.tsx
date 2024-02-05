@@ -91,7 +91,8 @@ export default function Dashboard() {
       <ModalLoginTwitter isOpen={modalLogin} setIsOpen={setModalLogin} />
       <div className="w-full max-w-[96rem] px-4 py-8 sm:px-6 lg:px-12 ">
         <Switcher
-          texts={["All", "Custom", "Custom", "Custom", "Custom"]}
+          texts={["All", "Technology", "Crypto", "Celebrities", "Others"]}
+          mode={mode}
           setWhich={setMode}
         />
 
