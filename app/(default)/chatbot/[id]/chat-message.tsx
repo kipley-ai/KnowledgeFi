@@ -28,7 +28,7 @@ const ChatMessage = ({
           <h6 className="mb-5 mt-1 font-semibold">
             {message.sender == "bot" ? chatbotData?.data.data.name : "You"}
           </h6>
-          <p>{message.message}</p>
+          <p className="whitespace-break-spaces">{message.message}</p>
         </div>
       </div>
       <div className="h-[40px] flex items-center justify-end pl-10">
