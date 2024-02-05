@@ -3,6 +3,7 @@ import {
 	PutObjectCommand,
 	S3Client,
 } from "@aws-sdk/client-s3";
+import { File } from "buffer";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { NextResponse } from "next/server";
 import { ZodError } from "zod";
@@ -21,31 +22,44 @@ const client = new S3Client({
 
 async function getPresignedUrl(req: Request) {
 	try {
-		const data = postSchema.parse(await req.json());
-		const finalFilepath = getFinalFilepath(data.filename);
-
-		const command = new PutObjectCommand({
+		// console.log(req.body)
+		const form = await req.formData();
+		// console.log("AAAAAAAAAAAA",bodyy.files)
+		const file = form.get("input-file-upload");
+		const file_dir = form.get("file-dir");
+		// files.map(async (file)=>{
+		// return NextResponse.json({ message: "failure" },{ status: 400 });
+		if (!file)
+		  return NextResponse.json({ message: "failure" }, { status: 400 });
+	
+		const isFile = file instanceof File;
+	
+		if (!isFile)
+		  return NextResponse.json({ message: "failure" }, { status: 400 });
+	
+		const buffer = await file.arrayBuffer();
+	
+		const body = Buffer.from(buffer);
+	
+		const filename = getFinalFilepath(file.name, file_dir)
+	
+		await client.send(
+		  new PutObjectCommand({
 			ACL: "private",
-			Bucket: process.env.KBFILES_S3_BUCKET!,
-			Key: finalFilepath,
-		});
-
-		return NextResponse.json(
-			{
-				presignedUrl: await getSignedUrl(client, command, { expiresIn: 3600 }),
-				bucketPath: finalFilepath,
-			},
-			{ status: 200 }
+			Bucket: process.env.ASSET_S3_BUCKET as string,
+			Key: filename,
+			Body: body,
+		  })
 		);
-	} catch (error) {
-		if (error instanceof ZodError) {
-			return NextResponse.json(error, { status: 400 });
-		}
-
-		console.error(error)
-
-		return NextResponse.json({ status: 500 });
-	}
+	
+		return NextResponse.json({
+		  message: "success",
+		  link: process.env.ASSET_S3_URL + "/" + filename,
+		});
+	  } catch (reason) {
+		console.log(reason);
+		return NextResponse.json({ message: "failure" }, { status: 500 });
+	  }
 }
 
 async function deleteFileOnBucket(req: Request) {

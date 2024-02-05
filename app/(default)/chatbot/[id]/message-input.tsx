@@ -50,7 +50,7 @@ const MessageInput = () => {
   }, [chatSession.isSuccess]);
 
   const handleSendMessage = async () => {
-    if (!chatSession.data?.data.data.session_id) {
+    if (!chatSession.data?.data.data?.session_id) {
       newSession.mutate(
         { chatbot_id: id as string },
         {
