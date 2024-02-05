@@ -50,7 +50,7 @@ const MessageInput = () => {
   }, [chatSession.isSuccess]);
 
   const handleSendMessage = async () => {
-    if (!chatSession.data?.data.data.session_id) {
+    if (!chatSession.data?.data.data?.session_id) {
       newSession.mutate(
         { chatbot_id: id as string },
         {
@@ -108,7 +108,7 @@ const MessageInput = () => {
     '"';
 
   return (
-    <div className="flex items-center rounded-full border border-gray-600 focus-within:border-[#01F7FF] bg-dark-blue px-4 py-2 mt-6 w-full">
+    <div className="sticky bottom-4 lg:bottom-0 inset-x-0 flex items-center rounded-full border border-gray-600 focus-within:border-[#01F7FF] bg-stone-800 px-4 py-2 mt-6 w-auto lg:w-full">
       {/* Profile picture placeholder */}
       {/* <Image src={Avatar} alt="Profile" className="w-8 h-8 rounded-full mr-4" /> */}
       {/* Input Field */}

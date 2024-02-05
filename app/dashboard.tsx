@@ -54,6 +54,7 @@ export default function Dashboard() {
       <div className="w-full max-w-[96rem] px-4 py-8 sm:px-6 lg:px-12 ">
         <Switcher
           texts={["All", "Custom", "Custom", "Custom", "Custom"]}
+          mode={mode}
           setWhich={setMode}
         />
 

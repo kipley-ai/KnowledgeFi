@@ -41,39 +41,29 @@ const NoData = ({ item, url }: NoDataProps) => {
 };
 
 type NFTCardProps = {
-  nft: any;
-  id: string | number;
-  name: string;
-  price: number;
-  tokenSymbol: string;
-  category: string;
+  nft: NftData;
 };
 
-const NFTCard = ({
-  nft,
-  id,
-  name,
-  price,
-  tokenSymbol,
-  category,
-}: NFTCardProps) => {
+const NFTCard = ({ nft }: NFTCardProps) => {
   return (
     <div className="group relative flex flex-col rounded-3xl bg-[#222325]">
       <Image
-        src={nft.profile_image}
-        className="rounded-t-2xl p-2"
+        src={nft.profile_image || "/images/nft-default-thumb.png"}
+        className="mx-auto h-full rounded-t-3xl object-cover p-1 pb-0"
         width={300}
         height={300}
         alt={"NFT Card"}
       />
-      <div className="flex flex-col gap-1 px-4 pb-5">
-        <p className="text-sm text-white">{name}</p>
-        <p className="text-sm text-white">
-          {price} {tokenSymbol}
+      <div className="flex flex-col gap-1 px-4 py-4">
+        <p className="line-clamp-1 text-sm text-white">{nft.name}</p>
+        <p className="line-clamp-1 text-sm text-white">
+          {nft.price_per_query} {nft.token_symbol}
         </p>
-        <p className="text-xs text-gray-400">{category}</p>
+        <p className="line-clamp-1 text-[12px] text-gray-400">
+          {nft.category || "Uncategorised"}
+        </p>
       </div>
-      <Link href={`/nft/${id}`}>
+      <Link href={`/nft/${nft.sft_id}`}>
         <div className="absolute bottom-0 hidden h-12 w-full items-center justify-center rounded-b-2xl bg-[#01F7FF] group-hover:flex">
           <p className="text-center text-sm font-semibold text-black">
             View More
@@ -103,22 +93,14 @@ const NFTList = () => {
   };
 
   if (data) {
-    const nftsData = data?.data.data;
+    const { nft_data: nftsData, nft_count: nftCount } = data.data.data;
 
-    if (nftsData !== undefined && nftsData.nft_count > 0) {
+    if (nftCount > 0) {
       return (
         <>
-          <div className="grid grid-cols-4 gap-x-6 gap-y-12">
-            {nftsData.nft_data.map((nft: NftData, index: number) => (
-              <NFTCard
-                nft={nft}
-                key={index}
-                id={nft.sft_id}
-                name={nft.name}
-                price={nft.price_per_query}
-                tokenSymbol={nft.token_symbol}
-                category={nft.category}
-              />
+          <div className="grid grid-cols-2 gap-x-4 gap-y-4 md:grid-cols-4 md:gap-x-6 md:gap-y-8 lg:gap-y-12">
+            {nftsData.map((nft: NftData, index: number) => (
+              <NFTCard nft={nft} key={nft.sft_id} />
             ))}
           </div>
           {isFetching ? (
@@ -140,37 +122,35 @@ const NFTList = () => {
 };
 
 type BotCardProps = {
-  bot: any;
-  id: string | number;
-  name: string;
-  category: string;
-  sftId: string;
+  bot: ChatbotData;
 };
 
-const BotCard = ({ bot, id, name, category, sftId }: BotCardProps) => {
+const BotCard = ({ bot }: BotCardProps) => {
   return (
-    <div className="group relative flex flex-col gap-3 rounded-3xl bg-[#222325]">
+    <div className="group relative flex flex-col rounded-3xl bg-[#222325]">
       <Image
-        src={bot.profile_image}
-        className="rounded-t-2xl p-1"
+        src={bot.profile_image || "/images/bot-default-thumb.png"}
+        className="mx-auto h-4/5 rounded-t-3xl object-cover p-1 pb-0"
         width={300}
-        height={200}
+        height={300}
         alt={"Bot Card"}
       />
-      <div className="flex flex-col gap-2 px-4 pb-8">
-        <p className="text-md text-white">{name}</p>
-        <p className="text-xs text-gray-400">{category}</p>
+      <div className="flex flex-col gap-1 px-4 py-4 pb-6">
+        <p className="text-md line-clamp-1 text-white">{bot.name}</p>
+        <p className="line-clamp-1 text-xs text-gray-400">
+          {bot.category_name || "Uncategorised"}
+        </p>
       </div>
       <div className="absolute bottom-0 hidden h-12 w-full divide-x-2 divide-[#01F7FF] rounded-b-2xl border border-2 border-[#01F7FF] bg-[#222325] text-[#01F7FF] group-hover:flex">
         <Link
-          className="flex flex-1 items-center justify-center rounded-bl-xl hover:bg-[#01F7FF] hover:text-black"
-          href={`/nft/${sftId}`}
+          className="flex flex-1 items-center justify-center rounded-bl-xl px-1 hover:bg-[#01F7FF] hover:text-black"
+          href={`/nft/${bot.sft_id}`}
         >
           <p className="text-center text-sm font-semibold">View Details</p>
         </Link>
         <Link
           className="flex flex-1 items-center justify-center rounded-br-xl hover:bg-[#01F7FF] hover:text-black"
-          href={`/chatbot/` + id}
+          href={`/chatbot/` + bot.chatbot_id}
         >
           <p className="text-center text-sm font-semibold">Chat</p>
         </Link>
@@ -198,21 +178,14 @@ const BotList = () => {
   };
 
   if (data) {
-    const botsData = data.data.data;
+    const { chatbot_data: botsData, chatbot_count: botCount } = data.data.data;
 
-    if (botsData !== undefined && botsData.chatbot_count > 0) {
+    if (botCount > 0) {
       return (
         <>
-          <div className="grid grid-cols-4 gap-x-6 gap-y-12">
-            {botsData.chatbot_data.map((bot: ChatbotData, index: number) => (
-              <BotCard
-                bot={bot}
-                key={index}
-                id={bot.chatbot_id}
-                name={bot.name}
-                category={bot.category_name ?? ""}
-                sftId={bot.sft_id}
-              />
+          <div className="grid grid-cols-2 gap-x-4 gap-y-4 md:grid-cols-4 md:gap-x-6 md:gap-y-8 lg:gap-y-12">
+            {botsData.map((bot: ChatbotData, index: number) => (
+              <BotCard bot={bot} key={bot.chatbot_id} />
             ))}
           </div>
           {isFetching ? (
@@ -234,7 +207,7 @@ const BotList = () => {
 };
 
 export default function NFT() {
-  const title = "My NFTs";
+  const title = "My Assets";
   const { setHeaderTitle } = useAppProvider();
 
   const handleLoadMore = () => {
@@ -249,17 +222,17 @@ export default function NFT() {
   }, []);
 
   return (
-    <div className="flex flex-col gap-24 bg-[#292D32] py-8 pb-32 sm:px-6 lg:px-8">
-      <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-12 bg-[#292D32] px-4 pb-32 pt-8 md:px-6 lg:px-8">
+      <div className="flex flex-col gap-2 lg:gap-8">
         <div className="flex flex-col">
           <h1 className="text-2xl font-semibold text-white">My NFTs</h1>
           <hr className="my-4 border border-gray-700" />
         </div>
         <NFTList />
       </div>
-      <div className="flex flex-col gap-8">
+      <div className="flex flex-col gap-2 lg:gap-8">
         <div className="flex flex-col">
-          <h1 className="text-2xl font-semibold text-white">My Bots</h1>
+          <h1 className="text-2xl font-semibold text-white">My Chatbots</h1>
           <hr className="my-4 border border-gray-700" />
         </div>
         <BotList />

@@ -17,7 +17,7 @@ export default function CreditBalance() {
   }, [])
 
   return (
-    <div className="flex flex-col justify-start gap-2 w-full text-white py-6 px-8">
+    <div className="flex flex-col justify-start gap-2 w-full text-white p-6">
       <ModalTopUp isOpen={modalTopUp} setIsOpen={setModalTopUp} />
       <div className="flex gap-3 items-center">
         <Image
@@ -30,7 +30,7 @@ export default function CreditBalance() {
         <h6>Credit Balance</h6>
       </div>
       <p>
-        <span className="text-3xl font-medium">{creditBalance} Credits</span>
+        <span className="text-2xl lg:text-3xl font-medium">{creditBalance} Credits</span>
       </p>
       {/* <ProgressBar current={79.99} total={300} /> */}
       <div className="mt-2 flex items-center border border-2 border-[#01F7FF] px-1 py-1 rounded-full">

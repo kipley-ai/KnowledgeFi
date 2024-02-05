@@ -71,4 +71,3 @@ async function deleteFileOnBucket(req: Request) {
 	}
 }
 export { deleteFileOnBucket as DELETE, getPresignedUrl as POST };
-

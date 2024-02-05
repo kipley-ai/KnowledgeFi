@@ -41,16 +41,16 @@ const FirstAnswer = ({
         {/* Message bubble */}
         <div className="flex flex-col space-y-2">
           {/* Message bubble */}
-          <div className="flex items-start space-x-3">
+          <div className="flex items-start space-x-4">
             <Image
               src={profileImage}
               alt="Profile"
-              className="w-8 h-8 rounded-full mr-5"
+              className="w-8 h-8 rounded-full"
               width={50}
               height={50}
             />
             <div className="text-white text-sm w-full">
-              <h6 className="mb-5 mt-1">{chatbotData?.data.data.name}</h6>
+              <h6 className="mb-5 mt-1 font-semibold">{chatbotData?.data.data.name}</h6>
               <p>{isStream ? message.slice(0, -2).join("") : message}</p>
             </div>
           </div>

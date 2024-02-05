@@ -3,8 +3,8 @@ import { redirect, useSearchParams } from "next/navigation";
 import { useAccount } from "wagmi";
 import { useEffect, useState } from "react";
 
-import Dashboard from "./dashboard";
-import LayoutDashboard from "./layout-dashboard";
+import Dashboard from "./(dashboard)/dashboard/page";
+import LayoutDashboard from "./(dashboard)/dashboard/layout";
 export default function Home() {
 	const { isConnected } = useAccount();
 	useEffect(() => {

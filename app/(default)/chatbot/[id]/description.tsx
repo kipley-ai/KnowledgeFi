@@ -13,6 +13,7 @@ import {
 import { FaSpinner } from "react-icons/fa6";
 
 export default function ChatbotDescription() {
+  const tokenSymbol = "$KIP";
   const { id } = useParams();
   const { data: chatbotData } = useChatbotDetail({ chatbot_id: id as string });
   const { data: nftData } = useNftDetail({
@@ -42,8 +43,8 @@ export default function ChatbotDescription() {
         <p className="text-sm">{nftData?.data.data.name}</p>
         <p className="text-[11px]">
           <span className="text-[#777E90]">Stored Value</span>
-          {isFetched ? profit : <FaSpinner className="animate-spin" />}
-          {nftData?.data.data.token_symbol}
+          {isFetched ? profit : <FaSpinner className="animate-spin" />}{" "}
+          {tokenSymbol}
         </p>
       </div>
     </div>

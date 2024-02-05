@@ -14,7 +14,7 @@ import ModalLoginTwitter from "../modal-login-twitter";
 import { useAccount } from "wagmi";
 import dynamic from "next/dynamic";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import ChatText from "public/images/chat-text.png";
 import HomeIcon from "public/images/home-icon.svg";
@@ -32,11 +32,12 @@ const ChatHistoryList = () => {
 	const searchParams = useSearchParams();
 	const segments = useSelectedLayoutSegments();
 	const chatbotListQuery = useChatbotChatList();
+	const pathname = usePathname();
 	// const chatbotListPage = searchParams.get("chatbotListPage") ?? "1";
 	// const chatbotListPerPage = searchParams.get("chatbotListPerPage") ?? "10";
 	// const chatbotListStart = (Number(chatbotListPage) - 1) * Number(chatbotListPerPage);
 	// const chatbotListEnd = chatbotListStart + Number(chatbotListPerPage);
-
+	
 	if (chatbotListQuery.data) {
 		const chatbotListData = chatbotListQuery.data?.data.data;
 		// const chatbotListTotalPages = Math.ceil(
@@ -52,7 +53,7 @@ const ChatHistoryList = () => {
 							(segments.includes("home") ||
 								segments.includes("dashboard")) &&
 							"bg-transparent"
-						}`}>
+						} ${pathname === '/chatbot/' + chatbot.chatbot_id ? 'border border-2 border-[#01F7FF] rounded-3xl hover:bg-transparent' : ''}`}>
 						<SidebarLink href={`/chatbot/${chatbot.chatbot_id}`}>
 							<div className="flex items-center">
 								<span className="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200 text-[14px] font-semibold text-neutral-500">
@@ -83,7 +84,7 @@ export default function Sidebar() {
 	const sidebar = useRef<HTMLDivElement>(null);
 	const { sidebarOpen, setSidebarOpen } = useAppProvider();
 
-	const [sidebarExpanded, setSidebarExpanded] = useState<boolean>(false);
+	const [sidebarExpanded, setSidebarExpanded] = useState<boolean>(true);
 	const segments = useSelectedLayoutSegments();
 	const [breakpoint, setBreakpoint] = useState<string | undefined>(
 		getBreakpoint()
@@ -185,7 +186,7 @@ export default function Sidebar() {
 					as="div"
 					id="sidebar"
 					ref={sidebar}
-					className="flex lg:!flex flex-col absolute z-40 left-0 top-0 lg:static lg:left-auto lg:top-auto lg:translate-x-0 h-[100dvh] overflow-y-scroll lg:overflow-y-auto no-scrollbar w-64 lg:w-20 lg:sidebar-expanded:!w-64 2xl:!w-64 shrink-0 bg-neutral-900 p-4 pt-9 transition-all duration-200 ease-in-out"
+					className="flex lg:!flex flex-col absolute z-40 left-0 top-0 lg:static lg:left-auto lg:top-auto lg:translate-x-0 h-[100dvh] overflow-y-scroll lg:overflow-y-auto no-scrollbar w-64 lg:w-12 lg:sidebar-expanded:!w-64 2xl:!w-64 shrink-0 bg-neutral-900 p-4 pt-9 transition-all duration-200 ease-in-out"
 					enterFrom="-translate-x-full"
 					enterTo="translate-x-0"
 					leaveFrom="translate-x-0"
@@ -224,11 +225,11 @@ export default function Sidebar() {
 							<ul className="">
 								{/* Inbox */}
 								<li
-									className={`px-3 py-2  mb-10 last:mb-0 ${
-										(segments.includes("home") ||
+									className={`px-3 py-2  mb-10 last:mb-0 hover:bg-stone-600 hover:rounded-3xl ${
+										(segments.length === 0 ||
 											segments.includes("dashboard")) &&
-										"bg-slate-900"
-									} border-2 border-aqua-700 rounded-3xl py-1.5 px-2.5`}
+										"border-2 border-aqua-700 rounded-3xl"
+									} py-1.5 px-2.5`}
 								>
 									{/* style={{ border: '2px solid #01F7FF', borderRadius: '24px', padding: '6px 10px' }}> */}
 									<SidebarLink href="/dashboard">

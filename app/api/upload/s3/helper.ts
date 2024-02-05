@@ -69,3 +69,18 @@ export function getFinalFilepath(filename: string) {
 
 	return "kb-files/" + date + "/" + newFilename;
 }
+
+export function getAssetFinalFilepath(filename: string, dir: any) {
+	const date = getFormattedDate(new Date());
+	const filenameArray = filename.split(".");
+	const fileformat = filenameArray.pop();
+
+	const newFilename =
+		filenameArray.join("_").replace(/[\W_]+/g, "_") +
+		"_" +
+		Math.random().toString(36).substring(2, 12) +
+		"." +
+		fileformat;
+
+	return dir + "/" + date + "/" + newFilename;
+}

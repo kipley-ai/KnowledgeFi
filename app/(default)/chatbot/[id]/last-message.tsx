@@ -81,11 +81,11 @@ const LastAnswer = ({
       >
         {/* Loading icon and generating text */}
         {isGenerating && (
-          <div className="flex items-center text-gray-400 text-sm mb-2 space-x-3">
+          <div className="flex gap-6 items-center text-gray-400 text-sm mb-2 space-x-3">
             <Image
               src={LoadingIcon}
               alt="Profile"
-              className="animate-spin mr-10 h-5 w-5 ml-1 text-white"
+              className="animate-spin h-5 w-5 ml-1 text-white"
               width={50}
               height={50}
             />
@@ -95,17 +95,17 @@ const LastAnswer = ({
         {/* Message bubble */}
         <div className="flex flex-col space-y-2">
           {/* Message bubble */}
-          <div className="flex items-start space-x-3">
+          <div className="flex items-start space-x-4">
             <Image
               src={profileImage}
               alt="Profile"
-              className="w-8 h-8 rounded-full mr-5"
+              className="w-8 h-8 rounded-full"
               width={50}
               height={50}
             />
             <div className="text-white text-sm w-full">
-              <h6 className="mb-5 mt-1">{chatbotData?.data.data.name}</h6>
-              <p>{isStream ? message.slice(0, -2).join("") : message}</p>
+              <h6 className="mb-5 mt-1 font-semibold">{chatbotData?.data.data.name}</h6>
+              <p className="whitespace-break-spaces">{isStream ? message.slice(0, -2).join("") : message}</p>
             </div>
           </div>
 
