@@ -27,6 +27,15 @@ const nextConfig = {
       "knowledgefi-kb-files-test.e8cf6e5ae8cb4fd0df33a1fef8bbba19.r2.cloudflarestorage.com",
     ],
   },
+  async redirects() {
+    return [
+      {
+        source: '/',
+        destination: '/dashboard',
+        permanent: true,
+      },
+    ];
+  },
 };
 
 module.exports = nextConfig;
