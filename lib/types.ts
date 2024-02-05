@@ -1,8 +1,8 @@
 export type ChatbotData = {
   chatbot_id: string;
   sft_id: string;
-  category_id: string | null;
-  profile_image: string | null;
+  category_id: string;
+  profile_image: string;
   name: string;
   description: string;
   instruction: string;
@@ -12,13 +12,8 @@ export type ChatbotData = {
   wallet_addr: string;
   last_updated: string;
   created_at: string;
-  session_id: string | null;
-  category_name: string | null;
-};
-
-export type ChatbotDataList = {
-  chatbot_count: number;
-  chatbot_data: ChatbotData[];
+  session_id: string;
+  category_name: string;
 };
 
 export type ChatbotDataListResponse = {
@@ -26,6 +21,10 @@ export type ChatbotDataListResponse = {
     chatbot_data: ChatbotData[];
     chatbot_count: number;
   };
+};
+
+export type ChatbotDetailResponse = {
+  data: ChatbotData;
 };
 
 export type NftData = {
@@ -59,6 +58,10 @@ export type NftDataListResponse = {
   };
 };
 
+export type NftDetailResponse = {
+  data: NftData;
+};
+
 export type KBItem = {
   item_id: string;
   kb_id: string;
@@ -66,9 +69,9 @@ export type KBItem = {
   item_type: string;
   file_url: string;
   created_at: string;
-  twitter_username: string | null;
+  twitter_username: string;
   status: string;
-	size: number;
+  size: number;
 };
 
 export type KBItemResponse = {

@@ -94,7 +94,7 @@ const ManageDataSources = () => {
 
     deleteItemAPI.mutate(
       {
-        kb_id: chatbotDetail.data?.data.data.kb_id,
+        kb_id: chatbotDetail.data?.data.data.kb_id!!,
         items_name: selectedItem,
       },
       {

@@ -12,7 +12,7 @@ import {
   IUpdateChatbotParams,
   IChatbotList,
 } from "../interfaces";
-import { ChatbotDataListResponse } from "@/lib/types";
+import { ChatbotDataListResponse, ChatbotDetailResponse } from "@/lib/types";
 
 export const useChatbotList = (
   params: IChatbotList,
@@ -53,7 +53,7 @@ export const useChatbotDetail = (params: IChatbotDetailParams) => {
   return useQuery({
     queryKey: ["chatbot", params.chatbot_id],
     queryFn: () =>
-      axios.post("/api/chatbot/detail", params, {
+      axios.post<ChatbotDetailResponse>("/api/chatbot/detail", params, {
         headers: {
           "x-kf-user-id": address,
         },
@@ -102,29 +102,37 @@ export const useGetSession = (params: IChatbotDetailParams) => {
 };
 
 export const useChatbotChatList = () => {
-	const { address } = useAccount();
+  const { address } = useAccount();
 
-	return useQuery({
-		queryKey: ["chatbot", "chat_list"],
-		queryFn: () =>
-			axios.post("/api/chatbot/chat_list", {}, {
-				headers: {
-					"x-kf-user-id": address,
-				},
-			}),
-	});
+  return useQuery({
+    queryKey: ["chatbot", "chat_list"],
+    queryFn: () =>
+      axios.post(
+        "/api/chatbot/chat_list",
+        {},
+        {
+          headers: {
+            "x-kf-user-id": address,
+          },
+        },
+      ),
+  });
 };
 
 export const useGetCategory = () => {
-	const { address } = useAccount();
+  const { address } = useAccount();
 
-	return useQuery({
-		queryKey: ["chatbot", "category"],
-		queryFn: () =>
-			axios.post("/api/chatbot/category", {}, {
-				headers: {
-					"x-kf-user-id": address,
-				},
-			}),
-	});
+  return useQuery({
+    queryKey: ["chatbot", "category"],
+    queryFn: () =>
+      axios.post(
+        "/api/chatbot/category",
+        {},
+        {
+          headers: {
+            "x-kf-user-id": address,
+          },
+        },
+      ),
+  });
 };

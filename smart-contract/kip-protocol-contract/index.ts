@@ -1,4 +1,4 @@
-import { ethers } from "ethers";
+import { Contract, ethers } from "ethers";
 import abi from "./abi.json";
 import { getSigner } from "..";
 import {
@@ -7,24 +7,39 @@ import {
   hashUUIDToIntegerV2,
 } from "@/utils/utils";
 
-export async function getKipProtocolContract() {
-  const contractAddress =
-    process.env.NEXT_PUBLIC_KIP_PROTOCOL_CONTRACT_ADDRESS!;
-  // const contractProvider = new ethers.JsonRpcProvider(
-  //     process.env.NEXT_PUBLIC_KIP_CONTRACT_API ||
-  //         "https://polygon-mumbai.g.alchemy.com/v2/tOGMgTXPR3W7cl67uDprwaYuLhT5FKH1" // "http://127.0.0.1:8545/"
-  // );
+const contractAddress = process.env.NEXT_PUBLIC_KIP_PROTOCOL_CONTRACT_ADDRESS!;
 
+export async function getKipProtocolContract() {
+  // const contractProvider = new ethers.JsonRpcProvider(
+  //   "https://rpc.sepolia.org",
+  // );
   const signer = await getSigner();
 
   // const contractRead = new ethers.Contract(
-  //     contractAddress,
-  //     abi,
-  //     contractProvider
+  //   contractAddress,
+  //   abi,
+  //   contractProvider,
   // ); // Read only
+
   const contractWrite = new ethers.Contract(contractAddress, abi, signer); // Write only
 
   return { contractWrite };
+}
+
+export async function getSftContract(contractAddress: string) {
+  const _abi = [
+    "function _tokenProfit(uint256 token_id) public view returns (uint256)",
+  ];
+  const contractProvider = new ethers.JsonRpcProvider(
+    "https://sepolia.drpc.org",
+  );
+  const contractRead = new ethers.Contract(
+    contractAddress,
+    _abi,
+    contractProvider,
+  );
+
+  return { contractRead };
 }
 
 export async function mintNFT(
@@ -32,7 +47,7 @@ export async function mintNFT(
   name: string,
   symbol: string,
   slotValue: number,
-  assetId: number
+  assetId: number,
 ) {
   // let assetId = hashUUIDToIntegerV2(kbId);
   // if (kbId === "") {
@@ -47,11 +62,20 @@ export async function mintNFT(
     slotValue,
     1,
     BigInt(assetId),
-    signer.address
+    signer.address,
   );
 }
 
 export async function recharge(amount: number) {
   const { contractWrite } = await getKipProtocolContract();
   return await contractWrite.recharge(BigInt(amount * 1e18));
+}
+
+export async function tokenProfit(
+  contractRead: Contract,
+  tokenId: number,
+): Promise<string> {
+	return await contractRead._tokenProfit(BigInt(tokenId)).catch((e) => {
+		console.log(e)
+	});
 }

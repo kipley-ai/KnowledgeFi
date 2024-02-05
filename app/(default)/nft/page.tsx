@@ -103,7 +103,7 @@ const NFTList = () => {
   };
 
   if (data) {
-    const nftsData = data?.data.data.nft_data;
+    const nftsData = data?.data.data;
 
     if (nftsData !== undefined && nftsData.nft_count > 0) {
       return (

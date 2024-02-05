@@ -2,6 +2,7 @@ import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { useAccount } from "wagmi";
 import axios from "axios";
 import { INFTDetailParams, INftList } from "../interfaces";
+import { NftData, NftDataListResponse, NftDetailResponse } from "@/lib/types";
 
 export const useNFTList = (
   params: INftList,
@@ -11,8 +12,8 @@ export const useNFTList = (
 
   return useQuery({
     queryKey: ["nft", "list", params.page, params.page_size, params.sort_by],
-    queryFn: () => axios.post("/api/nft/list", params),
-	placeholderData: placeholderData
+    queryFn: () => axios.post<NftDataListResponse>("/api/nft/list", params),
+    placeholderData: placeholderData,
   });
 };
 
@@ -22,7 +23,7 @@ export const useNftDetail = (params: INFTDetailParams) => {
   return useQuery({
     queryKey: ["nft", address, params.sft_id],
     queryFn: () =>
-      axios.post("/api/nft/detail", params, {
+      axios.post<NftDetailResponse>("/api/nft/detail", params, {
         headers: {
           "x-kf-user-id": address,
         },
