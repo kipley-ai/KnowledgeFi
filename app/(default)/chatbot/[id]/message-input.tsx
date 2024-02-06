@@ -12,10 +12,11 @@ import {
   useGetSession,
   useNewSession,
 } from "@/hooks/api/chatbot";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Avatar from "public/images/avatar-gradient-icon.svg";
 import EnterIcon from "public/images/arrow-2-icon.svg";
+import { useDefaultValue } from "@/hooks/api/default_value";
 
 const MessageInput = () => {
   const {
@@ -40,6 +41,18 @@ const MessageInput = () => {
   const { id } = useParams();
   const chatSession = useGetSession({ chatbot_id: id as string });
   const newSession = useNewSession();
+  const pluginConfig = useDefaultValue({key:"plugin_config"})
+
+  
+
+  const [model,setModel] = useState("gpt-3.5-turbo")
+  const [promptTemplate2,setPromptTemplate2] = useState("\n\nAct as the person described above, and utilize the available information below to answer the question.\nRemember, the user is looking for assistance, so keep your responses natural, concise, accurate, and informative. If you are uncertain about a query or if the user asked something which is unidentified by you, prompt the user to rephrase it.\nHere is the available information: \n{context}\n\nHere is user's question:\n{question}")
+  const [temprature,setTemprature] = useState(0)
+  const [topP,setTopP] = useState(1)
+  const [frequencyPenalty,setFrequencyPenalty] = useState(0)
+  const [presencePenalty,setPresencePenalty] = useState(0)
+  const [topDocs,setTopDocs] = useState(10)
+
 
   const { data: chatbotData, isSuccess } = useChatbotDetail({
     chatbot_id: id as string,
@@ -48,6 +61,22 @@ const MessageInput = () => {
   useEffect(() => {
     console.log(!chatSession.data?.data.data?.session_id);
   }, [chatSession.isSuccess]);
+
+  useEffect(()=> {
+    console.log(pluginConfig.data?.data)
+    if(pluginConfig.isSuccess){
+      // console.log(pluginConfig.data?.data)
+      const plugin_config = JSON.parse(pluginConfig.data?.data.data.value)
+      console.log(plugin_config)
+      setModel(plugin_config.model)
+      setPromptTemplate2(plugin_config.prompt_template)
+      setTemprature(plugin_config.model_temprature)
+      setTopP(plugin_config.top_p)
+      setFrequencyPenalty(plugin_config.frequency_penalty)
+      setPresencePenalty(plugin_config.presence_penalty)
+      setTopDocs(plugin_config.top_k_docs)
+    }
+  },[pluginConfig.isSuccess])
 
   const handleSendMessage = async () => {
     if (!chatSession.data?.data.data?.session_id) {
@@ -65,9 +94,12 @@ const MessageInput = () => {
               // type: "twitter",
               user_id: address as string,
               plugin_config:
-                '{"model":"gpt-3.5-turbo","prompt_template":' +
-                promptTemplate +
-                ',"model_temperature":0,"top_p":1,"frequency_penalty":0,"presence_penalty":0,"top_k_docs":10}',
+                '{"model":'+model+',"prompt_template":' +promptTemplate +
+                ',"model_temperature":'+temprature+
+                ',"top_p":'+topP+
+                ',"frequency_penalty":'+frequencyPenalty+
+                ',"presence_penalty":'+presencePenalty+
+                ',"top_k_docs":'+topDocs+'}',
             });
             setMessageHistory((prevHistory) => [
               ...prevHistory,
@@ -104,7 +136,7 @@ const MessageInput = () => {
 
   const promptTemplate: string =
     (('"' + chatbotData?.data.data.instruction) as string) +
-    "\n\nAct as the person described above, and utilize the available information below to answer the question.\nRemember, the user is looking for assistance, so keep your responses natural, concise, accurate, and informative. If you are uncertain about a query or if the user asked something which is unidentified by you, prompt the user to rephrase it.\nHere is the available information: \n{context}\n\nHere is user's question:\n{question}" +
+    promptTemplate2 +
     '"';
 
   return (
