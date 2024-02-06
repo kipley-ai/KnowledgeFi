@@ -43,7 +43,7 @@ export default function ChatbotDescription() {
             height={240}
           />
           <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300">
-            <p className="text-white text-lg font-bold text-center">View NFT on OpenSea</p>
+            <p className="text-white text-sm lg:text-lg font-bold text-center">View NFT on OpenSea</p>
           </div>
         </a>
       </div>
