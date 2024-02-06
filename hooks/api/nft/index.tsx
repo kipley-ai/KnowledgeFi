@@ -11,7 +11,7 @@ export const useNFTList = (
   const appId = process.env.APP_ID;
 
   return useQuery({
-    queryKey: ["nft", "list", params.page, params.page_size, params.sort_by],
+    queryKey: ["nfts", params.page],
     queryFn: () => axios.post<NftDataListResponse>("/api/nft/list", params),
     placeholderData: placeholderData,
   });

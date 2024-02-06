@@ -10,6 +10,7 @@ import { useNFTList } from "@/hooks/api/nft";
 import { useChatbotList } from "@/hooks/api/chatbot";
 import { ChatbotData, NftData } from "@/lib/types";
 import { LoadMore, LoadMoreSpinner } from "@/components/load-more";
+import { PaginationController } from "@/components/pagination-2/controller";
 
 type NoDataProps = {
   item: string;
@@ -75,11 +76,10 @@ const NFTCard = ({ nft }: NFTCardProps) => {
 };
 
 const NFTList = () => {
-  const incrementAmount = 8;
-  const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(8);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [pageSize, setPageSize] = useState<number>(8);
 
-  const { data, isFetching, isError, error } = useNFTList(
+  const { data, isError, error } = useNFTList(
     {
       page: currentPage,
       page_size: pageSize,
@@ -88,26 +88,30 @@ const NFTList = () => {
     keepPreviousData,
   );
 
-  const handleLoadMore = (e: React.MouseEvent) => {
-    setPageSize((prevSize) => prevSize + incrementAmount);
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
   };
 
   if (data) {
     const { nft_data: nftsData, nft_count: nftCount } = data.data.data;
 
     if (nftCount > 0) {
+      const totalPages = Math.ceil(nftCount / pageSize);
+
       return (
         <>
           <div className="grid grid-cols-2 gap-x-4 gap-y-4 md:grid-cols-4 md:gap-x-6 md:gap-y-8 lg:gap-y-12">
             {nftsData.map((nft: NftData, index: number) => (
-              <NFTCard nft={nft} key={nft.sft_id} />
+              <NFTCard nft={nft} key={index} />
             ))}
           </div>
-          {isFetching ? (
-            <LoadMoreSpinner />
-          ) : (
-            <LoadMore handleLoadMore={handleLoadMore} />
-          )}
+          <div className="flex justify-center">
+            <PaginationController
+              currentPage={currentPage}
+              onPageChange={handlePageChange}
+              totalPages={totalPages}
+            />
+          </div>
         </>
       );
     }

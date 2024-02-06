@@ -30,3 +30,41 @@ export const generatePagination = (currentPage: number, totalPages: number) => {
 		totalPages,
 	];
 };
+
+export const generatePagination2 = (currentPage: number, totalPages: number): (number | string)[] => {
+  // Always show the first two and last two pages if they exist
+  const edgePageCount = 3;
+  // Pages to show directly around the current page
+  const surroundingPageCount = 1;
+
+  let pages: (number | string)[] = [];
+
+  // Calculate the first and last pages to be shown directly around the current page
+  let startPage = Math.max(currentPage - surroundingPageCount, 1);
+  let endPage = Math.min(currentPage + surroundingPageCount, totalPages);
+
+  // Always include the first page and possibly an ellipsis
+  if (currentPage > edgePageCount + 1) {
+    pages.push(1, 2, '...');
+  } else {
+    for (let i = 1; i < startPage; i++) {
+      pages.push(i);
+    }
+  }
+
+  // Add the current page and its surroundings
+  for (let i = startPage; i <= endPage; i++) {
+    pages.push(i);
+  }
+
+  // Always include the last page and possibly an ellipsis
+  if (endPage < totalPages - edgePageCount) {
+    pages.push('...', totalPages);
+  } else {
+    for (let i = endPage + 1; i <= totalPages; i++) {
+      pages.push(i);
+    }
+  }
+
+  return pages;
+};
