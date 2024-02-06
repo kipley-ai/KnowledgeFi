@@ -19,6 +19,7 @@ export default function ChatbotDescription() {
   const { data: nftData } = useNftDetail({
     sft_id: chatbotData?.data.data.sft_id!,
   });
+  const nftOpenSeaLink = `https://testnets.opensea.io/assets/sepolia/${nftData?.data.data.sft_address}`;
   // const {data: profit, isLoading} = useTokenProfit_(chatbotData?.data.data.sft_id, 1);
   // TODO: Change later when shit is actually working
   const { data: profit, isFetched } = useTokenProfit_(
@@ -32,13 +33,20 @@ export default function ChatbotDescription() {
 
   return (
     <div className="flex flex-col gap-4 p-6">
-      <Image
-        src={nftData?.data.data.profile_image!!}
-        alt="Profile"
-        className="rounded-lg"
-        width={240}
-        height={240}
-      />
+      <div className="relative">
+        <a href={nftOpenSeaLink} target="_blank">
+          <Image
+            src={nftData?.data.data.profile_image!!}
+            alt="Profile"
+            className="rounded-lg"
+            width={240}
+            height={240}
+          />
+          <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300">
+            <p className="text-white text-lg font-bold text-center">View NFT on OpenSea</p>
+          </div>
+        </a>
+      </div>
       <div className="w-full space-y-2 text-white">
         <p className="text-sm">{nftData?.data.data.name}</p>
         <p className="text-[11px]">
