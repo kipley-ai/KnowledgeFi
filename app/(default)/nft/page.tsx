@@ -79,15 +79,14 @@ const NFTList = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [pageSize, setPageSize] = useState<number>(8);
 
-  const { isPending, isError, error, data, isFetching } =
-    useNFTList(
-      {
-        page: currentPage,
-        page_size: pageSize,
-        sort_by: "created",
-      },
-      keepPreviousData,
-    );
+  const { isPending, isError, error, data, isFetching } = useNFTList(
+    {
+      page: currentPage,
+      page_size: pageSize,
+      sort_by: "created",
+    },
+    keepPreviousData,
+  );
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -114,7 +113,7 @@ const NFTList = () => {
     return (
       <>
         <div className="grid grid-cols-2 gap-x-4 gap-y-4 md:grid-cols-4 md:gap-x-6 md:gap-y-8 lg:gap-y-12">
-          {nftsData.map((nft: NftData, index: number) => (
+          {nftsData.map((nft: NftData) => (
             <NFTCard nft={nft} key={nft.sft_id} />
           ))}
         </div>
@@ -177,11 +176,10 @@ const BotCard = ({ bot }: BotCardProps) => {
 };
 
 const BotList = () => {
-  const incrementAmount = 8;
-  const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(8);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [pageSize, setPageSize] = useState<number>(8);
 
-  const { data, isFetching, isError, error } = useChatbotList(
+  const { isPending, isError, error, data, isFetching } = useChatbotList(
     {
       page: currentPage,
       page_size: pageSize,
@@ -190,37 +188,53 @@ const BotList = () => {
     keepPreviousData,
   );
 
-  const handleLoadMore = (e: React.MouseEvent) => {
-    setPageSize((prevSize) => prevSize + incrementAmount);
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
   };
 
-  if (data) {
-    const { chatbot_data: botsData, chatbot_count: botCount } = data.data.data;
-
-    if (botCount > 0) {
-      return (
-        <>
-          <div className="grid grid-cols-2 gap-x-4 gap-y-4 md:grid-cols-4 md:gap-x-6 md:gap-y-8 lg:gap-y-12">
-            {botsData.map((bot: ChatbotData, index: number) => (
-              <BotCard bot={bot} key={bot.chatbot_id} />
-            ))}
-          </div>
-          {isFetching ? (
-            <LoadMoreSpinner />
-          ) : (
-            <LoadMore handleLoadMore={handleLoadMore} />
-          )}
-        </>
-      );
-    }
-    return <NoData item="Bot" url="/chatbot/create" />;
+  if (isPending) {
+    return (
+      <div className="flex h-32 w-full items-center justify-center gap-4">
+        <FaSpinner size={20} className="animate-spin" />
+        <p className="text-md text-gray-300">Loading</p>
+      </div>
+    );
   }
 
   if (isError) {
     return <div>Error: {error.message}</div>;
   }
 
-  return <div>Loading Bots...</div>;
+  const { chatbot_data: botsData, chatbot_count: botCount } = data.data.data;
+
+  if (botCount > 0) {
+    const totalPages = Math.ceil(botCount / pageSize);
+
+    return (
+      <>
+        <div className="grid grid-cols-2 gap-x-4 gap-y-4 md:grid-cols-4 md:gap-x-6 md:gap-y-8 lg:gap-y-12">
+          {botsData.map((bot: ChatbotData) => (
+            <BotCard bot={bot} key={bot.chatbot_id} />
+          ))}
+        </div>
+        <div className="flex flex-col items-center">
+          <div
+            className={`${!isFetching && "invisible"} flex w-full items-center justify-center gap-4`}
+          >
+            <FaSpinner size={20} className="animate-spin" />
+            <p className="text-md text-gray-300">Loading</p>
+          </div>
+          <PaginationController
+            currentPage={currentPage}
+            onPageChange={handlePageChange}
+            totalPages={totalPages}
+          />
+        </div>
+      </>
+    );
+  }
+
+  return <NoData item="Chatbot" url="/chatbot/create" />;
 };
 
 export default function NFT() {
