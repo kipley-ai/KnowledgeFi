@@ -3,7 +3,7 @@ import { useAppProvider } from "@/providers/app-provider";
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { FaPlus } from "react-icons/fa6";
+import { FaPlus, FaSpinner } from "react-icons/fa6";
 import { IconContext } from "react-icons";
 import { keepPreviousData } from "@tanstack/react-query";
 import { useNFTList } from "@/hooks/api/nft";
@@ -79,50 +79,63 @@ const NFTList = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [pageSize, setPageSize] = useState<number>(8);
 
-  const { data, isError, error } = useNFTList(
-    {
-      page: currentPage,
-      page_size: pageSize,
-      sort_by: "created",
-    },
-    keepPreviousData,
-  );
+  const { isPending, isError, error, data, isFetching } =
+    useNFTList(
+      {
+        page: currentPage,
+        page_size: pageSize,
+        sort_by: "created",
+      },
+      keepPreviousData,
+    );
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
 
-  if (data) {
-    const { nft_data: nftsData, nft_count: nftCount } = data.data.data;
-
-    if (nftCount > 0) {
-      const totalPages = Math.ceil(nftCount / pageSize);
-
-      return (
-        <>
-          <div className="grid grid-cols-2 gap-x-4 gap-y-4 md:grid-cols-4 md:gap-x-6 md:gap-y-8 lg:gap-y-12">
-            {nftsData.map((nft: NftData, index: number) => (
-              <NFTCard nft={nft} key={index} />
-            ))}
-          </div>
-          <div className="flex justify-center">
-            <PaginationController
-              currentPage={currentPage}
-              onPageChange={handlePageChange}
-              totalPages={totalPages}
-            />
-          </div>
-        </>
-      );
-    }
-    return <NoData item="NFT" url="/nft/create" />;
+  if (isPending) {
+    return (
+      <div className="flex h-32 w-full items-center justify-center gap-4">
+        <FaSpinner size={20} className="animate-spin" />
+        <p className="text-md text-gray-300">Loading</p>
+      </div>
+    );
   }
 
   if (isError) {
     return <div>Error: {error.message}</div>;
   }
 
-  return <div>Loading NFTs...</div>;
+  const { nft_data: nftsData, nft_count: nftCount } = data.data.data;
+
+  if (nftCount > 0) {
+    const totalPages = Math.ceil(nftCount / pageSize);
+
+    return (
+      <>
+        <div className="grid grid-cols-2 gap-x-4 gap-y-4 md:grid-cols-4 md:gap-x-6 md:gap-y-8 lg:gap-y-12">
+          {nftsData.map((nft: NftData, index: number) => (
+            <NFTCard nft={nft} key={nft.sft_id} />
+          ))}
+        </div>
+        <div className="flex flex-col items-center">
+          <div
+            className={`${!isFetching && "invisible"} flex w-full items-center justify-center gap-4`}
+          >
+            <FaSpinner size={20} className="animate-spin" />
+            <p className="text-md text-gray-300">Loading</p>
+          </div>
+          <PaginationController
+            currentPage={currentPage}
+            onPageChange={handlePageChange}
+            totalPages={totalPages}
+          />
+        </div>
+      </>
+    );
+  }
+
+  return <NoData item="NFT" url="/nft/create" />;
 };
 
 type BotCardProps = {
