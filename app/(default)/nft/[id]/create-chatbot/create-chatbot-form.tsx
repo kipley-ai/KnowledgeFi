@@ -9,6 +9,7 @@ import { useNftDetail } from "@/hooks/api/nft";
 import LoadingIcon from "public/images/loading-icon.svg";
 import ImageInput from "@/components/image-input-2";
 import { number, string } from "zod";
+import Switcher from "@/components/switcher";
 
 interface Category {
   title: string;
@@ -36,6 +37,8 @@ const ChatBotForm = () => {
   const { id } = useParams();
   const { data: nftData } = useNftDetail({ sft_id: id as string });
   const [selectedFile, setSelectedFile] = useState<any>(LoadingIcon);
+  const [mode, setMode] = useState(0);
+  const [toneData, setToneData] = useState("");
 
   const { data: twitterSession } = useSession();
 
@@ -61,21 +64,22 @@ const ChatBotForm = () => {
     const formData = new FormData();
     formData.append("profileImage", profileImage);
     formData.append("characterName", characterName);
-    formData.append("description", description);
-    formData.append("category", category);
+    // formData.append("description", description);
+    // formData.append("category", category);
     console.log(twitterSession?.user);
     console.log(selectedFile);
 
     createChatbot.mutate(
       {
         profile_image: selectedFile,
-        category_id: category,
         name: characterName,
-        description: description,
-        instruction: instructions,
-        example_conversation: example,
         sft_id: id as string,
         kb_id: nftData?.data.data.kb_id as string,
+        tone: toneData,
+        // category_id: category,
+        // description: description,
+        // instruction: instructions,
+        // example_conversation: example,
       },
       {
         async onSuccess() {
@@ -123,6 +127,14 @@ const ChatBotForm = () => {
       console.log(categories); //For debugging purpose
     }
   }, [title, categoryList]);
+
+  useEffect(() => {
+    if (mode==0) {
+      setToneData("instruction")
+    } else if (mode==1) {
+      setToneData("instruction_2")
+    }
+  }, [mode]);
 
   return (
     <>
@@ -172,6 +184,19 @@ const ChatBotForm = () => {
             </div>
             <div>
               <label
+                htmlFor="tone"
+                className="block text-sm font-semibold text-white "
+              >
+                Tone
+              </label>
+              <div className="mt-3">
+                <Switcher
+                  texts={["1st Person Tone", "3rd Person Tone"]}
+                  mode={mode}
+                  setWhich={setMode}
+                />
+              </div>
+              {/* <label
                 className="flex w-1/3 flex-col text-sm font-semibold text-white"
                 htmlFor="category"
               >
@@ -189,7 +214,7 @@ const ChatBotForm = () => {
                     {cat.title}
                   </option>
                 ))}
-              </select>
+              </select> */}
 
               {/* <p className="mt-2 text-xs text-gray-400">Category of your AI.</p> */}
             </div>
@@ -197,13 +222,14 @@ const ChatBotForm = () => {
 
           <div className="mx-64 mb-4 grid grid-cols-1 gap-5 md:grid-cols-2">
             <div className="col-span-2">
-              <label
+              {/* <label
                 htmlFor="description"
                 className="block text-sm font-semibold text-white"
               >
                 Description
               </label>
-              <div className="mt-1">
+              <div className="mt-1"> */}
+
                 {/* <input
 								id="description"
 								type="text"
@@ -212,7 +238,8 @@ const ChatBotForm = () => {
 								className="rounded-xl bg-transparent mt-2 text-white w-full border-2"
 								placeholder="Describe your Chatbot"
 							/> */}
-                <textarea
+
+                {/* <textarea
                   id="description"
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
@@ -221,20 +248,24 @@ const ChatBotForm = () => {
                   rows={11}
                   maxLength={1000}
                 />
-              </div>
+              </div> */}
+
               {/* <p className="mt-2 text-xs text-gray-400">
 							Description of your AI character.
 						</p> */}
+
             </div>
           </div>
-          <div className="mx-64 mt-10">
+          {/* <div className="mx-64 mt-10">
             <h1 className="text-2xl font-semibold text-white">
               Chatbot Configuration
-            </h1>
+            </h1> */}
+
             {/* <h5 className="text-md text-[#7C878E]">
 						Configuration defining AI behavior.
 					</h5> */}
-            <hr className="my-4 border border-gray-700" />
+
+            {/* <hr className="my-4 border border-gray-700" />
           </div>
           <div className="mx-64">
             <label
@@ -251,7 +282,8 @@ const ChatBotForm = () => {
               className="mt-2 w-full rounded-xl border-2 bg-transparent text-white"
               rows={5}
               maxLength={1000}
-            />
+            /> */}
+
             {/* <div className="flex flex-row justify-between">
 						<p className="mt-2 text-xs text-gray-400">
 							Describe your AI character.
@@ -260,7 +292,8 @@ const ChatBotForm = () => {
 							Enter at least 200 more characters.
 						</p>
 					</div> */}
-          </div>
+
+          {/* </div>
           <div className="mx-64">
             <label
               className="mt-4 flex flex-col font-semibold text-white"
@@ -276,7 +309,8 @@ const ChatBotForm = () => {
               className="mt-2 w-full rounded-xl border-2 bg-transparent text-white"
               rows={5}
               maxLength={1000}
-            />
+            /> */}
+
             {/* <div className="flex flex-row justify-between">
 						<p className="mt-2 text-xs text-gray-400">
 							Give an example of your conversation with your AI.
@@ -285,7 +319,8 @@ const ChatBotForm = () => {
 							Enter at least 200 more characters.
 						</p>
 					</div> */}
-          </div>
+
+          {/* </div> */}
           <div className="form-actions mx-64 flex flex-row justify-between">
             <button
               className="mt-8 flex items-center justify-center rounded-3xl bg-[#292D32] p-2 px-5 ring-2 ring-gray-600"

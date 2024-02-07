@@ -16,13 +16,14 @@ export interface IChatBoxHistoryParams {
 
 export interface ICreateChatbotParams {
   profile_image: string;
-  category_id: string;
   name: string;
-  description: string;
-  instruction: string;
-  example_conversation: string;
+  tone: string;
   sft_id: string;
   kb_id: string;
+  // category_id: string;
+  // description: string;
+  // instruction: string;
+  // example_conversation: string;
 }
 
 export interface ICreateKBAndNFTParams {
