@@ -29,7 +29,7 @@ export default function ChatbotDescription() {
 
   useEffect(() => {
     console.log("Profit :" + profit);
-  }, [profit]);
+  }, [profit]); 
 
   return (
     <div className="flex flex-col gap-4 p-6">
