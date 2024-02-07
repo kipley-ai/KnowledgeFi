@@ -17,35 +17,34 @@ import defaultAvatar from "@/public/images/avatar-default-02.svg"
 
 const NFTSection = ({ nftDetail }: { nftDetail: any }) => {
   return (
-    <div className="grid grid-cols-2 gap-[30px] text-white  pb-[50px]">
+    <div className="grid grid-cols-2 gap-4 text-white pb-4">
       <div>
-        <Image className="rounded-2xl" src={nftDetail.profile_image} alt={"nft image"} width={551} height={551}/>
+        <Image className="rounded-xl" src={nftDetail.profile_image} alt="nft image" width={300} height={300} />
       </div>
       <div>
-        <h1 className="text-4xl font-bold">{nftDetail.name}</h1>
-        {/* <h4 className="text-[#01F7FF]">Token ID: 9501234</h4> */}
-        <p className="my-[50px]">{nftDetail.description}</p>
-        <div className="flex mb-[50px]">
+        <h1 className="text-3xl font-bold">{nftDetail.name}</h1>
+        <p className="my-4 text-sm">{nftDetail.description}</p>
+        <div className="flex mb-4">
           <Image
-            width={50}
-            height={50}
-            className="rounded-full mr-3"
+            width={40}
+            height={40}
+            className="rounded-full mr-2"
             src={defaultAvatar}
-            alt={"creator image"}
+            alt="creator image"
           />
-          <div className="">
-            <h2 className="text-[#93989A]">Creator</h2>
-            <h1>
-              {nftDetail.wallet_addr!.substring(0, 8) +
+          <div>
+            <h2 className="text-[#93989A] text-sm">Creator</h2>
+            <h1 className="text-sm">
+              {nftDetail.wallet_addr!.substring(0, 6) +
                 "..." +
                 nftDetail.wallet_addr!.substring(
-                  nftDetail.wallet_addr!.length - 8
+                  nftDetail.wallet_addr!.length - 6
                 )}
             </h1>
           </div>
         </div>
-        <h4 className="text-[#93989A] mb-5">Current Stored Value</h4>
-        <h1 className="font-semibold">3.89 KIP</h1>
+        <h4 className="text-[#93989A] text-sm mb-1">Current Stored Value</h4>
+        <h1 className="font-semibold text-lg">3.89 KIP</h1>
       </div>
     </div>
   );
@@ -59,25 +58,25 @@ const ChatbotSection = ({
   kbDetail: any;
 }) => {
   return (
-    <div className="grid grid-cols-2 gap-x-[30px] gap-y-5 text-white mt-5 py-[50px] border-t border-[#474D54]">
-      <div className="col-span-2 flex justify-between  items-center">
+    <div className="grid grid-cols-2 gap-x-4 gap-y-4 text-white mt-3 py-12 border-t border-[#474D54]">
+      <div className="col-span-2 flex justify-between items-center">
         <div className="flex items-center">
           <Image
-            className="mr-5 object-cover rounded-lg w-[80px] h-[80px]"
-            width={80}
-            height={80}
+            className="mr-3 object-cover rounded-lg"
+            width={60}
+            height={60}
             src={chatbotDetail.profile_image}
-            alt={"chatbot image"}
+            alt="chatbot image"
           />
-          <h1 className="text-4xl font-semibold">{chatbotDetail.name}</h1>
+          <h1 className="text-3xl font-semibold">{chatbotDetail.name}</h1>
         </div>
         <div>
           <Link href={"/chatbot/" + chatbotDetail.chatbot_id + "/edit"}>
-            <button className="rounded-full border border-[#01F7FF] text-[#01F7FF] flex px-7 py-1 items-center">
+            <button className="rounded-full border border-[#01F7FF] text-[#01F7FF] flex px-5 py-1 items-center text-sm">
               <svg
                 className="mr-1"
-                width="15"
-                height="14"
+                width="12"
+                height="11"
                 viewBox="0 0 15 14"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
@@ -92,71 +91,49 @@ const ChatbotSection = ({
           </Link>
         </div>
       </div>
-      <div className="col-span-1 text-[#FCFCFC]">
-        <p className="mb-[50px] font-medium">{chatbotDetail.description}</p>
-        <div className="grid grid-cols-1 gap-3 text-[#FCFCFC] mb-[20px]">
-          <div className="flex justify-between pb-4 border-b border-[#393E44]">
+      <div className="col-span-1 text-[#FCFCFC] text-sm">
+        <p className="mb-4 font-medium">{chatbotDetail.description}</p>
+        <div className="grid grid-cols-1 gap-2 text-[#FCFCFC] mb-2">
+          <div className="flex justify-between pb-2 border-b border-[#393E44]">
             <p className="text-[#7C878E] font-semibold">Date Created</p>
-            <p className="font-semibold">
-              {chatbotDetail.created_at?.substring(0, 10)}
-            </p>
+            <p className="font-semibold">{chatbotDetail.created_at?.substring(0, 10)}</p>
           </div>
-          <div className="flex justify-between pb-4 border-b border-[#393E44]">
+          <div className="flex justify-between pb-2 border-b border-[#393E44]">
             <p className="text-[#7C878E]  font-semibold">Category</p>
             <p className="font-semibold">{chatbotDetail.category_name}</p>
           </div>
-          <div className="flex justify-between pb-4 border-b border-[#393E44]">
+          <div className="flex justify-between pb-2 border-b border-[#393E44]">
             <p className="text-[#7C878E]  font-semibold">Creator</p>
             <p className="font-semibold">
-              {chatbotDetail.wallet_addr!.substring(0, 8) +
+              {chatbotDetail.wallet_addr!.substring(0, 6) +
                 "..." +
                 chatbotDetail.wallet_addr!.substring(
-                  chatbotDetail.wallet_addr!.length - 8
+                  chatbotDetail.wallet_addr!.length - 6
                 )}
             </p>
           </div>
         </div>
-        <p className="text-[#7C878E] mb-4 mt-[30px] font-semibold">Instructions</p>
-        <p className="font-medium">{chatbotDetail.instruction}</p>
+        <p className="text-[#7C878E] mb-2 mt-2 font-semibold">Instructions</p>
+        <p className="font-medium text-sm">{chatbotDetail.instruction}</p>
       </div>
-      <div className="col-span-1 bg-[#1A1D1F] rounded-2xl p-12 ">
-        <h1 className="mb-8 font-semibold text-lg">Knowldege Asset Info</h1>
-        <div className="grid grid-cols-1 gap-3 text-[#FCFCFC]">
-          <div className="flex justify-between pb-4 border-b border-[#202326]">
+      <div className="col-span-1 bg-[#1A1D1F] rounded-xl p-6 ">
+        <h1 className="mb-4 font-semibold text-md">Knowledge Asset Info</h1>
+        <div className="grid grid-cols-1 gap-2 text-[#FCFCFC]">
+          <div className="flex justify-between pb-2 border-b border-[#202326]">
             <p className="text-[#6F767E] font-semibold">Name</p>
-            <p className="font-medium">{chatbotDetail.name}</p>
+            <p className="font-medium">{kbDetail.name}</p>
           </div>
-          <div className="flex justify-between pb-4 border-b border-[#202326]">
+          <div className="flex justify-between pb-2 border-b border-[#202326]">
             <p className="text-[#6F767E] font-semibold">Description</p>
-            <p className="font-medium">{chatbotDetail.description}</p>
+            <p className="font-medium">{kbDetail.description}</p>
           </div>
-          {/* <div className="flex justify-between pb-4 border-b border-[#222528]">
-            <p className="text-[#6F767E]">Category</p>
-            <div className="bg-[#B5E4CA]">
-              <p className="text-[#1A1D1F]">AI</p>
-            </div>
-          </div> */}
-          <div className="flex justify-between pb-4 border-b border-[#222528]">
+          <div className="flex justify-between pb-2 border-b border-[#202326]">
             <p className="text-[#6F767E]">Create date</p>
-            <p className="font-medium">
-              {chatbotDetail.created_at?.substring(0, 10)}
-            </p>
+            <p className="font-medium">{kbDetail.created_at?.substring(0, 10)}</p>
           </div>
-          {/* <div className="flex justify-between pb-4 border-b border-[#222528]">
-            <p className="text-[#6F767E]">Transaction code</p>
-            <p className="font-medium">128938-abcd-123456</p>
-          </div>
-          <div className="flex justify-between pb-4 border-b border-[#222528]">
-            <p className="text-[#6F767E]">Transaction ID</p>
-            <p className="font-medium">128938-abcd-123456</p>
-          </div>
-          <div className="flex justify-between pb-4 border-b border-[#222528]">
-            <p className="text-[#6F767E]">Market fee</p>
-            <p className="font-medium">$7.29</p>
-          </div> */}
-          <div className="flex justify-between pb-4 border-b border-[#202326]">
+          <div className="flex justify-between pb-2 border-b border-[#202326]">
             <p className="text-[#6F767E]">Price</p>
-            <p className="font-medium">1</p>
+            <p className="font-medium">{kbDetail.price}</p>
           </div>
         </div>
       </div>
@@ -203,7 +180,7 @@ const NoChatbot = () => {
   const { id } = useParams();
   return (
     <div className="h-full">
-      <div className="relative  w-full bg-[#151515] rounded-3xl">
+      <div className="relative w-full bg-[#151515] rounded-3xl">
         <Image
           className=" w-full rounded-3xl"
           src={link_nft_chatbot}
@@ -251,7 +228,7 @@ const NFTDetail = ({ params }: { params: any }) => {
   });
 
   return (
-    <div className="p-12 bg-[#292D32]">
+    <div className="h-full p-12 bg-[#292D32]">
       {nftData ? <NFTSection nftDetail={nftData?.data.data} /> : <NoNFT />}
       {nftData?.data.data.chatbot_id && chatbotData ? (
         <ChatbotSection
