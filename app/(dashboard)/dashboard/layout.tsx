@@ -14,13 +14,13 @@ export default function DefaultLayout({
         <Sidebar />
 
         {/* Content area */}
-        <div className="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden bg-neutral-900 p-6 pl-0 border-gray-700 rounded-lg">
+        <div className="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden bg-neutral-900 p-0 lg:p-6 pl-0 border-gray-700 rounded-lg">
             <div className='border border-gray-700 rounded-lg'>
 
             {/*  Site header */}
             <Header />
 
-            <main className="grow [&>*:first-child]:scroll-mt-16">
+            <main className="grow [&>*:first-child]:scroll-mt-16 h-[calc(100dvh-114px)] bg-stone-800">
                 {children}
             </main>
             </div>

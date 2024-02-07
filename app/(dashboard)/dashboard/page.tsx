@@ -87,16 +87,15 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="w-full bg-stone-800">
+    <div className="w-full max-w-[96rem] bg-stone-800 px-4 py-8 sm:px-6 lg:px-12">
       <ModalLoginTwitter isOpen={modalLogin} setIsOpen={setModalLogin} />
-      <div className="w-full max-w-[96rem] px-4 py-8 sm:px-6 lg:px-12 ">
-        <Switcher
-          texts={["All", "Technology", "Crypto", "Celebrities", "Others"]}
-          mode={mode}
-          setWhich={setMode}
-        />
+      <Switcher
+        texts={["All", "Technology", "Crypto", "Celebrities", "Others"]}
+        mode={mode}
+        setWhich={setMode}
+      />
 
-        {/* <div>
+      {/* <div>
 					<Image
 						className="h-full w-full cursor-pointer"
 						alt="chat"
@@ -104,22 +103,27 @@ export default function Dashboard() {
 						onClick={()=>setModalLogin(true)}/>
 					</div> */}
 
-        {/* <div className="grid-cols-4 gap-4 mx-[-22px] my-[8px]"> */}
-        <div className="justify-left my-[8px] flex w-full flex-wrap">
-          {/* <div className="grid grid-cols-6"> */}
-          {botsQuery.data?.data.data
-            ? botsQuery.data.data.data.chatbot_data.map((botData) => {
-                return <BotItem key={botData.chatbot_id} botData={botData} onClick={() => {}} />;
-              })
-            : null}
-        </div>
-
-        {botsQuery.isFetching ? (
-          <LoadMoreSpinner />
-        ) : (
-          <LoadMore handleLoadMore={handleLoadMore} />
-        )}
+      {/* <div className="grid-cols-4 gap-4 mx-[-22px] my-[8px]"> */}
+      <div className="justify-between lg:justify-start my-8 flex flex-wrap gap-y-8 md:gap-6">
+        {/* <div className="grid grid-cols-6"> */}
+        {botsQuery.data?.data.data
+          ? botsQuery.data.data.data.chatbot_data.map((botData) => {
+              return (
+                <BotItem
+                  key={botData.chatbot_id}
+                  botData={botData}
+                  onClick={() => {}}
+                />
+              );
+            })
+          : null}
       </div>
+
+      {botsQuery.isFetching ? (
+        <LoadMoreSpinner />
+      ) : (
+        <LoadMore handleLoadMore={handleLoadMore} />
+      )}
     </div>
   );
 }
@@ -132,53 +136,44 @@ const BotItem = ({
   onClick: (e: React.MouseEvent) => void;
 }) => {
   return (
-    <AnimationOnScroll
-      className="relative flex w-[100px] cursor-pointer flex-col"
-      // style={{ flex: '0 0 calc(16.667% - 44px)', width: 'calc(16.667% - 44px)', margin: '27px 11px 0' }}
-      // style={{ flex: '0 0 175px', width: 'calc(16.667% - 44px)', margin: '27px 11px 0' }}
-      style={{ width: "155px", margin: "27px 22px 0 0" }}
-      initiallyVisible
-      key={botData.chatbot_id}
-      animateOnce
+    <Link
+      href={`/chatbot/${botData.chatbot_id}`}
+      className="relative flex w-[calc(50dvw-30px)] md:w-[155px] cursor-pointer flex-col"
     >
       <div className="absolute right-px top-[5px] h-[60px] w-[60px] rounded-2xl bg-apricot-700"></div>
-      <Link href={`/chatbot/${botData.chatbot_id}`}>
+      <div
+        className="rounded-tl-3xl bg-stone-500 p-2"
+        style={{ clipPath: "url(#polygonPhoto)" }}
+      >
         <div
-          className="rounded-tl-3xl bg-stone-500 p-2"
+          className="relative h-[138px] overflow-hidden rounded-[18px] bg-stone-400"
           style={{ clipPath: "url(#polygonPhoto)" }}
-        >
-          <div
-            className="relative h-[138px] overflow-hidden rounded-[18px] bg-stone-400"
-            style={{ clipPath: "url(#polygonPhoto)" }}
-            onClick={onClick}
-          >
-            <Image
-              src={botData.profile_image ?? ""}
-              fill
-              style={{ objectFit: "cover" }}
-              sizes="138px"
-              alt="Avatar"
-            />
-          </div>
-          <svg width="0" height="0" className="block">
-            <clipPath id="polygonPhoto" clipPathUnits="objectBoundingBox">
-              <path d="M1 1V.215C1 .196.993.177.98.162L.851.023C.838.008.819 0 .8 0H0v1" />
-            </clipPath>
-          </svg>
-        </div>
-        <div
-          className="grow rounded-bl-3xl rounded-br-3xl bg-stone-500"
-          style={{
-            padding: "16px 16px 20px",
-            overflowWrap: "break-word",
-          }}
           onClick={onClick}
         >
-          <div className="text-md font-bold text-neutral-300">
-            {botData.name}
-          </div>
+          <Image
+            src={botData.profile_image ?? ""}
+            fill
+            style={{ objectFit: "cover" }}
+            sizes="138px"
+            alt="Avatar"
+          />
         </div>
-      </Link>
-    </AnimationOnScroll>
+        <svg width="0" height="0" className="block">
+          <clipPath id="polygonPhoto" clipPathUnits="objectBoundingBox">
+            <path d="M1 1V.215C1 .196.993.177.98.162L.851.023C.838.008.819 0 .8 0H0v1" />
+          </clipPath>
+        </svg>
+      </div>
+      <div
+        className="grow rounded-bl-3xl rounded-br-3xl bg-stone-500"
+        style={{
+          padding: "16px 16px 20px",
+          overflowWrap: "break-word",
+        }}
+        onClick={onClick}
+      >
+        <div className="text-md font-bold text-neutral-300">{botData.name}</div>
+      </div>
+    </Link>
   );
 };
