@@ -51,7 +51,10 @@ export default function ChatbotDescription() {
         <p className="text-sm">{nftData?.data.data.name}</p>
         <p className="text-[11px]">
           <span className="text-[#777E90]">Stored Value</span>
-          {isFetched ? profit : <FaSpinner className="animate-spin" />}{" "}
+          {isFetched ? profit : <FaSpinner className="animate-spin" />}
+          {" "}
+          {profit ? "" : 0}
+          {" "}
           {tokenSymbol}
         </p>
       </div>
