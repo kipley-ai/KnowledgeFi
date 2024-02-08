@@ -280,7 +280,7 @@ export default function NFT() {
                 </div>
                 <div className="flex flex-col gap-1 w-1/3">
                   <label className="font-semibold text-[#DDD] text-xs text-wrap lg:text-sm">
-                    Commission Rate
+                    Royalties
                   </label>
                   <div className="flex w-full items-center ">
                     <input

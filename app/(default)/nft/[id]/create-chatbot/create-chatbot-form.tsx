@@ -21,6 +21,10 @@ interface Category {
 }
 
 const ChatBotForm = () => {
+  useEffect(() => {
+    setHeaderTitle("");
+  }, []);
+
   const title = "Create Chatbot";
   const { setHeaderTitle } = useAppProvider();
   const [characterName, setCharacterName] = useState("");
