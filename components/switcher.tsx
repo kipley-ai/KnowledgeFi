@@ -13,7 +13,7 @@ const Switcher = ({ texts = [], mode, setWhich }: SwitcherProps) => {
             <div className="flex flex-row items-center w-full relative">
                 {texts.map((text, index) => (
                     <div key={index} className={`rounded-sm cursor-pointer z-10 py-1 w-1/${texts.length}`}>
-                        <h1 onClick={() => setWhich(index)} className={`text-neutral-500 font-semibold text-black text-center text-xs md:text-sm`}>{text}</h1>
+                        <h1 onClick={() => setWhich(index)} className={`text-neutral-500 font-semibold text-black text-center text-xs lg:text-sm`}>{text}</h1>
                     </div>
                 ))}
                 {/* <span aria-hidden="true" className={`${mode== 1 ? "left-[20%]":mode === 2 ? "left-[40%]" : mode === 3 ? "left-[60%]" : mode === 4 ? "left-[80%]" : "left-0"} absolute h-full w-1/5 bg-stone-600 transition-all rounded-lg`}></span> */}
