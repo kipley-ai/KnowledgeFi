@@ -161,7 +161,7 @@ const ChatBotForm = () => {
         </div>
         <form className="flex flex-col mx-5 md:mx-32" onSubmit={handleSubmit}>
           <div className="flex">
-            <div className="flex items-center justify-center w-2/5">
+            <div className="flex items-center justify-center">
               <ImageInput
                 selectedFile={selectedFile}
                 setSelectedFile={setSelectedFile}
