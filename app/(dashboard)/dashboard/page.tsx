@@ -49,7 +49,7 @@ export default function Dashboard() {
 
   useEffect(() => {
     window.addEventListener("resize", handleBreakpoint);
-    setHeaderTitle("Dashboard"); // Set the title when the component is mounted
+    setHeaderTitle("Explore"); // Set the title when the component is mounted
 
     // Optional: Reset the title when the component is unmounted
     return () => {
@@ -89,11 +89,11 @@ export default function Dashboard() {
   return (
     <div className="w-full max-w-[96rem] bg-stone-800 px-4 py-8 sm:px-6 lg:px-12">
       <ModalLoginTwitter isOpen={modalLogin} setIsOpen={setModalLogin} />
-      <Switcher
+      {/* <Switcher
         texts={["All", "Technology", "Crypto", "Celebrities", "Others"]}
         mode={mode}
         setWhich={setMode}
-      />
+      /> */}
 
       {/* <div>
 					<Image
@@ -104,7 +104,7 @@ export default function Dashboard() {
 					</div> */}
 
       {/* <div className="grid-cols-4 gap-4 mx-[-22px] my-[8px]"> */}
-      <div className="justify-between lg:justify-start my-8 flex flex-wrap gap-y-8 md:gap-6">
+      <div className="my-8 flex flex-wrap justify-between gap-y-8 md:gap-6 lg:justify-start">
         {/* <div className="grid grid-cols-6"> */}
         {botsQuery.data?.data.data
           ? botsQuery.data.data.data.chatbot_data.map((botData) => {
@@ -138,7 +138,7 @@ const BotItem = ({
   return (
     <Link
       href={`/chatbot/${botData.chatbot_id}`}
-      className="relative flex w-[calc(50dvw-30px)] md:w-[155px] cursor-pointer flex-col"
+      className="relative flex w-[calc(50dvw-30px)] cursor-pointer flex-col md:w-[155px]"
     >
       <div className="absolute right-px top-[5px] h-[60px] w-[60px] rounded-2xl bg-apricot-700"></div>
       <div
