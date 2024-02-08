@@ -67,8 +67,10 @@ const ImageInput = ({
   }, []);
 
   return (
-    <div className="flex flex-col justify-between gap-2">
-      <label className="font-semibold text-[#DDD]">Cover Image</label>
+    <div className="flex flex-col gap-2">
+      <label className="text-xs lg:text-sm font-semibold text-[#DDD]">
+          Cover Image
+      </label> 
       <Dropzone
         onDrop={handleFileDrop}
         accept={{ "image/*": [] }}
@@ -108,19 +110,19 @@ const ImageInput = ({
       <div className="flex flex-col gap-2">
         <button
           onClick={handleGalleryCover}
-          className="font-semibold text-black rounded-md bg-[#01F7FF] hover:brightness-75 py-2 px-1"
+          className="font-semibold text-black rounded-md bg-[#01F7FF] hover:brightness-75 py-2 px-1 text-xs lg:text-sm"
         >
           Choose Image from Gallery
         </button>
         <button
           onClick={handleDeviceCover}
-          className="font-semibold text-black rounded-md bg-[#01F7FF] hover:brightness-75 py-2 px-1"
+          className="font-semibold text-black rounded-md bg-[#01F7FF] hover:brightness-75 py-2 px-1 text-xs lg:text-sm"
         >
           Choose Image from Device
         </button>
         <div
           onClick={handleRandomCover}
-          className="w-full bg-slate-400 hover:brightness-75 cursor-pointer rounded-md font-bold text-center py-1 text-black"
+          className="w-full bg-slate-400 hover:brightness-75 cursor-pointer rounded-md font-bold text-center py-1 text-black text-xs lg:text-sm"
         >
           Random
         </div>

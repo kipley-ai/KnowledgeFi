@@ -186,12 +186,12 @@ export default function NFT() {
         setOpen={setShowModal}
         kbIdCreated={nftIdCreated}
       />
-      <div className="flex flex-col sm:px-6 lg:px-8 py-8 pb-16 bg-[#292D32]">
-        <div className="mx-56">
+      <div className="flex flex-col sm:px-6 lg:px-8 py-8 pb-24 bg-[#292D32]">
+        <div className="mx-5 md:mx-56">
           <h1 className="text-2xl font-semibold text-white">Mint NFT</h1>
           <hr className="my-4 border border-gray-600" />
         </div>
-        <form className="flex flex-row gap-8 mt-4 mx-56">
+        <form className="flex flex-row gap-8 mt-4 mx-5 md:mx-56">
           <ImageInput 
             selectedFile={selectedFile}
             setSelectedFile={setSelectedFile}
@@ -199,9 +199,9 @@ export default function NFT() {
           />
           <div className="flex flex-col">
             <div className="flex flex-col gap-1">
-              <label className="font-semibold text-[#DDD]">Name</label>
+              <label className="font-semibold text-[#DDD] text-xs lg:text-sm">Name</label>
               <input
-                className="rounded-xl bg-transparent text-[#DDD]"
+                className="rounded-xl bg-transparent text-[#DDD] text-xs lg:text-sm"
                 type="text"
                 name="name"
                 placeholder="Name your Knowledge NFT"
@@ -209,16 +209,16 @@ export default function NFT() {
                 onChange={(e) => handleFormChange("name", e.target.value)}
               />
               {errorMessage && errorMessage.name ? (
-                <div className=" text-red-400">{errorMessage.name}</div>
+                <div className=" text-red-400 text-xs lg:text-sm">{errorMessage.name}</div>
               ) : (
-                <div className="opacity-0">a</div>
+                <div className="opacity-0 text-xs lg:text-sm">a</div>
               )}
             </div>
 
             <div className="flex flex-col gap-1">
-              <label className="font-semibold text-[#DDD]">Description</label>
+              <label className="font-semibold text-[#DDD] text-xs lg:text-sm">Description</label>
               <textarea
-                className="rounded-xl bg-transparent text-[#DDD] placeholder-text-[#7C878E]"
+                className="rounded-xl bg-transparent text-[#DDD] placeholder-text-[#7C878E] text-xs lg:text-sm"
                 name="description"
                 placeholder="Describe your Knowledge NFT"
                 rows={4}
@@ -227,19 +227,19 @@ export default function NFT() {
                 }
               />
               {errorMessage && errorMessage.description ? (
-                <div className=" text-red-400">{errorMessage.description}</div>
+                <div className=" text-red-400 text-xs lg:text-sm">{errorMessage.description}</div>
               ) : (
-                <div className="opacity-0">a</div>
+                <div className="opacity-0 text-xs lg:text-sm">a</div>
               )}
             </div>
 
-            <div className="flex flex-row">
+            <div className="flex flex-row flex-wrap">
               <div className="flex flex-col gap-1 w-1/3">
-                <label className="font-semibold text-[#DDD] ">
+                <label className="font-semibold text-[#DDD] text-xs text-wrap lg:text-sm">
                   Token Symbol
                 </label>
                 <input
-                  className="rounded-xl bg-transparent w-11/12 text-[#DDD] placeholder-text-[#7C878E]"
+                  className="rounded-xl bg-transparent w-11/12 text-[#DDD] placeholder-text-[#7C878E] text-xs lg:text-sm"
                   type="text"
                   name="tokenSymbol"
                   placeholder="e.g. BAYC"
@@ -247,17 +247,17 @@ export default function NFT() {
                   onChange={(e) => handleFormChange("symbol", e.target.value)}
                 />
                 {errorMessage && errorMessage.symbol ? (
-                  <div className=" text-red-400">{errorMessage.symbol}</div>
+                  <div className=" text-red-400 text-xs lg:text-sm">{errorMessage.symbol}</div>
                 ) : (
-                  <div className="opacity-0">a</div>
+                  <div className="opacity-0 text-xs lg:text-sm">a</div>
                 )}
               </div>
               <div className="flex flex-col gap-1 w-1/3">
-                <label className="font-semibold text-[#DDD]">
+                <label className="font-semibold text-[#DDD] text-xs text-wrap lg:text-sm">
                   Shares Supply
                 </label>
                 <select
-                  className="rounded-xl bg-transparent text-[#DDD] w-11/12"
+                  className="rounded-xl bg-transparent text-[#DDD] w-11/12 text-xs lg:text-sm"
                   value={form?.shareSupply}
                   onChange={(e) =>
                     handleFormChange("shareSupply", e.target.value)
@@ -278,12 +278,12 @@ export default function NFT() {
                 </select>
               </div>
               <div className="flex flex-col gap-1 w-1/3">
-                <label className="font-semibold text-[#DDD]">
+                <label className="font-semibold text-[#DDD] text-xs text-wrap lg:text-sm">
                   Commission Rate
                 </label>
                 <div className="flex w-full items-center ">
                   <input
-                    className="rounded-xl bg-transparent w-full text-[#DDD] placeholder-text-[#7C878E]"
+                    className="rounded-xl bg-transparent w-full text-[#DDD] placeholder-text-[#7C878E] text-xs lg:text-sm"
                     type="number"
                     name="comissionRate"
                     placeholder="e.g. 5"
@@ -344,7 +344,7 @@ export default function NFT() {
                   setStep("data_source");
                 }}
               >
-                <h5 className="text-sm text-white font-semibold">Back</h5>
+                <h5 className="text-xs lg:text-sm text-white font-semibold">Back</h5>
               </button>
               <button
                 className="flex flex-row items-center justify-between bg-[#01F7FF] disabled:bg-gray-500  rounded-3xl w-44 p-2 px-5"
@@ -352,7 +352,7 @@ export default function NFT() {
                 type="button"
                 disabled={!allowGenerate}
               >
-                <h5 className="text-sm text-black font-semibold">
+                <h5 className="text-xs lg:text-sm text-black font-semibold">
                   Generate NFT
                 </h5>
                 <svg
