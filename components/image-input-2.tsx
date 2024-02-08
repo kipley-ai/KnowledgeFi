@@ -77,8 +77,8 @@ const ImageInput = ({ selectedFile, setSelectedFile }: any) => {
   return (
     <>
     
-    <div className="flex flex-col w-full  gap-2">
-      <label className="text-xs lg:text-md form-label self-start font-semibold mb-1 text-[#DDD]" htmlFor="email">
+    <div className="flex flex-col w-full gap-2">
+      <label className="text-sm lg:text-base form-label self-start font-semibold mb-1 text-[#DDD]" htmlFor="email">
           Cover Image
       </label> 
       <Dropzone
@@ -120,18 +120,18 @@ const ImageInput = ({ selectedFile, setSelectedFile }: any) => {
             e.preventDefault();
             setIsImageModalOpen(true);
           }}
-          className="font-semibold text-black rounded-md bg-[#01F7FF] hover:brightness-75 py-2 px-1 text-xs lg:text-sm"
+          className="font-semibold text-black rounded-md bg-[#01F7FF] hover:brightness-75 py-2 px-1 text-xs"
         >
           Choose Image from Gallery
         </button>
         <button
           onClick={handleChangeImage}
-          className="font-semibold text-black rounded-md bg-[#01F7FF] hover:brightness-75 py-2 px-1 text-xs lg:text-sm"
+          className="font-semibold text-black rounded-md bg-[#01F7FF] hover:brightness-75 py-2 px-1 text-xs"
         >
           Choose Image from Device
         </button>
         <div
-          className="w-full bg-slate-400 hover:brightness-75 cursor-pointer rounded-md font-bold text-center py-1 text-black text-xs lg:text-sm"
+          className="w-full bg-slate-400 hover:brightness-75 cursor-pointer rounded-md font-bold text-center py-1 text-black text-xs"
           onClick={handleRandomCover}
         >
           Random

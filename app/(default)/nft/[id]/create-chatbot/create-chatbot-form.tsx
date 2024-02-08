@@ -152,23 +152,23 @@ const ChatBotForm = () => {
         setOpen={setShowModal}
       />
       <div className="flex flex-col bg-[#292D32] py-8 sm:px-6 lg:px-0">
-        <div className="mx-5 md:mx-64">
+        <div className="mx-5 md:mx-32">
           <h1 className="text-2xl font-semibold text-white">Create Chatbot</h1>
           {/* <h5 className="text-md text-[#7C878E]">
 					Give some general information about your character.
 				</h5> */}
           <hr className="my-4 border border-gray-600" />
         </div>
-        <form className="flex flex-col mx-5 md:mx-64" onSubmit={handleSubmit}>
+        <form className="flex flex-col mx-5 md:mx-32" onSubmit={handleSubmit}>
           <div className="flex">
-            <div className="flex items-center justify-center py-8">
+            <div className="flex items-center justify-center w-2/5">
               <ImageInput
                 selectedFile={selectedFile}
                 setSelectedFile={setSelectedFile}
               />
             </div>
 
-            <div className="pt-8 px-8 w-full space-y-5">
+            <div className="px-8 w-full space-y-5">
               <div>
                 <label
                   htmlFor="characterName"
@@ -226,39 +226,6 @@ const ChatBotForm = () => {
                 </select> */}
 
                 {/* <p className="mt-2 text-xs text-gray-400">Category of your AI.</p> */}
-              </div>
-              <div className="form-actions flex flex-row justify-between space-x-2 pt-20">
-                <button
-                  className="mt-8 flex items-center justify-center rounded-3xl bg-[#292D32] p-2 px-5 ring-2 ring-gray-600"
-                  type="button"
-                >
-                  <h5 className="text-xs lg:text-sm font-semibold text-white">Cancel</h5>
-                </button>
-                <button
-                  className="mt-8 flex items-center justify-center rounded-3xl bg-[#01F7FF] px-5 py-1"
-                  type="submit"
-                >
-                  <h5 className="flex-grow text-xs lg:text-sm font-semibold text-black ">
-                    Bring my chatbot to life
-                  </h5>
-                  <svg
-                    width="20"
-                    height="10"
-                    viewBox="0 0 20 10"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="ml-2"
-                  >
-                    <path
-                      d="M17.98 5.7901C18.8936 5.7901 19.6343 6.53075 19.6343 7.44439V7.44439C19.6343 8.35803 18.8936 9.09868 17.98 9.09868L1.65435 9.09868C0.74071 9.09868 5.90253e-05 8.35803 5.90618e-05 7.44439V7.44439C5.90983e-05 6.53075 0.740711 5.7901 1.65435 5.7901L17.98 5.7901Z"
-                      fill="#151515"
-                    />
-                    <path
-                      d="M18.932 5.9907C19.5219 6.63674 19.5219 7.68418 18.932 8.33022C18.3422 8.97626 17.3859 8.97626 16.7961 8.33022L12.3947 3.50927C11.8049 2.86322 11.8049 1.81578 12.3947 1.16974C12.9845 0.523702 13.9408 0.523702 14.5306 1.16974L18.932 5.9907Z"
-                      fill="#151515"
-                    />
-                  </svg>
-                </button>
               </div>
             </div>
 
@@ -366,6 +333,39 @@ const ChatBotForm = () => {
           
           </div>
           
+          <div className="form-actions flex flex-row justify-between space-x-2">
+            <button
+              className="mt-8 flex items-center justify-center rounded-3xl bg-[#292D32] p-2 px-5 ring-2 ring-gray-600"
+              type="button"
+            >
+              <h5 className="text-xs lg:text-sm font-semibold text-white">Cancel</h5>
+            </button>
+            <button
+              className="mt-8 flex items-center justify-center rounded-3xl bg-[#01F7FF] px-5 py-1"
+              type="submit"
+            >
+              <h5 className="flex-grow text-xs lg:text-sm font-semibold text-black ">
+                Bring my chatbot to life
+              </h5>
+              <svg
+                width="20"
+                height="10"
+                viewBox="0 0 20 10"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                className="ml-2"
+              >
+                <path
+                  d="M17.98 5.7901C18.8936 5.7901 19.6343 6.53075 19.6343 7.44439V7.44439C19.6343 8.35803 18.8936 9.09868 17.98 9.09868L1.65435 9.09868C0.74071 9.09868 5.90253e-05 8.35803 5.90618e-05 7.44439V7.44439C5.90983e-05 6.53075 0.740711 5.7901 1.65435 5.7901L17.98 5.7901Z"
+                  fill="#151515"
+                />
+                <path
+                  d="M18.932 5.9907C19.5219 6.63674 19.5219 7.68418 18.932 8.33022C18.3422 8.97626 17.3859 8.97626 16.7961 8.33022L12.3947 3.50927C11.8049 2.86322 11.8049 1.81578 12.3947 1.16974C12.9845 0.523702 13.9408 0.523702 14.5306 1.16974L18.932 5.9907Z"
+                  fill="#151515"
+                />
+              </svg>
+            </button>
+          </div>
         </form>
       </div>
     </>
