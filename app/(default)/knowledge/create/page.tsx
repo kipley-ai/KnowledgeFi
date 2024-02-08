@@ -89,8 +89,8 @@ export default function DataSource() {
 		{
 			step == "data_source" ?
 		
-			<div className="flex flex-col sm:px-6 lg:px-8 py-8 bg-[#292D32]">
-				<div className="mx-56">
+			<div className="flex flex-col sm:px-6 lg:px-0 py-10 pb-20 bg-[#292D32]">
+				<div className="mx-32">
 					<h1 className="text-2xl font-semibold text-white">Create Knowledge Assets</h1>
 					<hr className="my-4 border border-gray-600" />
 				</div>
@@ -112,7 +112,7 @@ export default function DataSource() {
 				) : (
 					<NFTForm/>
 				)} */}
-				<div className="flex justify-end mx-56">
+				<div className="flex justify-end mx-32">
 					{/* 					
 					<button
 						className="flex flex-row items-center justify-between  rounded-3xl p-2 px-5 mt-8 border-2 border-[#50575F]"
