@@ -120,18 +120,18 @@ const ImageInput = ({ selectedFile, setSelectedFile }: any) => {
             e.preventDefault();
             setIsImageModalOpen(true);
           }}
-          className="font-semibold text-black rounded-md bg-[#01F7FF] hover:brightness-75 py-2 px-1 text-xs"
+          className="font-semibold text-black rounded-md bg-[#01F7FF] hover:brightness-75 py-2 px-1 text-xs lg:text-sm"
         >
           Choose Image from Gallery
         </button>
         <button
           onClick={handleChangeImage}
-          className="font-semibold text-black rounded-md bg-[#01F7FF] hover:brightness-75 py-2 px-1 text-xs"
+          className="font-semibold text-black rounded-md bg-[#01F7FF] hover:brightness-75 py-2 px-1 text-xs lg:text-sm"
         >
           Choose Image from Device
         </button>
         <div
-          className="w-full bg-slate-400 hover:brightness-75 cursor-pointer rounded-md font-bold text-center py-1 text-black text-xs"
+          className="w-full bg-slate-400 hover:brightness-75 cursor-pointer rounded-md font-bold text-center py-1 text-black text-xs lg:text-sm"
           onClick={handleRandomCover}
         >
           Random
