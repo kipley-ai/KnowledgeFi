@@ -62,15 +62,11 @@ const ImageInput = ({
     setUploadedFile(null);
   };
 
-  useEffect(() => {
-    handleRandomCover();
-  }, []);
-
   return (
     <div className="flex flex-col gap-2">
-      <label className="text-xs lg:text-sm font-semibold text-[#DDD]">
-          Cover Image
-      </label> 
+      <label className="text-xs font-semibold text-[#DDD] lg:text-sm">
+        Cover Image
+      </label>
       <Dropzone
         onDrop={handleFileDrop}
         accept={{ "image/*": [] }}
@@ -110,19 +106,19 @@ const ImageInput = ({
       <div className="flex flex-col gap-2">
         <button
           onClick={handleGalleryCover}
-          className="font-semibold text-black rounded-md bg-[#01F7FF] hover:brightness-75 py-2 px-1 text-xs lg:text-sm"
+          className="rounded-md bg-[#01F7FF] px-1 py-2 text-xs font-semibold text-black hover:brightness-75 lg:text-sm"
         >
           Choose Image from Gallery
         </button>
         <button
           onClick={handleDeviceCover}
-          className="font-semibold text-black rounded-md bg-[#01F7FF] hover:brightness-75 py-2 px-1 text-xs lg:text-sm"
+          className="rounded-md bg-[#01F7FF] px-1 py-2 text-xs font-semibold text-black hover:brightness-75 lg:text-sm"
         >
           Choose Image from Device
         </button>
         <div
           onClick={handleRandomCover}
-          className="w-full bg-slate-400 hover:brightness-75 cursor-pointer rounded-md font-bold text-center py-1 text-black text-xs lg:text-sm"
+          className="w-full cursor-pointer rounded-md bg-slate-400 py-1 text-center text-xs font-bold text-black hover:brightness-75 lg:text-sm"
         >
           Random
         </div>

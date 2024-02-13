@@ -10,11 +10,10 @@ import { uploadFileS3 } from "@/app/api/upload/s3/helper";
 import MintNFTModal from "./mint-nft-modal";
 import ImageInput from "@/components/image-input";
 import LoadingIcon from "public/images/loading-icon.svg";
-
-
+import MintConfirmationModal from "@/components/modal-mint-confirmation";
 
 // export const metadata = {
-//     title: 'NFT - Mosaic',
+//     title: 'SFT - Mosaic',
 //     description: 'Page description',
 // }
 
@@ -43,11 +42,12 @@ export default function NFT() {
   const { data: twitterSession } = useSession();
   const [form, setForm] = useState<Form>({ shareSupply: "5000" });
   const [selectedFile, setSelectedFile] = useState<string>(
-    "https://kipley-assets-public.gumlet.io/random_cover/app.2023.09.22/106225_Symbolic_representation_of_heartbeats__white_waves_xl_1024_v1_0.png?width=600",
+    "https://placehold.co/600x600?text=Upload\nCover+Image",
   );
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
-  const [nftIdCreated,setNftIdCreated] = useState("")
-  const  mintNFTAPI = useMintNFT()
+  const [nftIdCreated, setNftIdCreated] = useState("");
+  const [isConfirmModalOpen, setisConfirmModalOpen] = useState(false);
+  const mintNFTAPI = useMintNFT();
 
   const handleFormChange = (name: string, value: any) => {
     setForm({
@@ -57,7 +57,7 @@ export default function NFT() {
   };
 
   useEffect(() => {
-    const title = "Mint NFT";
+    const title = "Mint SFT";
     document.title = title;
 
     return () => setHeaderTitle("");
@@ -66,15 +66,15 @@ export default function NFT() {
   const handleMintNFT = async () => {
     try {
       console.log(createKb.type, twitterSession?.user);
-      let presignedUrl;
+      let assetUrl;
 
       if (uploadedFile) {
-        const response = await axios.post("/api/upload/s3", {
-          filename: uploadedFile.name,
-        });
-        presignedUrl = response.data.presignedUrl;
-        console.log("presignedUrl :>> ", presignedUrl);
-        await uploadFileS3(uploadedFile, presignedUrl, null);
+        const newFile = new FormData();
+        newFile.append("input-file-upload", uploadedFile);
+        newFile.append("file-dir", "cover_image/nft");
+
+        const response = await axios.post("/api/upload/s3/asset", newFile);
+        assetUrl = response.data.link;
       }
 
       createKBandMintNFT.mutate(
@@ -96,13 +96,13 @@ export default function NFT() {
           query_royalties: 0,
           token_amount: 1,
           url: "",
-          profile_image: uploadedFile ? presignedUrl : selectedFile,
+          profile_image: uploadedFile ? assetUrl : selectedFile,
         },
         {
           async onSuccess(data, variables, context) {
             const { kb_id, nft_id, asset_id } = data.data;
-            setNftIdCreated(nft_id)
-            try{
+            setNftIdCreated(nft_id);
+            try {
               await mintNFT(
                 // kb_id,
                 form.name!,
@@ -110,10 +110,10 @@ export default function NFT() {
                 parseInt(form.shareSupply!),
                 asset_id,
               );
-              mintNFTAPI.mutate({kb_id:kb_id})
+              mintNFTAPI.mutate({ kb_id: kb_id });
               setShowModal(true);
-            } catch(error: any) {
-              console.log(error)
+            } catch (error: any) {
+              console.log(error);
             }
           },
         },
@@ -180,67 +180,81 @@ export default function NFT() {
 
   return (
     <>
+      <MintConfirmationModal 
+        isOpen={isConfirmModalOpen}
+        setIsOpen={setisConfirmModalOpen}
+        nftImage={selectedFile}
+        handleMintNFT={handleMintNFT}
+      />
       <MintNFTModal
         children={"Your Knowledge Asset is created successfully"}
         open={showModal}
         setOpen={setShowModal}
         kbIdCreated={nftIdCreated}
       />
-      <div className="flex flex-col sm:px-6 lg:px-0 py-8 pb-14 bg-[#292D32]">
+      <div className="flex flex-col bg-[#292D32] py-8 pb-14 sm:px-6 lg:px-0">
         <div className="mx-5 md:mx-32">
-          <h1 className="text-2xl font-semibold text-white">Mint NFT</h1>
+          <h1 className="text-2xl font-semibold text-white">Mint SFT</h1>
           <hr className="my-4 border border-gray-600" />
         </div>
         <form>
-          <div className="flex flex-row gap-8 mt-4 mx-5 md:mx-32">
-            <ImageInput 
+          <div className="mx-5 mt-4 flex flex-row gap-8 md:mx-32">
+            <ImageInput
               selectedFile={selectedFile}
               setSelectedFile={setSelectedFile}
               setUploadedFile={setUploadedFile}
             />
             <div className="flex flex-col">
               <div className="flex flex-col gap-1">
-                <label className="font-semibold text-[#DDD] text-xs lg:text-sm">Name</label>
+                <label className="text-xs font-semibold text-[#DDD] lg:text-sm">
+                  Name
+                </label>
                 <input
-                  className="rounded-xl bg-transparent text-[#DDD] text-xs lg:text-sm"
+                  className="rounded-xl bg-transparent text-xs text-[#DDD] lg:text-sm"
                   type="text"
                   name="name"
-                  placeholder="Name your Knowledge NFT"
+                  placeholder="Name your Knowledge SFT"
                   value={form?.name}
                   onChange={(e) => handleFormChange("name", e.target.value)}
                 />
                 {errorMessage && errorMessage.name ? (
-                  <div className=" text-red-400 text-xs lg:text-sm">{errorMessage.name}</div>
+                  <div className=" text-xs text-red-400 lg:text-sm">
+                    {errorMessage.name}
+                  </div>
                 ) : (
-                  <div className="opacity-0 text-xs lg:text-sm">a</div>
+                  <div className="text-xs opacity-0 lg:text-sm">a</div>
                 )}
               </div>
 
               <div className="flex flex-col gap-1">
-                <label className="font-semibold text-[#DDD] text-xs lg:text-sm">Description</label>
+                <label className="text-xs font-semibold text-[#DDD] lg:text-sm">
+                  Description
+                </label>
                 <textarea
-                  className="rounded-xl bg-transparent text-[#DDD] placeholder-text-[#7C878E] text-xs lg:text-sm"
+                  className="placeholder-text-[#7C878E] rounded-xl bg-transparent text-xs text-[#DDD] lg:text-sm"
                   name="description"
-                  placeholder="Describe your Knowledge NFT"
+                  placeholder="Describe your Knowledge SFT"
                   rows={4}
                   onChange={(e) =>
                     handleFormChange("description", e.target.value)
                   }
                 />
                 {errorMessage && errorMessage.description ? (
-                  <div className=" text-red-400 text-xs lg:text-sm">{errorMessage.description}</div>
+                  <div className=" text-xs text-red-400 lg:text-sm">
+                    {errorMessage.description}
+                  </div>
                 ) : (
-                  <div className="opacity-0 text-xs lg:text-sm">a</div>
+                  <div className="text-xs opacity-0 lg:text-sm">a</div>
                 )}
               </div>
 
               <div className="flex flex-row flex-wrap">
-                <div className="flex flex-col gap-1 w-1/3">
-                  <label className="font-semibold text-[#DDD] text-xs text-wrap lg:text-sm">
+                <div className="flex w-1/3 flex-col gap-1">
+                  <label className="text-wrap text-xs font-semibold text-[#DDD] lg:text-sm">
                     Token Symbol
                   </label>
                   <input
-                    className="rounded-xl bg-transparent w-11/12 text-[#DDD] placeholder-text-[#7C878E] text-xs lg:text-sm"
+                    className="placeholder-text-[#7C878E] w-11/12 rounded-xl bg-transparent text-xs text-[#DDD] lg:text-sm"
                     type="text"
                     name="tokenSymbol"
                     placeholder="e.g. BAYC"
@@ -248,17 +262,19 @@ export default function NFT() {
                     onChange={(e) => handleFormChange("symbol", e.target.value)}
                   />
                   {errorMessage && errorMessage.symbol ? (
-                    <div className=" text-red-400 text-xs lg:text-sm">{errorMessage.symbol}</div>
+                    <div className=" text-xs text-red-400 lg:text-sm">
+                      {errorMessage.symbol}
+                    </div>
                   ) : (
-                    <div className="opacity-0 text-xs lg:text-sm">a</div>
+                    <div className="text-xs opacity-0 lg:text-sm">a</div>
                   )}
                 </div>
-                <div className="flex flex-col gap-1 w-1/3">
-                  <label className="font-semibold text-[#DDD] text-xs text-wrap lg:text-sm">
+                <div className="flex w-1/3 flex-col gap-1">
+                  <label className="text-wrap text-xs font-semibold text-[#DDD] lg:text-sm">
                     Shares Supply
                   </label>
                   <select
-                    className="rounded-xl bg-transparent text-[#DDD] w-11/12 text-xs lg:text-sm"
+                    className="w-11/12 rounded-xl bg-transparent text-xs text-[#DDD] lg:text-sm"
                     value={form?.shareSupply}
                     onChange={(e) =>
                       handleFormChange("shareSupply", e.target.value)
@@ -278,13 +294,13 @@ export default function NFT() {
                     </option>
                   </select>
                 </div>
-                <div className="flex flex-col gap-1 w-1/3">
-                  <label className="font-semibold text-[#DDD] text-xs text-wrap lg:text-sm">
+                <div className="flex w-1/3 flex-col gap-1">
+                  <label className="text-wrap text-xs font-semibold text-[#DDD] lg:text-sm">
                     Royalties
                   </label>
                   <div className="flex w-full items-center ">
                     <input
-                      className="rounded-xl bg-transparent w-full text-[#DDD] placeholder-text-[#7C878E] text-xs lg:text-sm"
+                      className="placeholder-text-[#7C878E] w-full rounded-xl bg-transparent text-xs text-[#DDD] lg:text-sm"
                       type="number"
                       name="comissionRate"
                       placeholder="e.g. 5"
@@ -298,13 +314,13 @@ export default function NFT() {
                       }}
                       value={form?.comissionRate}
                     />
-                    <div className="block text-[#DDD] w-fit ml-2">%</div>
+                    <div className="ml-2 block w-fit text-[#DDD]">%</div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-            {/* <div className="flex flex-row">
+          {/* <div className="flex flex-row">
 					<div className="flex flex-col gap-1 w-1/3">
 						<label className="font-semibold text-[#DDD]">Price Per Query</label>
 						<input
@@ -339,7 +355,7 @@ export default function NFT() {
 						/>
 					</div>
 				</div> */}
-            {/* <div className="flex justify-between">
+          {/* <div className="flex justify-between">
               <button
                 className="flex flex-row items-center justify-between  rounded-3xl p-2 px-5 border-2 border-[#50575F]"
                 type="submit"
@@ -356,7 +372,7 @@ export default function NFT() {
                 disabled={!allowGenerate}
               >
                 <h5 className="text-xs lg:text-sm text-black font-semibold">
-                  Generate NFT
+                  Generate SFT
                 </h5>
                 <svg
                   width="20"
@@ -376,43 +392,45 @@ export default function NFT() {
                 </svg>
               </button>
             </div> */}
-            <div className="flex justify-between mx-5 mt-8 md:mx-32">
-              <button
-                className="flex flex-row items-center justify-between  rounded-3xl p-2 px-5 border-2 border-[#50575F]"
-                type="submit"
-                onClick={() => {
-                  setStep("data_source");
-                }}
+          <div className="mx-5 mt-8 flex justify-between md:mx-32">
+            <button
+              className="flex flex-row items-center justify-between  rounded-3xl border-2 border-[#50575F] p-2 px-5"
+              type="submit"
+              onClick={() => {
+                setStep("data_source");
+              }}
+            >
+              <h5 className="text-xs font-semibold text-white lg:text-sm">
+                Back
+              </h5>
+            </button>
+            <button
+              className="flex w-44 flex-row items-center justify-between rounded-3xl  bg-[#01F7FF] p-2 px-5 disabled:bg-gray-500"
+              onClick={() => setisConfirmModalOpen(true)}
+              type="button"
+              disabled={!allowGenerate}
+            >
+              <h5 className="text-xs font-semibold text-black lg:text-sm">
+                Generate SFT
+              </h5>
+              <svg
+                width="20"
+                height="10"
+                viewBox="0 0 20 10"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
               >
-                <h5 className="text-xs lg:text-sm text-white font-semibold">Back</h5>
-              </button>
-              <button
-                className="flex flex-row items-center justify-between bg-[#01F7FF] disabled:bg-gray-500  rounded-3xl w-44 p-2 px-5"
-                onClick={handleMintNFT}
-                type="button"
-                disabled={!allowGenerate}
-              >
-                <h5 className="text-xs lg:text-sm text-black font-semibold">
-                  Generate NFT
-                </h5>
-                <svg
-                  width="20"
-                  height="10"
-                  viewBox="0 0 20 10"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M17.98 5.7901C18.8936 5.7901 19.6343 6.53075 19.6343 7.44439V7.44439C19.6343 8.35803 18.8936 9.09868 17.98 9.09868L1.65435 9.09868C0.74071 9.09868 5.90253e-05 8.35803 5.90618e-05 7.44439V7.44439C5.90983e-05 6.53075 0.740711 5.7901 1.65435 5.7901L17.98 5.7901Z"
-                    fill="#151515"
-                  />
-                  <path
-                    d="M18.932 5.9907C19.5219 6.63674 19.5219 7.68418 18.932 8.33022C18.3422 8.97626 17.3859 8.97626 16.7961 8.33022L12.3947 3.50927C11.8049 2.86322 11.8049 1.81578 12.3947 1.16974C12.9845 0.523702 13.9408 0.523702 14.5306 1.16974L18.932 5.9907Z"
-                    fill="#151515"
-                  />
-                </svg>
-              </button>
-            </div>
+                <path
+                  d="M17.98 5.7901C18.8936 5.7901 19.6343 6.53075 19.6343 7.44439V7.44439C19.6343 8.35803 18.8936 9.09868 17.98 9.09868L1.65435 9.09868C0.74071 9.09868 5.90253e-05 8.35803 5.90618e-05 7.44439V7.44439C5.90983e-05 6.53075 0.740711 5.7901 1.65435 5.7901L17.98 5.7901Z"
+                  fill="#151515"
+                />
+                <path
+                  d="M18.932 5.9907C19.5219 6.63674 19.5219 7.68418 18.932 8.33022C18.3422 8.97626 17.3859 8.97626 16.7961 8.33022L12.3947 3.50927C11.8049 2.86322 11.8049 1.81578 12.3947 1.16974C12.9845 0.523702 13.9408 0.523702 14.5306 1.16974L18.932 5.9907Z"
+                  fill="#151515"
+                />
+              </svg>
+            </button>
+          </div>
         </form>
       </div>
     </>

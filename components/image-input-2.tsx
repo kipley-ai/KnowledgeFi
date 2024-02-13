@@ -70,81 +70,79 @@ const ImageInput = ({ selectedFile, setSelectedFile }: any) => {
     setSelectedFile(GalleryImages[randomIndex]);
   };
 
-  useEffect(() => {
-    handleRandomCover();
-  }, []);
-
   return (
     <>
-    
-    <div className="flex flex-col w-full gap-2">
-      <label className="text-sm lg:text-base form-label self-start font-semibold mb-1 text-[#DDD]" htmlFor="email">
+      <div className="flex w-full flex-col gap-2">
+        <label
+          className="form-label mb-1 self-start text-sm font-semibold text-[#DDD] lg:text-base"
+          htmlFor="email"
+        >
           Cover Image
-      </label> 
-      <Dropzone
-        onDrop={handleFileDrop}
-        accept={{ "image/*": [] }}
-        multiple={false}
-      >
-        {({ getRootProps, getInputProps }) => (
-          <div className="dropzone cursor-pointer " {...getRootProps()}>
-            <input
-              {...getInputProps()}
-              onChange={handleCoverChange}
-              ref={inputRef}
-            />
-            {loadingCover ? (
-              <Image
-                width={30}
-                height={30}
-                className={"animate-spin"}
-                src={LoadingIcon}
-                alt="Loading Icon"
+        </label>
+        <Dropzone
+          onDrop={handleFileDrop}
+          accept={{ "image/*": [] }}
+          multiple={false}
+        >
+          {({ getRootProps, getInputProps }) => (
+            <div className="dropzone cursor-pointer " {...getRootProps()}>
+              <input
+                {...getInputProps()}
+                onChange={handleCoverChange}
+                ref={inputRef}
               />
-            ) : (
-              <Image
-                src={selectedFile}
-                alt="Edit Preview"
-                width={250}
-                height={250}
-                className="rounded-2xl object-cover"
-                priority
-              />
-            )}
+              {loadingCover ? (
+                <Image
+                  width={30}
+                  height={30}
+                  className={"animate-spin"}
+                  src={LoadingIcon}
+                  alt="Loading Icon"
+                />
+              ) : (
+                <Image
+                  src={selectedFile}
+                  alt="Edit Preview"
+                  width={250}
+                  height={250}
+                  className="rounded-2xl object-cover"
+                  priority
+                />
+              )}
+            </div>
+          )}
+        </Dropzone>
+        <div className="flex flex-col gap-2">
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              setIsImageModalOpen(true);
+            }}
+            className="rounded-md bg-[#01F7FF] px-1 py-2 text-xs font-semibold text-black hover:brightness-75"
+          >
+            Choose Image from Gallery
+          </button>
+          <button
+            onClick={handleChangeImage}
+            className="rounded-md bg-[#01F7FF] px-1 py-2 text-xs font-semibold text-black hover:brightness-75"
+          >
+            Choose Image from Device
+          </button>
+          <div
+            className="w-full cursor-pointer rounded-md bg-slate-400 py-1 text-center text-xs font-bold text-black hover:brightness-75"
+            onClick={handleRandomCover}
+          >
+            Random
           </div>
-        )}
-      </Dropzone>
-      <div className="flex flex-col gap-2">
-        <button
-          onClick={(e) => {
-            e.preventDefault();
-            setIsImageModalOpen(true);
-          }}
-          className="font-semibold text-black rounded-md bg-[#01F7FF] hover:brightness-75 py-2 px-1 text-xs"
-        >
-          Choose Image from Gallery
-        </button>
-        <button
-          onClick={handleChangeImage}
-          className="font-semibold text-black rounded-md bg-[#01F7FF] hover:brightness-75 py-2 px-1 text-xs"
-        >
-          Choose Image from Device
-        </button>
-        <div
-          className="w-full bg-slate-400 hover:brightness-75 cursor-pointer rounded-md font-bold text-center py-1 text-black text-xs"
-          onClick={handleRandomCover}
-        >
-          Random
         </div>
+        <ModalImageGallery
+          isOpen={isImageModalOpen}
+          setIsOpen={setIsImageModalOpen}
+          title="Cover Image Gallery"
+          setImage={setSelectedFile}
+          setUploadedFile={setSelectedFile}
+        />
       </div>
-      <ModalImageGallery
-        isOpen={isImageModalOpen}
-        setIsOpen={setIsImageModalOpen}
-        title="Cover Image Gallery"
-        setImage={setSelectedFile}
-        setUploadedFile={setSelectedFile}
-      />
-    </div>
     </>
   );
 };
