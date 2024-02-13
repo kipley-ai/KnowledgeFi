@@ -10,6 +10,7 @@ import { uploadFileS3 } from "@/app/api/upload/s3/helper";
 import MintNFTModal from "./mint-nft-modal";
 import ImageInput from "@/components/image-input";
 import LoadingIcon from "public/images/loading-icon.svg";
+import MintConfirmationModal from "@/components/modal-mint-confirmation";
 
 // export const metadata = {
 //     title: 'SFT - Mosaic',
@@ -45,6 +46,7 @@ export default function NFT() {
   );
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [nftIdCreated, setNftIdCreated] = useState("");
+  const [isConfirmModalOpen, setisConfirmModalOpen] = useState(false);
   const mintNFTAPI = useMintNFT();
 
   const handleFormChange = (name: string, value: any) => {
@@ -178,6 +180,12 @@ export default function NFT() {
 
   return (
     <>
+      <MintConfirmationModal 
+        isOpen={isConfirmModalOpen}
+        setIsOpen={setisConfirmModalOpen}
+        nftImage={selectedFile}
+        handleMintNFT={handleMintNFT}
+      />
       <MintNFTModal
         children={"Your Knowledge Asset is created successfully"}
         open={showModal}
@@ -398,7 +406,7 @@ export default function NFT() {
             </button>
             <button
               className="flex w-44 flex-row items-center justify-between rounded-3xl  bg-[#01F7FF] p-2 px-5 disabled:bg-gray-500"
-              onClick={handleMintNFT}
+              onClick={() => setisConfirmModalOpen(true)}
               type="button"
               disabled={!allowGenerate}
             >
