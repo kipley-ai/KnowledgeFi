@@ -48,7 +48,7 @@ export default function DataSource() {
 			<div className="mx-64">
 				<h1 className="text-3xl font-semibold text-white">Data Sources</h1>
 				<h5 className="text-lg text-[#7C878E]">
-					Give some general information about your NFT
+					Give some general information about your SFT
 				</h5>
 				<hr className="my-4" />
 			</div>

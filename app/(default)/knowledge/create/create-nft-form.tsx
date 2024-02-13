@@ -14,7 +14,7 @@ import LoadingIcon from "public/images/loading-icon.svg";
 
 
 // export const metadata = {
-//     title: 'NFT - Mosaic',
+//     title: 'SFT - Mosaic',
 //     description: 'Page description',
 // }
 
@@ -57,7 +57,7 @@ export default function NFT() {
   };
 
   useEffect(() => {
-    const title = "Mint NFT";
+    const title = "Mint SFT";
     document.title = title;
 
     return () => setHeaderTitle("");
@@ -188,7 +188,7 @@ export default function NFT() {
       />
       <div className="flex flex-col sm:px-6 lg:px-0 py-8 pb-14 bg-[#292D32]">
         <div className="mx-5 md:mx-32">
-          <h1 className="text-2xl font-semibold text-white">Mint NFT</h1>
+          <h1 className="text-2xl font-semibold text-white">Mint SFT</h1>
           <hr className="my-4 border border-gray-600" />
         </div>
         <form>
@@ -205,7 +205,7 @@ export default function NFT() {
                   className="rounded-xl bg-transparent text-[#DDD] text-xs lg:text-sm"
                   type="text"
                   name="name"
-                  placeholder="Name your Knowledge NFT"
+                  placeholder="Name your Knowledge SFT"
                   value={form?.name}
                   onChange={(e) => handleFormChange("name", e.target.value)}
                 />
@@ -221,7 +221,7 @@ export default function NFT() {
                 <textarea
                   className="rounded-xl bg-transparent text-[#DDD] placeholder-text-[#7C878E] text-xs lg:text-sm"
                   name="description"
-                  placeholder="Describe your Knowledge NFT"
+                  placeholder="Describe your Knowledge SFT"
                   rows={4}
                   onChange={(e) =>
                     handleFormChange("description", e.target.value)
@@ -356,7 +356,7 @@ export default function NFT() {
                 disabled={!allowGenerate}
               >
                 <h5 className="text-xs lg:text-sm text-black font-semibold">
-                  Generate NFT
+                  Generate SFT
                 </h5>
                 <svg
                   width="20"
@@ -393,7 +393,7 @@ export default function NFT() {
                 disabled={!allowGenerate}
               >
                 <h5 className="text-xs lg:text-sm text-black font-semibold">
-                  Generate NFT
+                  Generate SFT
                 </h5>
                 <svg
                   width="20"

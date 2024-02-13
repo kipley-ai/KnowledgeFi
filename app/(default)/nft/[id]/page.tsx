@@ -166,7 +166,7 @@ const NoNFT = () => {
             Meet our ai chat app revolutionizing conversations
           </h1>
           <h1 className="text-[#292D32] font-semibold bg-[#01F7FF] rounded-full py-3 px-8 w-fit">
-            Mint your NFT
+            Mint your SFT
           </h1>
         </div>
       </div>
@@ -200,7 +200,7 @@ const NoChatbot = () => {
           </h1>
           <Link href={"/nft/" + id + "/create-chatbot"}>
             <h1 className="text-[#292D32] font-semibold bg-[#01F7FF] rounded-full py-3 px-8 w-fit">
-              Link Your NFT to Chatbot
+              Link Your SFT to Chatbot
             </h1>
           </Link>
         </div>
@@ -212,7 +212,7 @@ const NoChatbot = () => {
 const NFTDetail = ({ params }: { params: any }) => {
   const { setHeaderTitle } = useAppProvider();
   useEffect(() => {
-    setHeaderTitle("My NFT");
+    setHeaderTitle("My SFT");
   }, []);
   const [nft, setNft] = useState(true);
   const [chatbot, setChatbot] = useState(true);
