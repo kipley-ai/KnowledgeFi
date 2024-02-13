@@ -4,7 +4,7 @@ import { mintNFT } from "@/smart-contract/kip-protocol-contract";
 import React, { useEffect, useState } from "react";
 
 // export const metadata = {
-//     title: 'NFT - Mosaic',
+//     title: 'SFT - Mosaic',
 //     description: 'Page description',
 // }
 
@@ -17,7 +17,7 @@ interface Form {
 }
 
 export default function NFT() {
-  const title = "Create NFT";
+  const title = "Create SFT";
   const { setHeaderTitle } = useAppProvider();
 
   const [category, setCategory] = useState("");
@@ -59,9 +59,9 @@ export default function NFT() {
   return (
     <div className="flex flex-col sm:px-6 lg:px-8 py-8 bg-[#292D32]">
       <div className="mx-56">
-        <h1 className="text-2xl font-semibold text-white">Create NFT</h1>
+        <h1 className="text-2xl font-semibold text-white">Create SFT</h1>
         <h5 className="text-md text-[#7C878E]">
-          Give some general information about your NFT.
+          Give some general information about your SFT.
         </h5>
         <hr className="my-4 border border-gray-600" />
       </div>
@@ -167,7 +167,7 @@ export default function NFT() {
             onClick={handleMintNFT}
             type="button"
           >
-            <h5 className="text-sm text-black font-semibold">Generate NFT</h5>
+            <h5 className="text-sm text-black font-semibold">Generate SFT</h5>
             <svg
               width="20"
               height="10"

@@ -134,7 +134,7 @@ const NFTList = () => {
     );
   }
 
-  return <NoData item="NFT" url="/nft/create" />;
+  return <NoData item="SFT" url="/nft/create" />;
 };
 
 type BotCardProps = {
@@ -256,7 +256,7 @@ export default function NFT() {
     <div className="flex flex-col gap-12 bg-[#292D32] px-4 pb-32 pt-8 md:px-6 lg:px-8">
       <div className="flex flex-col gap-2 lg:gap-8">
         <div className="flex flex-col">
-          <h1 className="text-2xl font-semibold text-white">My NFTs</h1>
+          <h1 className="text-2xl font-semibold text-white">My SFTs</h1>
           <hr className="my-4 border border-gray-700" />
         </div>
         <NFTList />

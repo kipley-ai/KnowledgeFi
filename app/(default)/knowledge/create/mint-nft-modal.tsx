@@ -49,7 +49,7 @@ export default function SuccessFailModal({
                     onClick={() => router.push('/nft')}
                     className="bg-[#353945] rounded-3xl w-full py-2 text-[#01F7FF] text-sm mr-4"
                 >
-                    View My NFTs
+                    View My SFTs
                 </button>
                 <button
                     onClick={() => router.push('/nft/'+kbIdCreated+'/create-chatbot')}
