@@ -1,50 +1,113 @@
-"use client"
+"use client";
 import XIcon from "public/images/X-icon.svg";
 import NotionIcon from "public/images/notion.svg";
-import FolderAddIcon from "public/images/folder-add.svg";
+import FolderAddIcon from "public/images/folder-add-purple.svg";
+import MirrorIcon from "public/images/knowledge-source/mirror-icon.png";
+import SubstackIcon from "public/images/knowledge-source/substack-icon.svg";
+import MediumIcon from "public/images/knowledge-source/medium-icon.svg";
+import ApiIcon from "public/images/knowledge-source/api-icon.svg";
 import Image from "next/image";
 import { useCreateChatbotContext } from "./create-knowledge-context";
-import { useState } from "react";
+import React, { useState } from "react";
+import { ImageSrc, ReactSetter } from "@/lib/aliases";
+import { PossibleOption } from "./page";
 
-export default function Step1({ selectedButton, setSelectedButton }: { selectedButton: string, setSelectedButton: Function }) {
-    const {handleChangeKb} = useCreateChatbotContext()
-    const [comingSoonTips, setComingSoonTips] = useState("")
+const ButtonItem = ({
+  onClick,
+  isSelected,
+  optionIcon,
+  optionText,
+}: {
+  onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  isSelected: boolean;
+  optionIcon: ImageSrc;
+  optionText: string;
+}) => {
+  return (
+    <button
+      className={`flex flex-col items-center pt-10 border-2 px-20 py-5 ${isSelected ? "border-[#01F7FF] bg-[#181B1F]" : "border-transparent"} rounded-2xl`}
+      onClick={onClick}
+    >
+      <Image
+        width={48}
+        height={48}
+        src={optionIcon}
+        alt={`${optionText} Icon`}
+      />
+      <h3 className="pt-6">{optionText}</h3>
+    </button>
+  );
+};
 
-    const renderComingSoonTips = (selected: string) => {
-        if(selectedButton ===  selected && comingSoonTips === selected){
-            return <h3 className="bg-[#01F7FF] absolute top-1 right-1 rounded-full px-4 text-black text-sm">Coming soon</h3>
+const buttons = [
+  {
+    type: "twitter",
+    icon: XIcon,
+    text: "Twitter",
+    comingSoon: false,
+  },
+  {
+    type: "notion",
+    icon: NotionIcon,
+    text: "Notion",
+    comingSoon: false,
+  },
+  {
+    type: "substack",
+    icon: SubstackIcon,
+    text: "Substack",
+    comingSoon: true,
+  },
+  {
+    type: "medium",
+    icon: MediumIcon,
+    text: "Medium",
+    comingSoon: true,
+  },
+  {
+    type: "mirror",
+    icon: MirrorIcon,
+    text: "Mirror",
+    comingSoon: true,
+  },
+  {
+    type: "files",
+    icon: FolderAddIcon,
+    text: "Upload files",
+    comingSoon: false,
+  },
+  {
+    type: "api",
+    icon: ApiIcon,
+    text: "Customized API",
+    comingSoon: true,
+  },
+  // Add more buttons here...
+];
 
-        }
-    }
+export default function Step1({
+  selectedButton,
+  setSelectedButton,
+}: {
+  selectedButton: string;
+  setSelectedButton: Function;
+}) {
+  const { handleChangeKb, setIsComingSoon } = useCreateChatbotContext();
 
-    return (
-        <div className="mx-32 grid grid-cols-2 gap-4 text-white font-bold mt-10">
-            <button className={`flex flex-col px-20 py-5 items-center border-2 ${selectedButton == 'twitter' ? 'border-[#01F7FF] bg-[#181B1F]' : 'border-[#50575F]'} rounded-2xl`} 
-                onClick={() => {
-                    handleChangeKb('type','twitter')
-                    setSelectedButton('twitter')
-                }}>
-                <Image width={48} height={48} src={XIcon} alt="X Icon" />
-                <h3 className="pt-6">Connect Twitter</h3>
-            </button>
-            <button className={`flex flex-col px-20 py-5 items-center border-2 ${selectedButton == 'notion' ? 'border-[#01F7FF] bg-[#181B1F]' : 'border-[#50575F]'} rounded-2xl relative`} 
-                onClick={() => {
-                    handleChangeKb('type','notion')
-                    setSelectedButton('notion')
-                    setComingSoonTips("notion")
-                }}>
-                <Image width={48} height={48} src={NotionIcon} alt="Notion Icon" />
-                <h3 className="pt-6">Connect Notion</h3>
-                {renderComingSoonTips("notion")}
-            </button>
-            <button className={`flex flex-col px-20 py-5 items-center border-2 ${selectedButton == 'files' ? 'border-[#01F7FF] bg-[#181B1F]' : 'border-[#50575F]'} rounded-2xl`} 
-                onClick={() => {
-                    handleChangeKb('type','files')
-                    setSelectedButton('files')
-                }}>
-                <Image width={48} height={48} src={FolderAddIcon} alt="Folder Add Icon" />
-                <h3 className="pt-6">Upload files</h3>
-            </button>
-        </div>
-    )
+  return (
+    <div className="mx-32 mt-10 grid grid-cols-4 gap-4 font-bold text-white">
+      {buttons.map((button) => (
+        <ButtonItem
+          onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+            handleChangeKb("type", button.type);
+            setSelectedButton(button.type);
+            setIsComingSoon(button.comingSoon);
+          }}
+          isSelected={selectedButton == button.type}
+          optionIcon={button.icon}
+          optionText={button.text}
+        />
+      ))}
+    </div>
+  );
 }
