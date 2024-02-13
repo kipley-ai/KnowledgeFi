@@ -41,7 +41,9 @@ const ChatBotForm = () => {
   const { createChatbot: chatbot } = useCreateChatbotContext();
   const { id } = useParams();
   const { data: nftData } = useNftDetail({ sft_id: id as string });
-  const [selectedFile, setSelectedFile] = useState<any>(LoadingIcon);
+  const [selectedFile, setSelectedFile] = useState<any>(
+    "https://placehold.co/600x600?text=Upload\nCover+Image",
+  );
   const [mode, setMode] = useState(0);
   const [toneData, setToneData] = useState("");
 
@@ -141,10 +143,10 @@ const ChatBotForm = () => {
   }, [title, categoryList]);
 
   useEffect(() => {
-    if (mode==0) {
-      setToneData("instruction")
-    } else if (mode==1) {
-      setToneData("instruction_2")
+    if (mode == 0) {
+      setToneData("instruction");
+    } else if (mode == 1) {
+      setToneData("instruction_2");
     }
   }, [mode]);
 
@@ -163,7 +165,7 @@ const ChatBotForm = () => {
 				</h5> */}
           <hr className="my-4 border border-gray-600" />
         </div>
-        <form className="flex flex-col mx-5 md:mx-32" onSubmit={handleSubmit}>
+        <form className="mx-5 flex flex-col md:mx-32" onSubmit={handleSubmit}>
           <div className="flex">
             <div className="flex items-center justify-center">
               <ImageInput
@@ -172,11 +174,11 @@ const ChatBotForm = () => {
               />
             </div>
 
-            <div className="px-8 w-full space-y-5">
+            <div className="w-full space-y-5 px-8">
               <div>
                 <label
                   htmlFor="characterName"
-                  className="block text-xs lg:text-sm font-semibold text-white "
+                  className="block text-xs font-semibold text-white lg:text-sm "
                 >
                   Name
                 </label>
@@ -186,7 +188,7 @@ const ChatBotForm = () => {
                     type="text"
                     value={characterName}
                     onChange={(e) => setCharacterName(e.target.value)}
-                    className="mt-2 w-full rounded-xl border-2 bg-transparent text-white text-xs lg:text-sm"
+                    className="mt-2 w-full rounded-xl border-2 bg-transparent text-xs text-white lg:text-sm"
                     placeholder="Name your Chatbot"
                     maxLength={100}
                   />
@@ -198,7 +200,7 @@ const ChatBotForm = () => {
               <div>
                 <label
                   htmlFor="tone"
-                  className="block text-xs lg:text-sm font-semibold text-white "
+                  className="block text-xs font-semibold text-white lg:text-sm "
                 >
                   Tone
                 </label>
@@ -243,7 +245,7 @@ const ChatBotForm = () => {
                 </label>
                 <div className="mt-1"> */}
 
-                  {/* <input
+                {/* <input
                   id="description"
                   type="text"
                   value={description}
@@ -252,7 +254,7 @@ const ChatBotForm = () => {
                   placeholder="Describe your Chatbot"
                 /> */}
 
-                  {/* <textarea
+                {/* <textarea
                     id="description"
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
@@ -266,7 +268,6 @@ const ChatBotForm = () => {
                 {/* <p className="mt-2 text-xs text-gray-400">
                 Description of your AI character.
               </p> */}
-
               </div>
             </div>
             {/* <div className="mx-64 mt-10">
@@ -274,11 +275,11 @@ const ChatBotForm = () => {
                 Chatbot Configuration
               </h1> */}
 
-              {/* <h5 className="text-md text-[#7C878E]">
+            {/* <h5 className="text-md text-[#7C878E]">
               Configuration defining AI behavior.
             </h5> */}
 
-              {/* <hr className="my-4 border border-gray-700" />
+            {/* <hr className="my-4 border border-gray-700" />
             </div>
             <div className="mx-64">
               <label
@@ -297,7 +298,7 @@ const ChatBotForm = () => {
                 maxLength={1000}
               /> */}
 
-              {/* <div className="flex flex-row justify-between">
+            {/* <div className="flex flex-row justify-between">
               <p className="mt-2 text-xs text-gray-400">
                 Describe your AI character.
               </p>
@@ -324,7 +325,7 @@ const ChatBotForm = () => {
                 maxLength={1000}
               /> */}
 
-              {/* <div className="flex flex-row justify-between">
+            {/* <div className="flex flex-row justify-between">
               <p className="mt-2 text-xs text-gray-400">
                 Give an example of your conversation with your AI.
               </p>
@@ -334,21 +335,22 @@ const ChatBotForm = () => {
             </div> */}
 
             {/* </div> */}
-          
           </div>
-          
+
           <div className="form-actions flex flex-row justify-between space-x-2">
             <button
               className="mt-8 flex items-center justify-center rounded-3xl bg-[#292D32] p-2 px-5 ring-2 ring-gray-600"
               type="button"
             >
-              <h5 className="text-xs lg:text-sm font-semibold text-white">Cancel</h5>
+              <h5 className="text-xs font-semibold text-white lg:text-sm">
+                Cancel
+              </h5>
             </button>
             <button
               className="mt-8 flex items-center justify-center rounded-3xl bg-[#01F7FF] px-5 py-1"
               type="submit"
             >
-              <h5 className="flex-grow text-xs lg:text-sm font-semibold text-black ">
+              <h5 className="flex-grow text-xs font-semibold text-black lg:text-sm ">
                 Bring my chatbot to life
               </h5>
               <svg

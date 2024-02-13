@@ -41,7 +41,7 @@ export default function NFT() {
   const { data: twitterSession } = useSession();
   const [form, setForm] = useState<Form>({ shareSupply: "5000" });
   const [selectedFile, setSelectedFile] = useState<string>(
-    "https://kipley-assets-public.gumlet.io/random_cover/app.2023.09.22/106225_Symbolic_representation_of_heartbeats__white_waves_xl_1024_v1_0.png?width=600",
+    "https://placehold.co/600x600?text=Upload\nCover+Image",
   );
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [nftIdCreated, setNftIdCreated] = useState("");
