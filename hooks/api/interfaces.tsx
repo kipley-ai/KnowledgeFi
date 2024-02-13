@@ -28,7 +28,7 @@ export interface ICreateChatbotParams {
 
 export interface ICreateKBAndNFTParams {
   type: string;
-  kb_data?: string;
+  kb_data?: any[];
   username?: string;
   name: string;
   description: string;
