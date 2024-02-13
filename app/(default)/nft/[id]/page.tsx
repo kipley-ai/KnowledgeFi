@@ -13,38 +13,54 @@ import { useParams } from "next/navigation";
 import Link from "next/link";
 import { useKBDetail } from "@/hooks/api/kb";
 import { useCreditBalance } from "@/hooks/api/credit";
-import defaultAvatar from "@/public/images/avatar-default-02.svg"
+import defaultAvatar from "@/public/images/avatar-default-02.svg";
 
 const NFTSection = ({ nftDetail }: { nftDetail: any }) => {
   return (
-    <div className="grid grid-cols-2 gap-4 text-white pb-4">
-      <div>
-        <Image className="rounded-xl" src={nftDetail.profile_image} alt="nft image" width={300} height={300} />
+    <div className="grid grid-cols-1 gap-4 pb-4 text-white md:grid-cols-2">
+      <div className="mx-auto w-2/5 md:w-full">
+        <Image
+          className="rounded-xl"
+          src={nftDetail.profile_image}
+          alt="nft image"
+          width={300}
+          height={300}
+        />
       </div>
       <div>
-        <h1 className="text-3xl font-bold">{nftDetail.name}</h1>
-        <p className="my-4 text-sm">{nftDetail.description}</p>
-        <div className="flex mb-4">
-          <Image
-            width={40}
-            height={40}
-            className="rounded-full mr-2"
-            src={defaultAvatar}
-            alt="creator image"
-          />
-          <div>
-            <h2 className="text-[#93989A] text-sm">Creator</h2>
-            <h1 className="text-sm">
-              {nftDetail.wallet_addr!.substring(0, 6) +
-                "..." +
-                nftDetail.wallet_addr!.substring(
-                  nftDetail.wallet_addr!.length - 6
-                )}
-            </h1>
+        <h1 className="text-center text-3xl font-bold md:text-left md:text-4xl">
+          {nftDetail.name}
+        </h1>
+        <p className="my-4 text-center text-sm md:text-left">
+          {nftDetail.description}
+        </p>
+        <div className="flex divide-x divide-[#474D54] md:flex-col md:divide-none">
+          <div className="flex w-1/2 gap-3 md:mb-4">
+            <div>
+              <Image
+                width={40}
+                height={40}
+                className=""
+                src={defaultAvatar}
+                alt="creator image"
+              />
+            </div>
+            <div>
+              <h2 className="text-sm text-[#93989A]">Creator</h2>
+              <h1 className="text-sm font-semibold">
+                {nftDetail.wallet_addr!.substring(0, 6) +
+                  "..." +
+                  nftDetail.wallet_addr!.substring(
+                    nftDetail.wallet_addr!.length - 6,
+                  )}
+              </h1>
+            </div>
+          </div>
+          <div className="px-4 md:px-0">
+            <h4 className="text-sm text-[#93989A]">Current Stored Value</h4>
+            <h1 className="text-md font-semibold md:text-lg">0 $KIP</h1>
           </div>
         </div>
-        <h4 className="text-[#93989A] text-sm mb-1">Current Stored Value</h4>
-        <h1 className="font-semibold text-lg">0 $KIP</h1>
       </div>
     </div>
   );
@@ -58,21 +74,23 @@ const ChatbotSection = ({
   kbDetail: any;
 }) => {
   return (
-    <div className="grid grid-cols-2 gap-x-4 gap-y-4 text-white mt-3 py-12 border-t border-[#474D54]">
-      <div className="col-span-2 flex justify-between items-center">
+    <div className="mt-3 grid grid-cols-1 gap-x-12 gap-y-8 border-t border-[#474D54] py-12 text-white md:grid-cols-2 md:gap-y-4 xl:gap-x-20">
+      <div className="flex items-center justify-between gap-4 md:col-span-2">
         <div className="flex items-center">
           <Image
-            className="mr-3 object-cover rounded-lg"
+            className="mr-3 rounded-lg object-cover"
             width={60}
             height={60}
             src={chatbotDetail.profile_image}
             alt="chatbot image"
           />
-          <h1 className="text-3xl font-semibold">{chatbotDetail.name}</h1>
+          <h1 className="text-2xl font-semibold md:text-3xl">
+            {chatbotDetail.name}
+          </h1>
         </div>
         <div>
           <Link href={"/chatbot/" + chatbotDetail.chatbot_id + "/edit"}>
-            <button className="rounded-full border border-[#01F7FF] text-[#01F7FF] flex px-5 py-1 items-center text-sm">
+            <button className="flex items-center rounded-full border border-[#01F7FF] px-5 py-1 text-sm font-semibold text-[#01F7FF]">
               <svg
                 className="mr-1"
                 width="12"
@@ -91,49 +109,53 @@ const ChatbotSection = ({
           </Link>
         </div>
       </div>
-      <div className="col-span-1 text-[#FCFCFC] text-sm">
-        <p className="mb-4 font-medium">{chatbotDetail.description}</p>
-        <div className="grid grid-cols-1 gap-2 text-[#FCFCFC] mb-2">
-          <div className="flex justify-between pb-2 border-b border-[#393E44]">
-            <p className="text-[#7C878E] font-semibold">Date Created</p>
-            <p className="font-semibold">{chatbotDetail.created_at?.substring(0, 10)}</p>
+      <div className="col-span-1 text-sm text-[#FCFCFC]">
+        <p className="mb-4">{chatbotDetail.description}</p>
+        <div className="mb-2 grid grid-cols-1 gap-2 text-[#FCFCFC]">
+          <div className="flex justify-between border-b border-[#393E44] pb-2">
+            <p className="font-semibold text-[#7C878E]">Date Created</p>
+            <p className="font-semibold">
+              {chatbotDetail.created_at?.substring(0, 10)}
+            </p>
           </div>
-          <div className="flex justify-between pb-2 border-b border-[#393E44]">
-            <p className="text-[#7C878E]  font-semibold">Category</p>
+          <div className="flex justify-between border-b border-[#393E44] pb-2">
+            <p className="font-semibold  text-[#7C878E]">Category</p>
             <p className="font-semibold">{chatbotDetail.category_name}</p>
           </div>
-          <div className="flex justify-between pb-2 border-b border-[#393E44]">
-            <p className="text-[#7C878E]  font-semibold">Creator</p>
+          <div className="flex justify-between border-b border-[#393E44] pb-2">
+            <p className="font-semibold  text-[#7C878E]">Creator</p>
             <p className="font-semibold">
               {chatbotDetail.wallet_addr!.substring(0, 6) +
                 "..." +
                 chatbotDetail.wallet_addr!.substring(
-                  chatbotDetail.wallet_addr!.length - 6
+                  chatbotDetail.wallet_addr!.length - 6,
                 )}
             </p>
           </div>
         </div>
-        <p className="text-[#7C878E] mb-2 mt-2 font-semibold">Instructions</p>
-        <p className="font-medium text-sm">{chatbotDetail.instruction}</p>
+        <p className="mb-2 mt-2 font-semibold text-[#7C878E]">Instructions</p>
+        <p className="text-sm font-medium">{chatbotDetail.instruction}</p>
       </div>
-      <div className="col-span-1 bg-[#1A1D1F] rounded-xl p-6 ">
-        <h1 className="mb-4 font-semibold text-md">Knowledge Asset Info</h1>
+      <div className="col-span-1 rounded-xl bg-[#1A1D1F] p-6 text-sm font-semibold ">
+        <h1 className="mb-4 text-xl font-semibold">Knowledge Asset Info</h1>
         <div className="grid grid-cols-1 gap-2 text-[#FCFCFC]">
-          <div className="flex justify-between pb-2 border-b border-[#202326]">
-            <p className="text-[#6F767E] font-semibold">Name</p>
-            <p className="font-medium">{kbDetail.name}</p>
+          <div className="flex justify-between border-b border-[#2e2e2e] pb-2">
+            <p className="font-semibold text-[#6F767E]">Name</p>
+            <p className="font-medium">{kbDetail?.name}</p>
           </div>
-          <div className="flex justify-between pb-2 border-b border-[#202326]">
-            <p className="text-[#6F767E] font-semibold">Description</p>
-            <p className="font-medium">{kbDetail.description}</p>
+          <div className="flex justify-between border-b border-[#2e2e2e] pb-2">
+            <p className="font-semibold text-[#6F767E]">Description</p>
+            <p className="font-medium">{kbDetail?.description}</p>
           </div>
-          <div className="flex justify-between pb-2 border-b border-[#202326]">
-            <p className="text-[#6F767E]">Create date</p>
-            <p className="font-medium">{kbDetail.created_at?.substring(0, 10)}</p>
+          <div className="flex justify-between border-b border-[#2e2e2e] pb-2">
+            <p className="text-[#6F767E]">Date Created</p>
+            <p className="font-medium">
+              {kbDetail?.created_at?.substring(0, 10)}
+            </p>
           </div>
-          <div className="flex justify-between pb-2 border-b border-[#202326]">
+          <div className="flex justify-between pb-2">
             <p className="text-[#6F767E]">Price</p>
-            <p className="font-medium">{kbDetail.price}</p>
+            <p className="font-medium">{kbDetail?.price}</p>
           </div>
         </div>
       </div>
@@ -144,14 +166,14 @@ const ChatbotSection = ({
 const NoNFT = () => {
   return (
     <div className="h-full">
-      <div className="relative  w-full bg-[#151515] rounded-3xl">
+      <div className="relative  w-full rounded-3xl bg-[#151515]">
         <Image
           className=" w-full rounded-3xl"
           src={link_nft_chatbot}
           alt={"background"}
         />
         <div
-          className="flex items-center flex-col"
+          className="flex flex-col items-center"
           style={{
             position: "absolute",
             top: "50%",
@@ -159,13 +181,13 @@ const NoNFT = () => {
             transform: "translate(-50%, -50%)",
           }}
         >
-          <h1 className="text-[48px] font-semibold text-white mb-[2px]">
+          <h1 className="mb-[2px] text-[48px] font-semibold text-white">
             Unlock the power of Web3
           </h1>
-          <h1 className="text-[18px] font-regular text-white mb-[30px]">
+          <h1 className="font-regular mb-[30px] text-[18px] text-white">
             Meet our ai chat app revolutionizing conversations
           </h1>
-          <h1 className="text-[#292D32] font-semibold bg-[#01F7FF] rounded-full py-3 px-8 w-fit">
+          <h1 className="w-fit rounded-full bg-[#01F7FF] px-8 py-3 font-semibold text-[#292D32]">
             Mint your SFT
           </h1>
         </div>
@@ -180,14 +202,14 @@ const NoChatbot = () => {
   const { id } = useParams();
   return (
     <div className="h-full">
-      <div className="relative w-full bg-[#151515] rounded-3xl">
+      <div className="relative w-full rounded-3xl bg-[#151515]">
         <Image
           className=" w-full rounded-3xl"
           src={link_nft_chatbot}
           alt={"background"}
         />
         <div
-          className="flex items-center flex-col"
+          className="flex flex-col items-center"
           style={{
             position: "absolute",
             top: "50%",
@@ -195,11 +217,11 @@ const NoChatbot = () => {
             transform: "translate(-50%, -50%)",
           }}
         >
-          <h1 className="text-[48px] font-extrabold text-white mb-[30px]">
+          <h1 className="mb-[30px] text-[48px] font-extrabold text-white">
             Connect with AI Chat Bot
           </h1>
           <Link href={"/nft/" + id + "/create-chatbot"}>
-            <h1 className="text-[#292D32] font-semibold bg-[#01F7FF] rounded-full py-3 px-8 w-fit">
+            <h1 className="w-fit rounded-full bg-[#01F7FF] px-8 py-3 font-semibold text-[#292D32]">
               Link Your SFT to Chatbot
             </h1>
           </Link>
@@ -214,8 +236,6 @@ const NFTDetail = ({ params }: { params: any }) => {
   useEffect(() => {
     setHeaderTitle("My SFT");
   }, []);
-  const [nft, setNft] = useState(true);
-  const [chatbot, setChatbot] = useState(true);
   const { id } = params;
 
   const { data: nftData } = useNftDetail({ sft_id: id });
@@ -228,7 +248,7 @@ const NFTDetail = ({ params }: { params: any }) => {
   });
 
   return (
-    <div className="h-full p-12 bg-[#292D32]">
+    <div className="h-full bg-[#292D32] p-5 lg:p-12">
       {nftData ? <NFTSection nftDetail={nftData?.data.data} /> : <NoNFT />}
       {nftData?.data.data.chatbot_id && chatbotData ? (
         <ChatbotSection
