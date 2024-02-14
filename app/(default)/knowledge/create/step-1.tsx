@@ -4,7 +4,7 @@ import NotionIcon from "public/images/notion.svg";
 import FolderAddIcon from "public/images/folder-add-purple.svg";
 import MirrorIcon from "public/images/knowledge-source/mirror-icon.png";
 import SubstackIcon from "public/images/knowledge-source/substack-icon.svg";
-import MediumIcon from "public/images/knowledge-source/medium-icon.svg";
+import MediumIcon from "public/images/knowledge-source/medium-icon.png";
 import ApiIcon from "public/images/knowledge-source/api-icon.svg";
 import Image from "next/image";
 import { useCreateChatbotContext } from "./create-knowledge-context";
@@ -25,7 +25,7 @@ const ButtonItem = ({
 }) => {
   return (
     <button
-      className={`flex flex-col items-center pt-10 border-2 px-20 py-5 ${isSelected ? "border-[#01F7FF] bg-[#181B1F]" : "border-transparent"} rounded-2xl`}
+      className={`flex flex-col items-center border-2 px-20 py-5 pt-10 ${isSelected ? "border-[#01F7FF] bg-[#181B1F]" : "border-transparent"} justify-end rounded-2xl`}
       onClick={onClick}
     >
       <Image
@@ -50,7 +50,7 @@ const buttons = [
     type: "notion",
     icon: NotionIcon,
     text: "Notion",
-    comingSoon: false,
+    comingSoon: true,
   },
   {
     type: "substack",
@@ -95,7 +95,7 @@ export default function Step1({
   const { handleChangeKb, setIsComingSoon } = useCreateChatbotContext();
 
   return (
-    <div className="mx-32 mt-10 grid grid-cols-4 gap-4 font-bold text-white">
+    <div className="mx-32 mt-10 grid grid-cols-4 gap-4  font-bold text-white">
       {buttons.map((button) => (
         <ButtonItem
           onClick={(e: React.MouseEvent<HTMLButtonElement>) => {

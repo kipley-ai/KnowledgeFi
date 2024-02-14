@@ -81,7 +81,7 @@ export default function DataSource() {
         <div className="flex flex-col bg-[#292D32] py-10 pb-20 sm:px-6 lg:px-0">
           <div className="mx-32">
             <h1 className="text-2xl font-semibold text-white">
-              Create Knowledge Assets
+              Select Data Elements for your SFT
             </h1>
             <hr className="my-4 border border-gray-600" />
           </div>
