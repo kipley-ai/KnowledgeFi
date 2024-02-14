@@ -58,6 +58,7 @@ export const useChatbotDetail = (params: IChatbotDetailParams) => {
           "x-kf-user-id": address,
         },
       }),
+    enabled: !!params.chatbot_id,
   });
 };
 

@@ -81,5 +81,6 @@ export const useKBDetail = (params: IKBDetail) => {
 					"x-kf-user-id": address,
 				},
 			}),
+		enabled: !!params.kb_id,
 	});
 };

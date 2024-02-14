@@ -14,10 +14,11 @@ import Link from "next/link";
 import { useKBDetail } from "@/hooks/api/kb";
 import { useCreditBalance } from "@/hooks/api/credit";
 import defaultAvatar from "@/public/images/avatar-default-02.svg";
+import { FaSpinner } from "react-icons/fa6";
 
 const NFTSection = ({ nftDetail }: { nftDetail: any }) => {
   return (
-    <div className="grid grid-cols-1 gap-4 pb-4 text-white md:grid-cols-2">
+    <div className="grid grid-cols-1 gap-4 pb-4 text-white md:grid-cols-2 md:pb-12">
       <div className="mx-auto w-2/5 md:w-full">
         <Image
           className="rounded-xl"
@@ -74,7 +75,7 @@ const ChatbotSection = ({
   kbDetail: any;
 }) => {
   return (
-    <div className="mt-3 grid grid-cols-1 gap-x-12 gap-y-8 border-t border-[#474D54] py-12 text-white md:grid-cols-2 md:gap-y-4 xl:gap-x-20">
+    <div className="grid grid-cols-1 gap-x-12 gap-y-8 pt-4 text-white md:grid-cols-2 md:gap-y-4 md:pt-12 xl:gap-x-20">
       <div className="flex items-center justify-between gap-4 md:col-span-2">
         <div className="flex items-center">
           <Image
@@ -165,7 +166,7 @@ const ChatbotSection = ({
 
 const NoNFT = () => {
   return (
-    <div className="h-full">
+    <div className="h-full pb-4 md:pb-10">
       <div className="relative  w-full rounded-3xl bg-[#151515]">
         <Image
           className=" w-full rounded-3xl"
@@ -173,7 +174,7 @@ const NoNFT = () => {
           alt={"background"}
         />
         <div
-          className="flex flex-col items-center"
+          className="flex w-4/5 flex-col items-center"
           style={{
             position: "absolute",
             top: "50%",
@@ -181,13 +182,13 @@ const NoNFT = () => {
             transform: "translate(-50%, -50%)",
           }}
         >
-          <h1 className="mb-[2px] text-[48px] font-semibold text-white">
+          <h1 className="mb-[2px] text-center text-xl font-semibold text-white md:text-4xl xl:text-[48px]">
             Unlock the power of Web3
           </h1>
-          <h1 className="font-regular mb-[30px] text-[18px] text-white">
-            Meet our ai chat app revolutionizing conversations
+          <h1 className="font-regular text-center text-sm text-white md:mb-[30px] md:text-[18px]">
+            Meet our AI chat app revolutionizing conversations
           </h1>
-          <h1 className="w-fit rounded-full bg-[#01F7FF] px-8 py-3 font-semibold text-[#292D32]">
+          <h1 className="w-fit rounded-full bg-[#01F7FF] px-8 py-1 text-xs font-semibold text-[#292D32] md:py-3 md:text-base">
             Mint your SFT
           </h1>
         </div>
@@ -201,7 +202,7 @@ const NoChatbot = () => {
   // const [containerRef, { width:containerWidth, height:containerHeight }] = useElementSize()
   const { id } = useParams();
   return (
-    <div className="h-full">
+    <div className="h-full pt-4 md:pt-10">
       <div className="relative w-full rounded-3xl bg-[#151515]">
         <Image
           className=" w-full rounded-3xl"
@@ -209,7 +210,7 @@ const NoChatbot = () => {
           alt={"background"}
         />
         <div
-          className="flex flex-col items-center"
+          className="flex w-full flex-col items-center gap-4"
           style={{
             position: "absolute",
             top: "50%",
@@ -217,11 +218,11 @@ const NoChatbot = () => {
             transform: "translate(-50%, -50%)",
           }}
         >
-          <h1 className="mb-[30px] text-[48px] font-extrabold text-white">
+          <h1 className="text-center text-xl font-extrabold text-white md:text-4xl xl:mb-[30px] xl:text-[48px]">
             Connect with AI Chat Bot
           </h1>
           <Link href={"/nft/" + id + "/create-chatbot"}>
-            <h1 className="w-fit rounded-full bg-[#01F7FF] px-8 py-3 font-semibold text-[#292D32]">
+            <h1 className="w-fit rounded-full bg-[#01F7FF] px-8 py-1 text-xs font-semibold text-[#292D32] md:py-3 md:text-base">
               Link Your SFT to Chatbot
             </h1>
           </Link>
@@ -238,21 +239,41 @@ const NFTDetail = ({ params }: { params: any }) => {
   }, []);
   const { id } = params;
 
-  const { data: nftData } = useNftDetail({ sft_id: id });
-  const { data: chatbotData } = useChatbotDetail({
-    chatbot_id: nftData?.data.data.chatbot_id as string,
+  const nftQuery = useNftDetail({ sft_id: id });
+
+  const chatbotQuery = useChatbotDetail({
+    chatbot_id: nftQuery.data?.data.data.chatbot_id as string,
   });
 
   const { data: kbDetail } = useKBDetail({
-    kb_id: nftData?.data.data.kb_id as string,
+    kb_id: nftQuery.data?.data.data.kb_id as string,
   });
 
   return (
-    <div className="h-full bg-[#292D32] p-5 lg:p-12">
-      {nftData ? <NFTSection nftDetail={nftData?.data.data} /> : <NoNFT />}
-      {nftData?.data.data.chatbot_id && chatbotData ? (
+    <div className="flex h-full flex-col divide-y-2 divide-[#474D54] bg-[#292D32] p-5 lg:p-12">
+      {nftQuery.isPending ? (
+        <div className="flex h-[45vh] w-full items-center justify-center gap-4">
+          <FaSpinner size={20} className="animate-spin" />
+          <p className="text-md text-gray-300">Loading</p>
+        </div>
+      ) : nftQuery.isError ? (
+        <div>Error: {nftQuery.error.message}</div>
+      ) : nftQuery.data ? (
+        <NFTSection nftDetail={nftQuery.data?.data.data} />
+      ) : (
+        <NoNFT />
+      )}
+
+      {chatbotQuery.isLoading ? (
+        <div className="flex h-[50vh] w-full items-center justify-center gap-4">
+          <FaSpinner size={20} className="animate-spin" />
+          <p className="text-md text-gray-300">Loading</p>
+        </div>
+      ) : chatbotQuery.isError ? (
+        <div>Error: {chatbotQuery.error.message}</div>
+      ) : chatbotQuery.data?.data?.data ? (
         <ChatbotSection
-          chatbotDetail={chatbotData?.data.data}
+          chatbotDetail={chatbotQuery.data?.data.data}
           kbDetail={kbDetail?.data.data}
         />
       ) : (
