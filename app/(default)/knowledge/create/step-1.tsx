@@ -1,7 +1,7 @@
 "use client";
 import XIcon from "public/images/X-icon.svg";
 import NotionIcon from "public/images/notion.svg";
-import FolderAddIcon from "public/images/folder-add-purple.svg";
+import FolderAddIcon from "public/images/knowledge-source/folder-add.png";
 import MirrorIcon from "public/images/knowledge-source/mirror-icon.png";
 import SubstackIcon from "public/images/knowledge-source/substack-icon.svg";
 import MediumIcon from "public/images/knowledge-source/medium-icon.png";
