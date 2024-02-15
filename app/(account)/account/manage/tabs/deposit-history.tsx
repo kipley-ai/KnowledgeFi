@@ -1,18 +1,47 @@
 import { useSearchParams } from "next/navigation";
 import { getTimeString } from "@/lib/string";
-import { PaginationController } from "@/components/pagination/controller";
+import { PaginationController } from "@/components/pagination-2/controller";
 import Link from "next/link";
 import Image from "next/image";
 import InvoiceIcon from "public/images/invoice-icon.svg"
+import { useDepositHistory } from "@/hooks/api/user";
+import { FaSpinner } from "react-icons/fa6";
+import { useState } from "react";
+import { keepPreviousData } from "@tanstack/react-query";
 
 export default function DepositHistory() {
 	const searchParams = useSearchParams();
+	
+	const [currentPage, setCurrentPage] = useState<number>(1);
+  	const [pageSize, setPageSize] = useState<number>(5);
+	
+	const { isPending, isError, error, data, isFetching } = useDepositHistory(
+		{
+			page: currentPage,
+			page_size: pageSize,
+			sort_by: "created_at",
+		},
+    	keepPreviousData,
+	);
+	
+	const handlePageChange = (page: number) => {
+		setCurrentPage(page);
+	};
 
-	const page = searchParams.get("page") ?? "1";
-	const perPage = searchParams.get("perPage") ?? "5";
+	if (isPending) {
+		return (
+		  <div className="flex h-32 w-full items-center justify-center gap-4">
+			<FaSpinner size={20} className="animate-spin" />
+			<p className="text-md text-gray-300">Loading</p>
+		  </div>
+		);
+	  }
 
-	const start = (Number(page) - 1) * Number(perPage);
-	const end = start + Number(perPage);
+	if (isError) {
+		return <div>Error: {error.message}</div>;
+	}
+
+	const { deposit_history_data: deposit, deposit_history_count: depositCount } = data?.data?.data;
 
 	return (
 		<>
@@ -22,44 +51,47 @@ export default function DepositHistory() {
 				</h1>
 			</div>
 			<ContentListComponent
-				deposits={depositData.slice(start, end)}
-				totalPages={Math.ceil(Number(depositData.length) / Number(perPage))}
-				pageQuery="page"
+				deposits={deposit}
+				totalPages={Math.ceil(Number(depositCount) / pageSize)}
+				currentPage={currentPage}
+				handlePageChange={handlePageChange}
 			/>
 		</>
 	);
 }
 
-function* generateEarningData(n: number): Generator<DepositData> {
-	for (let i = 1; i <= n; i++) {
-		yield {
-			description: "Credit Charge",
-			amount: `$${100 + i}`,
-			status: "Expired",
-			date: getTimeString(new Date()),
-			invoice: "#",
-		};
-	}
-}
+// function* generateEarningData(n: number): Generator<DepositData> {
+// 	for (let i = 1; i <= n; i++) {
+// 		yield {
+// 			description: "Credit Charge",
+// 			amount: `$${100 + i}`,
+// 			status: "Expired",
+// 			date: getTimeString(new Date()),
+// 			invoice: "#",
+// 		};
+// 	}
+// }
 
-const depositData = Array.from(generateEarningData(20));
+// const depositData = Array.from(generateEarningData(20));
 
-interface DepositData {
-	description: string;
-	amount: string;
-	date: string;
-	status: "Expired" | "Not Expired";
-	invoice: string;
-}
+// interface DepositData {
+// 	description: string;
+// 	amount: string;
+// 	date: string;
+// 	status: "Expired" | "Not Expired";
+// 	invoice: string;
+// }
 
 const ContentListComponent = ({
 	deposits,
 	totalPages,
-	pageQuery,
+	currentPage,
+	handlePageChange,
 }: {
-	deposits: DepositData[];
+	deposits: any;
 	totalPages: number;
-	pageQuery: string;
+	currentPage: number;
+	handlePageChange: any;
 }) => {
 	return (
 		<>
@@ -100,19 +132,19 @@ const ContentListComponent = ({
 						</tr>
 					</thead>
 					<tbody className="bg-transparent">
-						{deposits.map((deposit, index) => {
+						{deposits?.map((deposit: any, index:number) => {
 							return (
 								<tr key={index} className="hover:bg-zinc-900">
 									<td className="text-white px-2 py-4 whitespace-nowrap">
 										{deposit.description}
 									</td>
 									<td className="text-white px-2 py-4 whitespace-nowrap">
-										{deposit.amount}
+										{`${deposit.pay_amount} ${deposit.pay_currency}`}
 									</td>
 									<td className="px-2 py-4 text-gray-500 whitespace-nowrap">
-										{deposit.date}
+										{getTimeString(new Date(deposit.created_at))}
 									</td>
-									<td
+									{/* <td
 										className={`${
 											deposit.status == "Expired"
 												? "text-red-500"
@@ -120,9 +152,18 @@ const ContentListComponent = ({
 										} px-2 py-4 whitespace-nowrap`}
 									>
 										{deposit.status}
+									</td> */}
+									<td
+										className={`${
+											deposit.pay_status
+												? "text-green-400"
+												: "text-red-500"
+										} px-2 py-4 whitespace-nowrap`}
+									>
+										{deposit.pay_status ? "Paid" : "Expired"}
 									</td>
 									<td>
-										<Link href={deposit.invoice}>
+										<Link href="#">
 											<div className="hover:cursor-pointer flex pl-5">
 												<Image
 													src={InvoiceIcon}
@@ -138,7 +179,11 @@ const ContentListComponent = ({
 						})}
 					</tbody>
 				</table>
-				<PaginationController totalPages={totalPages} pageQuery={pageQuery} />
+				<PaginationController 
+					currentPage={currentPage}
+            		onPageChange={handlePageChange}
+            		totalPages={totalPages} 
+				/>
 			</div>
 		</>
 	);
