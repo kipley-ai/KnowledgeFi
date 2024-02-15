@@ -1,5 +1,5 @@
 import { useSearchParams } from "next/navigation";
-import { getTimeString } from "@/lib/string";
+import { getTimeStringLocal } from "@/lib/string";
 import { PaginationController } from "@/components/pagination-2/controller";
 import Link from "next/link";
 import Image from "next/image";
@@ -142,7 +142,7 @@ const ContentListComponent = ({
 										{`${deposit.pay_amount} ${deposit.pay_currency}`}
 									</td>
 									<td className="px-2 py-4 text-gray-500 whitespace-nowrap">
-										{getTimeString(new Date(deposit.created_at))}
+										{getTimeStringLocal(new Date(deposit.created_at))}
 									</td>
 									{/* <td
 										className={`${

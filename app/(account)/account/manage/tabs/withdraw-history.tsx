@@ -1,5 +1,5 @@
 import { useSearchParams } from "next/navigation";
-import { getTimeString } from "@/lib/string";
+import { getTimeStringLocal } from "@/lib/string";
 import { PaginationController } from "@/components/pagination-2/controller";
 import { useWithdrawHistory } from "@/hooks/api/user";
 import { FaSpinner } from "react-icons/fa6";
@@ -140,7 +140,7 @@ const ContentListComponent = ({
 										{withdrawal.pay_status ? "Paid" : "Failed"}
 									</td>
 									<td className="px-2 py-4 text-gray-500 whitespace-nowrap">
-										{getTimeString(new Date(withdrawal.created_at))}
+										{getTimeStringLocal(new Date(withdrawal.created_at))}
 									</td>
 								</tr>
 							);
