@@ -116,7 +116,7 @@ const ContentListComponent = ({
             </tr>
           </thead>
           <tbody className="bg-transparent">
-            {creditData.map((credit, index) => {
+            {creditData.map((credit: any, index: number) => {
               const isPositive = credit.credit > 0;
               return (
                 <tr key={index} className="hover:bg-zinc-900">

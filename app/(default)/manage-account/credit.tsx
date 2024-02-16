@@ -57,10 +57,10 @@ export default function Credit() {
           </tr>
         </thead>
         <tbody>
-          {creditData.map((credit, index) => {
+          {creditData.map((credit: any, index: number) => {
             const isPositive = credit.credit > 0;
             return (
-              <tr className="text-md font-inter">
+              <tr key={index} className="text-md font-inter">
                 <td className="py-5 font-semibold text-white">
                   {credit.title}
                 </td>
