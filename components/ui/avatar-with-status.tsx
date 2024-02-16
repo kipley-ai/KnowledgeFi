@@ -99,7 +99,7 @@ const AvatarWithStatus: React.FC<AvatarWithStatusProps> = ({
             </div>
           </div>
           <a
-            href="#"
+            href="/manage-account"
             className="flex block px-4 py-2 text-sm capitalize text-[#FCFCFD] hover:bg-blue-500 hover:text-white"
           >
             <svg

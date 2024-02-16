@@ -62,3 +62,37 @@ export const useUpdateUserAPI = () => {
 			}),
 	});
 };
+
+export const useEarningReport = (
+	params: IPaginate,
+	placeholderData: typeof keepPreviousData | undefined = undefined,
+) => {
+	const { address } = useAccount();
+	
+	return useQuery({
+		queryKey: ["earning", params.page],
+		queryFn: () =>
+			axios.post("/api/user/earning", params, {
+				headers: {
+					"x-kf-user-id": address,
+				},
+			}),
+	});
+};
+
+export const useCreditUsage = (
+	params: IPaginate,
+	placeholderData: typeof keepPreviousData | undefined = undefined,
+) => {
+	const { address } = useAccount();
+	
+	return useQuery({
+		queryKey: ["credit", params.page],
+		queryFn: () =>
+			axios.post("/api/user/credit", params, {
+				headers: {
+					"x-kf-user-id": address,
+				},
+			}),
+	});
+};
