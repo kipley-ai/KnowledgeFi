@@ -1,5 +1,6 @@
 import { keepPreviousData, useMutation, useQuery } from "@tanstack/react-query";
 import { useAccount } from "wagmi";
+import { IUpdateUserParams } from "../interfaces";
 import axios from "axios";
 import { IPaginate } from "../interfaces";
 
@@ -7,8 +8,8 @@ export const useCreateUser = () => {
 	// const { address } = useAccount();
 
 	return useMutation({
-		mutationFn: (address:string) =>
-			axios.post("/api/user/create", {wallet_addr:address}, {
+		mutationFn: (address: string) =>
+			axios.post("/api/user/create", { wallet_addr: address }, {
 				headers: {
 					"x-kf-user-id": address,
 				},
@@ -21,7 +22,7 @@ export const useDepositHistory = (
 	placeholderData: typeof keepPreviousData | undefined = undefined,
 ) => {
 	const { address } = useAccount();
-	
+
 	return useQuery({
 		queryKey: ["deposit", params.page],
 		queryFn: () =>
@@ -38,11 +39,23 @@ export const useWithdrawHistory = (
 	placeholderData: typeof keepPreviousData | undefined = undefined,
 ) => {
 	const { address } = useAccount();
-	
+
 	return useQuery({
 		queryKey: ["withdraw", params.page],
 		queryFn: () =>
 			axios.post("/api/user/withdraw", params, {
+				headers: {
+					"x-kf-user-id": address,
+				},
+			}),
+	});
+};
+export const useUpdateUserAPI = () => {
+	const { address } = useAccount();
+
+	return useMutation({
+		mutationFn: (params: IUpdateUserParams) =>
+			axios.post("/api/user/update", params, {
 				headers: {
 					"x-kf-user-id": address,
 				},

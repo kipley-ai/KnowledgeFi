@@ -73,8 +73,8 @@ export interface IKBItem extends IPaginate {
   kb_id: string;
 }
 
-export interface IKBDetail{
-    kb_id: string;
+export interface IKBDetail {
+  kb_id: string;
 }
 
 export interface IKBDetail {
@@ -90,14 +90,18 @@ export interface ICreditDeductionParams {
 
 // Used by hooks/api/chatbot/index.tsx
 export interface IChatbotList {
-    page: number;
-    page_size: number;
-    sort_by: string;
+  page: number;
+  page_size: number;
+  sort_by: string;
 }
 
 // Used by hooks/api/nft/index.ts
 export interface INftList {
-    page: number;
-    page_size: number;
-    sort_by: string;
+  page: number;
+  page_size: number;
+  sort_by: string;
+}
+
+export interface IUpdateUserParams {
+  profile_image: string;
 }
