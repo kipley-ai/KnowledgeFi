@@ -78,7 +78,7 @@ export default function DataSource() {
   return (
     <>
       {step == "data_source" ? (
-        <div className="flex flex-col bg-[#292D32] py-10 pb-20 px-5 md:px-6 lg:px-16 xl:px-32">
+        <div className="flex flex-col bg-[#292D32] py-10 pb-20 px-6 lg:px-8 xl:px-32">
           <div>
             <h1 className="text-2xl font-semibold text-white">
               Select Data Elements for your SFT

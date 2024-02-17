@@ -215,7 +215,7 @@ export default function Local({
   }, [files]);
 
   return (
-    <div className="flex flex-col bg-[#292D32] py-10 pb-20 px-6 lg:px-32">
+    <div className="flex flex-col bg-[#292D32] py-10 pb-20 px-6 lg:px-8 xl:px-32">
       <Toast
         children={"KB creation successful"}
         open={toast}

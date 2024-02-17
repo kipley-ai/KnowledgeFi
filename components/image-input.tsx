@@ -63,47 +63,49 @@ const ImageInput = ({
   };
 
   return (
-    <div className="flex flex-col gap-2">
-      <label className="text-xs font-semibold text-[#DDD] lg:text-sm">
-        Cover Image
-      </label>
-      <Dropzone
-        onDrop={handleFileDrop}
-        accept={{ "image/*": [] }}
-        multiple={false}
-        maxFiles={1}
-        maxSize={2000000}
-        disabled
-      >
-        {({ getRootProps, getInputProps }) => (
-          <div className="px-auto" {...getRootProps()}>
-            <input
-              {...getInputProps()}
-              accept="image/*"
-              onChange={handleCoverChange}
-              ref={inputRef}
-            />
-            {loadingCover ? (
-              <Image
-                width={30}
-                height={30}
-                src={LoadingIcon}
-                alt="Loading Icon"
+    <div className="flex md:flex-col justify-center md:justify-start gap-2">
+      <div>
+        <label className="text-xs font-semibold text-[#DDD] lg:text-sm">
+          Cover Image
+        </label>
+        <Dropzone
+          onDrop={handleFileDrop}
+          accept={{ "image/*": [] }}
+          multiple={false}
+          maxFiles={1}
+          maxSize={2000000}
+          disabled
+        >
+          {({ getRootProps, getInputProps }) => (
+            <div className="px-auto" {...getRootProps()}>
+              <input
+                {...getInputProps()}
+                accept="image/*"
+                onChange={handleCoverChange}
+                ref={inputRef}
               />
-            ) : (
-              <Image
-                src={selectedFile}
-                alt="Edit Preview"
-                width={250}
-                height={250}
-                className="rounded-2xl object-cover"
-                priority
-              />
-            )}
-          </div>
-        )}
-      </Dropzone>
-      <div className="flex flex-col gap-2">
+              {loadingCover ? (
+                <Image
+                  width={30}
+                  height={30}
+                  src={LoadingIcon}
+                  alt="Loading Icon"
+                />
+              ) : (
+                <Image
+                  src={selectedFile}
+                  alt="Edit Preview"
+                  width={250}
+                  height={250}
+                  className="rounded-2xl object-cover"
+                  priority
+                />
+              )}
+            </div>
+          )}
+        </Dropzone>
+      </div>
+      <div className="flex flex-col pt-6 md:pt-0 gap-2">
         <button
           onClick={handleGalleryCover}
           className="rounded-md bg-[#01F7FF] px-1 py-2 text-xs font-semibold text-black hover:brightness-75 lg:text-sm"
