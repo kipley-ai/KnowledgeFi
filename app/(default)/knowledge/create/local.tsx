@@ -215,20 +215,20 @@ export default function Local({
   }, [files]);
 
   return (
-    <div className="flex flex-col bg-[#292D32] py-10 pb-20 sm:px-6 lg:px-0">
+    <div className="flex flex-col bg-[#292D32] py-10 pb-20 px-6 lg:px-32">
       <Toast
         children={"KB creation successful"}
         open={toast}
         setOpen={setToast}
         className="mx-auto"
       />
-      <div className="mx-32">
+      <div className="">
         <h1 className="text-2xl font-semibold text-white">
           Upload Knowledge Files
         </h1>
         <hr className="my-4 border border-gray-600" />
       </div>
-      <div className="mx-32">
+      <div className="">
         <div
           className="color-[#aaa] mb-4 mt-5 flex cursor-pointer flex-col items-center rounded-3xl border-2 border-dashed border-[#aaa] px-20 py-12 text-center font-inter text-white "
           onDragEnter={handleDrag}
@@ -284,7 +284,7 @@ export default function Local({
           })}
         </div>
       </div>
-      <div className="mx-32 flex justify-between">
+      <div className="flex justify-between">
         <button
           className="mt-8 flex flex-row items-center  justify-between rounded-3xl border-2 border-[#50575F] p-2 px-5"
           type="submit"
