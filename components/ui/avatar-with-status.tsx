@@ -3,7 +3,7 @@ import { useState, useRef, useEffect } from "react";
 import { StaticImageData } from "next/image";
 import Image from "next/image";
 import { signOut } from "next-auth/react";
-import { useDisconnect } from "wagmi";
+import { useDisconnect, useAccount } from "wagmi";
 import defaultAvatar from "@/public/images/avatar-default-02.svg"
 import { useAppProvider } from "@/providers/app-provider";
 import ModalTopUp from "../modal-top-up";
@@ -32,6 +32,7 @@ const AvatarWithStatus: React.FC<AvatarWithStatusProps> = ({
   const dropdownRef = useRef<HTMLDivElement>(null);
   const { disconnect } = useDisconnect();
 	const { modalTopUp, setModalTopUp } = useAppProvider();
+  const { address } = useAccount();
 
   // This function toggles the dropdown's visibility
   const toggleDropdown = () => {
@@ -82,7 +83,7 @@ const AvatarWithStatus: React.FC<AvatarWithStatusProps> = ({
         <div className="absolute right-0 mt-2 py-2 w-48 bg-[#151515] rounded-md shadow-xl z-50">
           <div className="px-4 py-2">
             <div className="text-sm font-medium text-[#FCFCFD]">
-              0xABCD...ABCDEF
+              {address && `${address.slice(0, 6)}...${address.slice(-6)}`}
             </div>
             <div className="bg-gray-700 rounded-lg mt-2 p-2">
               <div className="text-sm font-medium text-[#FCFCFD]">Balance</div>
@@ -139,7 +140,7 @@ const AvatarWithStatus: React.FC<AvatarWithStatusProps> = ({
           </a>
           <div className="border-t border-gray-300 mx-4"></div>
           <button
-            className="flex block px-4 py-2 text-sm capitalize text-[#FCFCFD] hover:bg-blue-500 hover:text-white"
+            className="flex block px-4 py-2 w-full text-sm capitalize text-[#FCFCFD] hover:bg-blue-500 hover:text-white"
             onClick={(e) => {
               e.preventDefault();
               localStorage.setItem("kip-protocol-signature", "");
