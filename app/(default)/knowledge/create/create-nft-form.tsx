@@ -11,6 +11,7 @@ import MintNFTModal from "./mint-nft-modal";
 import ImageInput from "@/components/image-input";
 import LoadingIcon from "public/images/loading-icon.svg";
 import MintConfirmationModal from "@/components/modal-mint-confirmation";
+import { DEFAULT_COVER_IMAGE } from "@/utils/constants";
 
 // export const metadata = {
 //     title: 'SFT - Mosaic',
@@ -41,9 +42,7 @@ export default function NFT() {
   const [allowGenerate, setAllowGenerate] = useState(false);
   const { data: twitterSession } = useSession();
   const [form, setForm] = useState<Form>({ shareSupply: "5000" });
-  const [selectedFile, setSelectedFile] = useState<string>(
-    "https://placehold.co/600x600/jpg?text=Upload\nCover+Image",
-  );
+  const [selectedFile, setSelectedFile] = useState<string>(DEFAULT_COVER_IMAGE);
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [nftIdCreated, setNftIdCreated] = useState("");
   const [isConfirmModalOpen, setisConfirmModalOpen] = useState(false);
