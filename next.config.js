@@ -14,6 +14,10 @@ const nextConfig = {
         port: "",
         pathname: "/profile_images/**",
       },
+      {
+        protocol: "https",
+        hostname: "placehold.co",
+      },
     ],
     domains: [
       "ucb80427f5c964c7dea1209e9c0f.previews.dropboxusercontent.com",
