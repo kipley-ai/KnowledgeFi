@@ -192,19 +192,19 @@ export default function NFT() {
         setOpen={setShowModal}
         kbIdCreated={nftIdCreated}
       />
-      <div className="flex flex-col bg-[#292D32] py-8 pb-14 sm:px-6 lg:px-0">
-        <div className="mx-5 md:mx-32">
+      <div className="flex flex-col bg-[#292D32] py-8 pb-14 px-6 lg:px-8 xl:px-32">
+        <div>
           <h1 className="text-2xl font-semibold text-white">Mint SFT</h1>
           <hr className="my-4 border border-gray-600" />
         </div>
         <form>
-          <div className="mx-5 mt-4 flex flex-row gap-8 md:mx-32">
+          <div className="mt-4 flex flex-col md:flex-row gap-8">
             <ImageInput
               selectedFile={selectedFile}
               setSelectedFile={setSelectedFile}
               setUploadedFile={setUploadedFile}
             />
-            <div className="flex flex-col">
+            <div className="flex flex-col w-full">
               <div className="flex flex-col gap-1">
                 <label className="text-xs font-semibold text-[#DDD] lg:text-sm">
                   Name
@@ -392,7 +392,7 @@ export default function NFT() {
                 </svg>
               </button>
             </div> */}
-          <div className="mx-5 mt-8 flex justify-between md:mx-32">
+          <div className="mt-8 flex justify-between">
             <button
               className="flex flex-row items-center justify-between  rounded-3xl border-2 border-[#50575F] p-2 px-5"
               type="submit"

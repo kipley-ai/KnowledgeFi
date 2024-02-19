@@ -78,8 +78,8 @@ export default function DataSource() {
   return (
     <>
       {step == "data_source" ? (
-        <div className="flex flex-col bg-[#292D32] py-10 pb-20 sm:px-6 lg:px-0">
-          <div className="mx-32">
+        <div className="flex flex-col bg-[#292D32] py-10 pb-20 px-6 lg:px-8 xl:px-32">
+          <div>
             <h1 className="text-2xl font-semibold text-white">
               Select Data Elements for your SFT
             </h1>
@@ -89,7 +89,7 @@ export default function DataSource() {
             selectedButton={selectedButton}
             setSelectedButton={setSelectedButton}
           />
-          <div className="mx-32 flex justify-end">
+          <div className="flex justify-end">
             <button
               className="mt-8 flex flex-row items-center justify-between rounded-3xl bg-[#01F7FF] p-2 px-5"
               type="submit"
