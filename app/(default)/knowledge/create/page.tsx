@@ -11,6 +11,7 @@ import { createKB } from "@/app/api/kb/helper";
 import { useCreateChatbotContext } from "./create-knowledge-context";
 import Local from "./local";
 import Notion from "./notion";
+import ModalLoginTwitter from "@/components/modal-login-twitter";
 
 export type PossibleOption =
   | "files"
@@ -65,6 +66,7 @@ export default function DataSource() {
     if (selectedButton == "twitter") {
       if (twitterStatus != "authenticated") {
         setShowTwitterLogin(true);
+        sessionStorage.setItem("mintNFTRedirect", "true");
       } else {
         setStep("mint_nft");
       }
@@ -75,8 +77,20 @@ export default function DataSource() {
     }
   };
 
+  const mintNFTRedirect = sessionStorage.getItem("mintNFTRedirect");
+
+  if (mintNFTRedirect === "true" && twitterStatus == "authenticated") {
+    setStep("mint_nft");
+    sessionStorage.removeItem("mintNFTRedirect");
+  }
+
   return (
     <>
+      <ModalLoginTwitter
+        isOpen={showTwitterLogin}
+        setIsOpen={setShowTwitterLogin}
+        redirectUrl="/knowledge/create"
+      />
       {step == "data_source" ? (
         <div className="flex flex-col bg-[#292D32] py-10 pb-20 px-6 lg:px-8 xl:px-32">
           <div>
