@@ -45,6 +45,7 @@ const ChatBotForm = () => {
   const [selectedFile, setSelectedFile] = useState<any>(DEFAULT_COVER_IMAGE);
   const [mode, setMode] = useState(0);
   const [toneData, setToneData] = useState("");
+  const [pricePerQuery, setPricePerQuery] = useState(0);
 
   const { data: twitterSession } = useSession();
 
@@ -82,6 +83,7 @@ const ChatBotForm = () => {
         sft_id: id as string,
         kb_id: nftData?.data.data.kb_id as string,
         tone: toneData,
+        price_per_query: pricePerQuery,
         // category_id: category,
         // description: description,
         // instruction: instructions,
@@ -231,6 +233,27 @@ const ChatBotForm = () => {
                 </select> */}
 
                 {/* <p className="mt-2 text-xs text-gray-400">Category of your AI.</p> */}
+              </div>
+              <div>
+                <label
+                  className="block text-xs font-semibold text-white lg:text-sm "
+                >
+                  Price Per Query
+                </label>
+                <div className="mt-3">
+                  <input
+                      className="placeholder-text-[#7C878E] w-full rounded-xl bg-transparent text-xs text-[#DDD] lg:text-sm"
+                      type="number"
+                      name="pricePerQuery"
+                      placeholder="e.g. 1"
+                      onChange={(e) => {
+                        if (parseFloat(e.target.value) < 0)
+                          setPricePerQuery(0);
+                        else setPricePerQuery(parseFloat(e.target.value));
+                      }}
+                      value={pricePerQuery}
+                  />
+                </div>
               </div>
             </div>
 

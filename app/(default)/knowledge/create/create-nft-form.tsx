@@ -327,7 +327,7 @@ export default function NFT() {
                       className="placeholder-text-[#7C878E] w-11/12 rounded-xl bg-transparent text-xs text-[#DDD] lg:text-sm"
                       type="number"
                       name="pricePerQuery"
-                      placeholder="e.g. USDT 1000"
+                      placeholder="e.g. 1"
                       onChange={(e) => {
                         if (parseFloat(e.target.value) < 0)
                           handleFormChange("pricePerQuery", 0);
