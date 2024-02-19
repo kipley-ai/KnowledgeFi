@@ -58,7 +58,7 @@ const NFTSection = ({ nftDetail }: { nftDetail: any }) => {
             </div>
           </div>
           <div className="px-4 md:px-0">
-            <h4 className="text-sm text-[#93989A]">Current Stored Value</h4>
+            <h4 className="text-sm text-[#93989A]">Withdrawable Amount</h4>
             <h1 className="text-md font-semibold md:text-lg">0 $KIP</h1>
           </div>
         </div>
