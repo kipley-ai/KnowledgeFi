@@ -7,6 +7,7 @@ import { useDisconnect, useAccount } from "wagmi";
 import defaultAvatar from "@/public/images/avatar-default-02.svg"
 import { useAppProvider } from "@/providers/app-provider";
 import ModalTopUp from "../modal-top-up";
+import { useCreditBalance } from "@/hooks/api/credit";
 
 type StatusType = "online" | "busy" | "away" | "offline";
 
@@ -33,6 +34,8 @@ const AvatarWithStatus: React.FC<AvatarWithStatusProps> = ({
   const { disconnect } = useDisconnect();
 	const { modalTopUp, setModalTopUp } = useAppProvider();
   const { address } = useAccount();
+
+  const { data: creditBalanceData } = useCreditBalance();
 
   // This function toggles the dropdown's visibility
   const toggleDropdown = () => {
@@ -88,7 +91,7 @@ const AvatarWithStatus: React.FC<AvatarWithStatusProps> = ({
             <div className="bg-gray-700 rounded-lg mt-2 p-2">
               <div className="text-sm font-medium text-[#FCFCFD]">Balance</div>
               <div className="text-lg font-semibold text-[#FCFCFD]">
-                512 credits
+                {creditBalanceData?.data.data.credit_balance} credits
               </div>
               <div className="mt-2 flex items-center border border-[#01F7FF] px-1 py-1 rounded-full">
                 <button className="w-full" onClick={() => setModalTopUp(true)}>
