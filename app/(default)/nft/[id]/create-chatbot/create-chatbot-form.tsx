@@ -42,7 +42,7 @@ const ChatBotForm = () => {
   const { id } = useParams();
   const { data: nftData } = useNftDetail({ sft_id: id as string });
   const [selectedFile, setSelectedFile] = useState<any>(
-    "https://placehold.co/600x600?text=Upload\nCover+Image",
+    "https://placehold.co/600x600/jpg?text=Upload\nCover+Image",
   );
   const [mode, setMode] = useState(0);
   const [toneData, setToneData] = useState("");

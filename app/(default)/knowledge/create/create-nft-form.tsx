@@ -42,7 +42,7 @@ export default function NFT() {
   const { data: twitterSession } = useSession();
   const [form, setForm] = useState<Form>({ shareSupply: "5000" });
   const [selectedFile, setSelectedFile] = useState<string>(
-    "https://placehold.co/600x600?text=Upload\nCover+Image",
+    "https://placehold.co/600x600/jpg?text=Upload\nCover+Image",
   );
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [nftIdCreated, setNftIdCreated] = useState("");
@@ -192,19 +192,19 @@ export default function NFT() {
         setOpen={setShowModal}
         kbIdCreated={nftIdCreated}
       />
-      <div className="flex flex-col bg-[#292D32] py-8 pb-14 px-6 lg:px-8 xl:px-32">
+      <div className="flex flex-col bg-[#292D32] px-6 py-8 pb-14 lg:px-8 xl:px-32">
         <div>
           <h1 className="text-2xl font-semibold text-white">Mint SFT</h1>
           <hr className="my-4 border border-gray-600" />
         </div>
         <form>
-          <div className="mt-4 flex flex-col md:flex-row gap-8">
+          <div className="mt-4 flex flex-col gap-8 md:flex-row">
             <ImageInput
               selectedFile={selectedFile}
               setSelectedFile={setSelectedFile}
               setUploadedFile={setUploadedFile}
             />
-            <div className="flex flex-col w-full">
+            <div className="flex w-full flex-col">
               <div className="flex flex-col gap-1">
                 <label className="text-xs font-semibold text-[#DDD] lg:text-sm">
                   Name
