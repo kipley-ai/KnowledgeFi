@@ -6,8 +6,8 @@ import Link from "next/link";
 import { FaPlus, FaSpinner } from "react-icons/fa6";
 import { IconContext } from "react-icons";
 import { keepPreviousData } from "@tanstack/react-query";
-import { useNFTList } from "@/hooks/api/nft";
-import { useChatbotList } from "@/hooks/api/chatbot";
+import { useMyNFTs } from "@/hooks/api/nft";
+import { useMyChatbotList } from "@/hooks/api/chatbot";
 import { ChatbotData, NftData } from "@/lib/types";
 import { LoadMore, LoadMoreSpinner } from "@/components/load-more";
 import { PaginationController } from "@/components/pagination-2/controller";
@@ -79,7 +79,7 @@ const NFTList = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [pageSize, setPageSize] = useState<number>(8);
 
-  const { isPending, isError, error, data, isFetching } = useNFTList(
+  const { isPending, isError, error, data, isFetching } = useMyNFTs(
     {
       page: currentPage,
       page_size: pageSize,
@@ -179,7 +179,7 @@ const BotList = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [pageSize, setPageSize] = useState<number>(8);
 
-  const { isPending, isError, error, data, isFetching } = useChatbotList(
+  const { isPending, isError, error, data, isFetching } = useMyChatbotList(
     {
       page: currentPage,
       page_size: pageSize,
