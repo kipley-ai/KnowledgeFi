@@ -104,7 +104,7 @@ export default function NFT() {
             setNftIdCreated(nft_id);
             try {
               await mintNFT(
-                // kb_id,
+                kb_id,
                 form.name!,
                 form.symbol!,
                 parseInt(form.shareSupply!),
@@ -180,7 +180,7 @@ export default function NFT() {
 
   return (
     <>
-      <MintConfirmationModal 
+      <MintConfirmationModal
         isOpen={isConfirmModalOpen}
         setIsOpen={setisConfirmModalOpen}
         nftImage={selectedFile}
