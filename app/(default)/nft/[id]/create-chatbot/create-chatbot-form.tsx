@@ -11,6 +11,7 @@ import ImageInput from "@/components/image-input-2";
 import { number, string } from "zod";
 import Switcher from "@/components/switcher";
 import { useAppProvider } from "@/providers/app-provider";
+import { DEFAULT_COVER_IMAGE } from "@/utils/constants";
 
 interface Category {
   title: string;
@@ -41,9 +42,7 @@ const ChatBotForm = () => {
   const { createChatbot: chatbot } = useCreateChatbotContext();
   const { id } = useParams();
   const { data: nftData } = useNftDetail({ sft_id: id as string });
-  const [selectedFile, setSelectedFile] = useState<any>(
-    "https://placehold.co/600x600?text=Upload\nCover+Image",
-  );
+  const [selectedFile, setSelectedFile] = useState<any>(DEFAULT_COVER_IMAGE);
   const [mode, setMode] = useState(0);
   const [toneData, setToneData] = useState("");
 

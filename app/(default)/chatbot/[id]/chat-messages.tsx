@@ -24,9 +24,9 @@ import { useCreditBalance } from "@/hooks/api/credit";
 
 const MessageList = () => {
   const [answersStream, setAnswersStream] = useState<string[]>([]);
-  const fieldRef = useRef<HTMLInputElement>(null);
+  const fieldRef = useRef<HTMLDivElement>(null);
   const [profileImage, setProfileImage] = useState<StaticImageData | string>(
-    ""
+    "",
   );
 
   const { data: twitterSession, status: twitterStatus } = useSession();
@@ -95,9 +95,7 @@ const MessageList = () => {
   }, [chatbotDetailIsSuccess, chatHistoryAPI.isSuccess, buttonSession]);
 
   useEffect(() => {
-    fieldRef.current?.scrollIntoView({
-      behavior: "smooth",
-    });
+    fieldRef.current?.scrollIntoView();
 
     console.log("Answer Stream");
     console.log(answersStream.slice(0, -2));
@@ -128,17 +126,21 @@ const MessageList = () => {
         console.log("Message history");
         console.log(messageHistory);
 
-        creditDeduction.mutate({
-          answer: fullBotAnswer,
-          question: lastQuestion,
-          chatbot_id: id as string,
-          session_id: chatSession.data?.data.data?.session_id,
-        }, {
-          onSuccess: () => {
-            const creditBalance = useCreditBalance().data?.data.data.credit_balance;
-            setCreditBalance(creditBalance);
+        creditDeduction.mutate(
+          {
+            answer: fullBotAnswer,
+            question: lastQuestion,
+            chatbot_id: id as string,
+            session_id: chatSession.data?.data.data?.session_id,
           },
-        });
+          {
+            onSuccess: () => {
+              const creditBalance =
+                useCreditBalance().data?.data.data.credit_balance;
+              setCreditBalance(creditBalance);
+            },
+          },
+        );
 
         return;
       }
@@ -165,7 +167,7 @@ const MessageList = () => {
   }, [lastJsonMessage]);
 
   return (
-    <div className="grow flex flex-col gap-2 md:space-y-4 overflow-auto">
+    <div className="flex grow flex-col gap-2 overflow-auto md:space-y-4">
       <FirstAnswer
         profileImage={chatbotData?.data.data.profile_image}
         sender={"bot"}
@@ -209,6 +211,7 @@ const MessageList = () => {
           isGenerating={replyStatus == "answering"}
         />
       )}
+      <div ref={fieldRef}></div>
     </div>
   );
 };
