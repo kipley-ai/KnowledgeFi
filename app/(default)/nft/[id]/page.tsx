@@ -218,11 +218,12 @@ const NoChatbot = () => {
             transform: "translate(-50%, -50%)",
           }}
         >
-          <h1 className="text-center text-xl font-extrabold text-white md:text-4xl xl:mb-[30px] xl:text-[48px]">
+          {/* <h1 className="text-center text-xl font-extrabold text-white md:text-4xl xl:mb-[30px] xl:text-[48px]">
             Connect with AI Chat Bot
-          </h1>
+          </h1> */}
           <Link href={"/nft/" + id + "/create-chatbot"}>
-            <h1 className="w-fit rounded-full bg-[#01F7FF] px-8 py-1 text-xs font-semibold text-[#292D32] md:py-3 md:text-base">
+            {/* <h1 className="w-fit rounded-full bg-[#01F7FF] px-8 py-1 text-xs font-semibold text-[#292D32] md:py-3 md:text-base"> */}
+            <h1 className="w-fit rounded-full bg-[#01F7FF] px-8 py-1 text-xs font-semibold text-[#292D32] md:py-3 md:text-2xl">
               Link Your SFT to Chatbot
             </h1>
           </Link>
