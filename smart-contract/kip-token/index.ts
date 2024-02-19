@@ -3,7 +3,7 @@ import abi from "./abi.json";
 import { getSigner } from "..";
 
 export async function getKipTokenContract() {
-  const contractAddress = "0x0C6b55aaB97617A0961ddCb868B6Fe9Cc67E76F7";
+  const contractAddress = process.env.NEXT_PUBLIC_KIP_TOKEN_CONTRACT_ADDRESS!;
   // process.env.NEXT_PUBLIC_KIP_PROTOCOL_CONTRACT_ADDRESS!;
   // const contractProvider = new ethers.JsonRpcProvider(
   //     process.env.NEXT_PUBLIC_KIP_CONTRACT_API ||
@@ -26,7 +26,7 @@ export async function approve(value: BigInt) {
   const { contractWrite } = await getKipTokenContract();
   return await contractWrite.approve(
     process.env.NEXT_PUBLIC_KIP_PROTOCOL_CONTRACT_ADDRESS!,
-    value
+    value,
   );
 }
 
@@ -35,6 +35,6 @@ export async function allowance() {
   const { contractWrite } = await getKipTokenContract();
   return await contractWrite.allowance(
     signer.address,
-    process.env.NEXT_PUBLIC_KIP_PROTOCOL_CONTRACT_ADDRESS!
+    process.env.NEXT_PUBLIC_KIP_PROTOCOL_CONTRACT_ADDRESS!,
   );
 }

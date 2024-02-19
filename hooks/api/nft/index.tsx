@@ -30,3 +30,20 @@ export const useNftDetail = (params: INFTDetailParams) => {
       }),
   });
 };
+
+export const useMyNFTs = (
+  params: INftList,
+  placeholderData: typeof keepPreviousData | undefined = undefined,
+) => {
+  const { address } = useAccount();
+  return useQuery({
+    queryKey: ["my-nfts", params.page],
+    queryFn: () =>
+      axios.post<NftDataListResponse>("/api/nft/my_nft", params, {
+        headers: {
+          "x-kf-user-id": address,
+        },
+      }),
+    placeholderData: placeholderData,
+  });
+};

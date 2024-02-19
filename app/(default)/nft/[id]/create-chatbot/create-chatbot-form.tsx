@@ -11,6 +11,7 @@ import ImageInput from "@/components/image-input-2";
 import { number, string } from "zod";
 import Switcher from "@/components/switcher";
 import { useAppProvider } from "@/providers/app-provider";
+import { DEFAULT_COVER_IMAGE } from "@/utils/constants";
 
 interface Category {
   title: string;
@@ -41,11 +42,10 @@ const ChatBotForm = () => {
   const { createChatbot: chatbot } = useCreateChatbotContext();
   const { id } = useParams();
   const { data: nftData } = useNftDetail({ sft_id: id as string });
-  const [selectedFile, setSelectedFile] = useState<any>(
-    "https://placehold.co/600x600?text=Upload\nCover+Image",
-  );
+  const [selectedFile, setSelectedFile] = useState<any>(DEFAULT_COVER_IMAGE);
   const [mode, setMode] = useState(0);
   const [toneData, setToneData] = useState("");
+  const [pricePerQuery, setPricePerQuery] = useState(0);
 
   const { data: twitterSession } = useSession();
 
@@ -83,6 +83,7 @@ const ChatBotForm = () => {
         sft_id: id as string,
         kb_id: nftData?.data.data.kb_id as string,
         tone: toneData,
+        price_per_query: pricePerQuery,
         // category_id: category,
         // description: description,
         // instruction: instructions,
@@ -232,6 +233,27 @@ const ChatBotForm = () => {
                 </select> */}
 
                 {/* <p className="mt-2 text-xs text-gray-400">Category of your AI.</p> */}
+              </div>
+              <div>
+                <label
+                  className="block text-xs font-semibold text-white lg:text-sm "
+                >
+                  Price Per Query
+                </label>
+                <div className="mt-3">
+                  <input
+                      className="placeholder-text-[#7C878E] w-full rounded-xl bg-transparent text-xs text-[#DDD] lg:text-sm"
+                      type="number"
+                      name="pricePerQuery"
+                      placeholder="e.g. 1"
+                      onChange={(e) => {
+                        if (parseFloat(e.target.value) < 0)
+                          setPricePerQuery(0);
+                        else setPricePerQuery(parseFloat(e.target.value));
+                      }}
+                      value={pricePerQuery}
+                  />
+                </div>
               </div>
             </div>
 

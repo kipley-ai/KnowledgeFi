@@ -11,6 +11,7 @@ import MintNFTModal from "./mint-nft-modal";
 import ImageInput from "@/components/image-input";
 import LoadingIcon from "public/images/loading-icon.svg";
 import MintConfirmationModal from "@/components/modal-mint-confirmation";
+import { DEFAULT_COVER_IMAGE } from "@/utils/constants";
 
 // export const metadata = {
 //     title: 'SFT - Mosaic',
@@ -23,6 +24,7 @@ interface Form {
   symbol?: string;
   shareSupply?: string;
   comissionRate?: number;
+  pricePerQuery?: number;
   coverImage?: string;
 }
 
@@ -41,9 +43,7 @@ export default function NFT() {
   const [allowGenerate, setAllowGenerate] = useState(false);
   const { data: twitterSession } = useSession();
   const [form, setForm] = useState<Form>({ shareSupply: "5000" });
-  const [selectedFile, setSelectedFile] = useState<string>(
-    "https://placehold.co/600x600?text=Upload\nCover+Image",
-  );
+  const [selectedFile, setSelectedFile] = useState<string>(DEFAULT_COVER_IMAGE);
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [nftIdCreated, setNftIdCreated] = useState("");
   const [isConfirmModalOpen, setisConfirmModalOpen] = useState(false);
@@ -92,8 +92,8 @@ export default function NFT() {
           supply: form?.shareSupply as string,
           category: "",
           token_symbol: form?.symbol as string,
-          price_per_query: 1,
-          query_royalties: 0,
+          price_per_query: form?.pricePerQuery as number,
+          query_royalties: form?.comissionRate as number,
           token_amount: 1,
           url: "",
           profile_image: uploadedFile ? assetUrl : selectedFile,
@@ -104,7 +104,7 @@ export default function NFT() {
             setNftIdCreated(nft_id);
             try {
               await mintNFT(
-                // kb_id,
+                kb_id,
                 form.name!,
                 form.symbol!,
                 parseInt(form.shareSupply!),
@@ -180,7 +180,7 @@ export default function NFT() {
 
   return (
     <>
-      <MintConfirmationModal 
+      <MintConfirmationModal
         isOpen={isConfirmModalOpen}
         setIsOpen={setisConfirmModalOpen}
         nftImage={selectedFile}
@@ -192,19 +192,19 @@ export default function NFT() {
         setOpen={setShowModal}
         kbIdCreated={nftIdCreated}
       />
-      <div className="flex flex-col bg-[#292D32] py-8 pb-14 px-6 lg:px-8 xl:px-32">
+      <div className="flex flex-col bg-[#292D32] px-6 py-8 pb-14 lg:px-8 xl:px-32">
         <div>
           <h1 className="text-2xl font-semibold text-white">Mint SFT</h1>
           <hr className="my-4 border border-gray-600" />
         </div>
         <form>
-          <div className="mt-4 flex flex-col md:flex-row gap-8">
+          <div className="mt-4 flex flex-col gap-8 md:flex-row">
             <ImageInput
               selectedFile={selectedFile}
               setSelectedFile={setSelectedFile}
               setUploadedFile={setUploadedFile}
             />
-            <div className="flex flex-col w-full">
+            <div className="flex w-full flex-col">
               <div className="flex flex-col gap-1">
                 <label className="text-xs font-semibold text-[#DDD] lg:text-sm">
                   Name
@@ -298,7 +298,7 @@ export default function NFT() {
                   <label className="text-wrap text-xs font-semibold text-[#DDD] lg:text-sm">
                     Royalties
                   </label>
-                  <div className="flex w-full items-center ">
+                  <div className="flex w-full items-center">
                     <input
                       className="placeholder-text-[#7C878E] w-full rounded-xl bg-transparent text-xs text-[#DDD] lg:text-sm"
                       type="number"
@@ -315,6 +315,26 @@ export default function NFT() {
                       value={form?.comissionRate}
                     />
                     <div className="ml-2 block w-fit text-[#DDD]">%</div>
+                  </div>
+                </div>
+                <div className="flex w-1/3 flex-col gap-1">
+                  <label className="text-wrap text-xs font-semibold text-[#DDD] lg:text-sm">
+                    Price Per Query
+                  </label>
+                  <div className="flex w-full items-center">
+                    <input
+                      // className="rounded-xl bg-transparent w-11/12"
+                      className="placeholder-text-[#7C878E] w-11/12 rounded-xl bg-transparent text-xs text-[#DDD] lg:text-sm"
+                      type="number"
+                      name="pricePerQuery"
+                      placeholder="e.g. 1"
+                      onChange={(e) => {
+                        if (parseFloat(e.target.value) < 0)
+                          handleFormChange("pricePerQuery", 0);
+                        else handleFormChange("pricePerQuery", e.target.value);
+                      }}
+                      value={form?.pricePerQuery}
+                    />
                   </div>
                 </div>
               </div>

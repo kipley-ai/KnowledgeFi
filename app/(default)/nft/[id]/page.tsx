@@ -58,7 +58,7 @@ const NFTSection = ({ nftDetail }: { nftDetail: any }) => {
             </div>
           </div>
           <div className="px-4 md:px-0">
-            <h4 className="text-sm text-[#93989A]">Current Stored Value</h4>
+            <h4 className="text-sm text-[#93989A]">Withdrawable Amount</h4>
             <h1 className="text-md font-semibold md:text-lg">0 $KIP</h1>
           </div>
         </div>
@@ -218,11 +218,12 @@ const NoChatbot = () => {
             transform: "translate(-50%, -50%)",
           }}
         >
-          <h1 className="text-center text-xl font-extrabold text-white md:text-4xl xl:mb-[30px] xl:text-[48px]">
+          {/* <h1 className="text-center text-xl font-extrabold text-white md:text-4xl xl:mb-[30px] xl:text-[48px]">
             Connect with AI Chat Bot
-          </h1>
+          </h1> */}
           <Link href={"/nft/" + id + "/create-chatbot"}>
-            <h1 className="w-fit rounded-full bg-[#01F7FF] px-8 py-1 text-xs font-semibold text-[#292D32] md:py-3 md:text-base">
+            {/* <h1 className="w-fit rounded-full bg-[#01F7FF] px-8 py-1 text-xs font-semibold text-[#292D32] md:py-3 md:text-base"> */}
+            <h1 className="w-fit rounded-full bg-[#01F7FF] px-8 py-1 text-xs font-semibold text-[#292D32] md:py-3 md:text-2xl">
               Link Your SFT to Chatbot
             </h1>
           </Link>

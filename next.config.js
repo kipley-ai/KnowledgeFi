@@ -13,7 +13,7 @@ const nextConfig = {
         hostname: "pbs.twimg.com",
         port: "",
         pathname: "/profile_images/**",
-      },
+      }
     ],
     domains: [
       "ucb80427f5c964c7dea1209e9c0f.previews.dropboxusercontent.com",

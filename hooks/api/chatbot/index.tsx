@@ -137,3 +137,21 @@ export const useGetCategory = () => {
       ),
   });
 };
+
+export const useMyChatbotList = (
+  params: IChatbotList,
+  placeholderData: typeof keepPreviousData | undefined = undefined,
+) => {
+  const { address } = useAccount();
+
+  return useQuery({
+    queryKey: ["my-chatbots", params.page],
+    queryFn: () =>
+      axios.post<ChatbotDataListResponse>("/api/chatbot/my_chatbot", params, {
+        headers: {
+          "x-kf-user-id": address,
+        },
+      }),
+    placeholderData: placeholderData,
+  });
+};

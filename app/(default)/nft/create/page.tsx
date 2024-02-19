@@ -42,22 +42,8 @@ export default function NFT() {
     return () => setHeaderTitle("Default Title");
   }, []);
 
-  const handleMintNFT = async () => {
-    try {
-      const res = await mintNFT(
-        // form.kbId!,
-        form.name!,
-        form.symbol!,
-        form.slotValue!,
-        form.assetId!,
-      );
-    } catch (error: any) {
-      console.log(error);
-    }
-  };
-
   return (
-    <div className="flex flex-col sm:px-6 lg:px-8 py-8 bg-[#292D32]">
+    <div className="flex flex-col bg-[#292D32] py-8 sm:px-6 lg:px-8">
       <div className="mx-56">
         <h1 className="text-2xl font-semibold text-white">Create SFT</h1>
         <h5 className="text-md text-[#7C878E]">
@@ -65,7 +51,7 @@ export default function NFT() {
         </h5>
         <hr className="my-4 border border-gray-600" />
       </div>
-      <form className="flex flex-col gap-8 mt-4 mx-56">
+      <form className="mx-56 mt-4 flex flex-col gap-8">
         <div className="flex flex-col gap-1">
           <label className="font-semibold text-white">Name</label>
           <input
@@ -89,10 +75,10 @@ export default function NFT() {
         </div>
 
         <div className="flex flex-row">
-          <div className="flex flex-col gap-1 w-1/3">
+          <div className="flex w-1/3 flex-col gap-1">
             <label className="font-semibold text-white">Supply</label>
             <input
-              className="rounded-xl bg-transparent w-11/12"
+              className="w-11/12 rounded-xl bg-transparent"
               type="number"
               name="supply"
               placeholder="e.g. 66"
@@ -100,10 +86,10 @@ export default function NFT() {
               onChange={(e) => handleFormChange("slotValue", e.target.value)}
             />
           </div>
-          <div className="flex flex-col gap-1 w-1/3">
+          <div className="flex w-1/3 flex-col gap-1">
             <label className="font-semibold text-white">Category</label>
             <select
-              className="rounded-xl bg-transparent text-[#7C878E] w-11/12"
+              className="w-11/12 rounded-xl bg-transparent text-[#7C878E]"
               value={category}
               onChange={(e) => setCategory(e.target.value)}
             >
@@ -113,7 +99,7 @@ export default function NFT() {
               <option value="category3">Category 3</option>
             </select>
           </div>
-          <div className="flex flex-col gap-1 w-1/3">
+          <div className="flex w-1/3 flex-col gap-1">
             <label className="font-semibold text-white">Token Symbol</label>
             <input
               className="rounded-xl bg-transparent"
@@ -126,20 +112,20 @@ export default function NFT() {
           </div>
         </div>
         <div className="flex flex-row">
-          <div className="flex flex-col gap-1 w-1/3">
+          <div className="flex w-1/3 flex-col gap-1">
             <label className="font-semibold text-white">Price Per Query</label>
             <input
-              className="rounded-xl bg-transparent w-11/12"
+              className="w-11/12 rounded-xl bg-transparent"
               type="number"
               name="pricePerQuery"
               placeholder="e.g. USDT 0.13243"
             />
           </div>
 
-          <div className="flex flex-col gap-1 w-1/3">
+          <div className="flex w-1/3 flex-col gap-1">
             <label className="font-semibold text-white">Query Royalties</label>
             <select
-              className="rounded-xl bg-transparent text-[#7C878E] w-11/12"
+              className="w-11/12 rounded-xl bg-transparent text-[#7C878E]"
               value={queryRoyalties}
               onChange={(e) => setQueryRoyalties(e.target.value)}
             >
@@ -150,7 +136,7 @@ export default function NFT() {
             </select>
           </div>
 
-          <div className="flex flex-col gap-1 w-1/3">
+          <div className="flex w-1/3 flex-col gap-1">
             <label className="font-semibold text-white">Price Per Query</label>
             <input
               className="rounded-xl bg-transparent"
@@ -163,11 +149,10 @@ export default function NFT() {
         <div className="flex flex-row-reverse">
           <div></div>
           <button
-            className="flex flex-row items-center justify-between bg-[#01F7FF] rounded-3xl w-44 p-2 px-5 mt-8"
-            onClick={handleMintNFT}
+            className="mt-8 flex w-44 flex-row items-center justify-between rounded-3xl bg-[#01F7FF] p-2 px-5"
             type="button"
           >
-            <h5 className="text-sm text-black font-semibold">Generate SFT</h5>
+            <h5 className="text-sm font-semibold text-black">Generate SFT</h5>
             <svg
               width="20"
               height="10"
