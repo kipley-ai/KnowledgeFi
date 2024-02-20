@@ -1,6 +1,10 @@
 import OnboardingHeader from "./header";
 
-export default function OnboardingLayout({ children }) {
+type OnboardingLayoutProps = {
+  children: React.ReactNode;
+};
+
+const OnboardingLayout = ({ children }: OnboardingLayoutProps) => {
   return (
     <>
       <OnboardingHeader />
@@ -10,3 +14,5 @@ export default function OnboardingLayout({ children }) {
     </>
   );
 }
+
+export default OnboardingLayout;
