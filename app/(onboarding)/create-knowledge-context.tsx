@@ -79,7 +79,7 @@ export const CreateChatbotProvider = ({
 		username:""
 	});
 
-  const [step, setStep] = useState("data_source");
+  const [step, setStep] = useState("invite_code");
   const [sftId, setSftId] = useState("");
   const [isComingSoon, setIsComingSoon] = useState(false);
 

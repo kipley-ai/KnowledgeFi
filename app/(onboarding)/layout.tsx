@@ -19,7 +19,7 @@ export default function DefaultLayout({
             <div className='rounded-lg'>
 
             {/*  Site header */}
-            <HeaderOnboarding />
+            {/* <HeaderOnboarding /> */}
 
             <main className="grow [&>*:first-child]:scroll-mt-16 h-[calc(100dvh-114px)]">
               <CreateChatbotProvider>{children}</CreateChatbotProvider>

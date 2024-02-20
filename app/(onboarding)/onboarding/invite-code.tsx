@@ -1,10 +1,13 @@
 import { useState, useEffect, useRef } from "react";
+import { useCreateChatbotContext } from "../create-knowledge-context";
 
 const InviteCode = () => {
   const [isBlankPresent, setIsBlankPresent] = useState(true);
   const [otp, setOtp] = useState(new Array(6).fill(""));
 
   const inputsRef = useRef<(HTMLInputElement | null)[]>([]);
+
+  const { setStep } = useCreateChatbotContext();
 
   const handleChange = (element: any, index: number) => {
     if (!/^[A-Za-z0-9]$/.test(element.value)) {
@@ -73,9 +76,10 @@ const InviteCode = () => {
     }
   };
 
-  // TODO: Implement the handleContinue function
+  // TODO: Integrate with BE
   const handleContinue = () => {
     console.log("otp :>> ", otp);
+    setStep("data_source");
   };
 
   useEffect(() => {
