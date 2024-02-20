@@ -8,11 +8,11 @@ import { useAppProvider } from "@/providers/app-provider";
 import { useRouter } from "next/navigation";
 // import NFTForm from "./create-nft-form";
 import { createKB } from "@/app/api/kb/helper";
-import { useCreateChatbotContext } from "../create-knowledge-context";
+import { useCreateChatbotContext } from "./create-knowledge-context";
 import Local from "./local";
 import Notion from "./notion";
 import ModalLoginTwitter from "@/components/modal-login-twitter";
-import OnboardingProgress from "../onboarding-progress";
+import OnboardingProgress from "./onboarding-progress";
 
 export type PossibleOption =
   | "files"
@@ -93,7 +93,7 @@ export default function Onboarding04() {
         redirectUrl="/knowledge/create"
       />
       {step == "data_source" ? (
-        <div className="flex flex-col bg-[#292D32] py-10 pb-20 px-6 lg:px-8 xl:px-32">
+        <div className="flex flex-col bg-[#292D32] pt-6 pb-20 px-6 lg:px-8 xl:px-32">
           <OnboardingProgress step={1} />
 
           <div>
@@ -139,8 +139,6 @@ export default function Onboarding04() {
         </div>
       ) : step == "upload_files" ? (
         <Local files={localFiles} setFiles={setLocalFiles} />
-      // ) : step == "mint_nft" ? (
-      //   <NFTForm />
       ) : step == "notion" ? (
         <Notion closeModal={closeModal} />
       ) : (
