@@ -58,21 +58,21 @@ export default function Credit() {
         </thead>
         <tbody>
           {creditData.map((credit: any, index: number) => {
-            const isPositive = credit.credit > 0;
+            const isPositive = credit.credit_amount > 0;
             return (
               <tr key={index} className="text-md font-inter">
                 <td className="py-5 font-semibold text-white">
-                  {credit.title}
+                  {credit.product_name}
                 </td>
                 <td
                   className={`${
                     isPositive ? "!text-green-500" : "!text-red-400"
                   } py-5 font-bold`}
                 >
-                  {(isPositive ? "+" : "") + credit.credit}
+                  {(isPositive ? "+" : "") + credit.credit_amount}
                 </td>
                 <td className="py-5 font-semibold text-gray-500">
-                  {credit.date}
+                  {credit.created_at?.replace("T", " ")}
                 </td>
               </tr>
             );

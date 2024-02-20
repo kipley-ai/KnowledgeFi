@@ -155,10 +155,6 @@ export default function Sidebar() {
 
 	return (
 		<>
-			<ModalLoginTwitter
-				isOpen={showTwitterLogin}
-				setIsOpen={setShowTwitterLogin}
-			/>
 			<div
 				className={`min-w-fit ${sidebarExpanded ? "sidebar-expanded" : ""}`}
 				style={{

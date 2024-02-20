@@ -10,25 +10,6 @@ import axios from "axios";
 import { IPaginate } from "../interfaces";
 import { EarningReportResponse, UserDetailResponse } from "@/lib/types";
 
-export const useUserDetail = () => {
-  const { address } = useAccount();
-
-  return useQuery({
-    queryKey: ["user", "detail", address],
-    queryFn: () =>
-      axios.post<UserDetailResponse>(
-        "/api/user/detail",
-        {},
-        {
-          headers: {
-            "x-kf-user-id": address,
-          },
-        },
-      ),
-    select: (data) => data.data.data,
-  });
-};
-
 export const useProfpic = () => {
   const { address } = useAccount();
 
@@ -165,5 +146,41 @@ export const useCreditUsage = (
           "x-kf-user-id": address,
         },
       }),
+  });
+};
+
+export const useUserDetail = () => {
+  const { address } = useAccount();
+
+  return useQuery({
+    queryKey: ["user-detail"],
+    queryFn: () =>
+      axios.post(
+        "/api/user/detail",
+        {},
+        {
+          headers: {
+            "x-kf-user-id": address,
+          },
+        },
+      ),
+  });
+};
+
+export const useCreatorOverview = () => {
+  const { address } = useAccount();
+
+  return useQuery({
+    queryKey: ["creator-overview"],
+    queryFn: () =>
+      axios.post(
+        "/api/user/creator_overview",
+        {},
+        {
+          headers: {
+            "x-kf-user-id": address,
+          },
+        },
+      ),
   });
 };

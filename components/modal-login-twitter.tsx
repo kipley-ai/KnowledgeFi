@@ -12,12 +12,14 @@ import twtLogo from "@/public/images/logo-twitter.svg";
 export default function ModalLoginTwitter({
   isOpen,
   setIsOpen,
+  redirectUrl,
 }: {
   isOpen: boolean;
   setIsOpen: any;
+  redirectUrl?: string;
 }) {
   const handleLoginButton = () => {
-    signIn("twitter");
+    signIn("twitter", { callbackUrl: redirectUrl });
   };
 
   return (

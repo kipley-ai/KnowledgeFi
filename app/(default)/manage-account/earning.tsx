@@ -36,7 +36,7 @@ export default function Earning() {
   const {
     earning_report_data: earningData,
     earning_report_count: earningCount,
-  } = data.data.data;
+  } = data;
 
   console.log("data :>> ", data);
 

@@ -20,6 +20,7 @@ export interface ICreateChatbotParams {
   tone: string;
   sft_id: string;
   kb_id: string;
+  price_per_query: number;
   // category_id: string;
   // description: string;
   // instruction: string;
