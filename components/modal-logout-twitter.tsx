@@ -1,7 +1,7 @@
 "use client";
 
 import ModalBlank from "@/components/modal-blank-2";
-import { signIn } from "next-auth/react";
+import { signIn, signOut } from "next-auth/react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
@@ -24,7 +24,7 @@ export default function ModalLogoutTwitter({
 	const pathname = usePathname();
 
 	const handleLogoutButton = () => {
-		signIn("twitter");
+		signOut()
 	};
 
 	useEffect(() => {

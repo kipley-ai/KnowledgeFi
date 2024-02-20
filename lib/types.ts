@@ -80,3 +80,34 @@ export type KBItemResponse = {
     kb_item_count: number;
   };
 };
+
+export type UserDetailResponse = {
+  data: {
+    wallet_addr: string;
+    full_name: string;
+    credit_earning: number;
+    credit_balance: number;
+    about_me: string;
+    headline: string;
+    creator_tos: number;
+    billing_email: string;
+    location: string;
+    onboarding: number;
+    is_deleted: number;
+    twitter_link: string;
+    username: string;
+    lname: string;
+    fname: string;
+    profile_image: string | null;
+    last_recharge: string;
+    last_login: string;
+    created_at: string;
+  };
+};
+
+export type EarningReportResponse = {
+  data: {
+    earning_report_data: any[];
+    earning_report_count: number;
+  };
+};

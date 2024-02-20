@@ -1,8 +1,54 @@
-import { keepPreviousData, useMutation, useQuery } from "@tanstack/react-query";
+import {
+  keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 import { useAccount } from "wagmi";
 import { IUpdateUserParams } from "../interfaces";
 import axios from "axios";
 import { IPaginate } from "../interfaces";
+import { EarningReportResponse, UserDetailResponse } from "@/lib/types";
+
+export const useProfpic = () => {
+  const { address } = useAccount();
+
+  return useQuery({
+    queryKey: ["user", "profpic", address],
+    queryFn: () =>
+      axios.post<UserDetailResponse>(
+        "/api/user/detail",
+        {},
+        {
+          headers: {
+            "x-kf-user-id": address,
+          },
+        },
+      ),
+    select: (data) => data.data.data.profile_image,
+  });
+};
+
+export const useUpdateProfpic = () => {
+  const queryClient = useQueryClient();
+  const { address } = useAccount();
+
+  return useMutation({
+    mutationFn: (profilePicture: string) =>
+      axios.post(
+        "/api/user/update",
+        { profile_image: profilePicture },
+        {
+          headers: {
+            "x-kf-user-id": address,
+          },
+        },
+      ),
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ["user", "profpic"] });
+    },
+  });
+};
 
 export const useCreateUser = () => {
   // const { address } = useAccount();
@@ -54,6 +100,7 @@ export const useWithdrawHistory = (
       }),
   });
 };
+
 export const useUpdateUserAPI = () => {
   const { address } = useAccount();
 
@@ -76,11 +123,12 @@ export const useEarningReport = (
   return useQuery({
     queryKey: ["earning", params.page],
     queryFn: () =>
-      axios.post("/api/user/earning", params, {
+      axios.post<EarningReportResponse>("/api/user/earning", params, {
         headers: {
           "x-kf-user-id": address,
         },
       }),
+    select: (data) => data.data.data,
   });
 };
 

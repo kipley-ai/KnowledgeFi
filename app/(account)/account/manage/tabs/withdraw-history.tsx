@@ -7,54 +7,57 @@ import { useState } from "react";
 import { keepPreviousData } from "@tanstack/react-query";
 
 export default function WithdrawHistory() {
-	const searchParams = useSearchParams();
+  const searchParams = useSearchParams();
 
-	const [currentPage, setCurrentPage] = useState<number>(1);
-  	const [pageSize, setPageSize] = useState<number>(5);
-	
-	const { isPending, isError, error, data, isFetching } = useWithdrawHistory(
-		{
-			page: currentPage,
-			page_size: pageSize,
-			sort_by: "created_at",
-		},
-    	keepPreviousData,
-	);
-	
-	const handlePageChange = (page: number) => {
-		setCurrentPage(page);
-	};
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [pageSize, setPageSize] = useState<number>(5);
 
-	if (isPending) {
-		return (
-		  <div className="flex h-32 w-full items-center justify-center gap-4">
-			<FaSpinner size={20} className="animate-spin" />
-			<p className="text-md text-gray-300">Loading</p>
-		  </div>
-		);
-	  }
+  const { isPending, isError, error, data, isFetching } = useWithdrawHistory(
+    {
+      page: currentPage,
+      page_size: pageSize,
+      sort_by: "created_at",
+    },
+    keepPreviousData,
+  );
 
-	if (isError) {
-		return <div>Error: {error.message}</div>;
-	}
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
 
-	const { withdraw_history_data: withdrawal, withdraw_history_count: withdrawalCount } = data?.data?.data;
+  if (isPending) {
+    return (
+      <div className="flex h-32 w-full items-center justify-center gap-4">
+        <FaSpinner size={20} className="animate-spin" />
+        <p className="text-md text-gray-300">Loading</p>
+      </div>
+    );
+  }
 
-	return (
-		<>
-			<div className="flex justify-between items-center">
-				<h1 className="text-3xl font-semibold text-slate-100">
-					Withdraw History
-				</h1>
-			</div>
-			<ContentListComponent
-				withdrawals={withdrawal}
-				totalPages={Math.ceil(Number(withdrawalCount) / pageSize)}
-				currentPage={currentPage}
-				handlePageChange={handlePageChange}
-			/>
-		</>
-	);
+  if (isError) {
+    return <div>Error: {error.message}</div>;
+  }
+
+  const {
+    withdraw_history_data: withdrawal,
+    withdraw_history_count: withdrawalCount,
+  } = data?.data?.data;
+
+  return (
+    <>
+      <div className="flex items-center justify-between">
+        <h1 className="text-3xl font-semibold text-slate-100">
+          Withdraw History
+        </h1>
+      </div>
+      <ContentListComponent
+        withdrawals={withdrawal}
+        totalPages={Math.ceil(Number(withdrawalCount) / pageSize)}
+        currentPage={currentPage}
+        handlePageChange={handlePageChange}
+      />
+    </>
+  );
 }
 
 // function* generateEarningData(n: number): Generator<WithdrawData> {
@@ -78,81 +81,79 @@ export default function WithdrawHistory() {
 // }
 
 const ContentListComponent = ({
-	withdrawals,
-	totalPages,
-	currentPage,
-	handlePageChange,
+  withdrawals,
+  totalPages,
+  currentPage,
+  handlePageChange,
 }: {
-	withdrawals: any;
-	totalPages: number;
-	currentPage: number;
-	handlePageChange: any;
+  withdrawals: any;
+  totalPages: number;
+  currentPage: number;
+  handlePageChange: any;
 }) => {
-	return (
-		<>
-			<div className="flex flex-col">
-				<table className="min-w-full divide-y divide-zinc-700 rounded-xl">
-					<thead className="bg-transparent">
-						<tr>
-							<th
-								scope="col"
-								className="px-2 py-5 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider"
-							>
-								Transaction
-							</th>
-							<th
-								scope="col"
-								className="px-2 py-5 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider"
-							>
-								Payout Method
-							</th>
-							<th
-								scope="col"
-								className="px-2 py-5 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider"
-							>
-								Status
-							</th>
-							<th
-								scope="col"
-								className="px-2 py-5 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider"
-							>
-								Date Processed
-							</th>
-						</tr>
-					</thead>
-					<tbody className="bg-transparent">
-						{withdrawals?.map((withdrawal: any, index: number) => {
-							return (
-								<tr key={index} className="hover:bg-zinc-900">
-									<td className="text-white px-2 py-4 whitespace-nowrap">
-										{`${withdrawal.pay_amount} ${withdrawal.pay_currency}`}
-									</td>
-									<td className="text-white px-2 py-4 whitespace-nowrap">
-										{/* {withdrawal.pay_currency} */}
-									</td>
-									<td
-										className={`${
-											withdrawal.pay_status
-												? "text-green-400"
-												: "text-red-500"
-										} px-2 py-4 whitespace-nowrap`}
-									>
-										{withdrawal.pay_status ? "Paid" : "Failed"}
-									</td>
-									<td className="px-2 py-4 text-gray-500 whitespace-nowrap">
-										{getTimeStringLocal(new Date(withdrawal.created_at))}
-									</td>
-								</tr>
-							);
-						})}
-					</tbody>
-				</table>
-				<PaginationController 
-					currentPage={currentPage}
-            		onPageChange={handlePageChange}
-            		totalPages={totalPages} 
-				/>
-			</div>
-		</>
-	);
+  return (
+    <>
+      <div className="flex flex-col">
+        <table className="min-w-full divide-y divide-zinc-700 rounded-xl">
+          <thead className="bg-transparent">
+            <tr>
+              <th
+                scope="col"
+                className="px-2 py-5 text-left text-xs font-semibold uppercase tracking-wider text-gray-500"
+              >
+                Transaction
+              </th>
+              <th
+                scope="col"
+                className="px-2 py-5 text-left text-xs font-semibold uppercase tracking-wider text-gray-500"
+              >
+                Payout Method
+              </th>
+              <th
+                scope="col"
+                className="px-2 py-5 text-left text-xs font-semibold uppercase tracking-wider text-gray-500"
+              >
+                Status
+              </th>
+              <th
+                scope="col"
+                className="px-2 py-5 text-left text-xs font-semibold uppercase tracking-wider text-gray-500"
+              >
+                Date Processed
+              </th>
+            </tr>
+          </thead>
+          <tbody className="bg-transparent">
+            {withdrawals?.map((withdrawal: any, index: number) => {
+              return (
+                <tr key={index} className="hover:bg-zinc-900">
+                  <td className="whitespace-nowrap px-2 py-4 text-white">
+                    {`${withdrawal.pay_amount} ${withdrawal.pay_currency}`}
+                  </td>
+                  <td className="whitespace-nowrap px-2 py-4 text-white">
+                    {/* {withdrawal.pay_currency} */}
+                  </td>
+                  <td
+                    className={`${
+                      withdrawal.pay_status ? "text-green-400" : "text-red-500"
+                    } whitespace-nowrap px-2 py-4`}
+                  >
+                    {withdrawal.pay_status ? "Paid" : "Failed"}
+                  </td>
+                  <td className="whitespace-nowrap px-2 py-4 text-gray-500">
+                    {getTimeStringLocal(new Date(withdrawal.created_at))}
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+        <PaginationController
+          currentPage={currentPage}
+          onPageChange={handlePageChange}
+          totalPages={totalPages}
+        />
+      </div>
+    </>
+  );
 };

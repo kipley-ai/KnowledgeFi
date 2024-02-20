@@ -39,26 +39,35 @@ export default function Header() {
   const { modalLogin, setModalLogin } = useAppProvider();
   const { isConnected } = useAccount();
   const [isConnected_, setIsConnected_] = useState<boolean>(false);
-  const { data: userDetail } = useUserDetail();
+  const { refetch: refetchUserDetail } = useUserDetail();
 
   const { headerTitle } = useAppProvider();
 
   useEffect(() => {
+    let sub = true;
     setIsConnected_(isConnected);
-    // setShowTwitterLogin(walletConnected && twitterStatus !== "authenticated");
-    // setShowAccountButton(walletConnected && twitterStatus === "authenticated");
-    if (userDetail?.data) {
-      setProfileImage(userDetail.data.data.profile_image);
-      if (
-        twitterStatus == "authenticated" &&
-        userDetail.data.data.profile_image == ""
-      ) {
-        setProfileImage(twitterSession?.user?.image || "");
+
+    const handleUserDetail = async () => {
+      const { data } = await refetchUserDetail();
+      if (data) {
+        setProfileImage(data.data.data.profile_image || "");
+        if (
+          twitterStatus == "authenticated" &&
+          data.data.data.profile_image == ""
+        ) {
+          setProfileImage(twitterSession?.user?.image || "");
+        }
       }
+    };
+
+    if (isConnected && sub) {
+      handleUserDetail();
     }
 
-    // console.log(twitterSession);
-  }, [isConnected, twitterStatus, userDetail]);
+    return () => {
+      sub = false;
+    };
+  }, [isConnected, twitterStatus]);
 
   return (
     <header
