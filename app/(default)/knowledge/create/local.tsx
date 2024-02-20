@@ -17,6 +17,7 @@ import type { UIFile } from "./page";
 import { useCreateChatbotContext } from "./create-knowledge-context";
 import Toast from "@/components/toast";
 import { useAppProvider } from "@/providers/app-provider";
+import { error } from "console";
 
 export default function Local({
   files,
@@ -54,7 +55,7 @@ export default function Local({
         newFileObject &&
         (files.length === 0 ||
           files.filter((file) => file.filename == newFileObject.name).length ==
-            0)
+          0)
       ) {
         console.log("New file detected");
         const { presignedUrl, bucketPath } = await fetchPresignedUrlS3(
@@ -126,6 +127,9 @@ export default function Local({
       }
     });
   };
+
+  // Check file limit exceed function
+  const [fileLimitExceeded, setFileLimitExceeded] = useState(false);
 
   const handleDrag = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -212,7 +216,12 @@ export default function Local({
 
   useEffect(() => {
     console.log(files);
-  }, [files]);
+    if (files.length > 10) {
+      setFileLimitExceeded(true);
+    } else {
+      setFileLimitExceeded(false);
+    }
+  }, [files, toast]);
 
   return (
     <div className="flex flex-col bg-[#292D32] py-10 pb-20 px-6 lg:px-8 xl:px-32">
@@ -260,6 +269,14 @@ export default function Local({
             Maximum number of files allowed: 10
           </p>
         </div>
+        {/* Warning if file exceeded */}
+        <div>
+          {fileLimitExceeded && (
+            <div className="text-red-500 text-center mt-4">
+              Maximum number of files exceeded.
+            </div>
+          )}
+        </div>
         <div>
           {files.map((file, index) => {
             return (
@@ -286,7 +303,7 @@ export default function Local({
       </div>
       <div className="flex justify-between">
         <button
-          className="mt-8 flex flex-row items-center  justify-between rounded-3xl border-2 border-[#50575F] p-2 px-5"
+          className="mt-8 flex flex-row items-center justify-between rounded-3xl border-2 border-[#50575F] p-2 px-5"
           type="submit"
           onClick={() => {
             setStep("data_source");
@@ -295,23 +312,27 @@ export default function Local({
           <h5 className="text-sm font-semibold text-white">Back</h5>
         </button>
         <button
-          className="mt-8 flex w-36 flex-row items-center justify-between rounded-3xl bg-[#01F7FF] p-2 px-5"
+          className={`mt-8 flex flex-row items-center justify-between rounded-3xl p-2 px-5 ${files.length === 0 || fileLimitExceeded ? 'bg-gray-400' : 'bg-[#01F7FF]'
+            }`}
           type="submit"
+          disabled={files.length === 0 || fileLimitExceeded}
           onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
-            handleChangeKb(
-              "kb_data",
-              files.map((file) => {
-                return {
-                  type: "file",
-                  name: file.filename,
-                  file: file.bucketPath,
-                };
-              }),
-            );
-            setStep("mint_nft");
+            if (!fileLimitExceeded && files.length > 0) {
+              handleChangeKb(
+                "kb_data",
+                files.map((file) => {
+                  return {
+                    type: "file",
+                    name: file.filename,
+                    file: file.bucketPath,
+                  };
+                }),
+              );
+              setStep("mint_nft");
+            }
           }}
         >
-          <h5 className="text-sm font-semibold text-black">Continue</h5>
+          <h5 className={`text-sm font-semibold pr-2 ${files.length === 0 || fileLimitExceeded ? 'text-gray-700' : 'text-black'}`}>Continue</h5>
           <svg
             width="20"
             height="10"
