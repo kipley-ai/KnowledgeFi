@@ -7,19 +7,18 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 // import fbLogo from '@/public/images/icon-facebook.svg'
 import twtLogo from "@/public/images/logo-twitter.svg";
+import { ReactSetter } from "@/lib/aliases";
 // import emailLogo from '@/public/images/icon-linkedin.svg'
 
 export default function ModalLoginTwitter({
   isOpen,
   setIsOpen,
-  redirectUrl,
 }: {
   isOpen: boolean;
-  setIsOpen: any;
-  redirectUrl?: string;
+  setIsOpen: ReactSetter<boolean>;
 }) {
   const handleLoginButton = () => {
-    signIn("twitter", { callbackUrl: redirectUrl });
+    signIn("twitter");
   };
 
   return (
@@ -27,7 +26,7 @@ export default function ModalLoginTwitter({
       <div className="flex flex-col items-center justify-between rounded-lg p-4 shadow-md">
         <div className="inline-flex items-center justify-between self-stretch p-5">
           <div className="w-80 text-3xl font-bold leading-10 text-gray-50">
-            Sign to continue
+            Upload your profile image
           </div>
           <button
             className="text-[#FCFCFD] hover:text-slate-500 dark:text-slate-500 dark:hover:text-slate-400"
