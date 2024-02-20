@@ -11,7 +11,7 @@ export default function DefaultLayout({
 	return (
 		<>
 			<div className="z-0 h-24 bg-gradient-to-r from-cyan-500 to-blue-500"> </div>
-			<div className="flex flex-col md:flex-row w-full h-full px-10 mt-[-3rem] rounded-xl">
+			<div className="flex flex-col md:flex-row w-full h-full px-10 mt-[-3rem] mb-5 rounded-xl">
 				<div className="flex w-full bg-zinc-800 rounded-2xl ">
 					{/* Sidebar */}
 					<div className="py-20 gap-10 md:w-1/4">

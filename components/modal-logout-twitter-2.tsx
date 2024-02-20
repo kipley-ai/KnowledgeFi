@@ -1,31 +1,41 @@
-"use client";
-
 import ModalBlank from "@/components/modal-blank-2";
-import { signIn } from "next-auth/react";
+import { signIn, signOut } from "next-auth/react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 // import fbLogo from '@/public/images/icon-facebook.svg'
 import twtLogo from "@/public/images/logo-twitter.svg";
+import type { Session } from "next-auth";
+import { ReactSetter } from "@/lib/aliases";
 // import emailLogo from '@/public/images/icon-linkedin.svg'
 
-export default function ModalLoginTwitter({
+export default function ModalLogoutTwitter({
   isOpen,
   setIsOpen,
+  username,
 }: {
   isOpen: boolean;
-  setIsOpen: any;
+  setIsOpen: ReactSetter<boolean>;
+  username: string;
 }) {
-  const handleLoginButton = () => {
-    signIn("twitter");
+  const [urlShare, setUrlShare] = useState("");
+
+  const handleLogoutButton = () => {
+    signOut();
   };
+
+  useEffect(() => {
+    // console.log(window.location.href);
+    // urlRef.current = window.location.href;
+    setUrlShare(window.location.href);
+  }, []);
 
   return (
     <ModalBlank isOpen={isOpen} setIsOpen={setIsOpen}>
       <div className="flex flex-col items-center justify-between rounded-lg p-4 shadow-md">
         <div className="inline-flex items-center justify-between self-stretch p-5">
           <div className="w-80 text-3xl font-bold leading-10 text-gray-50">
-            Sign to continue
+            Sign out as @{username}?
           </div>
           <button
             className="text-[#FCFCFD] hover:text-slate-500 dark:text-slate-500 dark:hover:text-slate-400"
@@ -63,7 +73,7 @@ export default function ModalLoginTwitter({
         <div className="flex max-w-full flex-col justify-center gap-5 py-5 md:w-96">
           <div className="flex flex-grow items-center justify-center rounded-3xl">
             <button
-              onClick={handleLoginButton}
+              onClick={handleLogoutButton}
               className="flex h-11 flex-shrink-0 flex-grow items-center justify-center gap-2 rounded-3xl bg-white px-2 py-4"
             >
               <Image
@@ -75,7 +85,7 @@ export default function ModalLoginTwitter({
                 alt="Twitter-X Icon"
               />
               <div className="text-center text-xs font-extrabold uppercase leading-tight tracking-wide text-zinc-950 md:text-sm">
-                Connect X
+                Sign Out
               </div>
             </button>
           </div>

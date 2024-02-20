@@ -8,119 +8,119 @@ import { useEffect, useState } from "react";
 import { PaginationController } from "@/components/pagination/controller";
 
 const DateFilterComponent = () => (
-	<>
-		<div className="justify-start items-start gap-3 flex">
-			<div className="h-12 px-4 py-3 rounded-xl border-2 border-zinc-900 justify-between items-center flex">
-				<div className="text-slate-100 text-base font-mediumleading-normal pr-4">
-					Last 30 days
-				</div>
-				<div className="flex items-center truncate">
-					<svg
-						className="w-3 h-3 shrink-0 ml-1 fill-current text-slate-100"
-						viewBox="0 0 12 12"
-					>
-						<path d="M5.9 11.4L.5 6l1.4-1.4 4 4 4-4L11.3 6z" />
-					</svg>
-				</div>
-			</div>
-		</div>
-	</>
+  <>
+    <div className="flex items-start justify-start gap-3">
+      <div className="flex h-12 items-center justify-between rounded-xl border-2 border-zinc-900 px-4 py-3">
+        <div className="font-mediumleading-normal pr-4 text-base text-slate-100">
+          Last 30 days
+        </div>
+        <div className="flex items-center truncate">
+          <svg
+            className="ml-1 h-3 w-3 shrink-0 fill-current text-slate-100"
+            viewBox="0 0 12 12"
+          >
+            <path d="M5.9 11.4L.5 6l1.4-1.4 4 4 4-4L11.3 6z" />
+          </svg>
+        </div>
+      </div>
+    </div>
+  </>
 );
 
 const StatsCard = ({
-	title,
-	number,
-	icon,
+  title,
+  number,
+  icon,
 }: {
-	title: string;
-	number: string;
-	icon: any;
+  title: string;
+  number: string;
+  icon: any;
 }): JSX.Element => (
-	<>
-		<div className="flex w-80 h-56 gap-4 flex-gap">
-			<div className="flex flex-col grow p-10 bg-gradient-to-r bg-gray-800 rounded-2xl gap-4">
-				<Image
-					className="flex items-center justify-center w-10 h-10 p-2 bg-white rounded-xl shadow"
-					src={icon}
-					width={32}
-					height={32}
-					alt={`${title} icon`}
-				/>
-				{/* <div className="flex items-center justify-center w-10 h-10 p-2 bg-white rounded-xl shadow"></div> */}
-				<div className="flex flex-col justify-start items-start h-20">
-					<div className="flex flex-row text-zinc-100 text-base font-semibold items-center justify-center gap-2">
-						{title}
-						<div className="pt-0.5 bg-white hover:bg-blue-700 text-black font-semibold text-xs rounded-full h-4 w-4 flex items-center justify-center">
-							i
-						</div>
-					</div>
-					<div className="text-zinc-100 text-4xl font-semibold">{number}</div>
-				</div>
-			</div>
-		</div>
-	</>
+  <>
+    <div className="flex-gap flex h-56 w-80 gap-4">
+      <div className="flex grow flex-col gap-4 rounded-2xl bg-gray-800 bg-gradient-to-r p-10">
+        <Image
+          className="flex h-10 w-10 items-center justify-center rounded-xl bg-white p-2 shadow"
+          src={icon}
+          width={32}
+          height={32}
+          alt={`${title} icon`}
+        />
+        {/* <div className="flex items-center justify-center w-10 h-10 p-2 bg-white rounded-xl shadow"></div> */}
+        <div className="flex h-20 flex-col items-start justify-start">
+          <div className="flex flex-row items-center justify-center gap-2 text-base font-semibold text-zinc-100">
+            {title}
+            <div className="flex h-4 w-4 items-center justify-center rounded-full bg-white pt-0.5 text-xs font-semibold text-black hover:bg-blue-700">
+              i
+            </div>
+          </div>
+          <div className="text-4xl font-semibold text-zinc-100">{number}</div>
+        </div>
+      </div>
+    </div>
+  </>
 );
 
 interface ActivityData {
-	name: string;
-	amount: string;
-	lastUpdated: string;
+  name: string;
+  amount: string;
+  lastUpdated: string;
 }
 
 function* generateData(n: number): Generator<ActivityData> {
-	for (let i = 1; i <= n; i++) {
-		yield {
-			name: Math.random() > 0.5 ? "Buy Credit" : "Withdrawal",
-			amount: `${100 + 100 * i}`,
-			lastUpdated: `${i} minutes ago`,
-		};
-	}
+  for (let i = 1; i <= n; i++) {
+    yield {
+      name: Math.random() > 0.5 ? "Buy Credit" : "Withdrawal",
+      amount: `${100 + 100 * i}`,
+      lastUpdated: `${i} minutes ago`,
+    };
+  }
 }
 
 const activityData = Array.from(generateData(20));
 
 export default function Dashboard() {
-	const pathname = usePathname();
-	const router = useRouter();
-	const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
-	const page = searchParams.get("page") ?? "1";
-	const perPage = searchParams.get("perPage") ?? "5";
+  const page = searchParams.get("page") ?? "1";
+  const perPage = searchParams.get("perPage") ?? "5";
 
-	const start = (Number(page) - 1) * Number(perPage);
-	const end = start + Number(perPage);
+  const start = (Number(page) - 1) * Number(perPage);
+  const end = start + Number(perPage);
 
-	return (
-		<>
-			<div className="flex justify-between items-center">
-				<h1 className="text-3xl font-semibold text-slate-100">
-					Creator Overview
-				</h1>
-				<DateFilterComponent />
-			</div>
-			<div className="flex flex-col gap-4 my-8 bg-zinc-900 rounded-2xl p-4">
-				<div className="flex justify-between">
-					<div className="flex items-center">
-						<div className="py-4 px-2 bg-sky-200 rounded-sm"></div>
-						<h1 className="text-2xl pl-2 text-zinc-100">Creator Overview</h1>
-					</div>
-					<button className="px-4 py-2 bg-sky-200 rounded-3xl text-sm text-black">
-						Withdraw your earnings
-					</button>
-				</div>
-				<div className="flex flex-row justify-between gap-4 pb-5">
-					<StatsCard title="Earnings" number="388" icon={WaveIcon} />
-					<StatsCard title="Users" number="512" icon={PersonIcon} />
-					<StatsCard
-						title="Conversation"
-						number="64M"
-						icon={ConvoCheckMarkIcon}
-					/>
-				</div>
-			</div>
-			<div className="dark py-3 rounded-xl">
-				<DashboardCard05 />
-			</div>
-		</>
-	);
+  return (
+    <>
+      <div className="flex items-center justify-between">
+        <h1 className="text-3xl font-semibold text-slate-100">
+          Creator Overview
+        </h1>
+        <DateFilterComponent />
+      </div>
+      <div className="my-8 flex flex-col gap-4 rounded-2xl bg-zinc-900 p-4">
+        <div className="flex justify-between">
+          <div className="flex items-center">
+            <div className="rounded-sm bg-sky-200 px-2 py-4"></div>
+            <h1 className="pl-2 text-2xl text-zinc-100">Creator Overview</h1>
+          </div>
+          <button className="rounded-3xl bg-sky-200 px-4 py-2 text-sm text-black">
+            Withdraw your earnings
+          </button>
+        </div>
+        <div className="flex flex-row justify-between gap-4 pb-5">
+          <StatsCard title="Earnings" number="388" icon={WaveIcon} />
+          <StatsCard title="Users" number="512" icon={PersonIcon} />
+          <StatsCard
+            title="Conversation"
+            number="64M"
+            icon={ConvoCheckMarkIcon}
+          />
+        </div>
+      </div>
+      <div className="dark rounded-xl py-3">
+        <DashboardCard05 />
+      </div>
+    </>
+  );
 }

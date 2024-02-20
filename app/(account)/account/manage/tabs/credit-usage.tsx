@@ -10,23 +10,12 @@ import { keepPreviousData } from "@tanstack/react-query";
 import { useCreditUsage } from "@/hooks/api/user";
 
 export default function CreditUsage() {
-  const searchParams = useSearchParams();
-
-  const page = searchParams.get("page") ?? "1";
-  const perPage = searchParams.get("perPage") ?? "5";
-
-  const start = (Number(page) - 1) * Number(perPage);
-  const end = start + Number(perPage);
-
   return (
     <>
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-semibold text-slate-100">Credit Usage</h1>
       </div>
-      <ContentListComponent
-        credits={creditData.slice(start, end)}
-        pageQuery="page"
-      />
+      <ContentListComponent />
     </>
   );
 }
@@ -49,13 +38,7 @@ interface CreditData {
   date: string;
 }
 
-const ContentListComponent = ({
-  credits,
-  pageQuery,
-}: {
-  credits: CreditData[];
-  pageQuery: string;
-}) => {
+const ContentListComponent = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [pageSize, setPageSize] = useState<number>(10);
 
