@@ -81,10 +81,9 @@ export default function Onboarding04() {
   // const mintNFTRedirect = sessionStorage.getItem("mintNFTRedirect");
 
   // if (mintNFTRedirect === "true" && twitterStatus == "authenticated") {
-  if (twitterStatus == "authenticated") {
-    setStep("mint_nft");
+    // setStep("mint_nft");
     // sessionStorage.removeItem("mintNFTRedirect");
-  }
+  // }
 
   return (
     <>
