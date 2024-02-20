@@ -39,7 +39,7 @@ export default function Header() {
   const { modalLogin, setModalLogin } = useAppProvider();
   const { isConnected } = useAccount();
   const [isConnected_, setIsConnected_] = useState<boolean>(false);
-  const { data: userDetail, refetch: refetchUserDetail } = useUserDetail();
+  const { refetch: refetchUserDetail } = useUserDetail();
 
   const { headerTitle } = useAppProvider();
 
@@ -50,7 +50,7 @@ export default function Header() {
     const handleUserDetail = async () => {
       const { data } = await refetchUserDetail();
       if (data) {
-        setProfileImage(data.data.data.profile_image);
+        setProfileImage(data.data.data.profile_image || "");
         if (
           twitterStatus == "authenticated" &&
           data.data.data.profile_image == ""
