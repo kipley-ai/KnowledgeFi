@@ -19,7 +19,7 @@ import { useAccount } from "wagmi";
 import { useCreditBalance } from "@/hooks/api/credit";
 import { useAppProvider } from "@/providers/app-provider";
 import ModalTopUp from "@/components/modal-top-up";
-import { signIn, useSession } from "next-auth/react";
+import { signIn, signOut, useSession } from "next-auth/react";
 import { uploadFile } from "@/utils/utils";
 
 export const DateFilterComponent = () => (
@@ -300,7 +300,12 @@ export default function AccountSettings() {
           )}
         </div>
         {twitterStatus == "authenticated" ? (
-          <button className="flex items-center rounded-full border border-gray-700 px-4 py-1 text-white">
+          <button
+            className="flex items-center rounded-full border border-gray-700 px-4 py-1 text-white"
+            onClick={() => {
+              signOut();
+            }}
+          >
             <span className="text-sm">Disconnect</span>
             <Image className="ml-1 pt-2" src={SignOutIcon} alt="signouticon" />
           </button>
