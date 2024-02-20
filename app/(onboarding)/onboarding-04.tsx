@@ -67,7 +67,7 @@ export default function Onboarding04() {
     if (selectedButton == "twitter") {
       if (twitterStatus != "authenticated") {
         setShowTwitterLogin(true);
-        sessionStorage.setItem("mintNFTRedirect", "true");
+        // sessionStorage.setItem("mintNFTRedirect", "true");
       } else {
         setStep("mint_nft");
       }
@@ -78,11 +78,12 @@ export default function Onboarding04() {
     }
   };
 
-  const mintNFTRedirect = sessionStorage.getItem("mintNFTRedirect");
+  // const mintNFTRedirect = sessionStorage.getItem("mintNFTRedirect");
 
-  if (mintNFTRedirect === "true" && twitterStatus == "authenticated") {
+  // if (mintNFTRedirect === "true" && twitterStatus == "authenticated") {
+  if (twitterStatus == "authenticated") {
     setStep("mint_nft");
-    sessionStorage.removeItem("mintNFTRedirect");
+    // sessionStorage.removeItem("mintNFTRedirect");
   }
 
   return (
