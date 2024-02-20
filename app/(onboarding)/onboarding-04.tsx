@@ -81,8 +81,8 @@ export default function Onboarding04() {
   // const mintNFTRedirect = sessionStorage.getItem("mintNFTRedirect");
 
   // if (mintNFTRedirect === "true" && twitterStatus == "authenticated") {
-    // setStep("mint_nft");
-    // sessionStorage.removeItem("mintNFTRedirect");
+  // setStep("mint_nft");
+  // sessionStorage.removeItem("mintNFTRedirect");
   // }
 
   return (
@@ -93,10 +93,10 @@ export default function Onboarding04() {
         redirectUrl="/knowledge/create"
       />
       {step == "data_source" ? (
-        <div className="flex flex-col bg-[#292D32] pt-6 pb-20 px-6 lg:px-8 xl:px-32">
+        <div className="flex flex-col bg-[#292D32] px-6 pb-20 lg:px-8 xl:px-32">
           <OnboardingProgress step={1} />
 
-          <div>
+          <div className="mt-3">
             <h1 className="text-2xl font-semibold text-white">
               Select Data Elements for your SFT
             </h1>
@@ -138,9 +138,15 @@ export default function Onboarding04() {
           </div>
         </div>
       ) : step == "upload_files" ? (
-        <Local files={localFiles} setFiles={setLocalFiles} />
+        <>
+          <OnboardingProgress step={1} />
+          <Local files={localFiles} setFiles={setLocalFiles} />
+        </>
       ) : step == "notion" ? (
-        <Notion closeModal={closeModal} />
+        <>
+          <OnboardingProgress step={1} />
+          <Notion closeModal={closeModal} />
+        </>
       ) : (
         <></>
       )}

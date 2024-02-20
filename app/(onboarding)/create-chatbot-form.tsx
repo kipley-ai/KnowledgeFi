@@ -12,7 +12,6 @@ import { number, string } from "zod";
 import Switcher from "@/components/switcher";
 import { useAppProvider } from "@/providers/app-provider";
 import { DEFAULT_COVER_IMAGE } from "@/utils/constants";
-import SuccessModal from "./success-modal";
 
 interface Category {
   title: string;
@@ -35,7 +34,6 @@ const ChatBotForm = () => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [profileImage, setProfileImage] = useState("");
   const [profileImageUrl, setProfileImageUrl] = useState("");
-  const [showModal, setShowModal] = useState(false);
   const [instructions, setInstructions] = useState("");
   const [example, setExample] = useState("");
   const router = useRouter();
@@ -47,6 +45,7 @@ const ChatBotForm = () => {
   const [mode, setMode] = useState(0);
   const [toneData, setToneData] = useState("");
   const [pricePerQuery, setPricePerQuery] = useState(0);
+  const { setStep, setSftId } = useCreateChatbotContext();
 
   const { data: twitterSession } = useSession();
 
@@ -92,7 +91,7 @@ const ChatBotForm = () => {
       },
       {
         async onSuccess() {
-          setShowModal(true);
+          setStep("onboarding_success");
         },
       },
     );
@@ -159,11 +158,6 @@ const ChatBotForm = () => {
         open={showModal}
         setOpen={setShowModal}
       /> */}
-      <SuccessModal
-        children={"Your Knowledge Asset is created successfully"}
-        open={showModal}
-        setOpen={setShowModal}
-      />
       <div className="flex flex-col bg-[#292D32] py-8 sm:px-6 lg:px-0">
         <div className="mx-5 md:mx-32">
           <h1 className="text-2xl font-semibold text-white">Create Chatbot</h1>
@@ -241,23 +235,20 @@ const ChatBotForm = () => {
                 {/* <p className="mt-2 text-xs text-gray-400">Category of your AI.</p> */}
               </div>
               <div>
-                <label
-                  className="block text-xs font-semibold text-white lg:text-sm "
-                >
+                <label className="block text-xs font-semibold text-white lg:text-sm ">
                   Price Per Query
                 </label>
                 <div className="mt-3">
                   <input
-                      className="placeholder-text-[#7C878E] w-full rounded-xl bg-transparent text-xs text-[#DDD] lg:text-sm"
-                      type="number"
-                      name="pricePerQuery"
-                      placeholder="e.g. 1"
-                      onChange={(e) => {
-                        if (parseFloat(e.target.value) < 0)
-                          setPricePerQuery(0);
-                        else setPricePerQuery(parseFloat(e.target.value));
-                      }}
-                      value={pricePerQuery}
+                    className="placeholder-text-[#7C878E] w-full rounded-xl bg-transparent text-xs text-[#DDD] lg:text-sm"
+                    type="number"
+                    name="pricePerQuery"
+                    placeholder="e.g. 1"
+                    onChange={(e) => {
+                      if (parseFloat(e.target.value) < 0) setPricePerQuery(0);
+                      else setPricePerQuery(parseFloat(e.target.value));
+                    }}
+                    value={pricePerQuery}
                   />
                 </div>
               </div>

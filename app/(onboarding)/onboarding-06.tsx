@@ -14,10 +14,11 @@ import ChatBotForm from "./create-chatbot-form";
 
 export default function Onboarding06() {
   return (
-    <div className="flex flex-col bg-[#292D32] pt-6 pb-20 px-6 lg:px-8 xl:px-32">
-          <OnboardingProgress step={3} />
-
-          <ChatBotForm />
-        </div>
-  )
+    <div className="flex flex-col bg-[#292D32] px-6 pb-20 pt-6 lg:px-8 xl:px-32">
+      <OnboardingProgress step={3} />
+      <div className="-mx-16 -mt-3">
+        <ChatBotForm />
+      </div>
+    </div>
+  );
 }
