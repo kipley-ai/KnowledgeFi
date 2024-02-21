@@ -3,7 +3,7 @@ import { axiosAPI, constructHeader } from "../../utils";
 
 export async function POST(req: Request) {
   const data = await req.json();
-  const url = "https://knowledgefi-backend.fly.dev/new_session";
+  const url = `${process.env.API_URL}/new_session`;
   console.log(url, " param ", data);
 
   const res = await axiosAPI(url, {
