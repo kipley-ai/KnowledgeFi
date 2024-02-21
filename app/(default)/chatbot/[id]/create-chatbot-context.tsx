@@ -63,7 +63,7 @@ export const CreateChatbotProvider = ({
 
   const [messageHistory, setMessageHistory] = useState<Message[]>([]);
   const { lastJsonMessage, readyState, sendValidatedMessage } = useChatboxWS(
-    "wss://knowledgefi-backend.fly.dev/chat_with_kb"
+    `${process.env.NEXT_PUBLIC_CHATBOT_WS}/chat_with_kb`,
   );
   const [replyStatus, setReplyStatus] = useState<"idle" | "answering">("idle");
 
@@ -118,7 +118,7 @@ export const useCreateChatbotContext = () => {
   const context = useContext(CreateChatbotContext);
   if (!context) {
     throw new Error(
-      "useCreateChatbotContext must be used within a CreateChatbotProvider"
+      "useCreateChatbotContext must be used within a CreateChatbotProvider",
     );
   }
   return context;
