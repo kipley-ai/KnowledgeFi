@@ -5,7 +5,7 @@ import { useFlyoutContext } from '@/app/flyout-context'
 import Image from 'next/image'
 import User01 from '@/public/images/user-40-11.jpg'
 import User02 from '@/public/images/user-40-12.jpg'
-import ChatImage from '@/public/images/chat-image.jpg'
+// import ChatImage from '@/public/images/chat-image.jpg'
 
 export default function MessagesChat() {
 
@@ -51,7 +51,7 @@ export default function MessagesChat() {
         <Image className="rounded-full mr-4" src={User01} width={40} height={40} alt="User 01" />
         <div>
           <div className="flex items-center">
-            <Image className="rounded-lg shadow-md mb-1" src={ChatImage} width={240} height={180} alt="Chat" />
+            {/* <Image className="rounded-lg shadow-md mb-1" src={ChatImage} width={240} height={180} alt="Chat" /> */}
             <button className="p-1.5 rounded-full border border-slate-200 dark:border-slate-700 ml-4 hover:bg-white dark:hover:bg-slate-800 transition duration-150">
               <span className="sr-only">Download</span>
               <svg className="w-4 h-4 shrink-0 fill-current text-slate-400 dark:text-slate-500" viewBox="0 0 16 16">
