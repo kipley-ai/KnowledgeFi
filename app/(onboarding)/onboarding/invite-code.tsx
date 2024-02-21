@@ -126,7 +126,7 @@ const InviteCode = ({ address }: InviteCodeProps) => {
 
   useEffect(() => {
     const checkWhitelist = async () => {
-      const res = await axios.post("/api/onboarding/is-whitelisted", {
+      const res = await axios.post("/api/onboarding/is-whitelisted", {}, {
         headers: {
           "x-kf-user-id": address,
         },
