@@ -126,21 +126,25 @@ const InviteCode = ({ address }: InviteCodeProps) => {
 
   useEffect(() => {
     const checkWhitelist = async () => {
-      const res = await axios.post("/api/onboarding/is-whitelisted", {}, {
-        headers: {
-          "x-kf-user-id": address,
+      const res = await axios.post(
+        "/api/onboarding/is-whitelisted",
+        {},
+        {
+          headers: {
+            "x-kf-user-id": address,
+          },
         },
-      });
+      );
 
       if (res.data?.status !== "error") {
         setStep("data_source");
       }
     };
 
-    const storedAddress = sessionStorage.getItem("address");
-    if (storedAddress === address) {
-      setStep("data_source");
-    }
+    // const storedAddress = sessionStorage.getItem("address");
+    // if (storedAddress === address) {
+    //   setStep("data_source");
+    // }
 
     if (address !== null && address !== undefined) {
       checkWhitelist();
