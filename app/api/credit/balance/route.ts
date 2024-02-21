@@ -3,7 +3,7 @@ import { axiosAPI, constructHeader } from "../../utils";
 
 export async function POST(req: Request) {
   const data = await req.json();
-  const url = "https://knowledgefi-backend.fly.dev/api_v1/credit_balance";
+  const url = `${process.env.API_URL}/api_v1/credit_balance`;
   console.log(url, " param ", data);
 
   const res = await axiosAPI(url, {

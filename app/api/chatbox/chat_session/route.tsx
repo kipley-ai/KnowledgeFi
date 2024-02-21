@@ -3,9 +3,9 @@ import { axiosAPI, constructHeader } from "../../utils";
 
 export async function POST(req: Request) {
   const headers = await constructHeader(req.headers);
-  console.log(headers)
+  console.log(headers);
   const data = await req.json();
-  const url = "https://knowledgefi-backend.fly.dev/chat_session";
+  const url = `${process.env.API_URL}/chat_session`;
 
   const res = await axiosAPI(url, {
     method: "POST",
@@ -25,4 +25,3 @@ export async function POST(req: Request) {
 //   });
 //   return NextResponse.json(res.data);
 // }
-

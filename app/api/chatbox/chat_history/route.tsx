@@ -4,7 +4,7 @@ import { axiosAPI, constructHeader } from "../../utils";
 export async function POST(req: Request) {
   const headers = await constructHeader(req.headers);
   const data = await req.json();
-  const url = "https://knowledgefi-backend.fly.dev/chat_history";
+  const url = `${process.env.API_URL}/chat_history`;
 
   const res = await axiosAPI(url, {
     method: "POST",

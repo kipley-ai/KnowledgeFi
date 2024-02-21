@@ -72,20 +72,19 @@ const wagmiConfig = createConfig({
 
 export function CryptoProvider({ children }: React.PropsWithChildren) {
   const [status, setStatus] = useState<AuthenticationStatus>("unauthenticated");
-  const [address,setAddress] = useState("")
+  const [address, setAddress] = useState("");
   const { response, error, loading, sendRequest } = useAxios();
-  useEffect(()=> {
+  useEffect(() => {
     // console.log(address,"address")
-    if(status == 'authenticated' && address!=''){
+    if (status == "authenticated" && address != "") {
       sendRequest({
-          method: "POST",
-          url: "/api/user/create",
-          data: {wallet_addr:address},
-          headers: {'x-kf-user-id':address}
-        })
+        method: "POST",
+        url: "/api/user/create",
+        data: { wallet_addr: address },
+        headers: { "x-kf-user-id": address },
+      });
     }
-
-  },[address,status])
+  }, [address, status]);
 
   const authenticationAdapter = createAuthenticationAdapter({
     getNonce: async () => {
@@ -93,7 +92,7 @@ export function CryptoProvider({ children }: React.PropsWithChildren) {
     },
 
     createMessage: ({ nonce, address, chainId }) => {
-      setAddress(address)
+      setAddress(address);
       return "Welcome to KnowledgeFi.xyz!";
     },
 
@@ -124,7 +123,7 @@ export function CryptoProvider({ children }: React.PropsWithChildren) {
         <RainbowKitProvider
           chains={chains}
           initialChain={
-            process.env.NEXT_PUBLIC_ENV_DEV == "1" ? sepolia : mainnet
+            process.env.NEXT_PUBLIC_ENV_DEV == "1" ? sepolia : arbitrum
           }
         >
           {children}
