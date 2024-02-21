@@ -49,7 +49,7 @@ export default function Header() {
 
     const handleUserDetail = async () => {
       const { data } = await refetchUserDetail();
-      if (data) {
+      if (data?.data) {
         setProfileImage(data.data.data.profile_image || "");
         if (
           twitterStatus == "authenticated" &&
