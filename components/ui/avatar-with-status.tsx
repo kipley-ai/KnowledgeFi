@@ -4,10 +4,11 @@ import { StaticImageData } from "next/image";
 import Image from "next/image";
 import { signOut } from "next-auth/react";
 import { useDisconnect, useAccount } from "wagmi";
-import defaultAvatar from "@/public/images/avatar-default-02.svg"
+import defaultAvatar from "@/public/images/avatar-default-02.svg";
 import { useAppProvider } from "@/providers/app-provider";
 import ModalTopUp from "../modal-top-up";
 import { useCreditBalance } from "@/hooks/api/credit";
+import Link from "next/link";
 
 type StatusType = "online" | "busy" | "away" | "offline";
 
@@ -32,7 +33,7 @@ const AvatarWithStatus: React.FC<AvatarWithStatusProps> = ({
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const { disconnect } = useDisconnect();
-	const { modalTopUp, setModalTopUp } = useAppProvider();
+  const { modalTopUp, setModalTopUp } = useAppProvider();
   const { address } = useAccount();
 
   const { data: creditBalanceData } = useCreditBalance();
@@ -59,7 +60,7 @@ const AvatarWithStatus: React.FC<AvatarWithStatusProps> = ({
   return (
     <div className="relative inline-block" ref={dropdownRef}>
       <ModalTopUp isOpen={modalTopUp} setIsOpen={setModalTopUp} />
-      <div onClick={toggleDropdown} className="cursor-pointer min-w-10">
+      <div onClick={toggleDropdown} className="min-w-10 cursor-pointer">
         {/* <img src={image} alt="Avatar" className="w-12 h-12 rounded-full" /> */}
         {image === "" ? (
           <Image
@@ -67,44 +68,44 @@ const AvatarWithStatus: React.FC<AvatarWithStatusProps> = ({
             width={42}
             height={42}
             alt="Avatar"
-            className="w-10 h-10 rounded-full"
+            className="h-10 w-10 rounded-full"
           />
         ) : (
-        <Image
-          src={image}
-          width={42}
-          height={42}
-          alt="Avatar"
-          className="w-10 h-10 rounded-full"
-        />
+          <Image
+            src={image}
+            width={42}
+            height={42}
+            alt="Avatar"
+            className="h-10 w-10 rounded-full"
+          />
         )}
         {/* <span
           className={`absolute top-0 right-0 w-3 h-3 rounded-full border-2 border-white ${statusColor[status]}`}
         ></span> */}
       </div>
       {isDropdownOpen && (
-        <div className="absolute right-0 mt-2 py-2 w-48 bg-[#151515] rounded-md shadow-xl z-50">
+        <div className="absolute right-0 z-50 mt-2 w-48 rounded-md bg-[#151515] py-2 shadow-xl">
           <div className="px-4 py-2">
             <div className="text-sm font-medium text-[#FCFCFD]">
               {address && `${address.slice(0, 6)}...${address.slice(-6)}`}
             </div>
-            <div className="bg-gray-700 rounded-lg mt-2 p-2">
+            <div className="mt-2 rounded-lg bg-gray-700 p-2">
               <div className="text-sm font-medium text-[#FCFCFD]">Balance</div>
               <div className="text-lg font-semibold text-[#FCFCFD]">
                 {creditBalanceData?.data.data.credit_balance} credits
               </div>
-              <div className="mt-2 flex items-center border border-[#01F7FF] px-1 py-1 rounded-full">
+              <div className="mt-2 flex items-center rounded-full border border-[#01F7FF] px-1 py-1">
                 <button className="w-full" onClick={() => setModalTopUp(true)}>
-                    <span className="text-sm font-bold text-[#FCFCFD] duration-200">
-                      Top up credits
-                    </span>
+                  <span className="text-sm font-bold text-[#FCFCFD] duration-200">
+                    Top up credits
+                  </span>
                 </button>
               </div>
             </div>
           </div>
-          <a
+          <Link
             href="/manage-account"
-            className="flex block px-4 py-2 text-sm capitalize text-[#FCFCFD] hover:bg-blue-500 hover:text-white"
+            className="block flex px-4 py-2 text-sm capitalize text-[#FCFCFD] hover:bg-blue-500 hover:text-white"
           >
             <svg
               className="mr-2"
@@ -140,10 +141,10 @@ const AvatarWithStatus: React.FC<AvatarWithStatusProps> = ({
               </defs>
             </svg>
             Manage Account
-          </a>
-          <div className="border-t border-gray-300 mx-4"></div>
+          </Link>
+          <div className="mx-4 border-t border-gray-300"></div>
           <button
-            className="flex block px-4 py-2 w-full text-sm capitalize text-[#FCFCFD] hover:bg-blue-500 hover:text-white"
+            className="block flex w-full px-4 py-2 text-sm capitalize text-[#FCFCFD] hover:bg-blue-500 hover:text-white"
             onClick={(e) => {
               e.preventDefault();
               localStorage.setItem("kip-protocol-signature", "");

@@ -142,7 +142,7 @@ const InviteCode = ({ address }: InviteCodeProps) => {
       setStep("data_source");
     }
 
-    if (address) {
+    if (address !== null && address !== undefined) {
       checkWhitelist();
     }
   }, []);

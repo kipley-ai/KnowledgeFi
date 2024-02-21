@@ -6,6 +6,8 @@ import { useEffect, useState } from "react";
 import Dashboard from "./(dashboard)/dashboard/page";
 import LayoutDashboard from "./(dashboard)/dashboard/layout";
 import GetInvolvedButton from "@/components/GetInvolvedButton/get-involved-button";
+import OnboardingLayout from "./(onboarding)/onboarding/layout";
+import Onboarding from "./(onboarding)/onboarding/page";
 
 export default function Home() {
   const [isDefinitelyConnected, setIsDefinitelyConnected] = useState(false);
@@ -13,7 +15,7 @@ export default function Home() {
   const { address, isConnected } = useAccount();
 
   const searchParams = useSearchParams();
-  const nextUrl = searchParams.get("next") || "/dashboard";
+  const nextUrl = searchParams.get("next") || "/onboarding";
 
   useEffect(() => {
     if (isConnected) {
@@ -63,9 +65,9 @@ export default function Home() {
 
     return (
       <>
-        <LayoutDashboard>
-          <Dashboard />
-        </LayoutDashboard>
+        <OnboardingLayout>
+          <Onboarding />
+        </OnboardingLayout>
       </>
     );
   }
