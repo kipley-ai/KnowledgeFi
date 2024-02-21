@@ -1,9 +1,15 @@
+import axios from "axios";
 import { useState, useEffect, useRef } from "react";
 import { useCreateChatbotContext } from "../create-knowledge-context";
 
-const InviteCode = () => {
+type InviteCodeProps = {
+  address: string | undefined;
+};
+
+const InviteCode = ({ address }: InviteCodeProps) => {
   const [isBlankPresent, setIsBlankPresent] = useState(true);
   const [otp, setOtp] = useState(new Array(6).fill(""));
+  const [errorMessage, setErrorMessage] = useState("");
 
   const inputsRef = useRef<(HTMLInputElement | null)[]>([]);
 
@@ -76,10 +82,28 @@ const InviteCode = () => {
     }
   };
 
-  // TODO: Integrate with BE
-  const handleContinue = () => {
-    console.log("otp :>> ", otp);
-    setStep("data_source");
+  const handleContinue = async () => {
+    const res = await axios.post(
+      "/api/onboarding/check-invite-code",
+      { invite_code: otp.join("") },
+      {
+        headers: {
+          "x-kf-user-id": address,
+        },
+      },
+    );
+
+    if (res.data?.status === "error") {
+      setErrorMessage(res.data?.msg);
+      setTimeout(function () {
+        setErrorMessage("");
+      }, 3000);
+    } else {
+      if (address) {
+        sessionStorage.setItem("address", address);
+      }
+      setStep("data_source");
+    }
   };
 
   useEffect(() => {
@@ -100,12 +124,38 @@ const InviteCode = () => {
     setIsBlankPresent(blankCheck);
   }, [otp]);
 
+  useEffect(() => {
+    const checkWhitelist = async () => {
+      const res = await axios.post("/api/onboarding/is-whitelisted", {
+        headers: {
+          "x-kf-user-id": address,
+        },
+      });
+
+      if (res.data?.status !== "error") {
+        setStep("data_source");
+      }
+    };
+
+    const storedAddress = sessionStorage.getItem("address");
+    if (storedAddress === address) {
+      setStep("data_source");
+    }
+
+    if (address) {
+      checkWhitelist();
+    }
+  }, []);
+
   return (
-    <div className="flex h-full flex-col items-center gap-12">
+    <div className="flex h-full flex-col items-center gap-6">
       <p className="text-xl font-semibold text-white">
         Enter invite code to join
       </p>
-      <div className="flex gap-4">
+      <div className="flex h-1 gap-2">
+        <p className="text-sm font-semibold text-red-500">{errorMessage}</p>
+      </div>
+      <div className="mb-8 flex gap-4">
         {otp.map((data, index) => {
           return (
             <input

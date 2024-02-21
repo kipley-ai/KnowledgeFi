@@ -11,7 +11,7 @@ import Onboarding06 from "../onboarding-06";
 import OnboardingSuccess from "../onboarding-success";
 
 export default function Onboarding() {
-  const { isConnected } = useAccount();
+  const { isConnected, address } = useAccount();
   // const isConnected = true;
 
   const { isComingSoon, step, setStep } = useCreateChatbotContext();
@@ -36,7 +36,7 @@ export default function Onboarding() {
       ) : step == "onboarding_success" ? (
         <OnboardingSuccess />
       ) : (
-        <InviteCode />
+        <InviteCode address={address} />
       )}
     </>
     // </div>
