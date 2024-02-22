@@ -19,7 +19,7 @@ export default function ChatbotDescription() {
   const { data: nftData } = useNftDetail({
     sft_id: chatbotData?.data.data.sft_id!,
   });
-  const nftOpenSeaLink = `https://testnets.opensea.io/assets/sepolia/${nftData?.data.data.sft_address}`;
+  const nftOpenSeaLink = `${process.env.NEXT_PUBLIC_OPENSEA_URL}/${nftData?.data.data.sft_address}`;
   // const {data: profit, isLoading} = useTokenProfit_(chatbotData?.data.data.sft_id, 1);
   // TODO: Change later when shit is actually working
   const { data: profit, isFetched } = useTokenProfit_(
@@ -29,7 +29,7 @@ export default function ChatbotDescription() {
 
   useEffect(() => {
     console.log("Profit :" + profit);
-  }, [profit]); 
+  }, [profit]);
 
   return (
     <div className="flex flex-col gap-4 p-6">
@@ -42,8 +42,10 @@ export default function ChatbotDescription() {
             width={240}
             height={240}
           />
-          <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300">
-            <p className="text-white text-sm lg:text-lg font-bold text-center">View SFT on OpenSea</p>
+          <div className="absolute left-0 top-0 flex h-full w-full items-center justify-center opacity-0 transition-opacity duration-300 hover:opacity-100">
+            <p className="text-center text-sm font-bold text-white lg:text-lg">
+              View SFT on OpenSea
+            </p>
           </div>
         </a>
       </div>
@@ -51,11 +53,8 @@ export default function ChatbotDescription() {
         <p className="text-sm">{nftData?.data.data.name}</p>
         <p className="text-[11px]">
           <span className="text-[#777E90]">Stored Value</span>
-          {isFetched ? profit : <FaSpinner className="animate-spin" />}
-          {" "}
-          {profit ? "" : 0}
-          {" "}
-          {tokenSymbol}
+          {isFetched ? profit : <FaSpinner className="animate-spin" />}{" "}
+          {profit ? "" : 0} {tokenSymbol}
         </p>
       </div>
     </div>
