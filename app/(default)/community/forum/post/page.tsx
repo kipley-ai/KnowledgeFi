@@ -7,7 +7,6 @@ import ForumLeftContent from '../forum-left-content'
 import ForumEntry from './forum-entry'
 import ForumPostRightContent from './forum-post-right-content'
 
-import { useRouter } from 'next/navigation'
 import { useUserDetail } from '@/hooks/api/user'
 
 export default function ForumPost() {

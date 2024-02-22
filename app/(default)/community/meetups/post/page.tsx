@@ -3,7 +3,7 @@ export const metadata = {
   description: 'Page description',
 }
 
-import { useRouter } from 'next/navigation'
+// import { useRouter } from 'next/navigation'
 import { useUserDetail } from '@/hooks/api/user'
 
 import Link from 'next/link'
@@ -26,14 +26,14 @@ import Avatar03 from '@/public/images/avatar-03.jpg'
 import Avatar04 from '@/public/images/avatar-04.jpg'
 
 export default function MeetupPost() {
-  const router = useRouter();
+  // const router = useRouter();
 
-  const { data: userDetail } = useUserDetail();
+  // const { data: userDetail } = useUserDetail();
 
-  const onboarding = userDetail?.data.data.onboarding;
-  if (!onboarding) {
-    router.push("/onboarding");
-  }
+  // const onboarding = userDetail?.data.data.onboarding;
+  // if (!onboarding) {
+  //   router.push("/onboarding");
+  // }
   return (
     <div className="px-4 sm:px-6 lg:px-8 py-8 w-full">
       {/* Page content */}

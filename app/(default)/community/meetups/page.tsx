@@ -3,7 +3,7 @@ export const metadata = {
   description: 'Page description',
 }
 
-import { useRouter } from 'next/navigation'
+// import { useRouter } from 'next/navigation'
 import { useUserDetail } from '@/hooks/api/user'
 
 import SearchForm from '@/components/search-form'
@@ -11,14 +11,14 @@ import MeetupsPosts from './meetups-posts'
 import PaginationNumeric from '@/components/pagination-numeric'
 
 export default function Meetups() {
-  const router = useRouter();
+  // const router = useRouter();
 
-  const { data: userDetail } = useUserDetail();
+  // const { data: userDetail } = useUserDetail();
 
-  const onboarding = userDetail?.data.data.onboarding;
-  if (!onboarding) {
-    router.push("/onboarding");
-  }
+  // const onboarding = userDetail?.data.data.onboarding;
+  // if (!onboarding) {
+  //   router.push("/onboarding");
+  // }
 
   return (
     <div className="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-[96rem] mx-auto">

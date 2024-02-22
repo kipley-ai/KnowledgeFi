@@ -9,7 +9,6 @@ import FeedPosts from './feed-posts'
 import FeedRightContent from './feed-right-content'
 import Avatar from '@/public/images/user-40-02.jpg'
 
-import { useRouter } from 'next/navigation'
 import { useUserDetail } from '@/hooks/api/user'
 
 export default function Feed() {

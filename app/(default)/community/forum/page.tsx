@@ -8,7 +8,6 @@ import ForumLeftContent from './forum-left-content'
 import ForumEntries from './forum-entries'
 import ForumRightContent from './forum-right-content'
 
-import { useRouter } from 'next/navigation'
 import { useUserDetail } from '@/hooks/api/user'
 
 export default function Forum() {
