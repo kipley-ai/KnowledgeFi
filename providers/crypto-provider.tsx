@@ -35,6 +35,7 @@ import { oneKeyWallet } from "@rainbow-me/rainbowkit/wallets";
 import { ledgerWallet } from "@rainbow-me/rainbowkit/wallets";
 import { bitKeepWallet } from "@rainbow-me/rainbowkit/wallets";
 import { useAxios } from "@/hooks/useAxios";
+import { useAppProvider } from "./app-provider";
 
 const { chains, publicClient } = configureChains(
   [mainnet, polygon, optimism, arbitrum, base, zora, sepolia],
@@ -71,12 +72,14 @@ const wagmiConfig = createConfig({
 });
 
 export function CryptoProvider({ children }: React.PropsWithChildren) {
-  const [status, setStatus] = useState<AuthenticationStatus>("unauthenticated");
   const [address, setAddress] = useState("");
   const { response, error, loading, sendRequest } = useAxios();
+
+  const { verifStatus, setVerifStatus } = useAppProvider();
+
   useEffect(() => {
     // console.log(address,"address")
-    if (status == "authenticated" && address != "") {
+    if (verifStatus == "authenticated" && address != "") {
       sendRequest({
         method: "POST",
         url: "/api/user/create",
@@ -84,7 +87,7 @@ export function CryptoProvider({ children }: React.PropsWithChildren) {
         headers: { "x-kf-user-id": address },
       });
     }
-  }, [address, status]);
+  }, [address, verifStatus]);
 
   const authenticationAdapter = createAuthenticationAdapter({
     getNonce: async () => {
@@ -103,14 +106,14 @@ export function CryptoProvider({ children }: React.PropsWithChildren) {
     verify: async ({ message, signature }) => {
       localStorage.setItem("kip-protocol-signature", signature);
 
-      setStatus("authenticated");
+      setVerifStatus("authenticated");
       return true;
     },
 
     signOut: async () => {
       localStorage.setItem("kip-protocol-signature", "");
 
-      setStatus("unauthenticated");
+      setVerifStatus("unauthenticated");
     },
   });
 
@@ -118,7 +121,7 @@ export function CryptoProvider({ children }: React.PropsWithChildren) {
     <WagmiConfig config={wagmiConfig}>
       <RainbowKitAuthenticationProvider
         adapter={authenticationAdapter}
-        status={status}
+        status={verifStatus}
       >
         <RainbowKitProvider
           chains={chains}
