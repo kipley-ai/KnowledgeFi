@@ -27,17 +27,21 @@ const NoData = ({ item, url }: NoDataProps) => {
         alt={"No Data"}
       />
       <p className="text-lg font-semibold text-white">No data yet</p>
+
       {/* Create new Item */}
-      {/* <Link href={url}>
-        <div className="flex items-center gap-2 hover:brightness-75">
-          <IconContext.Provider value={{ color: "#01F7FF" }}>
-            <div>
-              <FaPlus />
-            </div>
-          </IconContext.Provider>
-          <p className="text-sm text-[#01F7FF]">Create new {item}</p>
-        </div>
-      </Link> */}
+      { item=="SFT" ? 
+        <Link href={url}>
+          <div className="flex items-center gap-2 hover:brightness-75">
+            <IconContext.Provider value={{ color: "#01F7FF" }}>
+              <div>
+                <FaPlus />
+              </div>
+            </IconContext.Provider>
+            <p className="text-sm text-[#01F7FF]">Create new {item}</p>
+          </div>
+        </Link> 
+        : <></> 
+      }
     </div>
   );
 };
