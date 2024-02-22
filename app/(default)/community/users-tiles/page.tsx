@@ -20,8 +20,18 @@ import Image10 from '@/public/images/user-64-10.jpg'
 import Image11 from '@/public/images/user-64-11.jpg'
 import Image12 from '@/public/images/user-64-12.jpg'
 
-export default function UsersTabs() {
+// import { useRouter } from 'next/navigation'
+import { useUserDetail } from '@/hooks/api/user'
 
+export default function UsersTabs() {
+  // const router = useRouter();
+
+  // const { data: userDetail } = useUserDetail();
+
+  // const onboarding = userDetail?.data.data.onboarding;
+  // if (!onboarding) {
+  //   router.push("/onboarding");
+  // }
   // Some dummy users data
   const users = [
     {

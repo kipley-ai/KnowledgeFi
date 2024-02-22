@@ -3,6 +3,9 @@ import { useAppProvider } from "@/providers/app-provider";
 import { mintNFT } from "@/smart-contract/kip-protocol-contract";
 import React, { useEffect, useState } from "react";
 
+import { useRouter } from 'next/navigation'
+import { useUserDetail } from '@/hooks/api/user'
+
 // export const metadata = {
 //     title: 'SFT - Mosaic',
 //     description: 'Page description',
@@ -27,6 +30,15 @@ export default function NFT() {
     // kbId: "",
     assetId: 0,
   });
+
+  const router = useRouter();
+
+  const { data: userDetail } = useUserDetail();
+
+  const onboarding = userDetail?.data.data.onboarding;
+  if (!onboarding) {
+    router.push("/onboarding");
+  }
 
   const handleFormChange = (name: string, value: any) => {
     setForm({

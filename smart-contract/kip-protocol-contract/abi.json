@@ -1,15 +1,24 @@
 [
+  { "inputs": [], "stateMutability": "nonpayable", "type": "constructor" },
   {
     "inputs": [
-      { "internalType": "address", "name": "initialOwner", "type": "address" },
-      { "internalType": "address", "name": "pay_token", "type": "address" },
-      { "internalType": "address", "name": "fund_address", "type": "address" },
-      { "internalType": "string", "name": "sft_base_uri", "type": "string" }
+      { "internalType": "address", "name": "target", "type": "address" }
     ],
-    "stateMutability": "nonpayable",
-    "type": "constructor"
+    "name": "AddressEmptyCode",
+    "type": "error"
   },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "implementation", "type": "address" }
+    ],
+    "name": "ERC1967InvalidImplementation",
+    "type": "error"
+  },
+  { "inputs": [], "name": "ERC1967NonPayable", "type": "error" },
+  { "inputs": [], "name": "FailedInnerCall", "type": "error" },
+  { "inputs": [], "name": "InvalidInitialization", "type": "error" },
   { "inputs": [], "name": "MathOverflowedMulDiv", "type": "error" },
+  { "inputs": [], "name": "NotInitializing", "type": "error" },
   {
     "inputs": [
       { "internalType": "address", "name": "owner", "type": "address" }
@@ -25,12 +34,12 @@
     "type": "error"
   },
   { "inputs": [], "name": "ReentrancyGuardReentrantCall", "type": "error" },
+  { "inputs": [], "name": "UUPSUnauthorizedCallContext", "type": "error" },
   {
     "inputs": [
-      { "internalType": "uint256", "name": "value", "type": "uint256" },
-      { "internalType": "uint256", "name": "length", "type": "uint256" }
+      { "internalType": "bytes32", "name": "slot", "type": "bytes32" }
     ],
-    "name": "StringsInsufficientHexLength",
+    "name": "UUPSUnsupportedProxiableUUID",
     "type": "error"
   },
   {
@@ -88,6 +97,19 @@
       }
     ],
     "name": "IncomeClaimed",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint64",
+        "name": "version",
+        "type": "uint64"
+      }
+    ],
+    "name": "Initialized",
     "type": "event"
   },
   {
@@ -165,17 +187,11 @@
       {
         "indexed": false,
         "internalType": "address",
-        "name": "sft_address",
+        "name": "token_address",
         "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "string",
-        "name": "new_uri",
-        "type": "string"
       }
     ],
-    "name": "SFTBaseURIChanged",
+    "name": "SFTFactoryAddressChanged",
     "type": "event"
   },
   {
@@ -201,48 +217,18 @@
     "anonymous": false,
     "inputs": [
       {
-        "indexed": false,
+        "indexed": true,
         "internalType": "address",
-        "name": "sft_address",
+        "name": "implementation",
         "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "slot_value",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "token_amount",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "asset_id",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "owner_address",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "string",
-        "name": "reference_id",
-        "type": "string"
       }
     ],
-    "name": "TokenCreated",
+    "name": "Upgraded",
     "type": "event"
   },
   {
     "inputs": [],
-    "name": "SFTBaseURI",
+    "name": "UPGRADE_INTERFACE_VERSION",
     "outputs": [{ "internalType": "string", "name": "", "type": "string" }],
     "stateMutability": "view",
     "type": "function"
@@ -336,6 +322,22 @@
     "type": "function"
   },
   {
+    "inputs": [
+      { "internalType": "address", "name": "initial_owner", "type": "address" },
+      { "internalType": "address", "name": "pay_token", "type": "address" },
+      { "internalType": "address", "name": "fund_address", "type": "address" },
+      {
+        "internalType": "address",
+        "name": "sft_factory_address",
+        "type": "address"
+      }
+    ],
+    "name": "initialize",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "invoiceId",
     "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
@@ -353,6 +355,13 @@
     "inputs": [],
     "name": "payTokenAddress",
     "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "proxiableUUID",
+    "outputs": [{ "internalType": "bytes32", "name": "", "type": "bytes32" }],
     "stateMutability": "view",
     "type": "function"
   },
@@ -399,10 +408,9 @@
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "sft_address", "type": "address" },
-      { "internalType": "string", "name": "new_uri", "type": "string" }
+      { "internalType": "address", "name": "_address", "type": "address" }
     ],
-    "name": "setSFTBaseURI",
+    "name": "setSFTFactoryAddress",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -415,6 +423,13 @@
     "name": "setServiceProvider",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "sftFactoryAddress",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -455,6 +470,20 @@
     "name": "transferOwnership",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "newImplementation",
+        "type": "address"
+      },
+      { "internalType": "bytes", "name": "data", "type": "bytes" }
+    ],
+    "name": "upgradeToAndCall",
+    "outputs": [],
+    "stateMutability": "payable",
     "type": "function"
   }
 ]

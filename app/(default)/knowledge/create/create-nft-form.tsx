@@ -42,7 +42,7 @@ export default function NFT() {
   const [errorMessage, setErrorMessage] = useState<any>({});
   const [allowGenerate, setAllowGenerate] = useState(false);
   const { data: twitterSession } = useSession();
-  const [form, setForm] = useState<Form>({ shareSupply: "5000" });
+  const [form, setForm] = useState<Form>({ shareSupply: "10000", comissionRate: 1 });
   const [selectedFile, setSelectedFile] = useState<string>(DEFAULT_COVER_IMAGE);
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [nftIdCreated, setNftIdCreated] = useState("");
@@ -269,7 +269,7 @@ export default function NFT() {
                     <div className="text-xs opacity-0 lg:text-sm">a</div>
                   )}
                 </div>
-                <div className="flex w-1/3 flex-col gap-1">
+                {/* <div className="flex w-1/3 flex-col gap-1">
                   <label className="text-wrap text-xs font-semibold text-[#DDD] lg:text-sm">
                     Shares Supply
                   </label>
@@ -316,7 +316,7 @@ export default function NFT() {
                     />
                     <div className="ml-2 block w-fit text-[#DDD]">%</div>
                   </div>
-                </div>
+                </div> */}
                 <div className="flex w-1/3 flex-col gap-1">
                   <label className="text-wrap text-xs font-semibold text-[#DDD] lg:text-sm">
                     Price Per Query

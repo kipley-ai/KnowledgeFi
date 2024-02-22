@@ -8,7 +8,17 @@ import ForumLeftContent from './forum-left-content'
 import ForumEntries from './forum-entries'
 import ForumRightContent from './forum-right-content'
 
+import { useUserDetail } from '@/hooks/api/user'
+
 export default function Forum() {
+  // const router = useRouter();
+
+  // const { data: userDetail } = useUserDetail();
+
+  // const onboarding = userDetail?.data.data.onboarding;
+  // if (!onboarding) {
+  //   router.push("/onboarding");
+  // }
   return (
     <div className="px-4 sm:px-6 lg:px-8 py-8 md:py-0 w-full max-w-[96rem] mx-auto">
 

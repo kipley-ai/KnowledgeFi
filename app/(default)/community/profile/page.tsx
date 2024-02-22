@@ -7,7 +7,19 @@ import { FlyoutProvider } from '@/app/flyout-context'
 import ProfileSidebar from './profile-sidebar'
 import ProfileBody from './profile-body'
 
+// import { useRouter } from 'next/navigation'
+import { useUserDetail } from '@/hooks/api/user'
+
 function ProfileContent() {
+  // const router = useRouter();
+
+  // const { data: userDetail } = useUserDetail();
+
+  // const onboarding = userDetail?.data.data.onboarding;
+  // if (!onboarding) {
+  //   router.push("/onboarding");
+  // }
+
   return (
     <div className="relative flex">
 
