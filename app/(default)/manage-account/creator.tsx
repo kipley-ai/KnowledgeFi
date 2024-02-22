@@ -80,9 +80,11 @@ const WithdrawConfirm = ({ nftData } : { nftData: NftData | undefined}) => {
         Clear
       </button>
       <input type="text" className="text-center text-gray-50 bg-[#272B30] rounded border-0 ring-1 ring-gray-700" value={withdrawValue} onChange={(e) => {
-        const value = parseInt(e.target.value);
-        setValues([0, isNaN(value) ? 0 : value]);
-        setWithdrawValue(e.target.value)
+        let value = parseInt(e.target.value);
+        if(isNaN(value)) value = 0;
+        value = Math.max(0, Math.min(1000, value));
+        setValues([0, value]);
+        setWithdrawValue(value.toString());
       }}/>
       <button className="text-[#01F7FF] ring-1 ring-gray-700 font-semibold text-sm py-2 px-4 rounded bg-[#272B30]" onClick={() => {
         setValues([0,1000])
