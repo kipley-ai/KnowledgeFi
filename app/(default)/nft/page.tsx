@@ -134,7 +134,7 @@ const NFTList = () => {
     );
   }
 
-  return <NoData item="SFT" url="/nft/create" />;
+  return <NoData item="SFT" url="/knowledge/create" />;
 };
 
 type BotCardProps = {
