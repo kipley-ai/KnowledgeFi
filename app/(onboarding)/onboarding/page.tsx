@@ -18,13 +18,13 @@ export default function Onboarding() {
   const { verifStatus } = useAppProvider();
 
   const { isComingSoon, step, setStep } = useCreateChatbotContext();
-  
+
   const router = useRouter();
 
   const { data: userDetail } = useUserDetail();
 
   const onboarding = userDetail?.data.data.onboarding;
-  if (onboarding) {
+  if (onboarding && isConnected) {
     router.push("/dashboard");
   }
 
