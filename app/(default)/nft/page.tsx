@@ -12,6 +12,9 @@ import { ChatbotData, NftData } from "@/lib/types";
 import { LoadMore, LoadMoreSpinner } from "@/components/load-more";
 import { PaginationController } from "@/components/pagination-2/controller";
 
+import { useRouter } from 'next/navigation'
+import { useUserDetail } from '@/hooks/api/user'
+
 type NoDataProps = {
   item: string;
   url: string;
@@ -29,7 +32,7 @@ const NoData = ({ item, url }: NoDataProps) => {
       <p className="text-lg font-semibold text-white">No data yet</p>
 
       {/* Create new Item */}
-      { item=="SFT" ? 
+      {item == "SFT" ?
         <Link href={url}>
           <div className="flex items-center gap-2 hover:brightness-75">
             <IconContext.Provider value={{ color: "#01F7FF" }}>
@@ -39,8 +42,8 @@ const NoData = ({ item, url }: NoDataProps) => {
             </IconContext.Provider>
             <p className="text-sm text-[#01F7FF]">Create new {item}</p>
           </div>
-        </Link> 
-        : <></> 
+        </Link>
+        : <></>
       }
     </div>
   );
@@ -245,6 +248,15 @@ const BotList = () => {
 export default function NFT() {
   const title = "My Assets";
   const { setHeaderTitle } = useAppProvider();
+
+  const router = useRouter();
+
+  const { data: userDetail } = useUserDetail();
+
+  const onboarding = userDetail?.data.data.onboarding;
+  if (!onboarding) {
+    router.push("/onboarding");
+  }
 
   const handleLoadMore = () => {
     console.log("Load More");

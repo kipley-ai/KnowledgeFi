@@ -36,12 +36,19 @@ import Link from "next/link";
 export default function Dashboard() {
   const title = "Dashboard";
 
+  const { data: userDetail } = useUserDetail();
+
   const { setHeaderTitle } = useAppProvider();
   const [mode, setMode] = useState(0);
   const [breakpoint, setBreakpoint] = useState<string | undefined>(
     getBreakpoint(),
   );
   const router = useRouter();
+
+  const onboarding = userDetail?.data.data.onboarding;
+  if (!onboarding) {
+    router.push("/onboarding");
+  }
 
   const handleBreakpoint = () => {
     setBreakpoint(getBreakpoint());

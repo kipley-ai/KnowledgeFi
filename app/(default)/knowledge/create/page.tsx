@@ -6,6 +6,7 @@ import Step2 from "./step-2";
 import { useSession } from "next-auth/react";
 import { useAppProvider } from "@/providers/app-provider";
 import { useRouter } from "next/navigation";
+import { useUserDetail } from "@/hooks/api/user";
 import NFTForm from "./create-nft-form";
 import { createKB } from "@/app/api/kb/helper";
 import { useCreateChatbotContext } from "./create-knowledge-context";
@@ -35,6 +36,15 @@ export interface UIFile {
 export default function DataSource() {
   const title = "Create Knowledge Assets";
   const { setHeaderTitle } = useAppProvider();
+
+  const router = useRouter();
+
+  const { data: userDetail } = useUserDetail();
+
+  const onboarding = userDetail?.data.data.onboarding;
+  if (!onboarding) {
+    router.push("/onboarding");
+  }
 
   useEffect(() => {
     document.title = title;
