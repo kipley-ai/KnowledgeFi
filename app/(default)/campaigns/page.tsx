@@ -8,7 +8,7 @@ import FilterButton from '@/components/dropdown-filter'
 import CampaignCard from './campaign-card'
 import PaginationNumeric from '@/components/pagination-numeric'
 
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 import { useUserDetail } from '@/hooks/api/user'
 
 import Image01 from '@/public/images/user-28-01.jpg'

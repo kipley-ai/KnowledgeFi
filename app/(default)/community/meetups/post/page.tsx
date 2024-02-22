@@ -3,7 +3,7 @@ export const metadata = {
   description: 'Page description',
 }
 
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 import { useUserDetail } from '@/hooks/api/user'
 
 import Link from 'next/link'

@@ -5,7 +5,7 @@ import { useAppProvider } from "@/providers/app-provider";
 import ChatBotSettings from "./chatbot-settings";
 import ManageDataSources from "./manage-data-source";
 
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 import { useUserDetail } from '@/hooks/api/user'
 
 export default function EditChatbot() {

@@ -20,7 +20,7 @@ import Image10 from '@/public/images/user-64-10.jpg'
 import Image11 from '@/public/images/user-64-11.jpg'
 import Image12 from '@/public/images/user-64-12.jpg'
 
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 import { useUserDetail } from '@/hooks/api/user'
 
 export default function UsersTiles() {

@@ -3,7 +3,7 @@ export const metadata = {
   description: 'Page description',
 }
 
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 import { useUserDetail } from '@/hooks/api/user'
 import { CalendarProvider } from './calendar-context'
 import CalendarNavigation from './calendar-navigation'
@@ -11,14 +11,14 @@ import CalendarTable from './calendar-table'
 import CalendarTitle from './title'
 
 export default function Calendar() {
-  const router = useRouter();
+  // const router = useRouter();
 
-  const { data: userDetail } = useUserDetail();
+  // const { data: userDetail } = useUserDetail();
 
-  const onboarding = userDetail?.data.data.onboarding;
-  if (!onboarding) {
-    router.push("/onboarding");
-  }
+  // const onboarding = userDetail?.data.data.onboarding;
+  // if (!onboarding) {
+  //   router.push("/onboarding");
+  // }
   // Some dummy events data
   const events = [
     // Previous month

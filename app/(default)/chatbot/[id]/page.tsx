@@ -2,7 +2,7 @@
 import Header from "./header";
 import MessageList from "./chat-messages";
 import MessageInput from "./message-input";
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 import { useUserDetail } from '@/hooks/api/user'
 import { useAppProvider } from "@/providers/app-provider";
 import { useEffect, useState } from "react";
