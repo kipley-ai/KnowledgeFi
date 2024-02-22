@@ -17,7 +17,7 @@ export default function ModalTopUp({
   isOpen: boolean;
   setIsOpen: any;
 }) {
-  const [form, setForm] = useState<Form>({ amount: 0 });
+  const [form, setForm] = useState<Form>({});
 
   const handleFormChange = (name: string, value: any) => {
     setForm({
@@ -27,7 +27,7 @@ export default function ModalTopUp({
   };
 
   const handleContinue = async () => {
-    if (form.amount === 0) {
+    if (!form.amount || form.amount == 0) {
       return;
     }
 
@@ -49,13 +49,13 @@ export default function ModalTopUp({
 
   return (
     <ModalBlank isOpen={isOpen} setIsOpen={setIsOpen}>
-      <div className="flex flex-col justify-between items-center p-4 rounded-lg shadow-md">
-        <div className="self-stretch p-5 justify-between items-center inline-flex">
-          <div className="w-80 text-gray-50 text-[32px] font-black leading-10">
+      <div className="flex flex-col items-center justify-between rounded-lg p-4 shadow-md">
+        <div className="inline-flex items-center justify-between self-stretch p-5">
+          <div className="w-80 text-[32px] font-black leading-10 text-gray-50">
             <span>Top up credits</span>
           </div>
           <button
-            className="text-[#FCFCFD] dark:text-slate-500 hover:text-slate-500 dark:hover:text-slate-400"
+            className="text-[#FCFCFD] hover:text-slate-500 dark:text-slate-500 dark:hover:text-slate-400"
             onClick={(e) => {
               e.stopPropagation();
               setIsOpen(false);
@@ -87,17 +87,17 @@ export default function ModalTopUp({
             </svg>
           </button>
         </div>
-        <div className="self-stretch p-5 pt-0 justify-between items-center inline-flex">
-          <div className="w-80 text-gray-50 text-base font-semibold leading-10">
+        <div className="inline-flex items-center justify-between self-stretch p-5 pt-0">
+          <div className="w-80 text-base font-semibold leading-10 text-gray-50">
             <span>Get Credits by Paying </span>
             <span className="text-aqua-700">$KIP </span>
             <span>token</span>
           </div>
         </div>
-        <div className="self-stretch p-5 justify-between items-center inline-flex">
-          <div className="text-gray-50 text-lg font-bold leading-10 w-full">
+        <div className="inline-flex items-center justify-between self-stretch p-5">
+          <div className="w-full text-lg font-bold leading-10 text-gray-50">
             <input
-              className="rounded-xl bg-transparent w-full text-[#DDD] placeholder-text-[#7C878E] text-sm placeholder-[#777E90] leading-6 px-4 py-3"
+              className="placeholder-text-[#7C878E] w-full rounded-xl bg-transparent px-4 py-3 text-sm leading-6 text-[#DDD] placeholder-[#777E90]"
               type="number"
               name="amount"
               placeholder="Enter your credit amount here"
@@ -108,10 +108,10 @@ export default function ModalTopUp({
             />
           </div>
         </div>
-        <div className="self-stretch px-5 py-0 justify-between items-center inline-flex">
-          <div className="grid grid-cols-3 gap-3 text-white font-bold w-full">
+        <div className="inline-flex items-center justify-between self-stretch px-5 py-0">
+          <div className="grid w-full grid-cols-3 gap-3 font-bold text-white">
             <button
-              className={`flex flex-col justify-center items-center border-2 rounded-3xl h-12 ${
+              className={`flex h-12 flex-col items-center justify-center rounded-3xl border-2 ${
                 form?.amount == 50 ? "border-aqua-700" : "border-[#50575F]"
               }`}
               onClick={() => {
@@ -121,7 +121,7 @@ export default function ModalTopUp({
               <span className="text-sm font-bold leading-6">50</span>
             </button>
             <button
-              className={`flex flex-col justify-center items-center border-2 rounded-3xl h-12 ${
+              className={`flex h-12 flex-col items-center justify-center rounded-3xl border-2 ${
                 form?.amount == 100 ? "border-aqua-700" : "border-[#50575F]"
               }`}
               onClick={() => {
@@ -131,7 +131,7 @@ export default function ModalTopUp({
               <span className="text-sm font-bold leading-6">100</span>
             </button>
             <button
-              className={`flex flex-col justify-center items-center border-2 rounded-3xl h-12 ${
+              className={`flex h-12 flex-col items-center justify-center rounded-3xl border-2 ${
                 form?.amount == 300 ? "border-aqua-700" : "border-[#50575F]"
               }`}
               onClick={() => {
@@ -141,7 +141,7 @@ export default function ModalTopUp({
               <span className="text-sm font-bold leading-6">300</span>
             </button>
             <button
-              className={`flex flex-col justify-center items-center border-2 rounded-3xl h-12 ${
+              className={`flex h-12 flex-col items-center justify-center rounded-3xl border-2 ${
                 form?.amount == 500 ? "border-aqua-700" : "border-[#50575F]"
               }`}
               onClick={() => {
@@ -151,7 +151,7 @@ export default function ModalTopUp({
               <span className="text-sm font-bold leading-6">500</span>
             </button>
             <button
-              className={`flex flex-col justify-center items-center border-2 rounded-3xl h-12 ${
+              className={`flex h-12 flex-col items-center justify-center rounded-3xl border-2 ${
                 form?.amount == 750 ? "border-aqua-700" : "border-[#50575F]"
               }`}
               onClick={() => {
@@ -161,7 +161,7 @@ export default function ModalTopUp({
               <span className="text-sm font-bold leading-6">750</span>
             </button>
             <button
-              className={`flex flex-col justify-center items-center border-2 rounded-3xl h-12 ${
+              className={`flex h-12 flex-col items-center justify-center rounded-3xl border-2 ${
                 form?.amount == 1000 ? "border-aqua-700" : "border-[#50575F]"
               }`}
               onClick={() => {
@@ -172,20 +172,20 @@ export default function ModalTopUp({
             </button>
           </div>
         </div>
-        <div className="self-stretch p-5 pt-2 justify-between items-center inline-flex ">
-          <div className="w-80 text-gray-50 text-sm font-semibold leading-10">
+        <div className="inline-flex items-center justify-between self-stretch p-5 pt-2 ">
+          <div className="w-80 text-sm font-semibold leading-10 text-gray-50">
             <span>You are paying </span>
             <span className="text-aqua-700">{form?.amount} $KIP</span>
           </div>
         </div>
-        <div className="self-stretch p-5 justify-between items-center inline-flex">
-          <div className="grid grid-cols-1 text-white font-bold w-full">
+        <div className="inline-flex items-center justify-between self-stretch p-5">
+          <div className="grid w-full grid-cols-1 font-bold text-white">
             <button
-              className="flex flex-row gap-2 items-center justify-center bg-aqua-700 rounded-3xl p-2 px-5"
+              className="flex flex-row items-center justify-center gap-2 rounded-3xl bg-aqua-700 p-2 px-5"
               type="button"
               onClick={handleContinue}
             >
-              <h5 className="text-black font-semibold">Continue</h5>
+              <h5 className="font-semibold text-black">Continue</h5>
               <svg
                 width="20"
                 height="10"

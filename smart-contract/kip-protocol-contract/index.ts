@@ -72,3 +72,17 @@ export async function tokenProfit(
     console.log(e);
   });
 }
+
+export async function withdrawEarnings(
+  sftAddress: string,
+  tokenId: number,
+  amount: number,
+) {
+  const { contractWrite } = await getKipProtocolContract();
+
+  return await contractWrite.claimIncome(
+    sftAddress,
+    BigInt(tokenId),
+    BigInt(amount),
+  );
+}
