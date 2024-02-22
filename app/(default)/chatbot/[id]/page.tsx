@@ -2,6 +2,8 @@
 import Header from "./header";
 import MessageList from "./chat-messages";
 import MessageInput from "./message-input";
+import { useRouter } from 'next/router'
+import { useUserDetail } from '@/hooks/api/user'
 import { useAppProvider } from "@/providers/app-provider";
 import { useEffect, useState } from "react";
 import { useNftDetail } from "@/hooks/api/nft";
@@ -14,6 +16,15 @@ import CreditBalance from "./credit-balance";
 import { CreditBalanceProvider } from "./credit-balance-context";
 
 export default function ChatBotPage() {
+	const router = useRouter();
+
+	const { data: userDetail } = useUserDetail();
+
+	const onboarding = userDetail?.data.data.onboarding;
+	if (!onboarding) {
+		router.push("/onboarding");
+	}
+
 	const { setHeaderTitle } = useAppProvider();
 	const pathname = usePathname();
 

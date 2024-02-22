@@ -8,6 +8,9 @@ import FilterButton from '@/components/dropdown-filter'
 import CampaignCard from './campaign-card'
 import PaginationNumeric from '@/components/pagination-numeric'
 
+import { useRouter } from 'next/router'
+import { useUserDetail } from '@/hooks/api/user'
+
 import Image01 from '@/public/images/user-28-01.jpg'
 import Image02 from '@/public/images/user-28-02.jpg'
 import Image03 from '@/public/images/user-28-03.jpg'
@@ -22,7 +25,14 @@ import Image11 from '@/public/images/user-28-11.jpg'
 import Image12 from '@/public/images/user-28-12.jpg'
 
 export default function Canpaigns() {
+  const router = useRouter();
 
+  const { data: userDetail } = useUserDetail();
+
+  const onboarding = userDetail?.data.data.onboarding;
+  if (!onboarding) {
+    router.push("/onboarding");
+  }
   // Some dummy campaigns data
   const campaigns = [
     {

@@ -5,7 +5,19 @@ import { useAppProvider } from "@/providers/app-provider";
 import ChatBotSettings from "./chatbot-settings";
 import ManageDataSources from "./manage-data-source";
 
+import { useRouter } from 'next/router'
+import { useUserDetail } from '@/hooks/api/user'
+
 export default function EditChatbot() {
+    const router = useRouter();
+
+    const { data: userDetail } = useUserDetail();
+
+    const onboarding = userDetail?.data.data.onboarding;
+    if (!onboarding) {
+        router.push("/onboarding");
+    }
+
     const { setHeaderTitle } = useAppProvider();
     const title = "Edit Chatbot";
 

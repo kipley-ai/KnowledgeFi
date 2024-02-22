@@ -25,6 +25,7 @@ import { getBreakpoint } from "@/components/utils/utils";
 import { AnimationOnScroll } from "react-animation-on-scroll";
 import { accounts } from "@/components/utils/twitter-account";
 import { useChatSession } from "@/hooks/api/chatbox";
+import { useUserDetail } from "@/hooks/api/user";
 import { ChatbotData } from "@/lib/types";
 import { LoadMore, LoadMoreSpinner } from "@/components/load-more";
 import { useChatbotList } from "@/hooks/api/chatbot";
@@ -108,14 +109,14 @@ export default function Dashboard() {
         {/* <div className="grid grid-cols-6"> */}
         {botsQuery.data?.data.data
           ? botsQuery.data.data.data.chatbot_data.map((botData) => {
-              return (
-                <BotItem
-                  key={botData.chatbot_id}
-                  botData={botData}
-                  onClick={() => {}}
-                />
-              );
-            })
+            return (
+              <BotItem
+                key={botData.chatbot_id}
+                botData={botData}
+                onClick={() => { }}
+              />
+            );
+          })
           : null}
       </div>
 
