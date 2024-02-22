@@ -1,10 +1,266 @@
 import DashboardCard05 from "@/app/(dashboard)/dashboard/dashboard-card-05";
 import { DateFilterComponent } from "./dashboard";
+import ModalBlank from "@/components/modal-blank-3";
+import Image from "next/image";
 import { useCreatorOverview } from "@/hooks/api/user";
+import { useEffect, useState } from "react";
+import CrossIcon from "public/images/cross-icon.svg";
+import { keepPreviousData } from "@tanstack/react-query";
+import { useMyNFTs } from "@/hooks/api/nft";
+import { PaginationController } from "@/components/pagination-2/controller";
+import { FaPlus, FaSpinner } from "react-icons/fa6";
+import { ChatbotData, NftData } from "@/lib/types";
+import { IconContext } from "react-icons";
+import ArrowIcon from "public/images/arrow.svg";
+import Link from "next/link";
+import RangeInputMulti from "@/components/range-input";
+import { set } from "zod";
+
+type NoDataProps = {
+  item: string;
+  url: string;
+};
+
+const NoData = ({ item, url }: NoDataProps) => {
+  return (
+    <div className="flex flex-col items-center justify-center gap-4">
+      <Image
+        src="/images/no-data.png"
+        width={167}
+        height={115}
+        alt={"No Data"}
+      />
+      <p className="text-lg font-semibold text-white">No data yet</p>
+      <Link href={url}>
+        <div className="flex items-center gap-2 hover:brightness-75">
+          <IconContext.Provider value={{ color: "#01F7FF" }}>
+            <div>
+              <FaPlus />
+            </div>
+          </IconContext.Provider>
+          <p className="text-sm text-[#01F7FF]">Create new {item}</p>
+        </div>
+      </Link>
+    </div>
+  );
+};
+
+const WithdrawConfirm = ({ nftData } : { nftData: NftData | undefined}) => {
+  const [withdrawValue, setWithdrawValue] = useState<string>("0")
+  const [values, setValues] = useState<number[]>([0,500]);
+
+  useEffect(() => {
+    setWithdrawValue(values[1].toString())
+  }, [values[1]])
+
+  return (
+    <>
+    <div className="flex flex-row space-x-4">
+      <Image
+        src={nftData?.profile_image || "/images/nft-default-thumb.png"}
+        className="rounded-xl"
+        width={130}
+        height={130}
+        alt={"NFT Card"}
+      />
+      <h6 className="text-base font-semibold text-white">{nftData?.name}</h6>
+    </div>
+    <div className="flex flex-row items-center text-xs lg:text-sm justify-between text-gray-50 mt-16 mb-5">
+      <span>0</span>
+      <div className="w-4/6">
+        <RangeInputMulti rtl={false} min={0} max={1000} step={1} values={values} setValues={setValues}/>
+      </div>
+      <span>1000 $KIP</span>
+    </div>
+    <div className="flex flex-row justify-between">
+      <button className="text-[#01F7FF] ring-1 ring-gray-700 font-semibold text-sm py-2 px-4 rounded bg-[#272B30]" onClick={() => {
+        setValues([0,0])
+        setWithdrawValue("0")
+      }}>
+        Clear
+      </button>
+      <input type="text" className="text-center text-gray-50 bg-[#272B30] rounded border-0 ring-1 ring-gray-700" value={withdrawValue} onChange={(e) => {
+        const value = parseInt(e.target.value);
+        setValues([0, isNaN(value) ? 0 : value]);
+        setWithdrawValue(e.target.value)
+      }}/>
+      <button className="text-[#01F7FF] ring-1 ring-gray-700 font-semibold text-sm py-2 px-4 rounded bg-[#272B30]" onClick={() => {
+        setValues([0,1000])
+        setWithdrawValue("1000")
+      }}>
+        Max
+      </button>
+    </div>
+    <button className="flex flex-row w-full rounded-2xl items-center justify-center bg-[#01F7FF] space-x-2 py-2 mt-10 mb-2">
+      <p className="text-center text-sm font-semibold text-black">
+        Continue
+      </p>
+      <svg width="21" height="10" viewBox="0 0 21 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M18.48 6.29004C19.3936 6.29004 20.1343 7.03069 20.1343 7.94433C20.1343 8.85797 19.3936 9.59862 18.48 9.59862L2.15435 9.59862C1.24071 9.59862 0.500059 8.85797 0.500059 7.94433C0.500059 7.03069 1.24071 6.29004 2.15435 6.29004L18.48 6.29004Z" fill="#151515"/>
+        <path d="M19.432 6.49088C20.0219 7.13692 20.0219 8.18436 19.432 8.83041C18.8422 9.47645 17.8859 9.47645 17.2961 8.8304L12.8947 4.00945C12.3049 3.36341 12.3049 2.31597 12.8947 1.66993C13.4845 1.02389 14.4408 1.02389 15.0306 1.66993L19.432 6.49088Z" fill="#151515"/>
+      </svg>
+    </button>
+    </>
+  )
+}
+
+const NFTCard = ({ nft, setNftData, setStep }: { nft: NftData, setNftData: any, setStep: any}) => {
+  return (
+    <div className="group relative flex flex-col rounded-3xl bg-[#222325] cursor-pointer" onClick={() => {
+      setStep(2)
+      setNftData(nft)
+    }}>
+      <Image
+        src={nft.profile_image || "/images/nft-default-thumb.png"}
+        className="mx-auto h-full rounded-t-3xl object-cover p-1 pb-0"
+        width={300}
+        height={300}
+        alt={"NFT Card"}
+      />
+      <div className="flex flex-col gap-1 px-4 py-4">
+        <p className="line-clamp-1 text-sm text-white">{nft.name}</p>
+        <p className="line-clamp-1 text-sm text-white">
+          {nft.price_per_query} {nft.token_symbol}
+        </p>
+        <p className="line-clamp-1 text-[12px] text-gray-400">
+          {nft.category || "Uncategorised"}
+        </p>
+      </div>
+      <div className="absolute bottom-0 hidden h-12 w-full items-center justify-center rounded-b-2xl bg-[#01F7FF] group-hover:flex space-x-2">
+        <p className="text-center text-sm font-semibold text-black">
+          Withdraw
+        </p>
+        <svg width="21" height="10" viewBox="0 0 21 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M18.48 6.29004C19.3936 6.29004 20.1343 7.03069 20.1343 7.94433C20.1343 8.85797 19.3936 9.59862 18.48 9.59862L2.15435 9.59862C1.24071 9.59862 0.500059 8.85797 0.500059 7.94433C0.500059 7.03069 1.24071 6.29004 2.15435 6.29004L18.48 6.29004Z" fill="#151515"/>
+          <path d="M19.432 6.49088C20.0219 7.13692 20.0219 8.18436 19.432 8.83041C18.8422 9.47645 17.8859 9.47645 17.2961 8.8304L12.8947 4.00945C12.3049 3.36341 12.3049 2.31597 12.8947 1.66993C13.4845 1.02389 14.4408 1.02389 15.0306 1.66993L19.432 6.49088Z" fill="#151515"/>
+        </svg>
+      </div>
+    </div>
+  );
+};
+
+const NFTList = ({
+  setNftData,
+  setStep
+}:{
+  setNftData: any,
+  setStep: any,
+}) => {
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [pageSize, setPageSize] = useState<number>(8);
+  const { isPending, isError, error, data, isFetching } = useMyNFTs(
+    {
+      page: currentPage,
+      page_size: pageSize,
+      sort_by: "created",
+    },
+    keepPreviousData,
+  );
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
+  if (isPending) {
+    return (
+      <div className="flex h-32 w-full items-center justify-center gap-4">
+        <FaSpinner size={20} className="animate-spin" />
+        <p className="text-md text-gray-300">Loading</p>
+      </div>
+    );
+  }
+
+  if (isError) {
+    return <div>Error: {error.message}</div>;
+  }
+
+  const { nft_data: nftsData, nft_count: nftCount } = data.data.data;
+
+  if (nftCount > 0) {
+    const totalPages = Math.ceil(nftCount / pageSize);
+
+    return (
+      <>
+        <div className="grid grid-cols-2 gap-x-4 gap-y-4 md:grid-cols-4 md:gap-x-6 md:gap-y-8 lg:gap-y-12">
+          {nftsData.map((nft: NftData) => (
+            <NFTCard nft={nft} key={nft.sft_id} setNftData={setNftData} setStep={setStep}/>
+          ))}
+        </div>
+        <div className="flex flex-col items-center">
+          <div
+            className={`${!isFetching && "invisible"} flex w-full items-center justify-center gap-4`}
+          >
+            <FaSpinner size={20} className="animate-spin" />
+            <p className="text-md text-gray-300">Loading</p>
+          </div>
+          <PaginationController
+            currentPage={currentPage}
+            onPageChange={handlePageChange}
+            totalPages={totalPages}
+          />
+        </div>
+      </>
+    );
+  }
+
+  return <NoData item="SFT" url="/nft/create" />;
+}
+
+const WithdrawModal = ({
+  isOpen,
+  setIsOpen,
+}: {
+  isOpen: boolean;
+  setIsOpen: any;
+}) => {
+  const [nftData,setNftData] = useState<NftData>();
+  const [step,setStep] = useState<number>(1);
+  return (
+    <ModalBlank isOpen={isOpen} setIsOpen={setIsOpen}>
+      <div className={`flex ${step === 1 ? "w-[859px]" : "w-[448px]"} flex-col rounded-lg px-8 py-6 shadow-md`}>
+        <div className="w-full flex flex-row items-center justify-between">
+          { step === 1 ? 
+            <h1 className="text-3xl font-bold leading-10 text-white">My SFTs</h1>
+            : step === 2 ? 
+            <h1 className="text-3xl font-bold leading-10 text-white">Withdraw SFT</h1>
+            : <></>
+          }
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsOpen(false);
+              setTimeout(() => {
+                setStep(1)
+              }, 500)
+            }}
+          >
+            <div className="sr-only">Close</div>
+            <Image
+              src={CrossIcon}
+              alt="Close Icon"
+              width={40}
+              height={40}
+            />
+          </button>
+        </div>
+        <div className="mt-10">
+          { step === 1 ?
+          <NFTList setNftData={setNftData} setStep={setStep}/>
+          : step === 2?
+          <WithdrawConfirm nftData={nftData}/>
+          : <></>
+          }
+        </div>
+      </div>
+    </ModalBlank>
+  )
+}
 
 export default function CreatorOverview() {
+  const [showModal, setShowModal] = useState(false);
   const { data: overviewData } = useCreatorOverview();
   return (
+    <>
+    <WithdrawModal isOpen={showModal} setIsOpen={setShowModal} />
     <div className="flex w-5/6 flex-col px-10 py-8">
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-semibold text-slate-100">Dashboard</h1>
@@ -27,7 +283,7 @@ export default function CreatorOverview() {
               Creator Overview
             </h4>
           </div>
-          <button className="rounded-full bg-[#B5E4CA] px-4 py-3 text-base font-semibold text-[#1A1D1F]">
+          <button className="rounded-full bg-[#B5E4CA] px-4 py-3 text-base font-semibold text-[#1A1D1F]" onClick={() => setShowModal(true)}>
             Withdraw your earnings
           </button>
         </div>
@@ -178,5 +434,6 @@ export default function CreatorOverview() {
         <DashboardCard05 />
       </div> */}
     </div>
+    </>
   );
 }
