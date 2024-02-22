@@ -9,7 +9,7 @@ import PersonIcon from "@/components/icon/person.svg";
 import ConvoIcon from "@/components/icon/convo.svg";
 import CodeIcon from "@/components/icon/code.svg";
 import TwitterIcon from "@/components/icon/twitter.svg";
-import AvatarDefault from "public/images/avatar-default.png";
+import AvatarDefault from "public/images/avatar-default-02.svg";
 import { chartColors } from "@/components/charts/chartjs-config";
 import SignOutIcon from "@/public/images/sign-out.svg";
 
@@ -311,9 +311,6 @@ export default function AccountSettings() {
           </button>
         ) : null}
       </div>
-
-      {/* Rest of the provided code goes here... */}
-
       {/* User Overview */}
       <div className="my-8 flex flex-col gap-4 rounded-xl bg-[#1A1D1F] p-6 ">
         <div className="mb-8 flex items-center justify-between">
