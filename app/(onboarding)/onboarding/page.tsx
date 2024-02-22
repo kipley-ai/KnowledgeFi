@@ -10,12 +10,23 @@ import Onboarding05 from "../onboarding-05";
 import Onboarding06 from "../onboarding-06";
 import OnboardingSuccess from "../onboarding-success";
 import { useAppProvider } from "@/providers/app-provider";
+import { useUserDetail } from "@/hooks/api/user";
+import { useRouter } from "next/navigation";
 
 export default function Onboarding() {
   const { isConnected, address, status } = useAccount();
   const { verifStatus } = useAppProvider();
 
   const { isComingSoon, step, setStep } = useCreateChatbotContext();
+  
+  const router = useRouter();
+
+  const { data: userDetail } = useUserDetail();
+
+  const onboarding = userDetail?.data.data.onboarding;
+  if (onboarding) {
+    router.push("/dashboard");
+  }
 
   if (isConnected && verifStatus === "authenticated") {
     return (
