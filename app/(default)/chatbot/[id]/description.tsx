@@ -11,11 +11,13 @@ import {
   useTokenProfit_,
 } from "@/hooks/smart-contract";
 import { FaSpinner } from "react-icons/fa6";
+import { useGetChatbotPrice } from "@/hooks/api/chatbot";
 
 export default function ChatbotDescription() {
   const tokenSymbol = "$KIP";
   const { id } = useParams();
   const { data: chatbotData } = useChatbotDetail({ chatbot_id: id as string });
+  const { data: chatbotPrice, isFetched: isPriceFetched } = useGetChatbotPrice({ chatbot_id: id as string });
   const { data: nftData } = useNftDetail({
     sft_id: chatbotData?.data.data.sft_id!,
   });
@@ -52,9 +54,8 @@ export default function ChatbotDescription() {
       <div className="w-full space-y-2 text-white">
         <p className="text-sm">{nftData?.data.data.name}</p>
         <p className="text-[11px]">
-          <span className="text-[#777E90]">Stored Value</span>
-          {isFetched ? profit : <FaSpinner className="animate-spin" />}{" "}
-          {profit ? "" : 0} {tokenSymbol}
+          <span className="text-[#777E90]">Price Per Query: </span>
+          {isPriceFetched ? chatbotPrice?.data.chatbot_price : <FaSpinner className="animate-spin" />}
         </p>
       </div>
     </div>
