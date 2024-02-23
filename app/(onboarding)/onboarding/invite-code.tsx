@@ -34,18 +34,19 @@ const InviteCode = ({ address }: InviteCodeProps) => {
   };
 
   const handleKeyDown = (e: any, index: number) => {
-    // Check if the key pressed is Backspace, Delete, or ArrowLeft
-    if (e.key === "Backspace" || e.key === "Delete" || e.key === "ArrowLeft") {
-      e.preventDefault(); // Prevent default behavior
+    const deleteKeys: string[] = ["Backspace", "Delete", "ArrowLeft"];
+    if (deleteKeys.includes(e.key)) {
+      e.preventDefault();
 
-      // Update OTP array
       const newOtp = [...otp];
-      newOtp[index] = ""; // Clear the current input
-      setOtp(newOtp);
 
-      // If not the first input, move focus to the previous input
-      if (index > 0) {
+      if (index === 5 && Boolean(newOtp[5])) {
+        newOtp[5] = "";
+        setOtp(newOtp);
+      } else if (index > 0) {
         inputsRef.current[index - 1]?.focus();
+        newOtp[index - 1] = "";
+        setOtp(newOtp);
       }
     }
   };
@@ -125,6 +126,13 @@ const InviteCode = ({ address }: InviteCodeProps) => {
   }, [otp]);
 
   useEffect(() => {
+    // Check if all OTP inputs are filled
+    if (!otp.some((value) => value.trim() === "")) {
+      handleContinue();
+    }
+  }, [otp]);
+
+  useEffect(() => {
     const checkWhitelist = async () => {
       const res = await axios.post(
         "/api/onboarding/is-whitelisted",
@@ -140,11 +148,6 @@ const InviteCode = ({ address }: InviteCodeProps) => {
         setStep("data_source");
       }
     };
-
-    // const storedAddress = sessionStorage.getItem("address");
-    // if (storedAddress === address) {
-    //   setStep("data_source");
-    // }
 
     if (address !== null && address !== undefined) {
       checkWhitelist();
@@ -175,13 +178,13 @@ const InviteCode = ({ address }: InviteCodeProps) => {
           );
         })}
       </div>
-      <button
+      {/* <button
         onClick={handleContinue}
         className="rounded-full bg-[#01F7FF] px-16 py-3 text-sm font-bold text-black disabled:opacity-50"
         disabled={isBlankPresent}
       >
         Continue
-      </button>
+      </button> */}
     </div>
   );
 };
