@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState, useEffect, useRef } from "react";
 import { useCreateChatbotContext } from "../create-knowledge-context";
+import { useIsWhitelisted } from "@/hooks/api/user";
 
 type InviteCodeProps = {
   address: string | undefined;
@@ -14,6 +15,8 @@ const InviteCode = ({ address }: InviteCodeProps) => {
   const inputsRef = useRef<(HTMLInputElement | null)[]>([]);
 
   const { setStep } = useCreateChatbotContext();
+
+  const { data: isWl, isLoading } = useIsWhitelisted();
 
   const handleChange = (element: any, index: number) => {
     if (!/^[A-Za-z0-9]$/.test(element.value)) {
@@ -132,27 +135,11 @@ const InviteCode = ({ address }: InviteCodeProps) => {
     }
   }, [otp]);
 
-  useEffect(() => {
-    const checkWhitelist = async () => {
-      const res = await axios.post(
-        "/api/onboarding/is-whitelisted",
-        {},
-        {
-          headers: {
-            "x-kf-user-id": address,
-          },
-        },
-      );
+  if (isLoading) return null;
 
-      if (res.data?.status !== "error") {
-        setStep("data_source");
-      }
-    };
-
-    if (address !== null && address !== undefined) {
-      checkWhitelist();
-    }
-  }, []);
+  if (isWl?.data.status === "error") {
+    setStep("data_source");
+  }
 
   return (
     <div className="flex h-full flex-col items-center gap-6">

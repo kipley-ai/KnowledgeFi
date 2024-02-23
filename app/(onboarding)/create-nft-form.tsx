@@ -43,7 +43,10 @@ export default function NFT() {
   const [errorMessage, setErrorMessage] = useState<any>({});
   const [allowGenerate, setAllowGenerate] = useState(false);
   const { data: twitterSession } = useSession();
-  const [form, setForm] = useState<Form>({ shareSupply: "10000", comissionRate: 1 });
+  const [form, setForm] = useState<Form>({
+    shareSupply: "10000",
+    comissionRate: 1,
+  });
   const [selectedFile, setSelectedFile] = useState<string>(DEFAULT_COVER_IMAGE);
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [nftIdCreated, setNftIdCreated] = useState("");
@@ -261,7 +264,12 @@ export default function NFT() {
                     className="placeholder-text-[#7C878E] w-11/12 rounded-xl bg-transparent text-xs text-[#DDD] lg:text-sm"
                     type="text"
                     name="tokenSymbol"
-                    placeholder={"e.g. " + (form.name ? form.name?.slice(0, 4).toUpperCase() : "BAYC")}
+                    placeholder={
+                      "e.g. " +
+                      (form.name
+                        ? form.name?.slice(0, 4).toUpperCase()
+                        : "BAYC")
+                    }
                     value={form?.symbol}
                     onChange={(e) => handleFormChange("symbol", e.target.value)}
                   />
@@ -322,16 +330,11 @@ export default function NFT() {
                   </div>
                 </div> */}
                 <div className="flex w-2/3 flex-col gap-1">
-                  <label
-                    className=" flex flex-row text-wrap text-xs font-semibold text-[#DDD] lg:text-sm items-center space-x-3"
-                  >
+                  <label className=" flex flex-row items-center space-x-3 text-wrap text-xs font-semibold text-[#DDD] lg:text-sm">
                     <span>Price Per Query (in $KFI)</span>
-                    <Tooltip
-                      bg="dark"
-                      position="right"
-                      size="md"
-                    >
-                      Set your price per query on your knowledge asset and get paid in $KFI.
+                    <Tooltip bg="dark" position="right" size="md">
+                      Set your price per query on your knowledge asset and get
+                      paid in $KFI.
                     </Tooltip>
                   </label>
                   <div className="flex w-full items-center">
@@ -438,7 +441,7 @@ export default function NFT() {
               </h5>
             </button>
             <button
-              className="flex w-44 flex-row items-center justify-between rounded-3xl  bg-[#01F7FF] p-2 px-5 disabled:bg-gray-500 hover:brightness-75"
+              className="flex w-44 flex-row items-center justify-between rounded-3xl  bg-[#01F7FF] p-2 px-5 hover:brightness-75 disabled:bg-gray-500"
               onClick={() => setisConfirmModalOpen(true)}
               // onClick={() => setStep("create_chatbot")}
               type="button"

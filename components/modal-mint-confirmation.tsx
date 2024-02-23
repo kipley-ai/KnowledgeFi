@@ -80,7 +80,7 @@ export default function ModalMintConfirmation({
         <div className="inline-flex items-center justify-between self-stretch p-5">
           <div className="grid w-full grid-cols-1 font-bold text-white">
             <button
-              className="flex flex-row items-center justify-center gap-2 rounded-3xl bg-aqua-700 p-2 px-5"
+              className="flex flex-row items-center justify-center gap-2 rounded-3xl bg-aqua-700 p-2 px-5 hover:brightness-75"
               type="button"
               onClick={handleMintNFT}
             >

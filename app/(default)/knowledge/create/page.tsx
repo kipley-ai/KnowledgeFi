@@ -37,15 +37,6 @@ export default function DataSource() {
   const title = "Create Knowledge Assets";
   const { setHeaderTitle } = useAppProvider();
 
-  const router = useRouter();
-
-  const { data: userDetail } = useUserDetail();
-
-  const onboarding = userDetail?.data.data.onboarding;
-  if (!onboarding) {
-    router.push("/onboarding");
-  }
-
   useEffect(() => {
     document.title = title;
     setHeaderTitle("");
@@ -102,7 +93,7 @@ export default function DataSource() {
         redirectUrl="/knowledge/create"
       />
       {step == "data_source" ? (
-        <div className="flex flex-col bg-[#292D32] py-10 pb-20 px-6 lg:px-8 xl:px-32">
+        <div className="flex flex-col bg-[#292D32] px-6 py-10 pb-20 lg:px-8 xl:px-32">
           <div>
             <h1 className="text-2xl font-semibold text-white">
               Select Data Elements for your SFT

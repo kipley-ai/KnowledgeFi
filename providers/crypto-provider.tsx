@@ -116,7 +116,7 @@ export function CryptoProvider({ children }: React.PropsWithChildren) {
     },
 
     signOut: async () => {
-      localStorage.setItem("kip-protocol-signature", "");
+      localStorage.removeItem("kip-protocol-signature");
 
       setVerifStatus("unauthenticated");
     },
