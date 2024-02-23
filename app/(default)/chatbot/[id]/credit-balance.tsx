@@ -2,6 +2,7 @@ import Image from "next/image";
 import CreditIcon from "public/images/credit-icon.svg";
 import ProgressBar from "@/components/progress-bar";
 import ModalTopUp from "@/components/modal-top-up";
+import Refresh from "public/images/refresh.png";
 import { useCreditBalanceContext } from "./credit-balance-context";
 import { useCreditBalance } from "@/hooks/api/credit";
 import { useAppProvider } from "@/providers/app-provider";
@@ -19,15 +20,25 @@ export default function CreditBalance() {
   return (
     <div className="flex flex-col justify-start gap-2 w-full text-white p-6">
       <ModalTopUp isOpen={modalTopUp} setIsOpen={setModalTopUp} />
-      <div className="flex gap-3 items-center">
-        <Image
-          src={CreditIcon}
-          alt="Profile"
-          className="rounded-full"
-          width={21}
-          height={21}
-        />
-        <h6>Credit Balance</h6>
+      <div className="flex items-center justify-between">
+        <div className="flex gap-3">
+          <Image
+            src={CreditIcon}
+            alt="Profile"
+            className="rounded-full"
+            width={23}
+            height={23}
+          />
+          <h6>Credit Balance</h6>
+        </div>
+        <button
+          className="self-end rounded-full text-gray-400 hover:text-blue-500"
+          onClick={() => console.log("Refresh Credit Balance")}
+        >
+          <div className="rounded-full border-2 border-gray-700 p-1 font-semibold">
+            <Image width={12} height={12} src={Refresh} alt="Refresh" />
+          </div>
+        </button>
       </div>
       <p>
         <span className="text-2xl lg:text-3xl font-medium">{creditBalance} Credits</span>
