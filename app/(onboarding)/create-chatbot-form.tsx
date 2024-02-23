@@ -12,6 +12,7 @@ import { number, string } from "zod";
 import Switcher from "@/components/switcher";
 import { useAppProvider } from "@/providers/app-provider";
 import { DEFAULT_COVER_IMAGE } from "@/utils/constants";
+import Tooltip from "@/components/tooltip";
 
 interface Category {
   title: string;
@@ -38,9 +39,9 @@ const ChatBotForm = () => {
   const [example, setExample] = useState("");
   const router = useRouter();
   const createChatbot = useCreateChatbotAPI();
-  const { createChatbot: chatbot, sftId } = useCreateChatbotContext();
+  const { createChatbot: chatbot, sftId, kbId } = useCreateChatbotContext();
   // const { id } = useParams();
-  const { data: nftData } = useNftDetail({ sft_id: sftId as string });
+  // const { data: nftData } = useNftDetail({ sft_id: sftId as string });
   const [selectedFile, setSelectedFile] = useState<any>(DEFAULT_COVER_IMAGE);
   const [mode, setMode] = useState(0);
   const [toneData, setToneData] = useState("");
@@ -81,7 +82,8 @@ const ChatBotForm = () => {
         profile_image: selectedFile,
         name: characterName,
         sft_id: sftId as string,
-        kb_id: nftData?.data.data.kb_id as string,
+        // kb_id: nftData?.data.data.kb_id as string,
+        kb_id: kbId as string,
         tone: toneData,
         price_per_query: pricePerQuery,
         // category_id: category,
@@ -235,8 +237,16 @@ const ChatBotForm = () => {
                 {/* <p className="mt-2 text-xs text-gray-400">Category of your AI.</p> */}
               </div>
               <div>
-                <label className="block text-xs font-semibold text-white lg:text-sm ">
-                  Price Per Query
+                {/* <label className="block text-xs font-semibold text-white lg:text-sm "> */}
+                <label className=" flex flex-row text-wrap text-xs font-semibold text-[#DDD] lg:text-sm items-center space-x-3">
+                  <span>Price Per Query (in $KFI)</span>
+                    <Tooltip
+                      bg="dark"
+                      position="right"
+                      size="md"
+                    >
+                      Set your price per query on your chatbot app and get paid in $KFI.
+                    </Tooltip>
                 </label>
                 <div className="mt-3">
                   <input
