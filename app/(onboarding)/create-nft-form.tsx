@@ -321,7 +321,7 @@ export default function NFT() {
                     <div className="ml-2 block w-fit text-[#DDD]">%</div>
                   </div>
                 </div> */}
-                <div className="flex w-5/12 flex-col gap-1">
+                <div className="flex w-2/3 flex-col gap-1">
                   <label
                     className=" flex flex-row text-wrap text-xs font-semibold text-[#DDD] lg:text-sm items-center space-x-3"
                   >
