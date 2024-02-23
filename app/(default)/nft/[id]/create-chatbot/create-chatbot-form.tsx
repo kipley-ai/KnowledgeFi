@@ -377,10 +377,10 @@ const ChatBotForm = () => {
               </h5>
             </button>
             <button
-              className="mt-8 flex items-center justify-center rounded-3xl bg-[#292D32] p-2 px-5 ring-2 ring-gray-600 transition-all duration-200 ease-in-out hover:bg-[#01F7FF] hover:ring-0 group"
+              className="mt-8 flex items-center justify-center rounded-3xl p-2 px-5 ring-2 ring-gray-600 transition-all duration-200 ease-in-out bg-[#01F7FF] hover:ring-0 hover:brightness-75"
               type="submit"
             >
-              <h5 className="text-xs font-semibold text-white lg:text-sm group-hover:text-black transition-colors duration-200 ease-in-out">
+              <h5 className="text-xs font-semibold lg:text-sm transition-colors duration-200 ease-in-out text-black">
                 Bring my chatbot to life
               </h5>
               <svg
@@ -389,7 +389,7 @@ const ChatBotForm = () => {
                 viewBox="0 0 20 10"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
-                className="ml-2 text-white fill-current group-hover:text-black transition-colors duration-200 ease-in-out"
+                className="ml-2 fill-current text-black transition-colors duration-200 ease-in-out"
               >
                 <path
                   d="M17.98 5.7901C18.8936 5.7901 19.6343 6.53075 19.6343 7.44439V7.44439C19.6343 8.35803 18.8936 9.09868 17.98 9.09868L1.65435 9.09868C0.74071 9.09868 5.90253e-05 8.35803 5.90618e-05 7.44439V7.44439C5.90983e-05 6.53075 0.740711 5.7901 1.65435 5.7901L17.98 5.7901Z"

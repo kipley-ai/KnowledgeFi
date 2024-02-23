@@ -261,7 +261,7 @@ export default function NFT() {
                     className="placeholder-text-[#7C878E] w-11/12 rounded-xl bg-transparent text-xs text-[#DDD] lg:text-sm"
                     type="text"
                     name="tokenSymbol"
-                    placeholder={form.name ? "e.g. "+form.name?.replace(' ', '').slice(0, 4).toUpperCase() : "Enter NFT Token Symbol"}
+                    placeholder={"e.g. " + (form.name ? form.name?.slice(0, 4).toUpperCase() : "BAYC")}
                     value={form?.symbol}
                     onChange={(e) => handleFormChange("symbol", e.target.value)}
                   />
@@ -438,7 +438,7 @@ export default function NFT() {
               </h5>
             </button>
             <button
-              className="flex w-44 flex-row items-center justify-between rounded-3xl  bg-[#01F7FF] p-2 px-5 disabled:bg-gray-500"
+              className="flex w-44 flex-row items-center justify-between rounded-3xl  bg-[#01F7FF] p-2 px-5 disabled:bg-gray-500 hover:brightness-75"
               onClick={() => setisConfirmModalOpen(true)}
               // onClick={() => setStep("create_chatbot")}
               type="button"

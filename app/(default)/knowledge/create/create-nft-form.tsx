@@ -434,7 +434,7 @@ export default function NFT() {
               </h5>
             </button>
             <button
-              className="flex w-44 flex-row items-center justify-between rounded-3xl  bg-[#01F7FF] p-2 px-5 disabled:bg-gray-500"
+              className="flex w-44 flex-row items-center justify-between rounded-3xl  bg-[#01F7FF] p-2 px-5 disabled:bg-gray-500 hover:brightness-75"
               onClick={() => setisConfirmModalOpen(true)}
               type="button"
               disabled={!allowGenerate}
