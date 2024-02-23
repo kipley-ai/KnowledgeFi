@@ -2,13 +2,17 @@
 import Header from "./header";
 import MessageList from "./chat-messages";
 import MessageInput from "./message-input";
-import { useRouter } from 'next/navigation'
-import { useUserDetail } from '@/hooks/api/user'
+import { useRouter } from "next/navigation";
+import { useUserDetail } from "@/hooks/api/user";
 import { useAppProvider } from "@/providers/app-provider";
 import { useEffect, useState } from "react";
 import { useNftDetail } from "@/hooks/api/nft";
 import { useParams, usePathname } from "next/navigation";
-import { useChatHistory, useChatSession, useChatboxWS } from "@/hooks/api/chatbox";
+import {
+  useChatHistory,
+  useChatSession,
+  useChatboxWS,
+} from "@/hooks/api/chatbox";
 import { CreateChatbotProvider } from "./create-chatbot-context";
 import { useChatbotDetail } from "@/hooks/api/chatbot";
 import Description from "./description";
@@ -16,44 +20,44 @@ import CreditBalance from "./credit-balance";
 import { CreditBalanceProvider } from "./credit-balance-context";
 
 export default function ChatBotPage() {
-	const router = useRouter();
+  // const router = useRouter();
 
-	const { data: userDetail } = useUserDetail();
+  // const { data: userDetail } = useUserDetail();
 
-	const onboarding = userDetail?.data.data.onboarding;
-	if (!onboarding) {
-		router.push("/onboarding");
-	}
+  // const onboarding = userDetail?.data.data.onboarding;
+  // if (!onboarding) {
+  // 	router.push("/onboarding");
+  // }
 
-	const { setHeaderTitle } = useAppProvider();
-	const pathname = usePathname();
+  const { setHeaderTitle } = useAppProvider();
+  const pathname = usePathname();
 
-	useEffect(() => {
-		setHeaderTitle("Chatbot"); // Set the title when the component is mounted
-		console.log(pathname.split("/").pop());
+  useEffect(() => {
+    setHeaderTitle("Chatbot"); // Set the title when the component is mounted
+    console.log(pathname.split("/").pop());
 
-		// Optional: Reset the title when the component is unmounted
-		return () => setHeaderTitle("Default Title");
-	}, []); // Empty dependency array to run only once on mount
+    // Optional: Reset the title when the component is unmounted
+    return () => setHeaderTitle("Default Title");
+  }, []); // Empty dependency array to run only once on mount
 
-	return (
-		<div className="flex flex-col h-full md:flex-row px-4 md:px-0">
-			<CreditBalanceProvider>
-				<div className="flex flex-col md:px-6 xl:px-16 pb-4 bg-[#292D32] h-[calc(100vh-70px)] lg:h-[calc(100vh-120px)] w-full md:w-3/4 md:border-r-2 border-[#393E44]">
-					<CreateChatbotProvider>
-						<Header />
-						<MessageList />
-						<MessageInput />
-					</CreateChatbotProvider>
-				</div>
-				<div className="hidden md:flex flex-col w-1/4 bg-[#292D32]">
-					<div className="sticky top-0 lg:-top-8 h-fit w-full flex flex-col items-start divide-y-2 divide-[#393E44]">
-						<Description />
-						<CreditBalance />
-					</div>
-					<div></div>
-				</div>
-			</CreditBalanceProvider>
-		</div>
-	);
+  return (
+    <div className="flex h-full flex-col px-4 md:flex-row md:px-0">
+      <CreditBalanceProvider>
+        <div className="flex h-[calc(100vh-70px)] w-full flex-col border-[#393E44] bg-[#292D32] pb-4 md:w-3/4 md:border-r-2 md:px-6 lg:h-[calc(100vh-120px)] xl:px-16">
+          <CreateChatbotProvider>
+            <Header />
+            <MessageList />
+            <MessageInput />
+          </CreateChatbotProvider>
+        </div>
+        <div className="hidden w-1/4 flex-col bg-[#292D32] md:flex">
+          <div className="sticky top-0 flex h-fit w-full flex-col items-start divide-y-2 divide-[#393E44] lg:-top-8">
+            <Description />
+            <CreditBalance />
+          </div>
+          <div></div>
+        </div>
+      </CreditBalanceProvider>
+    </div>
+  );
 }

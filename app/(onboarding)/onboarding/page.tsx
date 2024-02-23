@@ -1,43 +1,43 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useQueries } from "@tanstack/react-query";
 import { useAccount } from "wagmi";
 import { useCreateChatbotContext } from "../create-knowledge-context";
 import Welcome from "./welcome";
 import InviteCode from "./invite-code";
-import Onboarding04 from "../onboarding-04";
-import Onboarding05 from "../onboarding-05";
-import Onboarding06 from "../onboarding-06";
+import SelectDataElements from "../select-data-elements";
+import MintNFT from "../mint-nft";
+import CreateChatbot from "../create-chatbot";
 import OnboardingSuccess from "../onboarding-success";
 import { useAppProvider } from "@/providers/app-provider";
 import { useUserDetail } from "@/hooks/api/user";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 
 export default function Onboarding() {
-  const { isConnected, address, status } = useAccount();
+  const sign = localStorage.getItem("kip-protocol-signature");
+  const { address, status } = useAccount();
   const { verifStatus } = useAppProvider();
 
-  const { isComingSoon, step, setStep } = useCreateChatbotContext();
+  const { step } = useCreateChatbotContext();
 
-  const router = useRouter();
+  const { data: userDetail, isLoading } = useUserDetail();
 
-  const { data: userDetail } = useUserDetail();
+  if (isLoading) return null;
 
-  const onboarding = userDetail?.data.data.onboarding;
-  if (onboarding && isConnected) {
-    router.push("/dashboard");
+  if (status === "connected" && userDetail?.data.data.onboarding) {
+    return redirect("/dashboard");
   }
 
-  if (isConnected && verifStatus === "authenticated") {
+  if (verifStatus === "authenticated" || sign) {
     return (
       // <div className="flex flex-col py-10 pb-20 px-6 lg:px-8 xl:px-32">
       <>
         {step == "data_source" || step == "upload_files" || step == "notion" ? (
-          <Onboarding04 />
+          <SelectDataElements />
         ) : step == "mint_nft" ? (
-          <Onboarding05 />
+          <MintNFT />
         ) : step == "create_chatbot" ? (
-          <Onboarding06 />
+          <CreateChatbot />
         ) : step == "onboarding_success" ? (
           <OnboardingSuccess />
         ) : (

@@ -12,6 +12,7 @@ import ImageInput from "@/components/image-input";
 import LoadingIcon from "public/images/loading-icon.svg";
 import MintConfirmationModal from "@/components/modal-mint-confirmation";
 import { DEFAULT_COVER_IMAGE } from "@/utils/constants";
+import Tooltip from "@/components/tooltip";
 
 // export const metadata = {
 //     title: 'SFT - Mosaic',
@@ -38,11 +39,14 @@ export default function NFT() {
   const { createKb, createNft } = useCreateChatbotContext();
   const [category, setCategory] = useState("");
   const [queryRoyalties, setQueryRoyalties] = useState("");
-  const { setStep, setSftId } = useCreateChatbotContext();
+  const { setStep, setSftId, setKbId } = useCreateChatbotContext();
   const [errorMessage, setErrorMessage] = useState<any>({});
   const [allowGenerate, setAllowGenerate] = useState(false);
   const { data: twitterSession } = useSession();
-  const [form, setForm] = useState<Form>({ shareSupply: "10000", comissionRate: 1 });
+  const [form, setForm] = useState<Form>({
+    shareSupply: "10000",
+    comissionRate: 1,
+  });
   const [selectedFile, setSelectedFile] = useState<string>(DEFAULT_COVER_IMAGE);
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [nftIdCreated, setNftIdCreated] = useState("");
@@ -111,6 +115,7 @@ export default function NFT() {
                 asset_id,
               );
               mintNFTAPI.mutate({ kb_id: kb_id });
+              setKbId(kb_id);
               setSftId(nft_id);
               setStep("create_chatbot");
               // setShowModal(true);
@@ -259,7 +264,12 @@ export default function NFT() {
                     className="placeholder-text-[#7C878E] w-11/12 rounded-xl bg-transparent text-xs text-[#DDD] lg:text-sm"
                     type="text"
                     name="tokenSymbol"
-                    placeholder="e.g. BAYC"
+                    placeholder={
+                      "e.g. " +
+                      (form.name
+                        ? form.name?.slice(0, 4).toUpperCase()
+                        : "BAYC")
+                    }
                     value={form?.symbol}
                     onChange={(e) => handleFormChange("symbol", e.target.value)}
                   />
@@ -319,14 +329,18 @@ export default function NFT() {
                     <div className="ml-2 block w-fit text-[#DDD]">%</div>
                   </div>
                 </div> */}
-                <div className="flex w-1/3 flex-col gap-1">
-                  <label className="text-wrap text-xs font-semibold text-[#DDD] lg:text-sm">
-                    Price Per Query
+                <div className="flex w-2/3 flex-col gap-1">
+                  <label className=" flex flex-row items-center space-x-3 text-wrap text-xs font-semibold text-[#DDD] lg:text-sm">
+                    <span>Price Per Query (in $KFI)</span>
+                    <Tooltip bg="dark" position="right" size="md">
+                      Set your price per query on your knowledge asset and get
+                      paid in $KFI.
+                    </Tooltip>
                   </label>
                   <div className="flex w-full items-center">
                     <input
                       // className="rounded-xl bg-transparent w-11/12"
-                      className="placeholder-text-[#7C878E] w-11/12 rounded-xl bg-transparent text-xs text-[#DDD] lg:text-sm"
+                      className="placeholder-text-[#7C878E] w-full rounded-xl bg-transparent text-xs text-[#DDD] lg:text-sm"
                       type="number"
                       name="pricePerQuery"
                       placeholder="e.g. 1"
@@ -427,7 +441,7 @@ export default function NFT() {
               </h5>
             </button>
             <button
-              className="flex w-44 flex-row items-center justify-between rounded-3xl  bg-[#01F7FF] p-2 px-5 disabled:bg-gray-500"
+              className="flex w-44 flex-row items-center justify-between rounded-3xl  bg-[#01F7FF] p-2 px-5 hover:brightness-75 disabled:bg-gray-500"
               onClick={() => setisConfirmModalOpen(true)}
               // onClick={() => setStep("create_chatbot")}
               type="button"

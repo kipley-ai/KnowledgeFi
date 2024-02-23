@@ -155,3 +155,17 @@ export const useMyChatbotList = (
     placeholderData: placeholderData,
   });
 };
+
+export const useGetChatbotPrice = (params: IChatbotDetailParams) => {
+  const { address } = useAccount();
+
+  return useQuery({
+    queryKey: ["chatbot", "price", params.chatbot_id],
+    queryFn: () =>
+      axios.post("/api/chatbot/price", params, {
+        headers: {
+          "x-kf-user-id": address,
+        },
+      }),
+  });
+}

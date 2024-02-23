@@ -13,7 +13,7 @@ import FailedIcon from "public/images/upload-file/failed-icon.svg";
 import UploadIcon from "public/images/upload-icon.svg";
 import React, { useState, useRef, useCallback, useEffect } from "react";
 import { useDebouncedCallback } from "use-debounce";
-import type { UIFile } from "./onboarding-04";
+import type { UIFile } from "./select-data-elements";
 import { useCreateChatbotContext } from "./create-knowledge-context";
 import Toast from "@/components/toast";
 import { useAppProvider } from "@/providers/app-provider";
@@ -55,7 +55,7 @@ export default function Local({
         newFileObject &&
         (files.length === 0 ||
           files.filter((file) => file.filename == newFileObject.name).length ==
-          0)
+            0)
       ) {
         console.log("New file detected");
         const { presignedUrl, bucketPath } = await fetchPresignedUrlS3(
@@ -224,7 +224,7 @@ export default function Local({
   }, [files, toast]);
 
   return (
-    <div className="flex flex-col bg-[#292D32] py-10 pb-20 px-6 lg:px-8 xl:px-32">
+    <div className="flex flex-col bg-[#292D32] px-6 py-10 pb-20 lg:px-8 xl:px-32">
       <Toast
         children={"KB creation successful"}
         open={toast}
@@ -272,7 +272,7 @@ export default function Local({
         {/* Warning if file exceeded */}
         <div>
           {fileLimitExceeded && (
-            <div className="text-red-500 text-center mt-4">
+            <div className="mt-4 text-center text-red-500">
               Maximum number of files exceeded.
             </div>
           )}
@@ -312,8 +312,11 @@ export default function Local({
           <h5 className="text-sm font-semibold text-white">Back</h5>
         </button>
         <button
-          className={`mt-8 flex flex-row items-center justify-between rounded-3xl p-2 px-5 ${files.length === 0 || fileLimitExceeded ? 'bg-gray-400' : 'bg-[#01F7FF]'
-            }`}
+          className={`mt-8 flex flex-row items-center justify-between rounded-3xl p-2 px-5 hover:brightness-75 ${
+            files.length === 0 || fileLimitExceeded
+              ? "bg-gray-400"
+              : "bg-[#01F7FF]"
+          }`}
           type="submit"
           disabled={files.length === 0 || fileLimitExceeded}
           onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
@@ -332,7 +335,11 @@ export default function Local({
             }
           }}
         >
-          <h5 className={`text-sm font-semibold pr-2 ${files.length === 0 || fileLimitExceeded ? 'text-gray-700' : 'text-black'}`}>Continue</h5>
+          <h5
+            className={`pr-2 text-sm font-semibold ${files.length === 0 || fileLimitExceeded ? "text-gray-700" : "text-black"}`}
+          >
+            Continue
+          </h5>
           <svg
             width="20"
             height="10"

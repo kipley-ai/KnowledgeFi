@@ -1,36 +1,25 @@
 export const metadata = {
-  title: 'Profile - Mosaic',
-  description: 'Page description',
-}
+  title: "Profile - Mosaic",
+  description: "Page description",
+};
 
-import { FlyoutProvider } from '@/app/flyout-context'
-import ProfileSidebar from './profile-sidebar'
-import ProfileBody from './profile-body'
+import { FlyoutProvider } from "@/app/flyout-context";
+import ProfileSidebar from "./profile-sidebar";
+import ProfileBody from "./profile-body";
 
 // import { useRouter } from 'next/navigation'
-import { useUserDetail } from '@/hooks/api/user'
+import { useUserDetail } from "@/hooks/api/user";
 
 function ProfileContent() {
-  // const router = useRouter();
-
-  // const { data: userDetail } = useUserDetail();
-
-  // const onboarding = userDetail?.data.data.onboarding;
-  // if (!onboarding) {
-  //   router.push("/onboarding");
-  // }
-
   return (
     <div className="relative flex">
-
       {/* Profile sidebar */}
       <ProfileSidebar />
 
       {/* Profile body */}
       <ProfileBody />
-
     </div>
-  )
+  );
 }
 
 export default function Profile() {
@@ -38,5 +27,5 @@ export default function Profile() {
     <FlyoutProvider>
       <ProfileContent />
     </FlyoutProvider>
-  )
+  );
 }

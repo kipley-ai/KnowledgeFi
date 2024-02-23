@@ -184,3 +184,21 @@ export const useCreatorOverview = () => {
       ),
   });
 };
+
+export const useIsWhitelisted = () => {
+  const { address } = useAccount();
+
+  return useQuery({
+    queryKey: ["is-whitelisted"],
+    queryFn: () =>
+      axios.post(
+        "/api/onboarding/is-whitelisted",
+        {},
+        {
+          headers: {
+            "x-kf-user-id": address,
+          },
+        },
+      ),
+  });
+};

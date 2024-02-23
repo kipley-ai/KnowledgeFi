@@ -11,7 +11,7 @@ import { useCreateChatbotContext } from "./create-knowledge-context";
 import ModalLoginTwitter from "@/components/modal-login-twitter";
 import OnboardingProgress from "./onboarding-progress";
 
-export default function Onboarding05() {
+export default function MintNFT() {
   return (
     <div className="flex flex-col bg-[#292D32] px-6 pb-20 lg:px-8 xl:px-32">
       <OnboardingProgress step={2} />

@@ -62,7 +62,7 @@ const Header = () => {
     //     .request_url,
   });
   return (
-    <div className="sticky top-0 lg:-top-8 flex items-center justify-between bg-stone-800 border-b border-b-gray-600 text-white py-3 xl:py-6">
+    <div className="sticky top-0 lg:-top-8 flex items-center justify-between bg-stone-800 border-b border-b-gray-600 text-white py-3 xl:py-5">
       <div className="flex items-center gap-5">
         <button
           onClick={() => router.back()}
@@ -120,8 +120,8 @@ const Header = () => {
             );
           }}
         >
-          <div className="rounded-full border-2 border-gray-500 p-2 font-semibold">
-            <Image width={16} height={16} src={Refresh} alt="Refresh" />
+          <div className="rounded-full border-2 border-gray-700 p-2 font-semibold">
+            <Image width={20} height={20} src={Refresh} alt="Refresh" />
           </div>
           {/* <svg
                         width="40"

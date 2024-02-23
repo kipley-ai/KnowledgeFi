@@ -74,8 +74,13 @@ const wagmiConfig = createConfig({
 export function CryptoProvider({ children }: React.PropsWithChildren) {
   const [address, setAddress] = useState("");
   const { response, error, loading, sendRequest } = useAxios();
+  const [isReady, setIsReady] = useState<boolean>(false);
 
   const { verifStatus, setVerifStatus } = useAppProvider();
+
+  useEffect(() => {
+    setIsReady(true);
+  }, []);
 
   useEffect(() => {
     // console.log(address,"address")
@@ -111,27 +116,31 @@ export function CryptoProvider({ children }: React.PropsWithChildren) {
     },
 
     signOut: async () => {
-      localStorage.setItem("kip-protocol-signature", "");
+      localStorage.removeItem("kip-protocol-signature");
 
       setVerifStatus("unauthenticated");
     },
   });
 
   return (
-    <WagmiConfig config={wagmiConfig}>
-      <RainbowKitAuthenticationProvider
-        adapter={authenticationAdapter}
-        status={verifStatus}
-      >
-        <RainbowKitProvider
-          chains={chains}
-          initialChain={
-            process.env.NEXT_PUBLIC_ENV_DEV == "1" ? sepolia : arbitrum
-          }
-        >
-          {children}
-        </RainbowKitProvider>
-      </RainbowKitAuthenticationProvider>
-    </WagmiConfig>
+    <>
+      {isReady && (
+        <WagmiConfig config={wagmiConfig}>
+          <RainbowKitAuthenticationProvider
+            adapter={authenticationAdapter}
+            status={verifStatus}
+          >
+            <RainbowKitProvider
+              chains={chains}
+              initialChain={
+                process.env.NEXT_PUBLIC_ENV_DEV == "1" ? sepolia : arbitrum
+              }
+            >
+              {children}
+            </RainbowKitProvider>
+          </RainbowKitAuthenticationProvider>
+        </WagmiConfig>
+      )}
+    </>
   );
 }

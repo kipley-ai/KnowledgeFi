@@ -36,19 +36,11 @@ import Link from "next/link";
 export default function Dashboard() {
   const title = "Dashboard";
 
-  const { data: userDetail } = useUserDetail();
-
   const { setHeaderTitle } = useAppProvider();
   const [mode, setMode] = useState(0);
   const [breakpoint, setBreakpoint] = useState<string | undefined>(
     getBreakpoint(),
   );
-  const router = useRouter();
-
-  const onboarding = userDetail?.data.data.onboarding;
-  if (!onboarding) {
-    router.push("/onboarding");
-  }
 
   const handleBreakpoint = () => {
     setBreakpoint(getBreakpoint());
@@ -116,14 +108,14 @@ export default function Dashboard() {
         {/* <div className="grid grid-cols-6"> */}
         {botsQuery.data?.data.data
           ? botsQuery.data.data.data.chatbot_data.map((botData) => {
-            return (
-              <BotItem
-                key={botData.chatbot_id}
-                botData={botData}
-                onClick={() => { }}
-              />
-            );
-          })
+              return (
+                <BotItem
+                  key={botData.chatbot_id}
+                  botData={botData}
+                  onClick={() => {}}
+                />
+              );
+            })
           : null}
       </div>
 

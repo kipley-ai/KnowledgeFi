@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Twitter from "./twitter";
 import Notion from "./notion";
 import Local from "./local";
-import type { UIFile } from "./onboarding-04";
+import type { UIFile } from "./select-data-elements";
 import type { ReactSetter } from "lib/aliases";
 
 export default function Step2({
