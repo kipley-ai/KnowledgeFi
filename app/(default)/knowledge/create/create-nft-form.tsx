@@ -12,6 +12,7 @@ import ImageInput from "@/components/image-input";
 import LoadingIcon from "public/images/loading-icon.svg";
 import MintConfirmationModal from "@/components/modal-mint-confirmation";
 import { DEFAULT_COVER_IMAGE } from "@/utils/constants";
+import Tooltip from "@/components/tooltip";
 
 // export const metadata = {
 //     title: 'SFT - Mosaic',
@@ -318,8 +319,15 @@ export default function NFT() {
                   </div>
                 </div> */}
                 <div className="flex w-1/3 flex-col gap-1">
-                  <label className="text-wrap text-xs font-semibold text-[#DDD] lg:text-sm">
-                    Price Per Query
+                  <label className="flex flex-row text-wrap text-xs font-semibold text-[#DDD] lg:text-sm items-center space-x-3">
+                    <span>Price Per Query (in $KFI)</span>
+                    <Tooltip
+                      bg="dark"
+                      position="right"
+                      size="md"
+                    >
+                      Set your price per query on your knowledge asset and get paid in $KFI.
+                    </Tooltip>
                   </label>
                   <div className="flex w-full items-center">
                     <input

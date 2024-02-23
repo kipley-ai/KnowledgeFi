@@ -12,6 +12,7 @@ import { number, string } from "zod";
 import Switcher from "@/components/switcher";
 import { useAppProvider } from "@/providers/app-provider";
 import { DEFAULT_COVER_IMAGE } from "@/utils/constants";
+import Tooltip from "@/components/tooltip";
 
 interface Category {
   title: string;
@@ -236,9 +237,16 @@ const ChatBotForm = () => {
               </div>
               <div>
                 <label
-                  className="block text-xs font-semibold text-white lg:text-sm "
+                  className=" flex flex-row text-wrap text-xs font-semibold text-[#DDD] lg:text-sm items-center space-x-3"
                 >
-                  Price Per Query
+                  <span>Price Per Query (in $KFI)</span>
+                  <Tooltip
+                    bg="dark"
+                    position="right"
+                    size="md"
+                  >
+                    Set your price per query on your chatbot app and get paid in $KFI.
+                  </Tooltip>
                 </label>
                 <div className="mt-3">
                   <input
