@@ -240,13 +240,13 @@ const ChatBotForm = () => {
                 {/* <label className="block text-xs font-semibold text-white lg:text-sm "> */}
                 <label className=" flex flex-row text-wrap text-xs font-semibold text-[#DDD] lg:text-sm items-center space-x-3">
                   <span>Price Per Query (in $KFI)</span>
-                    <Tooltip
-                      bg="dark"
-                      position="right"
-                      size="md"
-                    >
-                      Set your price per query on your chatbot app and get paid in $KFI.
-                    </Tooltip>
+                  <Tooltip
+                    bg="dark"
+                    position="right"
+                    size="md"
+                  >
+                    Set your price per query on your chatbot app and get paid in $KFI.
+                  </Tooltip>
                 </label>
                 <div className="mt-3">
                   <input
@@ -376,10 +376,10 @@ const ChatBotForm = () => {
               </h5>
             </button>
             <button
-              className="mt-8 flex items-center justify-center rounded-3xl bg-[#01F7FF] px-5 py-1"
+              className="group mt-8 flex items-center justify-center rounded-3xl bg-[#292D32] p-2 px-5 ring-2 ring-gray-600 transition-all duration-200 ease-in-out hover:bg-[#01F7FF] hover:ring-0"
               type="submit"
             >
-              <h5 className="flex-grow text-xs font-semibold text-black lg:text-sm ">
+              <h5 className="text-xs font-semibold text-white lg:text-sm transition-colors duration-200 ease-in-out group-hover:text-black">
                 Bring my chatbot to life
               </h5>
               <svg
@@ -388,18 +388,19 @@ const ChatBotForm = () => {
                 viewBox="0 0 20 10"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
-                className="ml-2"
+                className="ml-2 fill-current text-white group-hover:fill-black transition-fill duration-200 ease-in-out"
               >
                 <path
                   d="M17.98 5.7901C18.8936 5.7901 19.6343 6.53075 19.6343 7.44439V7.44439C19.6343 8.35803 18.8936 9.09868 17.98 9.09868L1.65435 9.09868C0.74071 9.09868 5.90253e-05 8.35803 5.90618e-05 7.44439V7.44439C5.90983e-05 6.53075 0.740711 5.7901 1.65435 5.7901L17.98 5.7901Z"
-                  fill="#151515"
+                  fill="currentColor"
                 />
                 <path
                   d="M18.932 5.9907C19.5219 6.63674 19.5219 7.68418 18.932 8.33022C18.3422 8.97626 17.3859 8.97626 16.7961 8.33022L12.3947 3.50927C11.8049 2.86322 11.8049 1.81578 12.3947 1.16974C12.9845 0.523702 13.9408 0.523702 14.5306 1.16974L18.932 5.9907Z"
-                  fill="#151515"
+                  fill="currentColor"
                 />
               </svg>
             </button>
+
           </div>
         </form>
       </div>
