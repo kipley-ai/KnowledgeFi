@@ -321,7 +321,7 @@ export default function NFT() {
                     <div className="ml-2 block w-fit text-[#DDD]">%</div>
                   </div>
                 </div> */}
-                <div className="flex w-5/12 flex-col gap-1">
+                <div className="flex w-2/3 flex-col gap-1">
                   <label
                     className=" flex flex-row text-wrap text-xs font-semibold text-[#DDD] lg:text-sm items-center space-x-3"
                   >
@@ -337,7 +337,7 @@ export default function NFT() {
                   <div className="flex w-full items-center">
                     <input
                       // className="rounded-xl bg-transparent w-11/12"
-                      className="placeholder-text-[#7C878E] w-11/12 rounded-xl bg-transparent text-xs text-[#DDD] lg:text-sm"
+                      className="placeholder-text-[#7C878E] w-full rounded-xl bg-transparent text-xs text-[#DDD] lg:text-sm"
                       type="number"
                       name="pricePerQuery"
                       placeholder="e.g. 1"
