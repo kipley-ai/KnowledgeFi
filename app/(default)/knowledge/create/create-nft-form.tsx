@@ -258,7 +258,8 @@ export default function NFT() {
                     className="placeholder-text-[#7C878E] w-11/12 rounded-xl bg-transparent text-xs text-[#DDD] lg:text-sm"
                     type="text"
                     name="tokenSymbol"
-                    placeholder={"e.g. "+ (form.name ? form.name?.slice(0, 4).toUpperCase() : "BAYC")}
+                    // placeholder={"e.g. "+ (form.name ? form.name?.slice(0, 4).toUpperCase() : "BAYC")}
+                    placeholder={"Enter NFT Token Symbol"}
                     value={form?.symbol}
                     onChange={(e) => handleFormChange("symbol", e.target.value)}
                   />
@@ -318,7 +319,7 @@ export default function NFT() {
                     <div className="ml-2 block w-fit text-[#DDD]">%</div>
                   </div>
                 </div> */}
-                <div className="flex w-1/3 flex-col gap-1">
+                <div className="flex w-5/12 flex-col gap-1">
                   <label className="flex flex-row text-wrap text-xs font-semibold text-[#DDD] lg:text-sm items-center space-x-3">
                     <span>Price Per Query (in $KFI)</span>
                     <Tooltip
