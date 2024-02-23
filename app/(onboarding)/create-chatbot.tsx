@@ -12,7 +12,7 @@ import ModalLoginTwitter from "@/components/modal-login-twitter";
 import OnboardingProgress from "./onboarding-progress";
 import ChatBotForm from "./create-chatbot-form";
 
-export default function Onboarding06() {
+export default function CreateChatbot() {
   return (
     <div className="flex flex-col bg-[#292D32] px-6 pb-20 pt-6 lg:px-8 xl:px-32">
       <OnboardingProgress step={3} />

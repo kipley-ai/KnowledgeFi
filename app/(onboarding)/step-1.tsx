@@ -10,7 +10,9 @@ import Image from "next/image";
 import { useCreateChatbotContext } from "./create-knowledge-context";
 import React, { useState } from "react";
 import { ImageSrc, ReactSetter } from "@/lib/aliases";
-import { PossibleOption } from "./onboarding-04";
+import { PossibleOption } from "./select-data-elements";
+import { useSession } from "next-auth/react";
+import { useAppProvider } from "@/providers/app-provider";
 
 const ButtonItem = ({
   onClick,
@@ -92,7 +94,11 @@ export default function Step1({
   selectedButton: string;
   setSelectedButton: Function;
 }) {
-  const { handleChangeKb, setIsComingSoon } = useCreateChatbotContext();
+  const { status: twitterStatus } = useSession();
+  const { modalLogin: showTwitterLogin, setModalLogin: setShowTwitterLogin } =
+    useAppProvider();
+
+  const { handleChangeKb, setIsComingSoon, setStep } = useCreateChatbotContext();
 
   return (
     <div className="md:mt-10 grid grid-cols-2 md:grid-cols-4 gap-4  font-bold text-white">
@@ -103,6 +109,17 @@ export default function Step1({
             handleChangeKb("type", button.type);
             setSelectedButton(button.type);
             setIsComingSoon(button.comingSoon);
+
+            if (button.type == "twitter") {
+              if (twitterStatus != "authenticated") {
+                setShowTwitterLogin(true);
+                sessionStorage.setItem("mintNFTRedirect", "true");
+              } else {
+                setStep("mint_nft");
+              }
+            } else if (button.type == "files") {
+              setStep("upload_files");
+            }
           }}
           isSelected={selectedButton == button.type}
           optionIcon={button.icon}
