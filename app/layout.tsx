@@ -21,8 +21,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      {/* suppressHydrationWarning: https://github.com/vercel/next.js/issues/44343 */}
+    <html lang="en">
       <body
         className={`${inter.variable} bg-slate-100 font-inter text-slate-600 antialiased dark:bg-slate-900 dark:text-slate-400`}
       >
