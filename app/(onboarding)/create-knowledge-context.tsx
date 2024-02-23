@@ -22,6 +22,9 @@ interface CreateChatbotContextProps {
   sftId: string;
   setSftId: ReactSetter<string>;
 
+  kbId: string;
+  setKbId: ReactSetter<string>;
+
   createChatbot: any;
 	handleChangeChatbot: any;
 }
@@ -81,6 +84,7 @@ export const CreateChatbotProvider = ({
 
   const [step, setStep] = useState("invite_code");
   const [sftId, setSftId] = useState("");
+  const [kbId, setKbId] = useState("");
   const [isComingSoon, setIsComingSoon] = useState(false);
 
   // const nftDetail = useNftDetail({
@@ -134,6 +138,9 @@ export const CreateChatbotProvider = ({
 
         sftId,
         setSftId,
+
+        kbId,
+        setKbId,
       }}
     >
       {children}
