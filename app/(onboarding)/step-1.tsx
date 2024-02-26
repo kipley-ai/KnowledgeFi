@@ -101,7 +101,7 @@ export default function Step1({
   const { handleChangeKb, setIsComingSoon, setStep } = useCreateChatbotContext();
 
   return (
-    <div className="md:mt-10 grid grid-cols-2 md:grid-cols-4 gap-4  font-bold text-white">
+    <div className="md:mt-4 grid grid-cols-2 md:grid-cols-4 gap-4  font-bold text-white">
       {buttons.map((button) => (
         <ButtonItem
           key={button.type}

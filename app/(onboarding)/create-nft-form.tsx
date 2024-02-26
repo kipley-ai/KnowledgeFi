@@ -199,7 +199,7 @@ export default function NFT() {
         setOpen={setShowModal}
         kbIdCreated={nftIdCreated}
       />
-      <div className="flex flex-col bg-[#292D32] px-6 py-8 pb-14 lg:px-8 xl:px-32">
+      <div className="flex flex-col px-6 py-8 pb-14 lg:px-8 xl:px-32">
         <div>
           <h1 className="text-2xl font-semibold text-white">Mint SFT</h1>
           <hr className="my-4 border border-gray-600" />

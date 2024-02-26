@@ -224,7 +224,7 @@ export default function Local({
   }, [files, toast]);
 
   return (
-    <div className="flex flex-col bg-[#292D32] px-6 py-10 pb-20 lg:px-8 xl:px-32">
+    <div className="flex flex-col px-6 py-10 pb-20 lg:px-8 xl:px-32">
       <Toast
         children={"KB creation successful"}
         open={toast}
@@ -233,7 +233,7 @@ export default function Local({
       />
       <div className="">
         <h1 className="text-2xl font-semibold text-white">
-          Upload Knowledge Files
+          UPLOAD KNOWLEDGE FILES
         </h1>
         <hr className="my-4 border border-gray-600" />
       </div>
@@ -312,7 +312,7 @@ export default function Local({
           <h5 className="text-sm font-semibold text-white">Back</h5>
         </button>
         <button
-          className={`mt-8 flex flex-row items-center justify-between rounded-3xl p-2 px-5 hover:brightness-75 ${
+          className={`mt-8 flex flex-row items-center justify-between rounded-sm p-2 px-5 hover:brightness-75 ${
             files.length === 0 || fileLimitExceeded
               ? "bg-gray-400"
               : "bg-[#01F7FF]"

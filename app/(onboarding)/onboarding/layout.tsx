@@ -7,12 +7,9 @@ type OnboardingLayoutProps = {
 
 const OnboardingLayout = ({ children }: OnboardingLayoutProps) => {
   return (
-    <div className="flex h-[100dvh] overflow-hidden bg-neutral-800">
-      {/* Sidebar */}
-      {/* <Sidebar /> */}
-
+    <div className="flex h-dvh overflow-hidden bg-black">
       {/* Content area */}
-      <div className="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden rounded-lg border-gray-700 bg-[#292D32] p-0 pl-0">
+      <div className="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden rounded-lg border-gray-700 p-0 pl-0">
         <div className="rounded-lg">
           {/*  Site header */}
           {/* <HeaderOnboarding /> */}
@@ -21,7 +18,7 @@ const OnboardingLayout = ({ children }: OnboardingLayoutProps) => {
             <CreateChatbotProvider>
               {" "}
               <OnboardingHeader />
-              <main className="h-[88dvh] bg-[#292D32] px-32 py-10">
+              <main className="h-[88dvh] px-32 py-10">
                 {children}
               </main>
             </CreateChatbotProvider>

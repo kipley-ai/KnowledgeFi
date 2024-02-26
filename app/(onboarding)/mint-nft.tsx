@@ -13,7 +13,7 @@ import OnboardingProgress from "./onboarding-progress";
 
 export default function MintNFT() {
   return (
-    <div className="flex flex-col bg-[#292D32] px-6 pb-20 lg:px-8 xl:px-32">
+    <div className="flex flex-col px-6 pb-20 lg:px-8 xl:px-32">
       <OnboardingProgress step={2} />
       <div className="-mx-16 -mt-3">
         <NFTForm />

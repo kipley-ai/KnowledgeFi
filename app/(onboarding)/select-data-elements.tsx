@@ -93,12 +93,15 @@ export default function SelectDataElements() {
         redirectUrl="/knowledge/create"
       />
       {step == "data_source" ? (
-        <div className="flex flex-col bg-[#292D32] px-6 pb-20 lg:px-8 xl:px-32">
+        <div className="flex flex-col px-6 pb-20 lg:px-8 xl:px-32">
           <OnboardingProgress step={1} />
 
           <div className="mt-3">
             <h1 className="text-2xl font-semibold text-white">
-              Select Data Elements for your SFT
+              <span className="transform text-[#01F7FF] rotate-90 text-center" style={{ writingMode: 'vertical-rl' }}>
+              ↳
+              </span>{" "}
+              SELECT DATA ELEMENTS
             </h1>
             <hr className="my-4 border border-gray-600" />
           </div>

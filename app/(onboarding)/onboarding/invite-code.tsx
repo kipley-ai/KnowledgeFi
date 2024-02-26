@@ -180,7 +180,7 @@ const InviteCode = ({ address }: InviteCodeProps) => {
               maxLength={1}
               key={index}
               value={otp[index]}
-              // onChange={(e) => handleChange(e.target, index)}
+              onChange={(e) => null}
               onKeyDown={(e) => handleKeyDown(e, index)}
               ref={(ref) => (inputsRef.current[index] = ref)}
               onPaste={handlePaste}

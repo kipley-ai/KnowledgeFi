@@ -160,13 +160,13 @@ const ChatBotForm = () => {
         open={showModal}
         setOpen={setShowModal}
       /> */}
-      <div className="flex flex-col bg-[#292D32] py-8 sm:px-6 lg:px-0">
+      <div className="flex flex-col py-8 sm:px-6 lg:px-0">
         <div className="mx-5 md:mx-32">
-          <h1 className="text-2xl font-semibold text-white">Create Chatbot</h1>
+          <h1 className="text-2xl font-semibold text-white">CREATE CHATBOT</h1>
           {/* <h5 className="text-md text-[#7C878E]">
 					Give some general information about your character.
 				</h5> */}
-          <hr className="my-4 border border-gray-600" />
+          <hr className="my-4 border border-gray-800" />
         </div>
         <form className="mx-5 flex flex-col md:mx-32" onSubmit={handleSubmit}>
           <div className="flex">
@@ -191,7 +191,7 @@ const ChatBotForm = () => {
                     type="text"
                     value={characterName}
                     onChange={(e) => setCharacterName(e.target.value)}
-                    className="mt-2 w-full rounded-xl border-2 bg-transparent text-xs text-white lg:text-sm"
+                    className="mt-2 w-full rounded-xl border-2 border-gray-800 bg-transparent text-xs text-white lg:text-sm"
                     placeholder="Name your Chatbot"
                     maxLength={100}
                   />
@@ -201,13 +201,13 @@ const ChatBotForm = () => {
               </p> */}
               </div>
               <div>
-                <label
+                {/* <label
                   htmlFor="tone"
                   className="block text-xs font-semibold text-white lg:text-sm "
                 >
                   Tone
-                </label>
-                <div className="mt-3">
+                </label> */}
+                <div className="mt-3 w-full">
                   <Switcher
                     texts={["1st Person Tone", "3rd Person Tone"]}
                     mode={mode}
@@ -242,12 +242,12 @@ const ChatBotForm = () => {
                   <span>Price Per Query (in $KFI)</span>
                   <Tooltip bg="dark" position="right" size="md">
                     Set your price per query on your chatbot app and
-                    get paid in $KFI.
+                    get paid in $KFI.
                   </Tooltip>
                 </label>
                 <div className="mt-3">
                   <input
-                    className="placeholder-text-[#7C878E] w-full rounded-xl bg-transparent text-xs text-[#DDD] lg:text-sm"
+                    className="placeholder-text-[#7C878E] w-full rounded-xl border-2 border-gray-800 bg-transparent text-xs text-[#DDD] lg:text-sm"
                     type="number"
                     name="pricePerQuery"
                     placeholder="e.g. 1"
@@ -365,11 +365,11 @@ const ChatBotForm = () => {
 
           <div className="form-actions flex flex-row justify-end space-x-2">
             <button
-              className="group mt-8 flex items-center justify-center rounded-3xl bg-[#01F7FF] p-2 px-5 ring-2 ring-gray-600 transition-all duration-200 ease-in-out hover:brightness-75"
+              className="group mt-8 flex items-center justify-center rounded-sm bg-[#01F7FF] p-2 px-5 ring-2 ring-gray-600 transition-all duration-200 ease-in-out hover:brightness-75"
               type="submit"
             >
               <h5 className="text-xs font-semibold text-black transition-colors duration-200 ease-in-out lg:text-sm">
-                Bring my chatbot to life
+                BRING MY CHATBOT TO LIFE
               </h5>
               <svg
                 width="20"
