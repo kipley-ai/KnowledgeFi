@@ -1,6 +1,6 @@
 import "./css/style.css";
 
-import { Inter } from "next/font/google";
+import { Inter, Jura } from "next/font/google";
 import Theme from "../providers/theme-provider";
 import AppProvider from "../providers/app-provider";
 import NextAuthProvider from "../providers/session-provider";
@@ -9,9 +9,15 @@ import "@rainbow-me/rainbowkit/styles.css";
 import { RQProviders } from "@/providers/react-query-provider";
 import { CryptoProvider } from "@/providers/crypto-provider";
 
-const inter = Inter({
+// const inter = Inter({
+//   subsets: ["latin"],
+//   variable: "--font-inter",
+//   display: "swap",
+// });
+
+const jura = Jura({
   subsets: ["latin"],
-  variable: "--font-inter",
+  variable: "--font-jura",
   display: "swap",
 });
 
@@ -23,7 +29,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${inter.variable} bg-slate-100 font-inter text-slate-600 antialiased dark:bg-slate-900 dark:text-slate-400`}
+        className={`${jura.variable} bg-slate-100 font-jura text-slate-600 antialiased dark:bg-slate-900 dark:text-slate-400`}
       >
         <RQProviders>
           <Theme>
