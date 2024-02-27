@@ -231,18 +231,15 @@ export default function Local({
         setOpen={setToast}
         className="mx-auto"
       />
-      <div className="">
+      <div className="mt-3 flex items-center cursor-pointer gap-6">
+        <div className="h-full" onClick={() => setStep("data_source")}>
+          <Image src={"/images/corner-up-left.png"} alt="icon" width={24} height={24} />
+        </div>
         <h1 className="text-2xl font-semibold text-white">
-          <span
-            className="rotate-90 transform text-center text-[#01F7FF]"
-            style={{ writingMode: "vertical-rl" }}
-          >
-            ↳
-          </span>{" "}
           UPLOAD KNOWLEDGE FILES
         </h1>
-        <hr className="my-4 border border-gray-600" />
       </div>
+      <hr className="my-4 border border-gray-600" />
       <div className="">
         <div
           className="color-[#aaa] font-inter mb-4 mt-5 flex cursor-pointer flex-col items-center rounded-md border-2 border-dashed border-[#777E90] px-20 py-24 text-center text-white "
@@ -318,7 +315,7 @@ export default function Local({
           <h5 className="text-sm font-semibold text-[#777E90]">BACK</h5>
         </button>
         <button
-          className={`mt-8 flex flex-row items-center justify-between rounded-sm px-6 py-4 hover:brightness-75 ${
+          className={`mt-8 flex flex-row items-center justify-between rounded-sm px-5 py-3 hover:brightness-75 ${
             files.length === 0 || fileLimitExceeded
               ? "bg-gray-400"
               : "bg-[#01F7FF]"
