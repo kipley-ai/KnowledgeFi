@@ -1,7 +1,8 @@
 import axios from "axios";
 import { useState, useEffect, useRef } from "react";
 import { useCreateChatbotContext } from "../create-knowledge-context";
-import { useIsWhitelisted } from "@/hooks/api/user";
+import { useIsWhitelisted, useUserDetail } from "@/hooks/api/user";
+import { redirect } from "next/navigation";
 
 type InviteCodeProps = {
   address: string | undefined;
@@ -15,6 +16,8 @@ const InviteCode = ({ address }: InviteCodeProps) => {
   const inputsRef = useRef<(HTMLInputElement | null)[]>([]);
 
   const { setStep } = useCreateChatbotContext();
+
+  const userDetail = useUserDetail();
 
   const { data: isWl, isLoading } = useIsWhitelisted();
 
@@ -158,9 +161,13 @@ const InviteCode = ({ address }: InviteCodeProps) => {
     }
   }, [otp]);
 
-  if (isLoading) return null;
+  if (isLoading && userDetail.isLoading) return null;
 
-  if (isWl?.data.status !== "error") {
+  if (userDetail?.data?.data && userDetail.data.data.data.onboarding) {
+    return redirect("/dashboard");
+  }
+
+  if (isWl?.data && isWl?.data.status !== "error") {
     setStep("data_source");
   }
 

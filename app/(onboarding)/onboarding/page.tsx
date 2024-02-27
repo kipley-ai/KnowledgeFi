@@ -14,21 +14,15 @@ import OnboardingSuccess from "../onboarding-success";
 import { useAppProvider } from "@/providers/app-provider";
 import { useUserDetail } from "@/hooks/api/user";
 import { redirect, useRouter } from "next/navigation";
+import KipProtocolVideo from "../kip-protocol-video";
+import { useState } from "react";
 
 export default function Onboarding() {
   const sign = localStorage.getItem("kip-protocol-signature");
-  const { address, status } = useAccount();
+  const { address } = useAccount();
   const { verifStatus } = useAppProvider();
 
-  const { step } = useCreateChatbotContext();
-
-  const { data: userDetail, isLoading } = useUserDetail();
-
-  if (isLoading) return null;
-
-  if (status === "connected" && userDetail?.data.data.onboarding) {
-    return redirect("/dashboard");
-  }
+  const { step, welcomePage } = useCreateChatbotContext();
 
   if (verifStatus === "authenticated" || sign) {
     return (
@@ -52,8 +46,6 @@ export default function Onboarding() {
   }
 
   return (
-    <>
-      <JetWelcome />
-    </>
+    <>{welcomePage === "kip-video" ? <KipProtocolVideo /> : <JetWelcome />}</>
   );
 }
