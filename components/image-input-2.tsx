@@ -7,7 +7,11 @@ import GalleryImages from "@/public/json/image-gallery-app.json";
 import UploadingIcon from "public/images/upload-file/uploading-icon-white.svg";
 import LoadingIcon from "public/images/loading-icon.svg";
 
-const ImageInput = ({ selectedFile, setSelectedFile }: any) => {
+const ImageInput = ({
+  selectedFile,
+  setSelectedFile,
+  useDefaultImage = true,
+}: any) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [loadingCover, setLoadingCover] = useState(false);
   const [isImageModalOpen, setIsImageModalOpen] = useState(false);
@@ -72,7 +76,7 @@ const ImageInput = ({ selectedFile, setSelectedFile }: any) => {
 
   return (
     <>
-      <div className="flex flex-col gap-2 w-52">
+      <div className="flex w-60 flex-col gap-4">
         <label
           className="form-label mb-1 self-start text-sm font-semibold text-[#DDD] lg:text-base"
           htmlFor="email"
@@ -99,7 +103,7 @@ const ImageInput = ({ selectedFile, setSelectedFile }: any) => {
                   src={LoadingIcon}
                   alt="Loading Icon"
                 />
-              ) : (
+              ) : useDefaultImage ? (
                 <Image
                   src={selectedFile}
                   alt="Edit Preview"
@@ -108,11 +112,19 @@ const ImageInput = ({ selectedFile, setSelectedFile }: any) => {
                   className="rounded-2xl object-cover"
                   priority
                 />
+              ) : (
+                <div className="flex flex-col items-center rounded-md border-2 border-dashed border-[#777E90] px-2 py-12 text-center">
+                  <p className="text-xs text-white">Drop your files here OR</p>
+                  <p className="text-xs text-[#01F7FF]">Click here to browse</p>
+                  <p className="text-xs text-[#777E90]">
+                    PNG, GIF, WEBP,PDF or JPEG. Max 250MB.
+                  </p>
+                </div>
               )}
             </div>
           )}
         </Dropzone>
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-4">
           <button
             onClick={(e) => {
               e.preventDefault();
@@ -129,7 +141,7 @@ const ImageInput = ({ selectedFile, setSelectedFile }: any) => {
             CHOOSE IMAGE FROM DEVICE
           </button>
           <div
-            className="w-full cursor-pointer rounded-md py-1 text-center text-xs font-bold text-gray-400 border-2 border-gray-700 hover:brightness-75"
+            className="w-full cursor-pointer rounded-md border-2 border-gray-700 py-1 text-center text-xs font-bold text-gray-400 hover:brightness-75"
             onClick={handleRandomCover}
           >
             RANDOM

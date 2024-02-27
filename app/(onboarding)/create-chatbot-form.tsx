@@ -13,6 +13,7 @@ import Switcher from "@/components/switcher";
 import { useAppProvider } from "@/providers/app-provider";
 import { DEFAULT_COVER_IMAGE } from "@/utils/constants";
 import Tooltip from "@/components/tooltip";
+import Image from "next/image";
 
 interface Category {
   title: string;
@@ -160,13 +161,22 @@ const ChatBotForm = () => {
         open={showModal}
         setOpen={setShowModal}
       /> */}
-      <div className="flex flex-col py-8 sm:px-6 lg:px-0">
-        <div className="mx-5 md:mx-32">
-          <h1 className="text-2xl font-semibold text-white">CREATE CHATBOT</h1>
-          {/* <h5 className="text-md text-[#7C878E]">
-					Give some general information about your character.
-				</h5> */}
-          <hr className="my-4 border border-gray-800" />
+      <div className="-mx-28 flex flex-col py-8 sm:px-6 lg:px-0">
+        <div className="mx-5 mb-6 md:mx-32">
+          <div className="mt-3 flex cursor-pointer items-center gap-6">
+            <div className="h-full">
+              <Image
+                src={"/images/corner-up-left.png"}
+                alt="icon"
+                width={24}
+                height={24}
+              />
+            </div>
+            <h1 className="text-2xl font-semibold text-white">
+              CREATE CHATBOT
+            </h1>
+          </div>
+          <hr className="my-4 border border-gray-600" />
         </div>
         <form className="mx-5 flex flex-col md:mx-32" onSubmit={handleSubmit}>
           <div className="flex">
@@ -174,6 +184,7 @@ const ChatBotForm = () => {
               <ImageInput
                 selectedFile={selectedFile}
                 setSelectedFile={setSelectedFile}
+                useDefaultImage={false}
               />
             </div>
 
@@ -191,7 +202,7 @@ const ChatBotForm = () => {
                     type="text"
                     value={characterName}
                     onChange={(e) => setCharacterName(e.target.value)}
-                    className="mt-2 w-full rounded-xl border-2 border-gray-800 bg-transparent text-xs text-white lg:text-sm"
+                    className="mt-2 w-full rounded-md border-2 border-gray-800 bg-transparent text-xs text-white lg:text-sm"
                     placeholder="Name your Chatbot"
                     maxLength={100}
                   />
@@ -212,6 +223,8 @@ const ChatBotForm = () => {
                     texts={["1st Person Tone", "3rd Person Tone"]}
                     mode={mode}
                     setWhich={setMode}
+                    fullWidth={true}
+                    bg="bg-transparent"
                   />
                 </div>
                 {/* <label
@@ -241,13 +254,13 @@ const ChatBotForm = () => {
                 <label className=" flex flex-row items-center space-x-3 text-wrap text-xs font-semibold text-[#DDD] lg:text-sm">
                   <span>Price Per Query (in $KFI)</span>
                   <Tooltip bg="dark" position="right" size="md">
-                    Set your price per query on your chatbot app and
-                    get paid in $KFI.
+                    Set your price per query on your chatbot app and get paid in
+                    $KFI.
                   </Tooltip>
                 </label>
                 <div className="mt-3">
                   <input
-                    className="placeholder-text-[#7C878E] w-full rounded-xl border-2 border-gray-800 bg-transparent text-xs text-[#DDD] lg:text-sm"
+                    className="placeholder-text-[#7C878E] w-1/2 rounded-md border-2 border-gray-800 bg-transparent text-xs text-[#DDD] lg:text-sm"
                     type="number"
                     name="pricePerQuery"
                     placeholder="e.g. 1"
