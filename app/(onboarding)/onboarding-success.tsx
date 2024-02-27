@@ -2,7 +2,8 @@
 import React, { useState } from "react";
 import OnboardingProgress from "./onboarding-progress";
 import Image from "next/image";
-import CheckIcon from "public/images/check-icon.svg";
+import CheckIcon from "public/images/double-check.svg";
+import OnboardingSuccessImage from "public/images/onboarding-success.png";
 import { DM_Sans, Poppins } from "next/font/google";
 import { useRouter } from "next/navigation";
 
@@ -27,29 +28,44 @@ const poppins = Poppins({
 export default function OnboardingSuccess() {
   const router = useRouter();
   return (
-    <div className="flex flex-col justify-center bg-[#292D32] px-6 pb-20 pt-6 lg:px-8 xl:px-32">
+    <div className="flex flex-col justify-center px-6 pb-20 pt-6 lg:px-8 xl:px-32">
       <OnboardingProgress step={4} />
       <div
-        className={`flex w-[410px] flex-col items-center justify-center self-center rounded-2xl px-7 py-12 text-white ${dmsans.className} font-semibold`}
+        className={`flex w-[610px] flex-col items-center justify-center self-center rounded-2xl px-7 py-12 text-white ${dmsans.className} font-semibold`}
       >
-        <div className="flex w-full flex-row items-center justify-center">
-          {/* <h2 className="text-3xl">Success</h2> */}
-          <h1 className="text-5xl font-bold text-white">Yay! 🎉</h1>
+        <div
+          style={{
+            backgroundImage: `url(${OnboardingSuccessImage.src})`,
+            backgroundPosition: "center",
+            backgroundSize: "cover",
+            backgroundRepeat: "no-repeat",
+            width: "100%",
+            height: "223px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <h1 className="font-mono text-5xl text-white">Well done!</h1>
         </div>
         <div
           className={`flex flex-row ${poppins.className} my-8 items-center justify-center text-sm`}
         >
           <Image
-            className="mr-4 h-[30px] w-[30px]"
+            height={12}
+            width={22}
             src={CheckIcon}
             alt="check icon"
+            className="mr-4"
           />
-          Your Knowledge Asset is created successfully
+          <h1 className="font-mono text-base">
+            Your Knowledge Asset is created successfully
+          </h1>
         </div>
-        <div className="flex w-full">
+        <div className="flex w-full justify-center">
           <button
             onClick={() => router.push("/dashboard")}
-            className="w-full rounded-3xl bg-[#353945] py-2 text-sm text-[#01F7FF]"
+            className="rounded-full bg-[#353945] px-12 py-4 text-sm text-[#01F7FF]"
           >
             Enter KnowledgeFi Homepage
           </button>
