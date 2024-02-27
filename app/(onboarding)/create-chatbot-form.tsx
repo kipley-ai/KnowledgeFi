@@ -43,7 +43,7 @@ const ChatBotForm = () => {
   const { createChatbot: chatbot, sftId, kbId } = useCreateChatbotContext();
   // const { id } = useParams();
   // const { data: nftData } = useNftDetail({ sft_id: sftId as string });
-  const [selectedFile, setSelectedFile] = useState<any>(DEFAULT_COVER_IMAGE);
+  const [selectedFile, setSelectedFile] = useState<any>("");
   const [mode, setMode] = useState(0);
   const [toneData, setToneData] = useState("");
   const [pricePerQuery, setPricePerQuery] = useState(0);
