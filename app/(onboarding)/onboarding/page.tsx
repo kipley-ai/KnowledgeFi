@@ -28,14 +28,14 @@ export default function Onboarding() {
 
   if (isLoading) return null;
 
-  if (
-    userDetail?.data?.status !== "error" &&
-    userDetail?.data?.data.onboarding
-  ) {
-    return redirect("/dashboard");
-  }
-
   if (status === "connected" && (sign || verifStatus === "authenticated")) {
+    if (
+      userDetail?.data?.status !== "error" &&
+      userDetail?.data?.data.onboarding
+    ) {
+      return redirect("/dashboard");
+    }
+
     return (
       // <div className="flex flex-col py-10 pb-20 px-6 lg:px-8 xl:px-32">
       <div className="flex flex-col gap-8">
@@ -56,7 +56,11 @@ export default function Onboarding() {
     );
   }
 
-  return (
-    <>{welcomePage === "kip-video" ? <KipProtocolVideo /> : <JetWelcome />}</>
-  );
+  if (welcomePage === "kip-video") {
+    return <KipProtocolVideo />;
+  }
+
+  if (status === "disconnected") {
+    return <JetWelcome />;
+  }
 }

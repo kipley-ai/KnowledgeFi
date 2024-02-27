@@ -18,12 +18,15 @@ export default function DefaultLayout({
 
   if (isLoading) return null;
 
-  if (status === "connected" && !userDetail?.data.data.onboarding) {
-    return redirect("/onboarding");
-  }
-
   switch (status) {
     case "connected":
+      if (
+        userDetail?.data?.status !== "error" &&
+        !userDetail?.data.data.onboarding
+      ) {
+        return redirect("/onboarding");
+      }
+
       return (
         <div className="flex h-[100dvh] overflow-hidden bg-neutral-900">
           {/* Sidebar */}
