@@ -15,7 +15,7 @@ export default function MintNFT() {
   return (
     <div className="flex flex-col px-6 pb-20 lg:px-8 xl:px-32">
       <OnboardingProgress step={2} />
-      <div className="-mx-16 -mt-3">
+      <div className="-mx-16 -mt-6">
         <NFTForm />
       </div>
     </div>

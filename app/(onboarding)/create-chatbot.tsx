@@ -16,7 +16,7 @@ export default function CreateChatbot() {
   return (
     <div className="flex flex-col px-6 pb-20 pt-6 lg:px-8 xl:px-32">
       <OnboardingProgress step={3} />
-      <div className="-mx-16 -mt-3">
+      <div className="-mx-16 -mt-6">
         <ChatBotForm />
       </div>
     </div>

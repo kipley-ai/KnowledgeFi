@@ -161,10 +161,13 @@ const ChatBotForm = () => {
         open={showModal}
         setOpen={setShowModal}
       /> */}
-      <div className="-mx-28 flex flex-col py-8 sm:px-6 lg:px-32">
+      <div className="-mx-28 flex flex-col py-4 sm:px-6 lg:px-32">
         <div className="mx-5 mb-6 md:mx-32">
           <div className="mt-3 flex items-center gap-6">
-            <div className="h-full cursor-pointer" onClick={() => setStep("mint_nft")}>
+            <div
+              className="h-full cursor-pointer"
+              onClick={() => setStep("mint_nft")}
+            >
               <Image
                 src={"/images/corner-up-left.png"}
                 alt="icon"
@@ -178,7 +181,10 @@ const ChatBotForm = () => {
           </div>
           <hr className="my-4 border border-gray-600" />
         </div>
-        <form className="mx-5 flex flex-col md:mx-32" onSubmit={handleSubmit}>
+        <form
+          className="mx-5 -mt-6 flex flex-col md:mx-32"
+          onSubmit={handleSubmit}
+        >
           <div className="flex">
             <div className="flex items-center justify-center">
               <ImageInput
@@ -384,7 +390,7 @@ const ChatBotForm = () => {
                 setStep("mint_nft");
               }}
             >
-              <h5 className="text-xs font-semibold text-gray-400 lg:text-sm hover:brightness-75">
+              <h5 className="text-xs font-semibold text-gray-400 hover:brightness-75 lg:text-sm">
                 BACK
               </h5>
             </button>
