@@ -1,5 +1,6 @@
 "use client";
 import { useAccount } from "wagmi";
+import Image from "next/image";
 import React, { useState, useEffect } from "react";
 import Step1 from "./step-1";
 import Step2 from "./step-2";
@@ -93,51 +94,42 @@ export default function SelectDataElements() {
         redirectUrl="/knowledge/create"
       />
       {step == "data_source" ? (
-        <div className="flex flex-col bg-[#292D32] px-6 pb-20 lg:px-8 xl:px-32">
+        <div className="flex flex-col px-6 pb-20 lg:px-8 xl:px-32">
           <OnboardingProgress step={1} />
 
-          <div className="mt-3">
+          <div className="mt-3 flex items-center gap-6">
+            {/* <div className="h-full">
+              <Image src={"/images/corner-up-left.png"} alt="icon" width={24} height={24} />
+            </div> */}
             <h1 className="text-2xl font-semibold text-white">
-              Select Data Elements for your SFT
+              SELECT DATA ELEMENTS
             </h1>
-            <hr className="my-4 border border-gray-600" />
           </div>
+          <hr className="my-4 border border-gray-600" />
           <Step1
             selectedButton={selectedButton}
             setSelectedButton={setSelectedButton}
           />
           <div className="flex justify-end">
-            {isComingSoon ?
+            {isComingSoon && (
               <button
-                className="mt-8 flex flex-row items-center justify-between rounded-3xl bg-[#01F7FF] p-2 px-5"
+                className="mt-8 flex flex-row gap-2 items-center justify-between rounded-sm bg-[#01F7FF] py-3 px-5 hover:brightness-75"
                 type="submit"
                 onClick={handleContinue}
               >
-                <h5 className="text-sm font-semibold text-black">
-                  {isComingSoon ? "Coming Soon" : "Continue"}
+                <h5 className="text-sm text-black">
+                  {isComingSoon ? "COMING SOON" : "CONTINUE"}
                 </h5>
                 {!isComingSoon ? (
-                  <svg
-                    className="pl-2"
-                    width="20"
-                    height="10"
-                    viewBox="0 0 20 10"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M17.98 5.7901C18.8936 5.7901 19.6343 6.53075 19.6343 7.44439V7.44439C19.6343 8.35803 18.8936 9.09868 17.98 9.09868L1.65435 9.09868C0.74071 9.09868 5.90253e-05 8.35803 5.90618e-05 7.44439V7.44439C5.90983e-05 6.53075 0.740711 5.7901 1.65435 5.7901L17.98 5.7901Z"
-                      fill="#151515"
-                    />
-                    <path
-                      d="M18.932 5.9907C19.5219 6.63674 19.5219 7.68418 18.932 8.33022C18.3422 8.97626 17.3859 8.97626 16.7961 8.33022L12.3947 3.50927C11.8049 2.86322 11.8049 1.81578 12.3947 1.16974C12.9845 0.523702 13.9408 0.523702 14.5306 1.16974L18.932 5.9907Z"
-                      fill="#151515"
-                    />
-                  </svg>
+                  <Image
+                    src={"/images/arrow-right.svg"}
+                    alt="icon"
+                    width={24}
+                    height={24}
+                  />
                 ) : null}
               </button>
-            : <></>
-            }
+            )}
           </div>
         </div>
       ) : step == "upload_files" ? (

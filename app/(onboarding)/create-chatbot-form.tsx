@@ -13,6 +13,7 @@ import Switcher from "@/components/switcher";
 import { useAppProvider } from "@/providers/app-provider";
 import { DEFAULT_COVER_IMAGE } from "@/utils/constants";
 import Tooltip from "@/components/tooltip";
+import Image from "next/image";
 
 interface Category {
   title: string;
@@ -42,7 +43,7 @@ const ChatBotForm = () => {
   const { createChatbot: chatbot, sftId, kbId } = useCreateChatbotContext();
   // const { id } = useParams();
   // const { data: nftData } = useNftDetail({ sft_id: sftId as string });
-  const [selectedFile, setSelectedFile] = useState<any>(DEFAULT_COVER_IMAGE);
+  const [selectedFile, setSelectedFile] = useState<any>("");
   const [mode, setMode] = useState(0);
   const [toneData, setToneData] = useState("");
   const [pricePerQuery, setPricePerQuery] = useState(0);
@@ -160,20 +161,36 @@ const ChatBotForm = () => {
         open={showModal}
         setOpen={setShowModal}
       /> */}
-      <div className="flex flex-col bg-[#292D32] py-8 sm:px-6 lg:px-0">
-        <div className="mx-5 md:mx-32">
-          <h1 className="text-2xl font-semibold text-white">Create Chatbot</h1>
-          {/* <h5 className="text-md text-[#7C878E]">
-					Give some general information about your character.
-				</h5> */}
+      <div className="-mx-28 flex flex-col py-4 sm:px-6 lg:px-32">
+        <div className="mx-5 mb-6 md:mx-32">
+          <div className="mt-3 flex items-center gap-6">
+            <div
+              className="h-full cursor-pointer"
+              onClick={() => setStep("mint_nft")}
+            >
+              <Image
+                src={"/images/corner-up-left.png"}
+                alt="icon"
+                width={24}
+                height={24}
+              />
+            </div>
+            <h1 className="text-2xl font-semibold text-white">
+              CREATE CHATBOT
+            </h1>
+          </div>
           <hr className="my-4 border border-gray-600" />
         </div>
-        <form className="mx-5 flex flex-col md:mx-32" onSubmit={handleSubmit}>
+        <form
+          className="mx-5 -mt-6 flex flex-col md:mx-32"
+          onSubmit={handleSubmit}
+        >
           <div className="flex">
             <div className="flex items-center justify-center">
               <ImageInput
                 selectedFile={selectedFile}
                 setSelectedFile={setSelectedFile}
+                useDefaultImage={false}
               />
             </div>
 
@@ -191,7 +208,7 @@ const ChatBotForm = () => {
                     type="text"
                     value={characterName}
                     onChange={(e) => setCharacterName(e.target.value)}
-                    className="mt-2 w-full rounded-xl border-2 bg-transparent text-xs text-white lg:text-sm"
+                    className="mt-2 w-full rounded-md border-2 border-gray-800 bg-transparent text-xs text-white lg:text-sm"
                     placeholder="Name your Chatbot"
                     maxLength={100}
                   />
@@ -201,17 +218,19 @@ const ChatBotForm = () => {
               </p> */}
               </div>
               <div>
-                <label
+                {/* <label
                   htmlFor="tone"
                   className="block text-xs font-semibold text-white lg:text-sm "
                 >
                   Tone
-                </label>
-                <div className="mt-3">
+                </label> */}
+                <div className="mt-3 w-full">
                   <Switcher
                     texts={["1st Person Tone", "3rd Person Tone"]}
                     mode={mode}
                     setWhich={setMode}
+                    fullWidth={true}
+                    bg="bg-transparent"
                   />
                 </div>
                 {/* <label
@@ -241,13 +260,13 @@ const ChatBotForm = () => {
                 <label className=" flex flex-row items-center space-x-3 text-wrap text-xs font-semibold text-[#DDD] lg:text-sm">
                   <span>Price Per Query (in $KFI)</span>
                   <Tooltip bg="dark" position="right" size="md">
-                    Set your price per query on your chatbot app and
-                    get paid in $KFI.
+                    Set your price per query on your chatbot app and get paid in
+                    $KFI.
                   </Tooltip>
                 </label>
                 <div className="mt-3">
                   <input
-                    className="placeholder-text-[#7C878E] w-full rounded-xl bg-transparent text-xs text-[#DDD] lg:text-sm"
+                    className="placeholder-text-[#7C878E] w-1/2 rounded-md border-2 border-gray-800 bg-transparent text-xs text-[#DDD] lg:text-sm"
                     type="number"
                     name="pricePerQuery"
                     placeholder="e.g. 1"
@@ -363,13 +382,24 @@ const ChatBotForm = () => {
             {/* </div> */}
           </div>
 
-          <div className="form-actions flex flex-row justify-end space-x-2">
+          <div className="form-actions mt-8 flex flex-row items-center justify-between space-x-2">
             <button
-              className="group mt-8 flex items-center justify-center rounded-3xl bg-[#01F7FF] p-2 px-5 ring-2 ring-gray-600 transition-all duration-200 ease-in-out hover:brightness-75"
+              className="flex flex-row items-center justify-between  rounded-3xl p-2 px-5"
+              type="submit"
+              onClick={() => {
+                setStep("mint_nft");
+              }}
+            >
+              <h5 className="text-xs font-semibold text-gray-400 hover:brightness-75 lg:text-sm">
+                BACK
+              </h5>
+            </button>
+            <button
+              className="group flex items-center justify-center rounded-sm bg-[#01F7FF] p-2 px-5 ring-2 ring-gray-600 transition-all duration-200 ease-in-out hover:brightness-75"
               type="submit"
             >
               <h5 className="text-xs font-semibold text-black transition-colors duration-200 ease-in-out lg:text-sm">
-                Bring my chatbot to life
+                BRING MY CHATBOT TO LIFE
               </h5>
               <svg
                 width="20"

@@ -72,7 +72,7 @@ const ImageInput = ({ selectedFile, setSelectedFile }: any) => {
 
   return (
     <>
-      <div className="flex w-full flex-col gap-2">
+      <div className="flex w-60 flex-col gap-2">
         <label
           className="form-label mb-1 self-start text-sm font-semibold text-[#DDD] lg:text-base"
           htmlFor="email"
@@ -99,7 +99,7 @@ const ImageInput = ({ selectedFile, setSelectedFile }: any) => {
                   src={LoadingIcon}
                   alt="Loading Icon"
                 />
-              ) : (
+              ) : selectedFile ? (
                 <Image
                   src={selectedFile}
                   alt="Edit Preview"
@@ -108,6 +108,14 @@ const ImageInput = ({ selectedFile, setSelectedFile }: any) => {
                   className="rounded-2xl object-cover"
                   priority
                 />
+              ) : (
+                <div className="flex flex-col items-center justify-center rounded-md border-2 border-dashed border-[#777E90] px-2 py-14 text-center">
+                  <p className="text-xs text-white">Drop your files here OR</p>
+                  <p className="text-xs text-[#01F7FF]">Click here to browse</p>
+                  <p className="text-xs text-[#777E90]">
+                    PNG, GIF, WEBP,PDF or JPEG. Max 250MB.
+                  </p>
+                </div>
               )}
             </div>
           )}
@@ -120,19 +128,19 @@ const ImageInput = ({ selectedFile, setSelectedFile }: any) => {
             }}
             className="rounded-md bg-[#01F7FF] px-1 py-2 text-xs font-semibold text-black hover:brightness-75"
           >
-            Choose Image from Gallery
+            CHOOSE IMAGE FROM GALLERY
           </button>
           <button
             onClick={handleChangeImage}
             className="rounded-md bg-[#01F7FF] px-1 py-2 text-xs font-semibold text-black hover:brightness-75"
           >
-            Choose Image from Device
+            CHOOSE IMAGE FROM DEVICE
           </button>
           <div
-            className="w-full cursor-pointer rounded-md bg-slate-400 py-1 text-center text-xs font-bold text-black hover:brightness-75"
+            className="w-full cursor-pointer rounded-md border-2 border-gray-700 py-1 text-center text-xs font-bold text-gray-400 hover:brightness-75"
             onClick={handleRandomCover}
           >
-            Random
+            RANDOM
           </div>
         </div>
         <ModalImageGallery

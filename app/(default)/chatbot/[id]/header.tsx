@@ -62,28 +62,18 @@ const Header = () => {
     //     .request_url,
   });
   return (
-    <div className="sticky top-0 lg:-top-8 flex items-center justify-between bg-stone-800 border-b border-b-gray-600 text-white py-3 xl:py-5">
+    <div className="sticky top-0 flex items-center justify-between border-b border-b-gray-600 py-3 text-white lg:-top-8 xl:py-5">
       <div className="flex items-center gap-5">
         <button
           onClick={() => router.back()}
           className="text-2xl text-white focus:outline-none"
         >
-          <svg
-            width="26"
-            height="12"
-            viewBox="0 0 26 12"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M8.02001 6.79012C7.10637 6.79012 6.36572 7.53077 6.36572 8.44441C6.36572 9.35805 7.10637 10.0987 8.02001 10.0987L24.3456 10.0987C25.2593 10.0987 25.9999 9.35805 25.9999 8.44441C25.9999 7.53077 25.2593 6.79011 24.3456 6.79011L8.02001 6.79012Z"
-              fill="#01F7FF"
-            />
-            <path
-              d="M7.06796 6.99072C6.47814 7.63676 6.47814 8.6842 7.06796 9.33024C7.65778 9.97628 8.61406 9.97628 9.20388 9.33024L13.6053 4.50928C14.1951 3.86324 14.1951 2.8158 13.6053 2.16976C13.0155 1.52372 12.0592 1.52372 11.4694 2.16976L7.06796 6.99072Z"
-              fill="#01F7FF"
-            />
-          </svg>
+          <Image
+            src={"/images/corner-up-left.png"}
+            alt="icon"
+            width={24}
+            height={24}
+          />
         </button>
         <div className="flex items-center gap-2">
           <Image
@@ -120,9 +110,20 @@ const Header = () => {
             );
           }}
         >
-          <div className="rounded-full border-2 border-gray-700 p-2 font-semibold">
-            <Image width={20} height={20} src={Refresh} alt="Refresh" />
-          </div>
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 20 20"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M14 0H12V2H14V4H2V6H0V11H2V6H14V8H12V10H14V8H16V6H18V4H16V2H14V0ZM4 18H6V20H8V18H6V16H18V14H20V9H18V14H6V12H8V10H6V12H4V14H2V16H4V18Z"
+              fill="#6B7280"
+            />
+          </svg>
           {/* <svg
                         width="40"
                         height="40"

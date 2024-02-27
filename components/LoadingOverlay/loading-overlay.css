@@ -1,0 +1,264 @@
+:root {
+  --primary-color: #ffffff;
+  --main-btn-width: 200px;
+  --main-btn-height: 22px;
+  --progress-bar-height: 1px;
+}
+
+.loading-overlay-container {
+  width: 100vw;
+  height: 100vh;
+  background-color: #242424;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding-left: 5%;
+  padding-right: 5%;
+}
+
+.animate-hide-loading-overlay {
+  animation-name: hide-loading-overlay;
+  animation-duration: 2s;
+  animation-fill-mode: both;
+}
+
+@keyframes hide-loading-overlay {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    visibility: hidden;
+    z-index: -1;
+  }
+}
+/* Title --------------------------------------------------------------------------------------------- */
+.loading-overlay-title-container {
+  position: absolute;
+  top: -120%;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  color: var(--primary-color);
+}
+
+/* Action button --------------------------------------------------------------------------------------------- */
+.loading-overlay-button-container {
+  position: absolute;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.loading-overlay-button {
+  width: var(--main-btn-width);
+  height: var(--main-btn-height);
+  border: none;
+  z-index: 49;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  border-radius: 0;
+  position: relative;
+  overflow: hidden;
+  background: none;
+  text-transform: uppercase;
+  line-height: 22px;
+  font-size: 9px;
+  color: var(--primary-color);
+  /* z-index: 999;
+        color: var(--primary-color);
+        background: none;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        width: var(--start-btn-width);
+        height: 22px;
+        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        line-height: 22px;
+        letter-spacing: 0.2em;
+        font-size: 9px;
+        padding-top: 0;
+        padding-bottom: 0;
+        border-radius: 0;
+        border: 1px solid red; */
+}
+.loading-overlay-button:focus,
+.loading-overlay-button:hover {
+  outline: 0;
+  border: none;
+}
+
+.loading-overlay-button-span-1,
+.loading-overlay-button-span-2 {
+  position: absolute;
+  width: 50%;
+  height: var(--progress-bar-height);
+  background-color: var(--primary-color);
+  transition: all 1s;
+  transition-duration: 0.1s;
+  opacity: 0;
+  z-index: 1;
+}
+.loading-overlay-button-span-1 {
+  left: 0;
+}
+.loading-overlay-button-span-2 {
+  right: 0;
+}
+
+.loading-overlay-button:hover .loading-overlay-button-span-1,
+.loading-overlay-button:hover .loading-overlay-button-span-2 {
+  transform: scale(0.5, 1.4);
+  transition: all 0.1s;
+}
+
+.loading-overlay-button .loading-overlay-button-label {
+  position: absolute;
+  height: var(--main-btn-height);
+  transition: all 0.3s;
+  opacity: 0;
+}
+
+.loading-overlay-button .loading-overlay-button-label > span {
+  display: block;
+  height: var(--main-btn-height);
+}
+.loading-overlay-button:hover .loading-overlay-button-label {
+  transform: translateY(-100%);
+}
+/* Action button Animation --------------------------------------------------------------------------------------------- */
+.animate-enable-button {
+  animation-name: enable-button;
+  animation-duration: 0s;
+  animation-delay: 2.4s;
+  animation-fill-mode: both;
+}
+
+@keyframes enable-button {
+  0% {
+    pointer-events: none;
+  }
+  100% {
+    pointer-events: all;
+    z-index: 51;
+  }
+}
+
+.animate-button-span {
+  animation-name: form-button-span;
+  animation-duration: 1s;
+  animation-delay: 1.4s;
+  animation-fill-mode: both;
+}
+@keyframes form-button-span {
+  0% {
+    opacity: 1;
+    width: 50%;
+    height: var(--progress-bar-height);
+  }
+  100% {
+    opacity: 1;
+    width: 8px;
+    height: 12px;
+  }
+}
+
+.animate-show-button-label {
+  animation-name: show-button-label;
+  animation-duration: 1.5s;
+  animation-delay: 1.4s;
+  animation-fill-mode: both;
+}
+
+@keyframes show-button-label {
+  0% {
+    opacity: 0;
+    visibility: hidden;
+  }
+  100% {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+/* Progress bar --------------------------------------------------------------------------------------------- */
+
+.progress-bar-container {
+  height: var(--main-btn-height);
+  width: 100%;
+  transition: 1s;
+  position: relative;
+  display: flex;
+  align-items: center;
+  border: none;
+}
+
+.progress-bar-indicator {
+  height: var(--progress-bar-height);
+  background-color: var(--primary-color);
+  transition: width 1.5s;
+  z-index: 50;
+}
+
+/* Progress bar Animation --------------------------------------------------------------------------------------------- */
+.animate-progress-bar-container {
+  animation-name: change-position-progress-bar;
+  animation-duration: 0s;
+  animation-fill-mode: both;
+}
+@keyframes change-position-progress-bar {
+  0% {
+    justify-content: flex-start;
+  }
+  100% {
+    justify-content: center;
+  }
+}
+.animate-hide-progress-bar-indicator {
+  animation-name: hide-progress-bar;
+  animation-duration: 2s;
+  animation-fill-mode: both;
+}
+@keyframes hide-progress-bar {
+  0% {
+    opacity: 1;
+    width: 100%;
+  }
+  70% {
+    opacity: 1;
+    width: var(--main-btn-width);
+  }
+  100% {
+    opacity: 0;
+    /* opacity: 1; */
+    width: var(--main-btn-width);
+  }
+}
+
+/* sample */
+.sample-relative {
+  position: relative;
+  width: 500px;
+  height: 500px;
+  background-color: white;
+}
+
+.sample-absolute {
+  position: absolute;
+  top: 10%;
+  left: 10%;
+  right: 10%;
+  bottom: 10%;
+}

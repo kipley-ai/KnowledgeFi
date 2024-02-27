@@ -1,5 +1,17 @@
 import Link from "next/link";
 
+interface BoxWithNumberProps {
+  number: number | string;
+}
+
+const BoxWithNumber: React.FC<BoxWithNumberProps> = ({ number }) => {
+  return (
+    <div className="w-5 h-5 border border-aqua-700 bg-black flex justify-center items-center">
+      <span className="text-sm font-bold">{number}</span>
+    </div>
+  );
+};
+
 export default function OnboardingProgress({ step = 1 }: { step?: number }) {
   return (
     <div className="px-4 pb-8">
@@ -10,17 +22,17 @@ export default function OnboardingProgress({ step = 1 }: { step?: number }) {
             aria-hidden="true"
           ></div>
           <ul className="relative flex w-full justify-between">
-            <li className="">
+            <li className="relative right-9">
               <div className="flex justify-center">
                 <span
-                  className={`flex h-6 w-6 items-center justify-center rounded-full text-xs font-semibold text-[#1F1F1F] ${step >= 1 ? "bg-[#01F7FF]" : "bg-[#7C878E]"}`}
+                  className="text-[#01F7FF]"
                 >
-                  {step > 1 ? <span>&#10003;</span> : 1}
+                  {step > 1 ? <BoxWithNumber number="✓" /> : <BoxWithNumber number={1} />}
                 </span>
               </div>
               <div className="flex justify-center">
                 <span
-                  className={`text-sm font-medium ${step >= 1 ? "text-[#00FFFF]" : "text-[#7C878E]"}`}
+                  className={`text-sm font-medium ${step >= 1 ? "text-[#00FFFF]" : "text-[#00FFFF]"}`}
                 >
                   Select Data Elements
                 </span>
@@ -29,30 +41,30 @@ export default function OnboardingProgress({ step = 1 }: { step?: number }) {
             <li>
               <div className="flex justify-center">
                 <span
-                  className={`flex h-6 w-6 items-center justify-center rounded-full text-xs font-semibold text-[#1F1F1F] ${step >= 2 ? "bg-[#01F7FF]" : "bg-[#7C878E]"}`}
+                  className="text-[#01F7FF]"
                 >
-                  {step > 2 ? <span>&#10003;</span> : 2}
+                  {step > 2 ? <BoxWithNumber number="✓" /> : <BoxWithNumber number={2} />}
                 </span>
               </div>
               <div className="flex justify-center">
                 <span
-                  className={`text-sm font-medium ${step >= 2 ? "text-[#00FFFF]" : "text-[#7C878E]"}`}
+                  className={`text-sm font-medium ${step >= 2 ? "text-[#00FFFF]" : "text-[#00FFFF]"}`}
                 >
                   Mint SFT
                 </span>
               </div>
             </li>
-            <li>
+            <li className="relative left-8">
               <div className="flex justify-center">
                 <span
-                  className={`flex h-6 w-6 items-center justify-center rounded-full text-xs font-semibold text-[#1F1F1F] ${step >= 3 ? "bg-[#01F7FF]" : "bg-[#7C878E]"}`}
+                  className="text-[#01F7FF]"
                 >
-                  {step > 3 ? <span>&#10003;</span> : 3}
+                  {step > 3 ? <BoxWithNumber number="✓" /> : <BoxWithNumber number={3} />}
                 </span>
               </div>
               <div className="flex justify-center">
                 <span
-                  className={`text-sm font-medium ${step >= 3 ? "text-[#00FFFF]" : "text-[#7C878E]"}`}
+                  className={`text-sm font-medium ${step >= 3 ? "text-[#00FFFF]" : "text-[#00FFFF]"}`}
                 >
                   Create Chatbot
                 </span>

@@ -27,12 +27,12 @@ const ButtonItem = ({
 }) => {
   return (
     <button
-      className={`flex flex-col items-center border-2 py-5 md:pt-10 ${isSelected ? "border-[#01F7FF] bg-[#181B1F]" : "border-transparent"} justify-end rounded-2xl`}
+      className={`flex flex-col items-center border-2 py-5 md:mt-4 ${isSelected ? "border-[#01F7FF]" : "border-transparent"} justify-end rounded-md`}
       onClick={onClick}
     >
       <Image
-        width={48}
-        height={48}
+        width={36}
+        height={36}
         src={optionIcon}
         alt={`${optionText} Icon`}
       />
@@ -75,7 +75,7 @@ const buttons = [
   {
     type: "files",
     icon: FolderAddIcon,
-    text: "Upload files",
+    text: "Upload Files",
     comingSoon: false,
   },
   {
@@ -101,7 +101,7 @@ export default function Step1({
   const { handleChangeKb, setIsComingSoon, setStep } = useCreateChatbotContext();
 
   return (
-    <div className="md:mt-10 grid grid-cols-2 md:grid-cols-4 gap-4  font-bold text-white">
+    <div className="md:mt-4 grid grid-cols-2 md:grid-cols-4 gap-4  font-bold text-white">
       {buttons.map((button) => (
         <ButtonItem
           key={button.type}

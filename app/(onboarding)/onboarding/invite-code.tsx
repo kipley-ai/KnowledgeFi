@@ -37,19 +37,35 @@ const InviteCode = ({ address }: InviteCodeProps) => {
   };
 
   const handleKeyDown = (e: any, index: number) => {
-    const deleteKeys: string[] = ["Backspace", "Delete", "ArrowLeft"];
+    const deleteKeys: string[] = ["Backspace", "Delete"];
     if (deleteKeys.includes(e.key)) {
       e.preventDefault();
 
       const newOtp = [...otp];
 
-      if (index === 5 && Boolean(newOtp[5])) {
-        newOtp[5] = "";
+      if (Boolean(newOtp[index])) {
+        newOtp[index] = "";
         setOtp(newOtp);
       } else if (index > 0) {
         inputsRef.current[index - 1]?.focus();
         newOtp[index - 1] = "";
         setOtp(newOtp);
+      }
+    } else if (e.key === "ArrowLeft") {
+      if (index > 0) {
+        inputsRef.current[index - 1]?.focus();
+      }
+    } else if (e.key === "ArrowRight") {
+      if (index < 5) {
+        inputsRef.current[index + 1]?.focus();
+      }
+    } else if (/^[A-Za-z0-9]$/.test(e.key)) {
+      const key = e.key.toUpperCase();
+      if (index < 5) {
+        setOtp([...otp.map((d, idx) => (idx === index ? key : d))]);
+        inputsRef.current[index + 1]?.focus();
+      } else {
+        setOtp([...otp.map((d, idx) => (idx === index ? key : d))]);
       }
     }
   };
@@ -87,26 +103,33 @@ const InviteCode = ({ address }: InviteCodeProps) => {
   };
 
   const handleContinue = async () => {
-    const res = await axios.post(
-      "/api/onboarding/check-invite-code",
-      { invite_code: otp.join("") },
-      {
-        headers: {
-          "x-kf-user-id": address,
+    try {
+      const res = await axios.post(
+        "/api/onboarding/check-invite-code",
+        { invite_code: otp.join("") },
+        {
+          headers: {
+            "x-kf-user-id": address,
+          },
         },
-      },
-    );
+      );
 
-    if (res.data?.status === "error") {
-      setErrorMessage(res.data?.msg);
+      if (res.data?.status === "error") {
+        setErrorMessage(res.data?.msg);
+        setTimeout(function () {
+          setErrorMessage("");
+        }, 2000);
+      } else {
+        if (address) {
+          sessionStorage.setItem("address", address);
+        }
+        setStep("data_source");
+      }
+    } catch (error) {
+      setErrorMessage("Failed to verify invite code. Please try again.");
       setTimeout(function () {
         setErrorMessage("");
-      }, 3000);
-    } else {
-      if (address) {
-        sessionStorage.setItem("address", address);
-      }
-      setStep("data_source");
+      }, 2000);
     }
   };
 
@@ -157,7 +180,7 @@ const InviteCode = ({ address }: InviteCodeProps) => {
               maxLength={1}
               key={index}
               value={otp[index]}
-              onChange={(e) => handleChange(e.target, index)}
+              onChange={(e) => null}
               onKeyDown={(e) => handleKeyDown(e, index)}
               ref={(ref) => (inputsRef.current[index] = ref)}
               onPaste={handlePaste}

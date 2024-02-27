@@ -3,7 +3,9 @@
 import { useQueries } from "@tanstack/react-query";
 import { useAccount } from "wagmi";
 import { useCreateChatbotContext } from "../create-knowledge-context";
+import OnboardingHeader from "./header";
 import Welcome from "./welcome";
+import JetWelcome from "./(jet)/main";
 import InviteCode from "./invite-code";
 import SelectDataElements from "../select-data-elements";
 import MintNFT from "../mint-nft";
@@ -31,7 +33,8 @@ export default function Onboarding() {
   if (verifStatus === "authenticated" || sign) {
     return (
       // <div className="flex flex-col py-10 pb-20 px-6 lg:px-8 xl:px-32">
-      <>
+      <div className="flex flex-col gap-8">
+        <OnboardingHeader />
         {step == "data_source" || step == "upload_files" || step == "notion" ? (
           <SelectDataElements />
         ) : step == "mint_nft" ? (
@@ -43,14 +46,14 @@ export default function Onboarding() {
         ) : (
           <InviteCode address={address} />
         )}
-      </>
+      </div>
       // </div>
     );
   }
 
   return (
     <>
-      <Welcome />
+      <JetWelcome />
     </>
   );
 }

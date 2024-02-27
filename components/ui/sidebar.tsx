@@ -2,7 +2,11 @@
 
 import React, { MouseEventHandler, useEffect, useRef, useState } from "react";
 import { useAppProvider } from "@/providers/app-provider";
-import { redirect, useSearchParams, useSelectedLayoutSegments } from "next/navigation";
+import {
+  redirect,
+  useSearchParams,
+  useSelectedLayoutSegments,
+} from "next/navigation";
 import { Transition } from "@headlessui/react";
 import { getBreakpoint } from "../utils/utils";
 import SidebarLinkGroup from "./sidebar-link-group";
@@ -22,244 +26,255 @@ import { useChatbotChatList } from "@/hooks/api/chatbot";
 import { PaginationController } from "../pagination/controller";
 
 const GetInvolvedButton = dynamic(
-	() => import("../GetInvolvedButton/get-involved-button"),
-	{
-		ssr: false,
-	}
+  () => import("../GetInvolvedButton/get-involved-button"),
+  {
+    ssr: false,
+  },
 );
 
 const ChatHistoryList = () => {
-	const searchParams = useSearchParams();
-	const segments = useSelectedLayoutSegments();
-	const chatbotListQuery = useChatbotChatList();
-	const pathname = usePathname();
-	// const chatbotListPage = searchParams.get("chatbotListPage") ?? "1";
-	// const chatbotListPerPage = searchParams.get("chatbotListPerPage") ?? "10";
-	// const chatbotListStart = (Number(chatbotListPage) - 1) * Number(chatbotListPerPage);
-	// const chatbotListEnd = chatbotListStart + Number(chatbotListPerPage);
-	
-	if (chatbotListQuery.data) {
-		const chatbotListData = chatbotListQuery.data?.data.data;
-		// const chatbotListTotalPages = Math.ceil(
-		// 	Number(chatchatbotListListData.length) / Number(chatbotListPerPage)
-		// );
+  const searchParams = useSearchParams();
+  const segments = useSelectedLayoutSegments();
+  const chatbotListQuery = useChatbotChatList();
+  const pathname = usePathname();
+  // const chatbotListPage = searchParams.get("chatbotListPage") ?? "1";
+  // const chatbotListPerPage = searchParams.get("chatbotListPerPage") ?? "10";
+  // const chatbotListStart = (Number(chatbotListPage) - 1) * Number(chatbotListPerPage);
+  // const chatbotListEnd = chatbotListStart + Number(chatbotListPerPage);
 
-		if (chatbotListData !== undefined && chatbotListData.length > 0) {
-			return (
-				<>
-					{/* {chatbotListData.slice(chatbotListStart, chatbotListEnd).map((chatbot: any, index: number) => ( */}
-					{chatbotListData.map((chatbot: any, index: number) => (
-						<li key={chatbot.chatbot_id} className={`px-3 py-2  mb-3 last:mb-0 hover:bg-stone-600 hover:rounded-3xl hover:text-white ${
-							(segments.includes("home") ||
-								segments.includes("dashboard")) &&
-							"bg-transparent"
-						} ${pathname === '/chatbot/' + chatbot.chatbot_id ? 'border border-2 border-[#01F7FF] rounded-3xl hover:bg-transparent' : ''}`}>
-						<SidebarLink href={`/chatbot/${chatbot.chatbot_id}`}>
-							<div className="flex items-center">
-								<span className="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200 text-[14px] font-semibold text-neutral-500">
-									{chatbot.name}
-								</span>
-							</div>
-						</SidebarLink></li>
-					))}
-					{/* <PaginationController
+  if (chatbotListQuery.data) {
+    const chatbotListData = chatbotListQuery.data?.data.data;
+    // const chatbotListTotalPages = Math.ceil(
+    // 	Number(chatchatbotListListData.length) / Number(chatbotListPerPage)
+    // );
+
+    if (chatbotListData !== undefined && chatbotListData.length > 0) {
+      return (
+        <>
+          {/* {chatbotListData.slice(chatbotListStart, chatbotListEnd).map((chatbot: any, index: number) => ( */}
+          {chatbotListData.map((chatbot: any, index: number) => (
+            <li
+              key={chatbot.chatbot_id}
+              className={`mb-3 px-3  py-2 last:mb-0 hover:rounded-md hover:bg-stone-600 hover:text-white ${
+                (segments.includes("home") || segments.includes("dashboard")) &&
+                "bg-transparent"
+              } ${pathname === "/chatbot/" + chatbot.chatbot_id ? "rounded-md border border-2 border-[#01F7FF] hover:bg-transparent" : ""}`}
+            >
+              <SidebarLink href={`/chatbot/${chatbot.chatbot_id}`}>
+                <div className="flex items-center">
+                  <span className="ml-4 text-[14px] text-sm font-medium font-semibold text-neutral-500 duration-200 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100">
+                    {chatbot.name}
+                  </span>
+                </div>
+              </SidebarLink>
+            </li>
+          ))}
+          {/* <PaginationController
 						totalPages={chatbotListTotalPages}
 						pageQuery={"chatbotListPage"}
 					/> */}
-				</>
-			);
-		}
-		return;
-	}
+        </>
+      );
+    }
+    return;
+  }
 
-	if (chatbotListQuery.isError) {
-		return <div>Error: {chatbotListQuery.error.message}</div>;
-	}
+  if (chatbotListQuery.isError) {
+    return <div>Error: {chatbotListQuery.error.message}</div>;
+  }
 
-	return <div className="text-center">Loading Chat History...</div>;
+  return <div className="text-center">Loading Chat History...</div>;
 };
 
 export default function Sidebar() {
-	const router = useRouter();
-	const sidebar = useRef<HTMLDivElement>(null);
-	const { sidebarOpen, setSidebarOpen } = useAppProvider();
+  const router = useRouter();
+  const sidebar = useRef<HTMLDivElement>(null);
+  const { sidebarOpen, setSidebarOpen } = useAppProvider();
 
-	const [sidebarExpanded, setSidebarExpanded] = useState<boolean>(true);
-	const segments = useSelectedLayoutSegments();
-	const [breakpoint, setBreakpoint] = useState<string | undefined>(
-		getBreakpoint()
-	);
-	const expandOnly =
-		!sidebarExpanded && (breakpoint === "lg" || breakpoint === "xl");
+  const [sidebarExpanded, setSidebarExpanded] = useState<boolean>(true);
+  const segments = useSelectedLayoutSegments();
+  const [breakpoint, setBreakpoint] = useState<string | undefined>(
+    getBreakpoint(),
+  );
+  const expandOnly =
+    !sidebarExpanded && (breakpoint === "lg" || breakpoint === "xl");
 
-	// Wallet logic and modal
-	const [isConnected_, setIsConnected_] = useState<boolean>(false);
-	const { isConnected } = useAccount();
+  // Wallet logic and modal
+  const [isConnected_, setIsConnected_] = useState<boolean>(false);
+  const { isConnected } = useAccount();
 
-	useEffect(() => {
-		setIsConnected_(isConnected);
-	}, [isConnected]);
+  useEffect(() => {
+    setIsConnected_(isConnected);
+  }, [isConnected]);
 
-	// Twitter logic and modal
-	const { status: twitterStatus } = useSession();
-	const { modalLogin: showTwitterLogin, setModalLogin: setShowTwitterLogin } =
-		useAppProvider();
+  // Twitter logic and modal
+  const { status: twitterStatus } = useSession();
+  const { modalLogin: showTwitterLogin, setModalLogin: setShowTwitterLogin } =
+    useAppProvider();
 
-	const handleWalletReadyClick = (e: React.MouseEvent) => {
-		if (twitterStatus == "authenticated") {
-			router.push("/create-chatbot");
-		} else {
-			setShowTwitterLogin(true);
-		}
-	};
+  const handleWalletReadyClick = (e: React.MouseEvent) => {
+    if (twitterStatus == "authenticated") {
+      router.push("/create-chatbot");
+    } else {
+      setShowTwitterLogin(true);
+    }
+  };
 
-	const handleChatbotClick = (e: React.MouseEvent) => {
-		if (!(twitterStatus == "authenticated" && isConnected_)) {
-			e.preventDefault();
-			e.stopPropagation();
-			e.nativeEvent.stopImmediatePropagation();
-		}
-	};
+  const handleChatbotClick = (e: React.MouseEvent) => {
+    if (!(twitterStatus == "authenticated" && isConnected_)) {
+      e.preventDefault();
+      e.stopPropagation();
+      e.nativeEvent.stopImmediatePropagation();
+    }
+  };
 
-	// close on click outside
-	useEffect(() => {
-		const clickHandler = ({ target }: { target: EventTarget | null }): void => {
-			if (!sidebar.current) return;
-			if (!sidebarOpen || sidebar.current.contains(target as Node)) return;
-			setSidebarOpen(false);
-		};
-		document.addEventListener("click", clickHandler);
-		return () => document.removeEventListener("click", clickHandler);
-	});
+  // close on click outside
+  useEffect(() => {
+    const clickHandler = ({ target }: { target: EventTarget | null }): void => {
+      if (!sidebar.current) return;
+      if (!sidebarOpen || sidebar.current.contains(target as Node)) return;
+      setSidebarOpen(false);
+    };
+    document.addEventListener("click", clickHandler);
+    return () => document.removeEventListener("click", clickHandler);
+  });
 
-	// close if the esc key is pressed
-	useEffect(() => {
-		const keyHandler = ({ keyCode }: { keyCode: number }): void => {
-			if (!sidebarOpen || keyCode !== 27) return;
-			setSidebarOpen(false);
-		};
-		document.addEventListener("keydown", keyHandler);
-		return () => document.removeEventListener("keydown", keyHandler);
-	});
+  // close if the esc key is pressed
+  useEffect(() => {
+    const keyHandler = ({ keyCode }: { keyCode: number }): void => {
+      if (!sidebarOpen || keyCode !== 27) return;
+      setSidebarOpen(false);
+    };
+    document.addEventListener("keydown", keyHandler);
+    return () => document.removeEventListener("keydown", keyHandler);
+  });
 
-	const handleBreakpoint = () => {
-		setBreakpoint(getBreakpoint());
-	};
+  const handleBreakpoint = () => {
+    setBreakpoint(getBreakpoint());
+  };
 
-	useEffect(() => {
-		window.addEventListener("resize", handleBreakpoint);
-		return () => {
-			window.removeEventListener("resize", handleBreakpoint);
-		};
-	}, [breakpoint]);
+  useEffect(() => {
+    window.addEventListener("resize", handleBreakpoint);
+    return () => {
+      window.removeEventListener("resize", handleBreakpoint);
+    };
+  }, [breakpoint]);
 
-	return (
-		<>
-			<div
-				className={`min-w-fit ${sidebarExpanded ? "sidebar-expanded" : ""}`}
-				style={{
-					boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
-					backgroundColor: "#fff",
-				}}
-			>
-				{/* Sidebar backdrop (mobile only) */}
-				<Transition
-					className="fixed inset-0 bg-slate-900 bg-opacity-30 z-40 lg:hidden lg:z-auto"
-					show={sidebarOpen}
-					enter="transition-opacity ease-out duration-200"
-					enterFrom="opacity-0"
-					enterTo="opacity-100"
-					leave="transition-opacity ease-out duration-100"
-					leaveFrom="opacity-100"
-					leaveTo="opacity-0"
-					aria-hidden="true"
-				/>
+  return (
+    <>
+      <div
+        className={`min-w-fit ${sidebarExpanded ? "sidebar-expanded" : ""}`}
+        style={{
+          boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
+          backgroundColor: "#fff",
+        }}
+      >
+        {/* Sidebar backdrop (mobile only) */}
+        <Transition
+          className="fixed inset-0 z-40 bg-slate-900 bg-opacity-30 lg:z-auto lg:hidden"
+          show={sidebarOpen}
+          enter="transition-opacity ease-out duration-200"
+          enterFrom="opacity-0"
+          enterTo="opacity-100"
+          leave="transition-opacity ease-out duration-100"
+          leaveFrom="opacity-100"
+          leaveTo="opacity-0"
+          aria-hidden="true"
+        />
 
-				{/* Sidebar */}
-				<Transition
-					show={sidebarOpen}
-					unmount={false}
-					as="div"
-					id="sidebar"
-					ref={sidebar}
-					className="flex lg:!flex flex-col absolute z-40 left-0 top-0 lg:static lg:left-auto lg:top-auto lg:translate-x-0 h-[100dvh] overflow-y-scroll lg:overflow-y-auto no-scrollbar w-64 lg:w-12 lg:sidebar-expanded:!w-64 2xl:!w-64 shrink-0 bg-neutral-900 p-4 pt-9 transition-all duration-200 ease-in-out"
-					enterFrom="-translate-x-full"
-					enterTo="translate-x-0"
-					leaveFrom="translate-x-0"
-					leaveTo="-translate-x-full"
-				>
-					{/* Sidebar header */}
-					<div className="flex justify-between mb-5 pr-3 sm:px-2">
-						{/* Close button */}
-						<button
-							className="lg:hidden text-slate-500 hover:text-slate-400"
-							onClick={() => setSidebarOpen(!sidebarOpen)}
-							aria-controls="sidebar"
-							aria-expanded={sidebarOpen}
-						>
-							<span className="sr-only">Close sidebar</span>
-							<svg
-								className="w-6 h-6 fill-current"
-								viewBox="0 0 24 24"
-								xmlns="http://www.w3.org/2000/svg"
-							>
-								<path d="M10.7 18.7l1.4-1.4L7.8 13H20v-2H7.8l4.3-4.3-1.4-1.4L4 12z" />
-							</svg>
-						</button>
-						{/* Logo */}
-						<Link href="/dashboard">
-							<h2 className="text-slate-500 font-semibold pl-3">
-								<span className="lg:hidden lg:sidebar-expanded:block 2xl:block text-xl lg:text-[28px] font-black text-neutral-300">
-									KnowledgeFi
-								</span>
-							</h2>
-						</Link>
-					</div>
+        {/* Sidebar */}
+        <Transition
+          show={sidebarOpen}
+          unmount={false}
+          as="div"
+          id="sidebar"
+          ref={sidebar}
+          className="no-scrollbar absolute left-0 top-0 z-40 flex h-[100dvh] w-64 shrink-0 flex-col overflow-y-scroll bg-neutral-900 p-4 pt-9 transition-all duration-200 ease-in-out lg:static lg:left-auto lg:top-auto lg:!flex lg:w-12 lg:translate-x-0 lg:overflow-y-auto lg:sidebar-expanded:!w-64 2xl:!w-64"
+          enterFrom="-translate-x-full"
+          enterTo="translate-x-0"
+          leaveFrom="translate-x-0"
+          leaveTo="-translate-x-full"
+        >
+          {/* Sidebar header */}
+          <div className="mb-5 flex justify-between pr-3 sm:px-2">
+            {/* Close button */}
+            <button
+              className="text-slate-500 hover:text-slate-400 lg:hidden"
+              onClick={() => setSidebarOpen(!sidebarOpen)}
+              aria-controls="sidebar"
+              aria-expanded={sidebarOpen}
+            >
+              <span className="sr-only">Close sidebar</span>
+              <svg
+                className="h-6 w-6 fill-current"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M10.7 18.7l1.4-1.4L7.8 13H20v-2H7.8l4.3-4.3-1.4-1.4L4 12z" />
+              </svg>
+            </button>
+            {/* Logo */}
+            <Link href="/dashboard">
+              <h2 className="pl-3 font-semibold text-slate-500">
+                <span className="text-xl font-black text-neutral-300 lg:hidden lg:text-[28px] lg:sidebar-expanded:block 2xl:block">
+                  KnowledgeFi
+                </span>
+              </h2>
+            </Link>
+          </div>
 
-					{/* Links */}
-					<div className="space-y-8">
-						{/* Pages group */}
-						<div>
-							<ul className="">
-								{/* Inbox */}
-								<li
-									className={`px-3 py-2  mb-10 last:mb-0 hover:bg-stone-600 hover:rounded-3xl ${
-										(segments.length === 0 ||
-											segments.includes("dashboard")) &&
-										"border-2 border-aqua-700 rounded-3xl"
-									} py-1.5 px-2.5`}
-								>
-									{/* style={{ border: '2px solid #01F7FF', borderRadius: '24px', padding: '6px 10px' }}> */}
-									<SidebarLink href="/dashboard">
-										<div className="flex items-center px-3 py-1">
-											<Image
-												className="w-5 h-5 ml-0 lg:ml-0 2xl:ml-2"
-												alt="home"
-												src={HomeIcon}
-											/>
-											<span className="text-xs lg:text-sm ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200 text-[14px] font-semibold text-neutral-500">
-												Explore
-											</span>
-										</div>
-									</SidebarLink>
-								</li>
-								{/* Login */}
-								<li
-									className={`px-3 py-2  mb-3 last:mb-0 ${
-										(segments.includes("home") ||
-											segments.includes("dashboard")) &&
-										"bg-transparent"
-									} `}
-								>
-									{/* style={{ border: '2px solid #01F7FF', borderRadius: '24px', padding: '6px 10px' }}> */}
-									<div className="flex items-center">
-										<span className="text-sm lg:text-sm ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200 text-[14px] font-semibold text-gray-400">
-											Chat List
-										</span>
-									</div>
-								</li>
-								<ChatHistoryList/>
-								{/* <li
+          {/* Links */}
+          <div className="space-y-8">
+            {/* Pages group */}
+            <div>
+              <ul className="">
+                {/* Inbox */}
+                <li
+                  className={`mb-10 px-3  py-2 last:mb-0 hover:rounded-md hover:bg-stone-600 hover:text-aqua-700 ${
+                    (segments.length === 0 || segments.includes("dashboard")) &&
+                    "rounded-md border-2 border-aqua-700"
+                  } px-2.5 py-1.5`}
+                >
+                  {/* style={{ border: '2px solid #01F7FF', borderRadius: '24px', padding: '6px 10px' }}> */}
+                  <SidebarLink href="/dashboard">
+                    <div className="flex items-center px-3 py-1">
+                      <svg
+                        width="20"
+                        height="20"
+                        viewBox="0 0 20 20"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          fill-rule="evenodd"
+                          clip-rule="evenodd"
+                          d="M12 0H8V2H6V4H4V6H2V8H0V10H2V20H9V14H11V20H18V10H20V8H18V6H16V4H14V2H12V0ZM12 2V4H14V6H16V8H18V10H16V18H13V12H7V18H4V10H2V8H4V6H6V4H8V2H12Z"
+                          fill="#00FFFF"
+                        />
+                      </svg>
+                      <span className="ml-3 text-[14px] text-xs font-semibold  text-aqua-700 duration-200 lg:text-sm lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100">
+                        EXPLORE
+                      </span>
+                    </div>
+                  </SidebarLink>
+                </li>
+                {/* Login */}
+                <li
+                  className={`mb-3 px-3  py-2 last:mb-0 ${
+                    (segments.includes("home") ||
+                      segments.includes("dashboard")) &&
+                    "bg-transparent"
+                  } `}
+                >
+                  {/* style={{ border: '2px solid #01F7FF', borderRadius: '24px', padding: '6px 10px' }}> */}
+                  <div className="flex items-center">
+                    <span className="ml-4 text-[14px] text-sm font-semibold text-gray-400 duration-200 lg:text-sm lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100">
+                      Chat List
+                    </span>
+                  </div>
+                </li>
+                <ChatHistoryList />
+                {/* <li
 									className={`px-3 py-2  mb-3 last:mb-0 ${
 										(segments.includes("home") ||
 											segments.includes("dashboard")) &&
@@ -323,7 +338,7 @@ export default function Sidebar() {
 										</div>
 									</SidebarLink>
 								</li> */}
-								{/* <li
+                {/* <li
 									className={`px-3 py-2  mb-0.5 last:mb-0 ${segments.includes("login") && "bg-slate-900"
 										}`}
 								>
@@ -393,12 +408,12 @@ export default function Sidebar() {
 										</div>
 									</Link>
 								</li> */}
-							</ul>
-						</div>
-					</div>
+              </ul>
+            </div>
+          </div>
 
-					{/* Expand / collapse button */}
-					{/* <div className="pt-3 hidden lg:inline-flex 2xl:hidden justify-end mt-auto">
+          {/* Expand / collapse button */}
+          {/* <div className="pt-3 hidden lg:inline-flex 2xl:hidden justify-end mt-auto">
 						<div className="px-3 py-2">
 							<button onClick={() => setSidebarExpanded(!sidebarExpanded)}>
 								<span className="sr-only">Expand / collapse sidebar</span>
@@ -415,8 +430,8 @@ export default function Sidebar() {
 							</button>
 						</div>
 					</div> */}
-				</Transition>
-			</div>
-		</>
-	);
+        </Transition>
+      </div>
+    </>
+  );
 }
