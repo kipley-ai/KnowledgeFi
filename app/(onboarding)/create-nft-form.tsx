@@ -201,9 +201,12 @@ export default function NFT() {
         setOpen={setShowModal}
         kbIdCreated={nftIdCreated}
       />
-      <div className="flex flex-col px-6 py-8 pb-14 lg:px-8 xl:px-32">
+      <div className="flex flex-col px-6 py-4 pb-14 lg:px-8 xl:px-32">
         <div className="flex items-center gap-6">
-          <div className="h-full cursor-pointer" onClick={() => setStep("data_source")}>
+          <div
+            className="h-full cursor-pointer"
+            onClick={() => setStep("data_source")}
+          >
             <Image
               src={"/images/corner-up-left.png"}
               alt="icon"
@@ -215,7 +218,7 @@ export default function NFT() {
         </div>
         <hr className="my-4 border border-gray-600" />
         <form>
-          <div className="mt-4 flex flex-col gap-8 md:flex-row">
+          <div className="flex flex-col gap-8 md:flex-row">
             <ImageInput
               selectedFile={selectedFile}
               setSelectedFile={setSelectedFile}
@@ -446,7 +449,7 @@ export default function NFT() {
                 setStep("data_source");
               }}
             >
-              <h5 className="text-xs font-semibold text-gray-400 lg:text-sm hover:brightness-75">
+              <h5 className="text-xs font-semibold text-gray-400 hover:brightness-75 lg:text-sm">
                 BACK
               </h5>
             </button>

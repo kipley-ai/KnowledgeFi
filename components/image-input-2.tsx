@@ -72,7 +72,7 @@ const ImageInput = ({ selectedFile, setSelectedFile }: any) => {
 
   return (
     <>
-      <div className="flex w-60 flex-col gap-4">
+      <div className="flex w-60 flex-col gap-2">
         <label
           className="form-label mb-1 self-start text-sm font-semibold text-[#DDD] lg:text-base"
           htmlFor="email"
@@ -109,7 +109,7 @@ const ImageInput = ({ selectedFile, setSelectedFile }: any) => {
                   priority
                 />
               ) : (
-                <div className="flex h-[250px] flex-col items-center justify-center rounded-md border-2 border-dashed border-[#777E90] px-2 py-12 text-center">
+                <div className="flex flex-col items-center justify-center rounded-md border-2 border-dashed border-[#777E90] px-2 py-14 text-center">
                   <p className="text-xs text-white">Drop your files here OR</p>
                   <p className="text-xs text-[#01F7FF]">Click here to browse</p>
                   <p className="text-xs text-[#777E90]">
@@ -120,7 +120,7 @@ const ImageInput = ({ selectedFile, setSelectedFile }: any) => {
             </div>
           )}
         </Dropzone>
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-2">
           <button
             onClick={(e) => {
               e.preventDefault();
