@@ -1,0 +1,242 @@
+:root {
+  --primary-color: #ffffff;
+  --start-btn-width: 200px;
+  --progress-bar-height: 1px;
+}
+
+/* ------------------------------------------------------------ Canvas Start */
+
+.canvas-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  /* z-index: -1; */
+  /* z-index: 3; */
+  height: 100vh;
+  min-height: 100vh;
+  /* width: 100vw; */
+  background: radial-gradient(closest-side, rgba(0, 0, 0, 0) 70%, rgba(0, 10, 14, 0.7) 170%);
+}
+
+.canvas-container::before {
+  content: '';
+  height: 100vh;
+  left: 0;
+  pointer-events: none;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background: url('/noise.png');
+  background-repeat: repeat;
+  mix-blend-mode: soft-light;
+  /* opacity: 0.15; */
+  opacity: 0.1;
+  /* z-index: 999; */
+}
+
+.canvas-static-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 1em;
+  color: var(--primary-color);
+  pointer-events: none;
+}
+
+.canvas-static-wrapper-2 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  /* display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 1em; */
+  color: var(--primary-color);
+  pointer-events: none;
+  opacity: 0;
+}
+
+.canvas-static-video-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 100vh;
+}
+
+.app-slide-1-mobile {
+  background: none;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-blend-mode: multiply;
+  flex-direction: column;
+}
+
+.canvas-static-site-title {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 30px;
+}
+
+.canvas-static-main-title {
+  /* padding-top: 22%; */
+  text-align: center;
+  width: 100%;
+  max-width: 90%;
+  transition: 0.4s;
+}
+
+.canvas-static-description {
+  padding-top: 22%;
+  text-align: center;
+  max-width: 30ch;
+  transition: 0.4s;
+}
+
+.canvas-static-scroll-indicator {
+  text-transform: uppercase;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 120px;
+}
+.canvas-static-scroll-indicator-label {
+  font-size: 0.7em;
+  margin-bottom: 8px;
+}
+.canvas-static-scroll-indicator-icon {
+  border: 1px solid var(--primary-color);
+  border-radius: 1em;
+  width: 20px;
+  height: 40px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+.canvas-static-scroll-indicator-icon > div {
+  border: none;
+  border-radius: 50%;
+  background-color: var(--primary-color);
+  width: 5px;
+  height: 5px;
+  /* animation-name: loop-dot-up-down;
+      animation-iteration-count: infinite;
+      animation-fill-mode: both;
+      animation-duration: 1s; */
+}
+
+@keyframes loop-dot-up-down {
+  0% {
+    transform: translateY(10px);
+    /* justify-content: flex-start; */
+  }
+  0% {
+    transform: translateY(20px);
+
+    /* justify-content: flex-end; */
+  }
+}
+
+/* ------------------------------------------------------------ Canvas End */
+
+.section {
+  height: 100vh;
+  width: 100%;
+  /* width: 100vw; */
+  /* z-index: 2; */
+  /* z-index: -1; */
+  scroll-snap-align: start;
+}
+
+.section-1 {
+  position: relative;
+  /* background-color: #166b64; */
+}
+
+.section-2 {
+  /* border: 1px solid blue; */
+  /* background-color: aqua; */
+  /* background: url('/pinkish_sunset.jpg');
+  background-position: center;
+  background-repeat: no-repeat; */
+}
+.section-3 {
+  /* border: 1px solid red; */
+  background-color: black;
+  position: relative;
+}
+.section-3-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+.section-4 {
+  /* border: 1px solid yellow; */
+  background-color: burlywood;
+  position: relative;
+}
+.section-4-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  text-shadow: 0 0 5px #000000, 0 0 20px #000;
+}
+.section-5 {
+  /* border: 1px solid yellow; */
+  background-color: indianred;
+  position: relative;
+}
+.section-5-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.custom-controller {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 300px;
+  border: 1px solid black;
+  padding: 1em;
+  z-index: 100;
+  /* display: none; */
+}

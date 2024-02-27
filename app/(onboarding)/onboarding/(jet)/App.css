@@ -1,0 +1,211 @@
+@import url('https://fonts.googleapis.com/css2?family=Jura:wght@400;500;600;700&display=swap');
+
+@font-face {
+  font-family: 'helvetica';
+  src: url('/fonts/Helvetica-65-Medium.woff') format('woff');
+}
+
+:root {
+  --primary-color: #ffffff;
+  --start-btn-width: 200px;
+  --progress-bar-height: 1px;
+}
+
+#root {
+  /* max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center; */
+  width: 100%;
+  height: 100vh;
+  font-family: 'Jura', sans-serif;
+}
+
+.App {
+  width: 100vw;
+  max-width: 100vw;
+  height: 100vh;
+  max-height: 100vh;
+  overflow: hidden;
+  position: relative;
+  /* border: 1px solid green; */
+}
+
+.app-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  /* pointer-events: none; */
+}
+
+.mySwiper {
+  width: 100%;
+  height: 100%;
+}
+.mySwiper .swiper-wrapper {
+  /* pointer-events: none; */
+}
+
+.mySwiper .swiper-slide {
+}
+
+.app-slide {
+  width: 100%;
+  height: 100%;
+}
+
+.app-slide-1 {
+}
+
+.app-slide-2 {
+  /* pointer-events: none; */
+}
+
+.app-slide-3,
+.app-slide-4 {
+  color: black;
+  background: white;
+  /* background: blue; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.custom-swiper-pagination {
+  background: none !important;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  width: auto !important;
+  text-align: right;
+  transition: 0.4s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.custom-swiper-pagination.swiper-pagination-bullet-active {
+  font-size: 2em;
+}
+
+/* ---------------------------------------------------- info  */
+.app-slide-info {
+  background-color: black;
+}
+
+.app-slide-info-category {
+  /* background: -webkit-linear-gradient(#2b8587, #043d32); */
+  background: -webkit-linear-gradient(#3bd3e9, #09806e, #6ae0c9);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.app-slide-service {
+  background-image: url('/slides/bg-services.png');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.app-slide-client {
+  background-image: url('/slides/bg-clients.png');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.app-slide-career {
+  /* background-image: url('/slides/bg-careers.png'); */
+  background: url('/slides/bg-careers-animated.gif') #09806e;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-blend-mode: multiply;
+}
+
+.app-slide-career-button {
+  border: 1px solid #6ae0c9;
+  /* border-color: -webkit-linear-gradient(#3bd3e9, #6ae0c9); */
+  background-color: #102722;
+  border-radius: 0.5em;
+  max-width: 85%;
+  width: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  cursor: pointer;
+  /* background: linear-gradient(#3bd3e9, #6ae0c9) padding-box,
+    linear-gradient(to right, #6ae0c9, #3bd3e9) border-box; */
+}
+/* ---------------------------------------------------- contact-us */
+.contact-us-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.contact-us-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 8em !important;
+}
+
+@media screen and (max-width: 600px) {
+  .contact-us-wrapper {
+    padding: 4em !important;
+  }
+}
+
+.contact-us-wrapper > div {
+  flex-grow: 1;
+  /* background-color: black; */
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.contact-us-text-input-wrapper {
+  display: flex;
+  flex-wrap: nowrap;
+}
+.contact-us-text-input-wrapper input {
+  background: none;
+  outline: none;
+  border: none;
+  flex-grow: 1;
+  font-size: 16px;
+  color: #03ad14 !important;
+}
+
+.contact-us-field-input-box:last-child {
+  flex-grow: 1;
+}
+
+.custom-animate-delay-1 {
+  animation-delay: 1s;
+}
+.custom-animate-delay-2 {
+  animation-delay: 2s;
+}
+.custom-animate-delay-3 {
+  animation-delay: 2.25s;
+}
+.custom-animate-delay-4 {
+  animation-delay: 2.5s;
+}
+.custom-animate-delay-5 {
+  animation-delay: 2.75s;
+}
+.custom-animate-delay-6 {
+  animation-delay: 3s;
+}
+.custom-animate-delay-7 {
+  animation-delay: 3.25s;
+}

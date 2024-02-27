@@ -1,5 +1,4 @@
 import { CreateChatbotProvider } from "../create-knowledge-context";
-import OnboardingHeader from "./header";
 
 type OnboardingLayoutProps = {
   children: React.ReactNode;
@@ -16,9 +15,7 @@ const OnboardingLayout = ({ children }: OnboardingLayoutProps) => {
 
           <main className="h-[calc(100dvh-114px)] grow [&>*:first-child]:scroll-mt-16">
             <CreateChatbotProvider>
-              {" "}
-              <OnboardingHeader />
-              <main className="h-[88dvh] px-16 py-10">
+              <main className="h-dvh">
                 {children}
               </main>
             </CreateChatbotProvider>
