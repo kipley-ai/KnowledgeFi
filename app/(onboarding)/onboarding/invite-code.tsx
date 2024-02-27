@@ -134,7 +134,6 @@ const InviteCode = ({ address }: InviteCodeProps) => {
   };
 
   useEffect(() => {
-    setStep("data_source");
     if (inputsRef.current[0]) {
       inputsRef.current[0].focus();
     }
