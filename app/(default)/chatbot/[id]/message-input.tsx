@@ -94,8 +94,8 @@ const MessageInput = () => {
               // type: "twitter",
               user_id: address as string,
               plugin_config:
-                '{"model":'+model+',"prompt_template":' +promptTemplate +
-                ',"model_temperature":'+temprature+
+                '{"model":"'+model+'","prompt_template":"' +promptTemplate +
+                '","model_temperature":'+temprature+
                 ',"top_p":'+topP+
                 ',"frequency_penalty":'+frequencyPenalty+
                 ',"presence_penalty":'+presencePenalty+
@@ -120,9 +120,12 @@ const MessageInput = () => {
         // type: "twitter",
         user_id: address as string,
         plugin_config:
-          '{"model":"gpt-3.5-turbo","prompt_template":' +
-          promptTemplate +
-          ',"model_temperature":0,"top_p":1,"frequency_penalty":0,"presence_penalty":0,"top_k_docs":10}',
+        '{"model":"'+model+'","prompt_template":"' +promptTemplate +
+        '","model_temperature":'+temprature+
+        ',"top_p":'+topP+
+        ',"frequency_penalty":'+frequencyPenalty+
+        ',"presence_penalty":'+presencePenalty+
+        ',"top_k_docs":'+topDocs+'}',
       });
       setMessageHistory((prevHistory) => [
         ...prevHistory,
