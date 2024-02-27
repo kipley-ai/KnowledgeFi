@@ -46,7 +46,9 @@ export default function OnboardingSuccess() {
             justifyContent: "center",
           }}
         >
-          <h1 className="font-mono text-5xl text-white">Well done!</h1>
+          <p className="font-mono text-5xl font-semibold text-white">
+            Well done!
+          </p>
         </div>
         <div
           className={`flex flex-row ${poppins.className} my-8 items-center justify-center text-sm`}
@@ -58,14 +60,14 @@ export default function OnboardingSuccess() {
             alt="check icon"
             className="mr-4"
           />
-          <h1 className="font-mono text-base">
-            Your Knowledge Asset is created successfully
+          <h1 className="font-mono text-base font-semibold">
+            Your Knowledge Asset is created successfully!
           </h1>
         </div>
         <div className="flex w-full justify-center">
           <button
             onClick={() => router.push("/dashboard")}
-            className="rounded-full bg-[#353945] px-12 py-4 text-sm text-[#01F7FF]"
+            className="rounded-full bg-[#353945] px-12 py-4 text-base font-bold text-[#01F7FF]"
           >
             Enter KnowledgeFi Homepage
           </button>
