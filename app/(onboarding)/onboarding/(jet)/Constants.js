@@ -3,13 +3,13 @@ import { contentData_section1 } from './Custom';
 export const showLoadingProgress = false;
 export const showLoaderOnMobile = false;
 
-export const showController = true;
+export const showController = false;
 
 export const scale = 1000;
 export let farMutiplier = 1.5; // 1
-export let initialY = Math.PI / 2; // 1.5
+export let initialY = -50; // 1.5
 export let page2PositionY = -50; // -25
-export let mainBgColor = '#054b45'; // darker: #0d4c47 lighter: #166b64   darker2: #0a3431
+export let mainBgColor = '#000000'; // darker: #0d4c47 lighter: #166b64   darker2: #0a3431
 
 export let controllerObj_general = {
   // scale: { value: 1000, min: 1, max: 10000, step: 1 },

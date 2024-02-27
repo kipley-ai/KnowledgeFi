@@ -87,6 +87,10 @@ const MainCanvas = React.forwardRef((props, forwardRef) => {
   const sunRef = useRef();
   const [enableGodRay, setEnableGodRay] = useState(true);
 
+  useEffect(() => {
+    window.dispatchEvent(new Event("resize"));
+  }, []);
+
   const { belowXS, belowSM, belowLG } = useBreakpoints();
 
   // -------------------------------------------------------------- Controller Start
@@ -274,7 +278,7 @@ const MainCanvas = React.forwardRef((props, forwardRef) => {
             <div
               className="canvas-static-main-title"
               style={{
-                // fontFamily: 'Helvetica Neue, Arial, serif',
+                fontFamily: 'Helvetica Neue, Arial, serif',
                 fontFamily: "Helvetica",
                 fontWeight: "bold",
                 fontSize: `${controlsData_title.size * (belowSM ? 40 : 60)}px`,
