@@ -15,7 +15,7 @@ import {
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Avatar from "public/images/avatar-gradient-icon.svg";
-import EnterIcon from "public/images/arrow-2-icon.svg";
+import EnterIcon from "public/images/arrow-right.svg";
 import { useDefaultValue } from "@/hooks/api/default_value";
 
 const MessageInput = () => {
@@ -41,18 +41,17 @@ const MessageInput = () => {
   const { id } = useParams();
   const chatSession = useGetSession({ chatbot_id: id as string });
   const newSession = useNewSession();
-  const pluginConfig = useDefaultValue({key:"plugin_config"})
+  const pluginConfig = useDefaultValue({ key: "plugin_config" });
 
-  
-
-  const [model,setModel] = useState("gpt-3.5-turbo")
-  const [promptTemplate2,setPromptTemplate2] = useState("\n\nAct as the person described above, and utilize the available information below to answer the question.\nRemember, the user is looking for assistance, so keep your responses natural, concise, accurate, and informative. If you are uncertain about a query or if the user asked something which is unidentified by you, prompt the user to rephrase it.\nHere is the available information: \n{context}\n\nHere is user's question:\n{question}")
-  const [temprature,setTemprature] = useState(0)
-  const [topP,setTopP] = useState(1)
-  const [frequencyPenalty,setFrequencyPenalty] = useState(0)
-  const [presencePenalty,setPresencePenalty] = useState(0)
-  const [topDocs,setTopDocs] = useState(10)
-
+  const [model, setModel] = useState("gpt-3.5-turbo");
+  const [promptTemplate2, setPromptTemplate2] = useState(
+    "\n\nAct as the person described above, and utilize the available information below to answer the question.\nRemember, the user is looking for assistance, so keep your responses natural, concise, accurate, and informative. If you are uncertain about a query or if the user asked something which is unidentified by you, prompt the user to rephrase it.\nHere is the available information: \n{context}\n\nHere is user's question:\n{question}",
+  );
+  const [temprature, setTemprature] = useState(0);
+  const [topP, setTopP] = useState(1);
+  const [frequencyPenalty, setFrequencyPenalty] = useState(0);
+  const [presencePenalty, setPresencePenalty] = useState(0);
+  const [topDocs, setTopDocs] = useState(10);
 
   const { data: chatbotData, isSuccess } = useChatbotDetail({
     chatbot_id: id as string,
@@ -62,21 +61,21 @@ const MessageInput = () => {
     console.log(!chatSession.data?.data.data?.session_id);
   }, [chatSession.isSuccess]);
 
-  useEffect(()=> {
-    console.log(pluginConfig.data?.data)
-    if(pluginConfig.isSuccess){
+  useEffect(() => {
+    console.log(pluginConfig.data?.data);
+    if (pluginConfig.isSuccess) {
       // console.log(pluginConfig.data?.data)
-      const plugin_config = JSON.parse(pluginConfig.data?.data.data.value)
-      console.log(plugin_config)
-      setModel(plugin_config.model)
-      setPromptTemplate2(plugin_config.prompt_template)
-      setTemprature(plugin_config.model_temprature)
-      setTopP(plugin_config.top_p)
-      setFrequencyPenalty(plugin_config.frequency_penalty)
-      setPresencePenalty(plugin_config.presence_penalty)
-      setTopDocs(plugin_config.top_k_docs)
+      const plugin_config = JSON.parse(pluginConfig.data?.data.data.value);
+      console.log(plugin_config);
+      setModel(plugin_config.model);
+      setPromptTemplate2(plugin_config.prompt_template);
+      setTemprature(plugin_config.model_temprature);
+      setTopP(plugin_config.top_p);
+      setFrequencyPenalty(plugin_config.frequency_penalty);
+      setPresencePenalty(plugin_config.presence_penalty);
+      setTopDocs(plugin_config.top_k_docs);
     }
-  },[pluginConfig.isSuccess])
+  }, [pluginConfig.isSuccess]);
 
   const handleSendMessage = async () => {
     if (!chatSession.data?.data.data?.session_id) {
@@ -94,12 +93,21 @@ const MessageInput = () => {
               // type: "twitter",
               user_id: address as string,
               plugin_config:
-                '{"model":'+model+',"prompt_template":' +promptTemplate +
-                ',"model_temperature":'+temprature+
-                ',"top_p":'+topP+
-                ',"frequency_penalty":'+frequencyPenalty+
-                ',"presence_penalty":'+presencePenalty+
-                ',"top_k_docs":'+topDocs+'}',
+                '{"model":"' +
+                model +
+                '","prompt_template":' +
+                promptTemplate +
+                ',"model_temperature":' +
+                temprature +
+                ',"top_p":' +
+                topP +
+                ',"frequency_penalty":' +
+                frequencyPenalty +
+                ',"presence_penalty":' +
+                presencePenalty +
+                ',"top_k_docs":' +
+                topDocs +
+                "}",
             });
             setMessageHistory((prevHistory) => [
               ...prevHistory,
@@ -109,7 +117,7 @@ const MessageInput = () => {
             setReplyStatus("answering");
             setLastQuestion(newQuestion);
           },
-        }
+        },
       );
     } else {
       sendValidatedMessage({
@@ -120,9 +128,21 @@ const MessageInput = () => {
         // type: "twitter",
         user_id: address as string,
         plugin_config:
-          '{"model":"gpt-3.5-turbo","prompt_template":' +
+          '{"model":"' +
+          model +
+          '","prompt_template":' +
           promptTemplate +
-          ',"model_temperature":0,"top_p":1,"frequency_penalty":0,"presence_penalty":0,"top_k_docs":10}',
+          ',"model_temperature":' +
+          temprature +
+          ',"top_p":' +
+          topP +
+          ',"frequency_penalty":' +
+          frequencyPenalty +
+          ',"presence_penalty":' +
+          presencePenalty +
+          ',"top_k_docs":' +
+          topDocs +
+          "}",
       });
       setMessageHistory((prevHistory) => [
         ...prevHistory,
@@ -140,7 +160,7 @@ const MessageInput = () => {
     '"';
 
   return (
-    <div className="sticky bottom-4 lg:bottom-0 inset-x-0 flex items-center rounded-full border border-gray-600 focus-within:border-[#01F7FF] bg-stone-800 px-4 py-2 mt-6 w-auto lg:w-full">
+    <div className="sticky inset-x-0 bottom-4 mt-6 flex w-auto items-center rounded-md border border-gray-600 px-4 py-2 focus-within:border-[#01F7FF] lg:bottom-0 lg:w-full">
       {/* Profile picture placeholder */}
       {/* <Image src={Avatar} alt="Profile" className="w-8 h-8 rounded-full mr-4" /> */}
       {/* Input Field */}
@@ -151,21 +171,34 @@ const MessageInput = () => {
           if (e.key === "Enter") handleSendMessage();
           // console.log(e.key)
         }}
-        className="flex-grow bg-transparent text-white placeholder-gray-300 border-0 outline-none rounded-full focus:ring-0 caret-[#01F7FF]"
+        className="flex-grow border-0 bg-transparent text-white placeholder-gray-300 caret-[#01F7FF] outline-none focus:ring-0"
         value={newQuestion}
         onChange={(e) => {
           setNewQuestion(e.target.value);
         }}
       />
       {/* Icons or buttons */}
-      <div className="flex items-center ml-4">
+      <div className="ml-4 flex items-center">
         <button
           className="text-light-blue"
           onClick={(e) => {
             handleSendMessage();
           }}
         >
-          <Image src={EnterIcon} alt="Submit" />
+          <svg
+            width="20"
+            height="14"
+            viewBox="0 0 20 14"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M2.62268e-07 6L3.49691e-07 8L15 8L15 10L17 10L17 8L20 8L20 6L17 6L17 4L15 4L15 6L2.62268e-07 6ZM13 2L15 2L15 4L13 4L13 2ZM13 2L11 2L11 -4.80823e-07L13 -5.68248e-07L13 2ZM13 12L15 12L15 10L13 10L13 12ZM13 12L11 12L11 14L13 14L13 12Z"
+              fill="#00FFFF"
+            />
+          </svg>
         </button>
       </div>
     </div>

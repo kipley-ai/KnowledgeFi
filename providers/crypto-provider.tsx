@@ -133,7 +133,7 @@ export function CryptoProvider({ children }: React.PropsWithChildren) {
             <RainbowKitProvider
               chains={chains}
               initialChain={
-                process.env.NEXT_PUBLIC_ENV_DEV == "1" ? sepolia : arbitrum
+                process.env.NEXT_PUBLIC_ENV_DEV == "1" ? sepolia : polygon
               }
             >
               {children}

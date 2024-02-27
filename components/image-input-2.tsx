@@ -7,11 +7,7 @@ import GalleryImages from "@/public/json/image-gallery-app.json";
 import UploadingIcon from "public/images/upload-file/uploading-icon-white.svg";
 import LoadingIcon from "public/images/loading-icon.svg";
 
-const ImageInput = ({
-  selectedFile,
-  setSelectedFile,
-  useDefaultImage = true,
-}: any) => {
+const ImageInput = ({ selectedFile, setSelectedFile }: any) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [loadingCover, setLoadingCover] = useState(false);
   const [isImageModalOpen, setIsImageModalOpen] = useState(false);
@@ -103,7 +99,7 @@ const ImageInput = ({
                   src={LoadingIcon}
                   alt="Loading Icon"
                 />
-              ) : useDefaultImage ? (
+              ) : selectedFile ? (
                 <Image
                   src={selectedFile}
                   alt="Edit Preview"
@@ -113,7 +109,7 @@ const ImageInput = ({
                   priority
                 />
               ) : (
-                <div className="flex flex-col items-center rounded-md border-2 border-dashed border-[#777E90] px-2 py-12 text-center">
+                <div className="flex h-[250px] flex-col items-center justify-center rounded-md border-2 border-dashed border-[#777E90] px-2 py-12 text-center">
                   <p className="text-xs text-white">Drop your files here OR</p>
                   <p className="text-xs text-[#01F7FF]">Click here to browse</p>
                   <p className="text-xs text-[#777E90]">
