@@ -98,9 +98,9 @@ export default function SelectDataElements() {
           <OnboardingProgress step={1} />
 
           <div className="mt-3 flex items-center gap-6">
-            <div className="h-full">
+            {/* <div className="h-full">
               <Image src={"/images/corner-up-left.png"} alt="icon" width={24} height={24} />
-            </div>
+            </div> */}
             <h1 className="text-2xl font-semibold text-white">
               SELECT DATA ELEMENTS
             </h1>
@@ -111,8 +111,9 @@ export default function SelectDataElements() {
             setSelectedButton={setSelectedButton}
           />
           <div className="flex justify-end">
+            {isComingSoon && (
               <button
-                className="mt-8 flex flex-row gap-2 items-center justify-between rounded-sm bg-[#01F7FF] py-3 px-5"
+                className="mt-8 flex flex-row gap-2 items-center justify-between rounded-sm bg-[#01F7FF] py-3 px-5 hover:brightness-75"
                 type="submit"
                 onClick={handleContinue}
               >
@@ -128,6 +129,7 @@ export default function SelectDataElements() {
                   />
                 ) : null}
               </button>
+            )}
           </div>
         </div>
       ) : step == "upload_files" ? (

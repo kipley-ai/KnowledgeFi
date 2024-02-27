@@ -27,12 +27,12 @@ const ButtonItem = ({
 }) => {
   return (
     <button
-      className={`flex flex-col items-center border-2 py-5 md:pt-10 ${isSelected ? "border-[#01F7FF]" : "border-transparent"} justify-end rounded-md`}
+      className={`flex flex-col items-center border-2 py-5 md:mt-4 ${isSelected ? "border-[#01F7FF]" : "border-transparent"} justify-end rounded-md`}
       onClick={onClick}
     >
       <Image
-        width={48}
-        height={48}
+        width={36}
+        height={36}
         src={optionIcon}
         alt={`${optionText} Icon`}
       />
@@ -75,7 +75,7 @@ const buttons = [
   {
     type: "files",
     icon: FolderAddIcon,
-    text: "Upload files",
+    text: "Upload Files",
     comingSoon: false,
   },
   {
@@ -110,16 +110,16 @@ export default function Step1({
             setSelectedButton(button.type);
             setIsComingSoon(button.comingSoon);
 
-            // if (button.type == "twitter") {
-            //   if (twitterStatus != "authenticated") {
-            //     setShowTwitterLogin(true);
-            //     sessionStorage.setItem("mintNFTRedirect", "true");
-            //   } else {
-            //     setStep("mint_nft");
-            //   }
-            // } else if (button.type == "files") {
-            //   setStep("upload_files");
-            // }
+            if (button.type == "twitter") {
+              if (twitterStatus != "authenticated") {
+                setShowTwitterLogin(true);
+                sessionStorage.setItem("mintNFTRedirect", "true");
+              } else {
+                setStep("mint_nft");
+              }
+            } else if (button.type == "files") {
+              setStep("upload_files");
+            }
           }}
           isSelected={selectedButton == button.type}
           optionIcon={button.icon}

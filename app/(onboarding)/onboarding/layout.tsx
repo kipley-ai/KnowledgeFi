@@ -18,7 +18,7 @@ const OnboardingLayout = ({ children }: OnboardingLayoutProps) => {
             <CreateChatbotProvider>
               {" "}
               <OnboardingHeader />
-              <main className="h-[88dvh] px-32 py-10">
+              <main className="h-[88dvh] px-16 py-10">
                 {children}
               </main>
             </CreateChatbotProvider>

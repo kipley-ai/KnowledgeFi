@@ -161,10 +161,10 @@ const ChatBotForm = () => {
         open={showModal}
         setOpen={setShowModal}
       /> */}
-      <div className="-mx-28 flex flex-col py-8 sm:px-6 lg:px-0">
+      <div className="-mx-28 flex flex-col py-8 sm:px-6 lg:px-32">
         <div className="mx-5 mb-6 md:mx-32">
-          <div className="mt-3 flex cursor-pointer items-center gap-6">
-            <div className="h-full">
+          <div className="mt-3 flex items-center gap-6">
+            <div className="h-full cursor-pointer" onClick={() => setStep("mint_nft")}>
               <Image
                 src={"/images/corner-up-left.png"}
                 alt="icon"
@@ -376,9 +376,20 @@ const ChatBotForm = () => {
             {/* </div> */}
           </div>
 
-          <div className="form-actions flex flex-row justify-end space-x-2">
+          <div className="form-actions mt-8 flex flex-row items-center justify-between space-x-2">
             <button
-              className="group mt-8 flex items-center justify-center rounded-sm bg-[#01F7FF] p-2 px-5 ring-2 ring-gray-600 transition-all duration-200 ease-in-out hover:brightness-75"
+              className="flex flex-row items-center justify-between  rounded-3xl p-2 px-5"
+              type="submit"
+              onClick={() => {
+                setStep("mint_nft");
+              }}
+            >
+              <h5 className="text-xs font-semibold text-gray-400 lg:text-sm hover:brightness-75">
+                BACK
+              </h5>
+            </button>
+            <button
+              className="group flex items-center justify-center rounded-sm bg-[#01F7FF] p-2 px-5 ring-2 ring-gray-600 transition-all duration-200 ease-in-out hover:brightness-75"
               type="submit"
             >
               <h5 className="text-xs font-semibold text-black transition-colors duration-200 ease-in-out lg:text-sm">

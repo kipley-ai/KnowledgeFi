@@ -110,19 +110,19 @@ const ImageInput = ({
           onClick={handleGalleryCover}
           className="rounded-md bg-[#01F7FF] px-1 py-2 text-xs font-semibold text-black hover:brightness-75 lg:text-sm"
         >
-          Choose Image from Gallery
+          CHOOSE IMAGE FROM GALLERY
         </button>
         <button
           onClick={handleDeviceCover}
           className="rounded-md bg-[#01F7FF] px-1 py-2 text-xs font-semibold text-black hover:brightness-75 lg:text-sm"
         >
-          Choose Image from Device
+          CHOOSE IMAGE FROM DEVICE
         </button>
         <div
           onClick={handleRandomCover}
-          className="w-full cursor-pointer rounded-md bg-slate-400 py-1 text-center text-xs font-bold text-black hover:brightness-75 lg:text-sm"
+          className="w-full cursor-pointer rounded-md border-2 border-gray-700 py-1 text-center text-xs font-bold text-gray-400 hover:brightness-75 lg:text-sm"
         >
-          Random
+          RANDOM
         </div>
       </div>
       <ModalImageGallery

@@ -224,15 +224,15 @@ export default function Local({
   }, [files, toast]);
 
   return (
-    <div className="flex flex-col px-6 py-10 pb-20 lg:px-8 xl:px-32">
+    <div className="flex flex-col px-6 pb-10 lg:px-8 xl:px-32">
       <Toast
         children={"KB creation successful"}
         open={toast}
         setOpen={setToast}
         className="mx-auto"
       />
-      <div className="mt-3 flex items-center cursor-pointer gap-6">
-        <div className="h-full" onClick={() => setStep("data_source")}>
+      <div className="mt-3 flex items-center gap-6">
+        <div className="h-full cursor-pointer" onClick={() => setStep("data_source")}>
           <Image src={"/images/corner-up-left.png"} alt="icon" width={24} height={24} />
         </div>
         <h1 className="text-2xl font-semibold text-white">
@@ -312,7 +312,7 @@ export default function Local({
             setStep("data_source");
           }}
         >
-          <h5 className="text-sm font-semibold text-[#777E90]">BACK</h5>
+          <h5 className="text-sm font-semibold text-[#777E90] hover:brightness-75">BACK</h5>
         </button>
         <button
           className={`mt-8 flex flex-row items-center justify-between rounded-sm px-5 py-3 hover:brightness-75 ${
