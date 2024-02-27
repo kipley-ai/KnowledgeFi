@@ -1,7 +1,8 @@
 import axios from "axios";
 import { useState, useEffect, useRef } from "react";
 import { useCreateChatbotContext } from "../create-knowledge-context";
-import { useIsWhitelisted } from "@/hooks/api/user";
+import { useIsWhitelisted, useUserDetail } from "@/hooks/api/user";
+import { redirect } from "next/navigation";
 
 type InviteCodeProps = {
   address: string | undefined;
@@ -160,7 +161,7 @@ const InviteCode = ({ address }: InviteCodeProps) => {
 
   if (isLoading) return null;
 
-  if (isWl?.data.status !== "error") {
+  if (isWl?.data && isWl?.data.status !== "error") {
     setStep("data_source");
   }
 

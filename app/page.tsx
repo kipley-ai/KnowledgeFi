@@ -8,9 +8,13 @@ import LayoutDashboard from "./(dashboard)/dashboard/layout";
 import GetInvolvedButton from "@/components/GetInvolvedButton/get-involved-button";
 import OnboardingLayout from "./(onboarding)/onboarding/layout";
 import Onboarding from "./(onboarding)/onboarding/page";
+import { useAppProvider } from "@/providers/app-provider";
 
 export default function Home() {
   const [isDefinitelyConnected, setIsDefinitelyConnected] = useState(false);
+
+  const sign = localStorage.getItem("kip-protocol-signature");
+  const { verifStatus } = useAppProvider();
 
   const { address, isConnected } = useAccount();
 
@@ -25,8 +29,8 @@ export default function Home() {
     }
   }, [address]);
 
-  if (isConnected) {
-    redirect(nextUrl);
+  if (isConnected && (sign || verifStatus === "authenticated")) {
+    return redirect(nextUrl);
   } else {
     if (nextUrl === "/knowledge/create/iframe") {
       return (

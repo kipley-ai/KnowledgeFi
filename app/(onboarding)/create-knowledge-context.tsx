@@ -26,7 +26,10 @@ interface CreateChatbotContextProps {
   setKbId: ReactSetter<string>;
 
   createChatbot: any;
-	handleChangeChatbot: any;
+  handleChangeChatbot: any;
+
+  welcomePage: string;
+  setWelcomePage: ReactSetter<string>;
 }
 
 interface ICreateKb {
@@ -77,15 +80,16 @@ export const CreateChatbotProvider = ({
   });
 
   const [createChatbot, setCreateChatbot] = useState({
-		type: "",
-		kb_data: [],
-		username:""
-	});
+    type: "",
+    kb_data: [],
+    username: "",
+  });
 
   const [step, setStep] = useState("invite_code");
   const [sftId, setSftId] = useState("");
   const [kbId, setKbId] = useState("");
   const [isComingSoon, setIsComingSoon] = useState(false);
+  const [welcomePage, setWelcomePage] = useState("");
 
   // const nftDetail = useNftDetail({
   // 	sft_id: "SFTID11",
@@ -110,13 +114,13 @@ export const CreateChatbotProvider = ({
   };
 
   const handleChangeChatbot = (name: string, value: any) => {
-		setCreateChatbot((prevData:any) => {
-			return {
-				...prevData,
-				[name]: value,
-			};
-		});
-	};
+    setCreateChatbot((prevData: any) => {
+      return {
+        ...prevData,
+        [name]: value,
+      };
+    });
+  };
 
   return (
     <CreateChatbotContext.Provider
@@ -130,8 +134,8 @@ export const CreateChatbotProvider = ({
         isComingSoon,
         setIsComingSoon,
 
-				createChatbot,
-				handleChangeChatbot,
+        createChatbot,
+        handleChangeChatbot,
 
         step,
         setStep,
@@ -141,6 +145,9 @@ export const CreateChatbotProvider = ({
 
         kbId,
         setKbId,
+
+        welcomePage,
+        setWelcomePage,
       }}
     >
       {children}
