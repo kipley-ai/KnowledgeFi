@@ -82,7 +82,7 @@ gsap.registerEffect({
           value: 1,
           delay: bgDuration - 0.25,
           onReverseComplete: () => {
-            setEnableGodRay(false);
+            setEnableGodRay(true);
           },
         },
         'animateDive'

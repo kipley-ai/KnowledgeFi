@@ -10,7 +10,7 @@ const SunEffect = React.forwardRef((props, forwardRef) => {
 
   const sunRef = forwardRef || useRef();
   const godRaysRef = useRef();
-  // console.log('EffectComposer', godRaysRef);
+  console.log('EffectComposer', godRaysRef);
   return (
     <>
       <pointLight

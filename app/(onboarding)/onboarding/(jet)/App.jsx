@@ -20,20 +20,20 @@ function App() {
   const { belowBreakpoint, belowXS, belowSM } = breakpoints;
 
   const [swiperSlideStatus, setSwiperSlideStatus] = useState({
-    previousIndex: 0,
-    activeIndex: 1,
+    previousIndex: 1,
+    activeIndex: 2,
     direction: 'down',
-    isUp: false,
-    isDown: true,
+    isUp: true,
+    isDown: false,
   });
 
-  const [enableSwiper, setEnableSwiper] = useState(false);
+  const [enableSwiper, setEnableSwiper] = useState(true);
   const [controlledSwiper, setControlledSwiper] = useState(null);
-  // console.log('swiperSlideStatus', swiperSlideStatus);
+  console.log('swiperSlideStatus', swiperSlideStatus);
 
   const containerRef = useRef();
   const trackingRef = useRef();
-  const [hideLoadingOverlay, setHideLoadingOverlay] = useState(!showLoadingProgress);
+  const [hideLoadingOverlay, setHideLoadingOverlay] = useState(true);
 
   let speed = 1000;
 

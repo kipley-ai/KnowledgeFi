@@ -29,7 +29,7 @@ const ScrollController = (props) => {
     //   }
     // }
     if (activeIndex == 0) {
-      setEnableGodRay(false);
+      setEnableGodRay(true);
     } else {
       setEnableGodRay(true);
     }
@@ -38,7 +38,7 @@ const ScrollController = (props) => {
   let timelineOnReverseComplete = useCallback(() => {
     console.log('timelineOnReverseComplete');
     if (activeIndex == 0) {
-      setEnableGodRay(false);
+      setEnableGodRay(true);
     } else {
       setEnableGodRay(true);
     }
@@ -55,7 +55,7 @@ const ScrollController = (props) => {
 
   let bgDuration = 0.5; //
 
-  let enableRay = { value: 0 };
+  let enableRay = { value: 1 };
   // console.log('enableRay', enableRay);
 
   useEffect(() => {
@@ -145,7 +145,7 @@ const ScrollController = (props) => {
     let isUp = swiperSlideStatus?.isUp;
     if (activeIndex == 0) {
       if (enableGodRay) {
-        handleTimeout(() => setEnableGodRay(false), 1000);
+        handleTimeout(() => setEnableGodRay(true), 1000);
       }
       if (isDown) {
       } else if (isUp) {
