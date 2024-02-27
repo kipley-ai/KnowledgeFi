@@ -94,8 +94,8 @@ const MessageInput = () => {
               // type: "twitter",
               user_id: address as string,
               plugin_config:
-                '{"model":"'+model+'","prompt_template":"' +promptTemplate +
-                '","model_temperature":'+temprature+
+                '{"model":"'+model+'","prompt_template":' +promptTemplate +
+                ',"model_temperature":'+temprature+
                 ',"top_p":'+topP+
                 ',"frequency_penalty":'+frequencyPenalty+
                 ',"presence_penalty":'+presencePenalty+
@@ -120,8 +120,8 @@ const MessageInput = () => {
         // type: "twitter",
         user_id: address as string,
         plugin_config:
-        '{"model":"'+model+'","prompt_template":"' +promptTemplate +
-        '","model_temperature":'+temprature+
+        '{"model":"'+model+'","prompt_template":' +promptTemplate +
+        ',"model_temperature":'+temprature+
         ',"top_p":'+topP+
         ',"frequency_penalty":'+frequencyPenalty+
         ',"presence_penalty":'+presencePenalty+
