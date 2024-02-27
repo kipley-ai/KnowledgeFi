@@ -62,7 +62,7 @@ function App() {
 
   const isMobileDevices = checkDeviceIsMobile();
 
-  const hideText = false;
+  const hideText = true;
 
   return (
     <div className="App">
@@ -74,7 +74,7 @@ function App() {
           isMobileDevices={isMobileDevices}
           hideText={hideText}
         />
-        <div className="absolute bottom-20 flex flex-row justify-center w-full">
+        <div className="absolute bottom-[8vh] min-[600px]:bottom-[2vh] lg:bottom-[12vh] flex flex-row justify-center w-max m-auto left-0 right-0">
           <GetInvolvedButton
             buttonStyle="rounded-sm w-full py-3 px-6 text-sm font-medium bg-[#01F7FF]"
             chainStyle="hidden"

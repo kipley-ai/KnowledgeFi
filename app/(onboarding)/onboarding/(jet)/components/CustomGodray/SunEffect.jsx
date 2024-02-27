@@ -6,7 +6,7 @@ import { BlendFunction, Resizer, KernelSize } from 'postprocessing';
 import { useControls } from 'leva';
 
 const SunEffect = React.forwardRef((props, forwardRef) => {
-  const { sunProps = {}, godRaysProps = {}, enabled = false } = props;
+  const { sunProps = {}, godRaysProps = {}, enabled = true } = props;
 
   const sunRef = forwardRef || useRef();
   const godRaysRef = useRef();

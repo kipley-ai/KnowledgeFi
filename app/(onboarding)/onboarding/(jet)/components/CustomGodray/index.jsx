@@ -3,7 +3,7 @@ import SunEffect from './SunEffect';
 
 const CustomGodray = React.forwardRef((props, forwardRef) => {
   const {
-    enabled = false,
+    enabled = true,
 
     godRaysGeneralProps,
     godRaysEffectProps,
