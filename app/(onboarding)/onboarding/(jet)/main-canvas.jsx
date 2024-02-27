@@ -85,7 +85,7 @@ const MainCanvas = React.forwardRef((props, forwardRef) => {
 
   const canvasCameraRef = useRef();
   const sunRef = useRef();
-  const [enableGodRay, setEnableGodRay] = useState(false);
+  const [enableGodRay, setEnableGodRay] = useState(true);
 
   const { belowXS, belowSM, belowLG } = useBreakpoints();
 
@@ -354,7 +354,7 @@ const Section2 = () => {
         flexDirection="column"
       >
         <Box pb={2}>
-          <Typography variant="h1" fontWeight="600">
+          <Typography variant="h1" fontWeight="600" lineHeight="1">
             There is a fierce battle underway for our place in the AI era.
           </Typography>
         </Box>
@@ -397,7 +397,7 @@ const Section2 = () => {
               our participation rights in the economic benefits brought by AI.
             </Box>
 
-            <Box py={10}></Box>
+            <Box py={4}></Box>
             <Box>
               Powered by KIP Protocol, KnowledgeFi.xyz is a full decentralised
               platform that unlocks{" "}
@@ -409,7 +409,7 @@ const Section2 = () => {
             </Box>
           </Box>
 
-          <Box pb={2} mt={5}>
+          <Box pb={1} mt={1}>
             <Typography variant="h4" fontWeight="600">
               Your Knowledge is your Property. Take it back.
             </Typography>

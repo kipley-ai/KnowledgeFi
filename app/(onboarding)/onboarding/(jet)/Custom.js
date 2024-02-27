@@ -1,8 +1,8 @@
 // --------------------------------------------------------------- Section 1
 export const contentData_section1 = {
-  value: 'immersion_',
+  value: '',
   topLabel: '',
-  description: 'Take a dive into Web3 with us',
+  description: '',
 };
 
 // --------------------------------------------------------------- Our Services

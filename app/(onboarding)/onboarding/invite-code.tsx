@@ -17,8 +17,6 @@ const InviteCode = ({ address }: InviteCodeProps) => {
 
   const { setStep } = useCreateChatbotContext();
 
-  const userDetail = useUserDetail();
-
   const { data: isWl, isLoading } = useIsWhitelisted();
 
   const handleChange = (element: any, index: number) => {
@@ -161,11 +159,7 @@ const InviteCode = ({ address }: InviteCodeProps) => {
     }
   }, [otp]);
 
-  if (isLoading && userDetail.isLoading) return null;
-
-  if (userDetail?.data?.data && userDetail.data.data.data.onboarding) {
-    return redirect("/dashboard");
-  }
+  if (isLoading) return null;
 
   if (isWl?.data && isWl?.data.status !== "error") {
     setStep("data_source");

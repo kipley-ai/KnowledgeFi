@@ -19,12 +19,23 @@ import { useState } from "react";
 
 export default function Onboarding() {
   const sign = localStorage.getItem("kip-protocol-signature");
-  const { address } = useAccount();
+  const { address, status } = useAccount();
   const { verifStatus } = useAppProvider();
 
   const { step, welcomePage } = useCreateChatbotContext();
 
-  if (verifStatus === "authenticated" || sign) {
+  const { data: userDetail, isLoading } = useUserDetail();
+
+  if (isLoading) return null;
+
+  if (
+    userDetail?.data?.status !== "error" &&
+    userDetail?.data?.data.onboarding
+  ) {
+    return redirect("/dashboard");
+  }
+
+  if (status === "connected" && (sign || verifStatus === "authenticated")) {
     return (
       // <div className="flex flex-col py-10 pb-20 px-6 lg:px-8 xl:px-32">
       <div className="flex flex-col gap-8">

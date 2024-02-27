@@ -74,7 +74,7 @@ function App() {
 
   const isMobileDevices = checkDeviceIsMobile();
 
-  const hideText = false;
+  const hideText = true;
 
   return (
     <div className="App">
