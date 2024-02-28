@@ -15,6 +15,8 @@ import MintConfirmationModal from "@/components/modal-mint-confirmation";
 import { DEFAULT_COVER_IMAGE } from "@/utils/constants";
 import Tooltip from "@/components/tooltip";
 import ArrowRight from "public/images/arrow-right.svg";
+import { ZodError, z } from "zod";
+import { noMoreThanCharacters } from "@/utils/utils";
 
 // export const metadata = {
 //     title: 'SFT - Mosaic',
@@ -30,9 +32,6 @@ interface Form {
   pricePerQuery?: number;
   coverImage?: string;
 }
-
-const noMoreThanCharacters = (number: number) =>
-  "no more than " + number + " characters";
 
 export default function NFT() {
   const { setHeaderTitle, toast, setToast } = useAppProvider();
@@ -54,6 +53,35 @@ export default function NFT() {
   const [nftIdCreated, setNftIdCreated] = useState("");
   const [isConfirmModalOpen, setisConfirmModalOpen] = useState(false);
   const mintNFTAPI = useMintNFT();
+
+  const formValidation = z.object({
+    name: z
+      .string({
+        required_error: "Name is required",
+      })
+      .min(1, "Name is required")
+      .max(100, noMoreThanCharacters(100)),
+
+    description: z
+      .string({
+        required_error: "Description is required",
+      })
+      .min(1, "Description is required")
+      .max(1000, noMoreThanCharacters(1000)),
+
+    symbol: z
+      .string({
+        required_error: "Symbol is required",
+      })
+      .min(1, "Symbol is required")
+      .max(10, noMoreThanCharacters(10)),
+
+    pricePerQuery: z
+      .string({
+        required_error: "Price per query is required",
+      })
+      .min(1, "Price per query is required"),
+  });
 
   const handleFormChange = (name: string, value: any) => {
     setForm({
@@ -133,53 +161,29 @@ export default function NFT() {
   };
 
   useEffect(() => {
-    if (form.name && form.name.length > 100)
-      setErrorMessage({
-        ...errorMessage,
-        name: noMoreThanCharacters(100),
+    let errorTmp = {};
+    try {
+      formValidation.parse(form);
+    } catch (error) {
+      const er = error as ZodError;
+      er.errors.map((e) => {
+        errorTmp = {
+          ...errorTmp,
+          [e.path[0]]: e.message,
+        };
       });
-    else {
-      setErrorMessage({
-        ...errorMessage,
-        name: "",
-      });
+    } finally {
+      setErrorMessage(errorTmp);
     }
-  }, [form.name]);
-
-  useEffect(() => {
-    if (form.description && form.description.length > 1000)
-      setErrorMessage({
-        ...errorMessage,
-        description: noMoreThanCharacters(1000),
-      });
-    else {
-      setErrorMessage({
-        ...errorMessage,
-        description: "",
-      });
-    }
-  }, [form.description]);
-
-  useEffect(() => {
-    if (form.symbol && form.symbol.length > 10)
-      setErrorMessage({
-        ...errorMessage,
-        symbol: noMoreThanCharacters(10),
-      });
-    else {
-      setErrorMessage({
-        ...errorMessage,
-        symbol: "",
-      });
-    }
-  }, [form.symbol]);
+  }, [form]);
 
   useEffect(() => {
     if (
       errorMessage &&
       !errorMessage.name &&
       !errorMessage.description &&
-      !errorMessage.symbol
+      !errorMessage.symbol &&
+      !errorMessage.pricePerQuery
     ) {
       setAllowGenerate(true);
     } else {
@@ -236,9 +240,10 @@ export default function NFT() {
                   placeholder="Name your Knowledge SFT"
                   value={form?.name}
                   onChange={(e) => handleFormChange("name", e.target.value)}
+                  maxLength={100}
                 />
                 {errorMessage && errorMessage.name ? (
-                  <div className=" text-xs text-red-400 lg:text-sm">
+                  <div className=" text-xs text-red-400">
                     {errorMessage.name}
                   </div>
                 ) : (
@@ -258,9 +263,10 @@ export default function NFT() {
                   onChange={(e) =>
                     handleFormChange("description", e.target.value)
                   }
+                  maxLength={1000}
                 />
                 {errorMessage && errorMessage.description ? (
-                  <div className=" text-xs text-red-400 lg:text-sm">
+                  <div className=" text-xs text-red-400">
                     {errorMessage.description}
                   </div>
                 ) : (
@@ -277,12 +283,18 @@ export default function NFT() {
                     className="placeholder-text-[#7C878E] w-11/12 rounded-xl bg-transparent text-xs text-[#DDD] lg:text-sm"
                     type="text"
                     name="tokenSymbol"
-                    placeholder={form.name ? "e.g. "+form.name?.replace(' ', '').slice(0, 4).toUpperCase() : "Enter NFT Token Symbol"}
+                    placeholder={
+                      form.name
+                        ? "e.g. " +
+                          form.name?.replace(" ", "").slice(0, 4).toUpperCase()
+                        : "Enter NFT Token Symbol"
+                    }
                     value={form?.symbol}
                     onChange={(e) => handleFormChange("symbol", e.target.value)}
+                    maxLength={10}
                   />
                   {errorMessage && errorMessage.symbol ? (
-                    <div className=" text-xs text-red-400 lg:text-sm">
+                    <div className=" text-xs text-red-400">
                       {errorMessage.symbol}
                     </div>
                   ) : (
@@ -345,7 +357,7 @@ export default function NFT() {
                       paid in $KFI.
                     </Tooltip>
                   </label>
-                  <div className="flex w-full items-center">
+                  <div className="flex w-full flex-col">
                     <input
                       // className="rounded-xl bg-transparent w-11/12"
                       className="placeholder-text-[#7C878E] w-full rounded-xl bg-transparent text-xs text-[#DDD] lg:text-sm"
@@ -359,6 +371,13 @@ export default function NFT() {
                       }}
                       value={form?.pricePerQuery}
                     />
+                    {errorMessage && errorMessage.pricePerQuery ? (
+                      <div className=" text-xs text-red-400">
+                        {errorMessage.pricePerQuery}
+                      </div>
+                    ) : (
+                      <div className="text-xs opacity-0 lg:text-sm">a</div>
+                    )}
                   </div>
                 </div>
               </div>

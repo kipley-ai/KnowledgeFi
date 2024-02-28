@@ -37,3 +37,6 @@ export const uploadFile = async (file: any, callback: any) => {
     console.error("Error uploading file:", error);
   }
 };
+
+export const noMoreThanCharacters = (number: number) =>
+  "no more than " + number + " characters";
