@@ -101,6 +101,8 @@ const ChatBotForm = () => {
   const handleSubmit = (event: any) => {
     event.preventDefault();
 
+    if (!validateForm()) return;
+
     createChatbot.mutate(
       {
         profile_image: selectedFile,
@@ -177,7 +179,7 @@ const ChatBotForm = () => {
     }
   }, [mode]);
 
-  useEffect(() => {
+  const validateForm = () => {
     let errorTmp = {};
     try {
       formValidation.parse(form);
@@ -191,16 +193,14 @@ const ChatBotForm = () => {
       });
     } finally {
       setErrorMessage(errorTmp);
-    }
-  }, [form]);
 
-  useEffect(() => {
-    if (errorMessage && !errorMessage.name && !errorMessage.pricePerQuery) {
-      setAllowGenerate(true);
-    } else {
-      setAllowGenerate(false);
+      if (Object.keys(errorTmp).length > 0) {
+        return false;
+      }
+
+      return true;
     }
-  }, [errorMessage]);
+  };
 
   return (
     <>
@@ -460,7 +460,6 @@ const ChatBotForm = () => {
             <button
               className="group flex items-center justify-center rounded-sm bg-[#01F7FF] p-2 px-5 ring-2 ring-gray-600 transition-all duration-200 ease-in-out hover:brightness-75 disabled:bg-gray-500"
               type="submit"
-              disabled={!allowGenerate}
             >
               <h5 className="text-xs font-semibold text-black transition-colors duration-200 ease-in-out lg:text-sm">
                 BRING MY CHATBOT TO LIFE
