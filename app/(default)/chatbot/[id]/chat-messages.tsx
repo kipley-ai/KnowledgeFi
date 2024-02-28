@@ -22,6 +22,55 @@ import { useAppProvider } from "@/providers/app-provider";
 import { useCreditBalanceContext } from "./credit-balance-context";
 import { useCreditBalance } from "@/hooks/api/credit";
 
+const ChatbotInfo = () => {
+  const { id } = useParams();
+
+  const { data: chatbotData } = useChatbotDetail({
+    chatbot_id: id as string,
+  });
+
+  const { data: nftData } = useNftDetail({
+    sft_id: chatbotData?.data.data.sft_id as string,
+  });
+
+  return (
+    <div className="flex w-full flex-col divide-y-2 divide-aqua-700 border-2 border-aqua-700">
+      <div className="px-6">
+        <h1
+          className="font-semibold text-aqua-700 md:text-3xl"
+          style={{
+            textShadow: "0 0 10px #01F7FF",
+          }}
+        >
+          {chatbotData?.data.data.name}
+        </h1>
+      </div>
+      <div className="relative flex flex-col gap-2 px-6 py-4">
+        <div className="relative z-10 flex items-center gap-8">
+          <Image
+            src={chatbotData?.data.data.profile_image as string}
+            alt="Profile"
+            className="rounded-full"
+            width={130}
+            height={130}
+          />
+          <p className="text-md">{chatbotData?.data.data.description}</p>
+        </div>
+        <div className="relative z-10 flex justify-end">
+          <Image
+            src={nftData?.data.data.profile_image as string}
+            alt="Profile"
+            className=""
+            width={130}
+            height={130}
+          />
+        </div>
+        <div className="absolute left-20 top-0 bottom-0 m-auto w-9/12 h-3/6 border-b-2 border-l-2 bg-transparent border-aqua-700"></div>
+      </div>
+    </div>
+  );
+};
+
 const MessageList = () => {
   const [answersStream, setAnswersStream] = useState<string[]>([]);
   const fieldRef = useRef<HTMLDivElement>(null);
@@ -63,10 +112,6 @@ const MessageList = () => {
       chatbot_id: id as string,
     });
   const chatSession = useGetSession({ chatbot_id: id as string });
-
-  const { data: nftData, isSuccess: nftDetailIsSuccess } = useNftDetail({
-    sft_id: chatbotData?.data.data.sft_id as string,
-  });
 
   const chatHistoryAPI = useChatHistory({
     session_id: chatSession.data?.data.data?.session_id,
@@ -168,39 +213,7 @@ const MessageList = () => {
 
   return (
     <>
-      <div className="flex w-full flex-col divide-y-2 divide-aqua-700 border-2 border-aqua-700">
-          <div className="px-6">
-            <h1 
-              className="font-semibold text-aqua-700 md:text-3xl"
-              style={{ 
-                textShadow: "0 0 10px #01F7FF",
-              }}
-            >
-              {chatbotData?.data.data.name}
-            </h1>
-          </div>
-          <div className="relative flex flex-col gap-2 py-4 px-6">
-            <div className="flex items-center gap-8">
-              <Image
-                src={chatbotData?.data.data.profile_image as string}
-                alt="Profile"
-                className="rounded-full"
-                width={130}
-                height={130}
-              />
-              <p className="text-md">{chatbotData?.data.data.description}</p>
-            </div>
-            <div className="flex justify-end">
-              <Image
-                src={nftData?.data.data.profile_image as string}
-                alt="Profile"
-                className=""
-                width={130}
-                height={130}
-              />
-            </div>
-          </div>
-        </div>
+    <ChatbotInfo />
     <div className="flex grow flex-col gap-2 overflow-auto h-auto md:space-y-4">
       <FirstAnswer
         profileImage={chatbotData?.data.data.profile_image}
