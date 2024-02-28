@@ -24,6 +24,8 @@ import ChatText from "public/images/chat-text.png";
 import HomeIcon from "public/images/home-icon.svg";
 import { useChatbotChatList } from "@/hooks/api/chatbot";
 import { PaginationController } from "../pagination/controller";
+import CreditBalance from "../../app/(default)/chatbot/[id]/credit-balance";
+import { CreditBalanceProvider } from "../../app/(default)/chatbot/[id]/credit-balance-context";
 
 const GetInvolvedButton = dynamic(
   () => import("../GetInvolvedButton/get-involved-button"),
@@ -58,11 +60,11 @@ const ChatHistoryList = () => {
               className={`mb-3 px-3  py-2 last:mb-0 hover:rounded-md hover:bg-stone-600 hover:text-white ${
                 (segments.includes("home") || segments.includes("dashboard")) &&
                 "bg-transparent"
-              } ${pathname === "/chatbot/" + chatbot.chatbot_id ? "rounded-md border border-2 border-[#01F7FF] hover:bg-transparent" : ""}`}
+              } ${pathname === "/chatbot/" + chatbot.chatbot_id ? "" : ""}`}
             >
               <SidebarLink href={`/chatbot/${chatbot.chatbot_id}`}>
                 <div className="flex items-center">
-                  <span className="ml-4 text-[14px] text-sm font-medium font-semibold text-neutral-500 duration-200 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100">
+                  <span className={`ml-4 text-[14px] text-sm font-medium font-semibold duration-200 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 ${pathname === "/chatbot/" + chatbot.chatbot_id ? "text-aqua-700" : ""}`}>
                     {chatbot.name}
                   </span>
                 </div>
@@ -162,6 +164,7 @@ export default function Sidebar() {
 
   return (
     <>
+      <CreditBalanceProvider>
       <div
         className={`min-w-fit ${sidebarExpanded ? "sidebar-expanded" : ""}`}
         style={{
@@ -189,7 +192,7 @@ export default function Sidebar() {
           as="div"
           id="sidebar"
           ref={sidebar}
-          className="no-scrollbar absolute left-0 top-0 z-40 flex h-[100dvh] w-64 shrink-0 flex-col overflow-y-scroll bg-neutral-900 p-4 pt-9 transition-all duration-200 ease-in-out lg:static lg:left-auto lg:top-auto lg:!flex lg:w-12 lg:translate-x-0 lg:overflow-y-auto lg:sidebar-expanded:!w-64 2xl:!w-64"
+          className="no-scrollbar absolute left-0 top-0 z-40 flex h-[100dvh] w-64 shrink-0 flex-col overflow-y-scroll bg-neutral-900 py-4 pt-9 transition-all duration-200 ease-in-out lg:static lg:left-auto lg:top-auto lg:!flex lg:w-12 lg:translate-x-0 lg:overflow-y-auto lg:sidebar-expanded:!w-64 2xl:!w-64"
           enterFrom="-translate-x-full"
           enterTo="translate-x-0"
           leaveFrom="translate-x-0"
@@ -227,10 +230,10 @@ export default function Sidebar() {
           <div className="space-y-8">
             {/* Pages group */}
             <div>
-              <ul className="">
+              <ul className="border-b-2 border-gray-700 pb-4">
                 {/* Inbox */}
                 <li
-                  className={`mb-10 px-3  py-2 last:mb-0 hover:rounded-md hover:bg-stone-600 hover:text-aqua-700 ${
+                  className={`mb-4 px-3  py-2 last:mb-0 hover:rounded-md hover:bg-stone-600 hover:text-aqua-700 ${
                     (segments.length === 0 || segments.includes("dashboard")) &&
                     "rounded-md border-2 border-aqua-700"
                   } px-2.5 py-1.5`}
@@ -267,11 +270,11 @@ export default function Sidebar() {
                   } `}
                 >
                   {/* style={{ border: '2px solid #01F7FF', borderRadius: '24px', padding: '6px 10px' }}> */}
-                  <div className="flex items-center">
-                    <span className="ml-4 text-[14px] text-sm font-semibold text-gray-400 duration-200 lg:text-sm lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100">
+                  {/* <div className="flex items-center">
+                    <span style={{ "text-shadow": "0 0 4px #01F7FF" }} className="ml-4 text-[14px] text-sm font-semibold text-aqua-700 duration-200 lg:text-sm lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100">
                       Chat List
                     </span>
-                  </div>
+                  </div> */}
                 </li>
                 <ChatHistoryList />
                 {/* <li
@@ -409,6 +412,7 @@ export default function Sidebar() {
 									</Link>
 								</li> */}
               </ul>
+              <CreditBalance />
             </div>
           </div>
 
@@ -432,6 +436,7 @@ export default function Sidebar() {
 					</div> */}
         </Transition>
       </div>
+      </CreditBalanceProvider>
     </>
   );
 }

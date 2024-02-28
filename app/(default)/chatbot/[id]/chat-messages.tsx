@@ -64,6 +64,10 @@ const MessageList = () => {
     });
   const chatSession = useGetSession({ chatbot_id: id as string });
 
+  const { data: nftData, isSuccess: nftDetailIsSuccess } = useNftDetail({
+    sft_id: chatbotData?.data.data.sft_id as string,
+  });
+
   const chatHistoryAPI = useChatHistory({
     session_id: chatSession.data?.data.data?.session_id,
     app_id: id as string,
@@ -163,7 +167,41 @@ const MessageList = () => {
   }, [lastJsonMessage]);
 
   return (
-    <div className="flex grow flex-col gap-2 overflow-auto md:space-y-4">
+    <>
+      <div className="flex w-full flex-col divide-y-2 divide-aqua-700 border-2 border-aqua-700">
+          <div className="px-6">
+            <h1 
+              className="font-semibold text-aqua-700 md:text-3xl"
+              style={{ 
+                textShadow: "0 0 10px #01F7FF",
+              }}
+            >
+              {chatbotData?.data.data.name}
+            </h1>
+          </div>
+          <div className="relative flex flex-col gap-2 py-4 px-6">
+            <div className="flex items-center gap-8">
+              <Image
+                src={chatbotData?.data.data.profile_image as string}
+                alt="Profile"
+                className="rounded-full"
+                width={130}
+                height={130}
+              />
+              <p className="text-md">{chatbotData?.data.data.description}</p>
+            </div>
+            <div className="flex justify-end">
+              <Image
+                src={nftData?.data.data.profile_image as string}
+                alt="Profile"
+                className=""
+                width={130}
+                height={130}
+              />
+            </div>
+          </div>
+        </div>
+    <div className="flex grow flex-col gap-2 overflow-auto h-auto md:space-y-4">
       <FirstAnswer
         profileImage={chatbotData?.data.data.profile_image}
         sender={"bot"}
@@ -209,6 +247,7 @@ const MessageList = () => {
       )}
       <div ref={fieldRef}></div>
     </div>
+    </>
   );
 };
 
