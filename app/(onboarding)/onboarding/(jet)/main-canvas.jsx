@@ -349,7 +349,7 @@ const Section2 = () => {
       alignItems="center"
       justifyContent="center"
       p={belowSM ? 2 : 5}
-      mt={5}
+      mt={5} mb={5}
     >
       <Typography
         component={Box}
@@ -401,7 +401,7 @@ const Section2 = () => {
               our participation rights in the economic benefits brought by AI.
             </Box>
 
-            <Box py={5} mt={3}></Box>
+            <Box py={5} pt={2}></Box>
             <Box>
               Powered by KIP Protocol, KnowledgeFi.xyz is a full decentralised
               platform that unlocks{" "}
