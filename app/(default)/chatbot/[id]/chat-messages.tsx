@@ -85,13 +85,9 @@ const MessageList = () => {
       if (chatHistoryAPI.data?.data.length) {
         console.log(chatHistoryAPI.data?.data);
         setMessageHistory(chatHistoryAPI.data?.data.reverse());
-      } else if (chatHistoryAPI.data?.data.length === 0) {
-        setMessageHistory(chatHistoryAPI.data?.data);
       }
       setAnswersStream([]);
     }
-
-    // }, [chatHistoryAPI.isSuccess, chatHistoryAPI.data?.data]);
   }, [chatbotDetailIsSuccess, chatHistoryAPI.isSuccess, buttonSession]);
 
   useEffect(() => {

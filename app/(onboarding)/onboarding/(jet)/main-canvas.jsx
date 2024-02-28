@@ -86,10 +86,7 @@ const MainCanvas = React.forwardRef((props, forwardRef) => {
   const canvasCameraRef = useRef();
   const sunRef = useRef();
   const [enableGodRay, setEnableGodRay] = useState(true);
-
-  useEffect(() => {
-    window.dispatchEvent(new Event("resize"));
-  }, []);
+  const [shrinkCanvas, setShrinkCanvas] = useState(false);
 
   const { belowXS, belowSM, belowLG } = useBreakpoints();
 
@@ -172,10 +169,16 @@ const MainCanvas = React.forwardRef((props, forwardRef) => {
 
   // -------------------------------------------------------------- Controller End
 
+  useEffect(() => {
+    setTimeout(() => {
+      setShrinkCanvas(true);
+    }, 3000);
+  }, []);
+
   return (
     <div
       className="canvas-container"
-      style={enableOrbitControl ? { zIndex: 0 } : {}}
+      style={shrinkCanvas ? { width: "99%" } : {}}
     >
       <Suspense fallback={<Fallback />}>
         <Canvas
@@ -278,7 +281,7 @@ const MainCanvas = React.forwardRef((props, forwardRef) => {
             <div
               className="canvas-static-main-title"
               style={{
-                fontFamily: 'Helvetica Neue, Arial, serif',
+                fontFamily: "Helvetica Neue, Arial, serif",
                 fontFamily: "Helvetica",
                 fontWeight: "bold",
                 fontSize: `${controlsData_title.size * (belowSM ? 40 : 60)}px`,
@@ -422,8 +425,7 @@ const Section2 = () => {
             <Typography variant="h4" fontWeight="600">
               Welcome to KnowledgeFi.
             </Typography>
-            <Box pb={2} mt={5} className="relative">
-            </Box>
+            <Box pb={2} mt={5} className="relative"></Box>
           </Box>
         </Box>
       </Typography>

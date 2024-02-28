@@ -160,7 +160,7 @@ export default function NFT() {
     }
   };
 
-  useEffect(() => {
+  const validateForm = () => {
     let errorTmp = {};
     try {
       formValidation.parse(form);
@@ -174,22 +174,20 @@ export default function NFT() {
       });
     } finally {
       setErrorMessage(errorTmp);
-    }
-  }, [form]);
 
-  useEffect(() => {
-    if (
-      errorMessage &&
-      !errorMessage.name &&
-      !errorMessage.description &&
-      !errorMessage.symbol &&
-      !errorMessage.pricePerQuery
-    ) {
-      setAllowGenerate(true);
-    } else {
-      setAllowGenerate(false);
+      if (Object.keys(errorTmp).length > 0) {
+        return false;
+      }
+
+      return true;
     }
-  }, [errorMessage]);
+  };
+
+  const handleGenerateSFT = async () => {
+    if (validateForm()) {
+      setisConfirmModalOpen(true);
+    }
+  };
 
   return (
     <>
@@ -468,11 +466,10 @@ export default function NFT() {
               </h5>
             </button>
             <button
-              className="flex w-44 flex-row items-center justify-between rounded-sm bg-[#01F7FF] p-2 px-5 hover:brightness-75 disabled:bg-gray-500"
-              onClick={() => setisConfirmModalOpen(true)}
+              className="flex w-44 flex-row items-center justify-between rounded-sm bg-[#01F7FF] p-2 px-5 hover:brightness-75"
+              onClick={handleGenerateSFT}
               // onClick={() => setStep("create_chatbot")}
               type="button"
-              disabled={!allowGenerate}
             >
               <h5 className="text-xs font-semibold text-black lg:text-sm">
                 GENERATE SFT
