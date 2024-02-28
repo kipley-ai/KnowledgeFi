@@ -6,7 +6,7 @@ import Step1 from "./step-1";
 import Step2 from "./step-2";
 import { useSession } from "next-auth/react";
 import { useAppProvider } from "@/providers/app-provider";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 // import NFTForm from "./create-nft-form";
 import { createKB } from "@/app/api/kb/helper";
 import { useCreateChatbotContext } from "./create-knowledge-context";
@@ -35,6 +35,10 @@ export interface UIFile {
 }
 
 export default function SelectDataElements() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const nextStep = searchParams.get("nextStep");
+
   const title = "Create Knowledge Assets";
   const { setHeaderTitle } = useAppProvider();
 
@@ -84,20 +88,17 @@ export default function SelectDataElements() {
   // if (mintNFTRedirect === "true" && twitterStatus == "authenticated") {
   // setStep("mint_nft"); // sessionStorage.removeItem("mintNFTRedirect");
   // }
+  if (nextStep && nextStep !== "") {
+    setStep(nextStep);
+    router.push("/onboarding");
+  }
 
   return (
     <>
       <ModalLoginTwitter
         isOpen={showTwitterLogin}
         setIsOpen={setShowTwitterLogin}
-        redirectUrl="/onboarding"
-        onSuccess={() => {
-					console.log("Twitter login succeed.")
-          setStep("mint_nft");
-        }}
-				onError={() => {
-					console.log("Twitter login error.")
-				}}
+        redirectUrl="/onboarding?nextStep=mint_nft"
       />
       {step == "data_source" ? (
         <div className="flex flex-col px-6 pb-20 lg:px-8 xl:px-32">
