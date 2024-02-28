@@ -8,11 +8,12 @@ import CreateChatbotModal from "@/components/toast-4";
 import { useNftDetail } from "@/hooks/api/nft";
 import LoadingIcon from "public/images/loading-icon.svg";
 import ImageInput from "@/components/image-input-2";
-import { number, string } from "zod";
+import { ZodError, number, string, z } from "zod";
 import Switcher from "@/components/switcher";
 import { useAppProvider } from "@/providers/app-provider";
 import { DEFAULT_COVER_IMAGE } from "@/utils/constants";
 import Tooltip from "@/components/tooltip";
+import { noMoreThanCharacters } from "@/utils/utils";
 
 interface Category {
   title: string;
@@ -22,6 +23,11 @@ interface Category {
   sort: number;
 }
 
+interface Form {
+  name?: string;
+  pricePerQuery?: number;
+}
+
 const ChatBotForm = () => {
   useEffect(() => {
     setHeaderTitle("");
@@ -29,7 +35,6 @@ const ChatBotForm = () => {
 
   const title = "Create Chatbot";
   const { setHeaderTitle } = useAppProvider();
-  const [characterName, setCharacterName] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
   const [categories, setCategories] = useState<Category[]>([]);
@@ -46,11 +51,36 @@ const ChatBotForm = () => {
   const [selectedFile, setSelectedFile] = useState<any>(DEFAULT_COVER_IMAGE);
   const [mode, setMode] = useState(0);
   const [toneData, setToneData] = useState("");
-  const [pricePerQuery, setPricePerQuery] = useState(0);
+
+  const [errorMessage, setErrorMessage] = useState<any>({});
+  const [allowGenerate, setAllowGenerate] = useState(false);
+  const [form, setForm] = useState<Form>({});
 
   const { data: twitterSession } = useSession();
 
   const categoryList = useGetCategory();
+
+  const formValidation = z.object({
+    name: z
+      .string({
+        required_error: "Name is required",
+      })
+      .min(1, "Name is required")
+      .max(100, noMoreThanCharacters(100)),
+
+    pricePerQuery: z
+      .string({
+        required_error: "Price per query is required",
+      })
+      .min(1, "Price per query is required"),
+  });
+
+  const handleFormChange = (name: string, value: any) => {
+    setForm({
+      ...form,
+      [name]: value,
+    });
+  };
 
   if (twitterSession?.user) {
     twitterSession?.user?.username;
@@ -69,22 +99,15 @@ const ChatBotForm = () => {
 
   const handleSubmit = (event: any) => {
     event.preventDefault();
-    const formData = new FormData();
-    formData.append("profileImage", profileImage);
-    formData.append("characterName", characterName);
-    // formData.append("description", description);
-    // formData.append("category", category);
-    console.log(twitterSession?.user);
-    console.log(selectedFile);
 
     createChatbot.mutate(
       {
         profile_image: selectedFile,
-        name: characterName,
+        name: form.name as string,
         sft_id: id as string,
         kb_id: nftData?.data.data.kb_id as string,
         tone: toneData,
-        price_per_query: pricePerQuery,
+        price_per_query: form.pricePerQuery as number,
         // category_id: category,
         // description: description,
         // instruction: instructions,
@@ -140,7 +163,6 @@ const ChatBotForm = () => {
     if (categoryList && categoryList.data) {
       const categoryData: Category[] = categoryList.data.data.data;
       setCategories(categoryData);
-      console.log(categories); //For debugging purpose
     }
   }, [title, categoryList]);
 
@@ -151,6 +173,31 @@ const ChatBotForm = () => {
       setToneData("instruction_2");
     }
   }, [mode]);
+
+  useEffect(() => {
+    let errorTmp = {};
+    try {
+      formValidation.parse(form);
+    } catch (error) {
+      const er = error as ZodError;
+      er.errors.map((e) => {
+        errorTmp = {
+          ...errorTmp,
+          [e.path[0]]: e.message,
+        };
+      });
+    } finally {
+      setErrorMessage(errorTmp);
+    }
+  }, [form]);
+
+  useEffect(() => {
+    if (errorMessage && !errorMessage.name && !errorMessage.pricePerQuery) {
+      setAllowGenerate(true);
+    } else {
+      setAllowGenerate(false);
+    }
+  }, [errorMessage]);
 
   return (
     <>
@@ -188,12 +235,19 @@ const ChatBotForm = () => {
                   <input
                     id="characterName"
                     type="text"
-                    value={characterName}
-                    onChange={(e) => setCharacterName(e.target.value)}
+                    value={form.name}
+                    onChange={(e) => handleFormChange("name", e.target.value)}
                     className="mt-2 w-full rounded-xl border-2 bg-transparent text-xs text-white lg:text-sm"
                     placeholder="Name your Chatbot"
                     maxLength={100}
                   />
+                  {errorMessage && errorMessage.name ? (
+                    <div className=" text-xs text-red-400">
+                      {errorMessage.name}
+                    </div>
+                  ) : (
+                    <div className="text-xs opacity-0 lg:text-sm">a</div>
+                  )}
                 </div>
                 {/* <p className="mt-2 text-xs text-gray-400">
                 The name of your AI character.
@@ -236,16 +290,11 @@ const ChatBotForm = () => {
                 {/* <p className="mt-2 text-xs text-gray-400">Category of your AI.</p> */}
               </div>
               <div>
-                <label
-                  className=" flex flex-row text-wrap text-xs font-semibold text-[#DDD] lg:text-sm items-center space-x-3"
-                >
+                <label className=" flex flex-row items-center space-x-3 text-wrap text-xs font-semibold text-[#DDD] lg:text-sm">
                   <span>Price Per Query (in $KFI)</span>
-                  <Tooltip
-                    bg="dark"
-                    position="right"
-                    size="md"
-                  >
-                    Set your price per query on your chatbot app and get paid in $KFI.
+                  <Tooltip bg="dark" position="right" size="md">
+                    Set your price per query on your chatbot app and
+                    get paid in $KFI.
                   </Tooltip>
                 </label>
                 <div className="mt-3">
@@ -256,11 +305,18 @@ const ChatBotForm = () => {
                     placeholder="e.g. 1"
                     onChange={(e) => {
                       if (parseFloat(e.target.value) < 0)
-                        setPricePerQuery(0);
-                      else setPricePerQuery(parseFloat(e.target.value));
+                        handleFormChange("pricePerQuery", 0);
+                      else handleFormChange("pricePerQuery", e.target.value);
                     }}
-                    value={pricePerQuery}
+                    value={form.pricePerQuery}
                   />
+                  {errorMessage && errorMessage.pricePerQuery ? (
+                    <div className=" text-xs text-red-400">
+                      {errorMessage.pricePerQuery}
+                    </div>
+                  ) : (
+                    <div className="text-xs opacity-0 lg:text-sm">a</div>
+                  )}
                 </div>
               </div>
             </div>
@@ -377,10 +433,11 @@ const ChatBotForm = () => {
               </h5>
             </button>
             <button
-              className="mt-8 flex items-center justify-center rounded-3xl p-2 px-5 ring-2 ring-gray-600 transition-all duration-200 ease-in-out bg-[#01F7FF] hover:ring-0 hover:brightness-75"
+              className="mt-8 flex items-center justify-center rounded-3xl bg-[#01F7FF] p-2 px-5 ring-2 ring-gray-600 transition-all duration-200 ease-in-out hover:ring-0 hover:brightness-75 disabled:bg-gray-500"
               type="submit"
+              disabled={!allowGenerate}
             >
-              <h5 className="text-xs font-semibold lg:text-sm transition-colors duration-200 ease-in-out text-black">
+              <h5 className="text-xs font-semibold text-black transition-colors duration-200 ease-in-out lg:text-sm">
                 Bring my chatbot to life
               </h5>
               <svg
@@ -401,7 +458,6 @@ const ChatBotForm = () => {
                 />
               </svg>
             </button>
-
           </div>
         </form>
       </div>
