@@ -52,6 +52,7 @@ const MessageInput = () => {
   const [frequencyPenalty, setFrequencyPenalty] = useState(0);
   const [presencePenalty, setPresencePenalty] = useState(0);
   const [topDocs, setTopDocs] = useState(10);
+  const [maxTokens, setMaxTokens] = useState(250);
 
   const { data: chatbotData, isSuccess } = useChatbotDetail({
     chatbot_id: id as string,
@@ -74,6 +75,7 @@ const MessageInput = () => {
       setFrequencyPenalty(plugin_config.frequency_penalty);
       setPresencePenalty(plugin_config.presence_penalty);
       setTopDocs(plugin_config.top_k_docs);
+      setMaxTokens(plugin_config.max_tokens);
     }
   }, [pluginConfig.isSuccess]);
 
@@ -107,6 +109,8 @@ const MessageInput = () => {
                 presencePenalty +
                 ',"top_k_docs":' +
                 topDocs +
+                ',"max_tokens":' +
+                maxTokens +
                 "}",
             });
             setMessageHistory((prevHistory) => [
@@ -142,6 +146,8 @@ const MessageInput = () => {
           presencePenalty +
           ',"top_k_docs":' +
           topDocs +
+          ',"max_tokens":' +
+          maxTokens +
           "}",
       });
       setMessageHistory((prevHistory) => [

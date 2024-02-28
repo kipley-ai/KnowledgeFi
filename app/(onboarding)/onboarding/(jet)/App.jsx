@@ -1,35 +1,46 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { Swiper, SwiperSlide, useSwiper } from 'swiper/react';
-import { Mousewheel, Keyboard, Pagination, Controller, HashNavigation } from 'swiper';
-import Box from '@mui/material/Box';
+import React, { useState, useRef, useEffect } from "react";
+import { Swiper, SwiperSlide, useSwiper } from "swiper/react";
+import {
+  Mousewheel,
+  Keyboard,
+  Pagination,
+  Controller,
+  HashNavigation,
+} from "swiper";
+import Box from "@mui/material/Box";
 
-import LoadingOverlay from '@/components/LoadingOverlay';
+import LoadingOverlay from "@/components/LoadingOverlay";
 import GetInvolvedButton from "@/components/GetInvolvedButton/get-involved-button";
-import useBreakpoints from '@/hooks/useBreakpoints';
-import MainCanvas from './main-canvas';
+import useBreakpoints from "@/hooks/useBreakpoints";
+import MainCanvas from "./main-canvas";
 
-import { showLoadingProgress, showLoaderOnMobile as showLoaderOnMobileDefault } from './Constants';
+import {
+  showLoadingProgress,
+  showLoaderOnMobile as showLoaderOnMobileDefault,
+} from "./Constants";
 
-import './App.css';
-import 'animate.css';
+import "./App.css";
+import "animate.css";
+import { useCreateChatbotContext } from "../../create-knowledge-context";
 
 let hideText = false;
 
 function App() {
+  const { setWelcomePage } = useCreateChatbotContext();
   const breakpoints = useBreakpoints();
   const { belowBreakpoint, belowXS, belowSM } = breakpoints;
 
   const [swiperSlideStatus, setSwiperSlideStatus] = useState({
     previousIndex: 1,
     activeIndex: 2,
-    direction: 'down',
+    direction: "down",
     isUp: true,
     isDown: false,
   });
 
   const [enableSwiper, setEnableSwiper] = useState(true);
   const [controlledSwiper, setControlledSwiper] = useState(null);
-  console.log('swiperSlideStatus', swiperSlideStatus);
+  console.log("swiperSlideStatus", swiperSlideStatus);
 
   const containerRef = useRef();
   const trackingRef = useRef();
@@ -74,16 +85,13 @@ function App() {
           isMobileDevices={isMobileDevices}
           hideText={hideText}
         />
-        <div className="absolute bottom-[8vh] min-[600px]:bottom-[2vh] lg:bottom-[12vh] flex flex-row justify-center w-max m-auto left-0 right-0">
-          <GetInvolvedButton
-            buttonStyle="rounded-sm w-full py-3 px-6 text-sm font-medium bg-[#01F7FF]"
-            chainStyle="hidden"
-            content={
-              <span className="text-sm font-bold text-black">
-                EXPLORE NOW
-              </span>
-            }
-          />
+        <div className="absolute bottom-[8vh] min-[600px]:bottom-[20vh] lg:bottom-[10vh] xl:bottom-[12vh] flex w-full flex-row justify-center">
+          <button
+            className="rounded-md bg-aqua-700 px-6 py-3"
+            onClick={() => setWelcomePage("kip-video")}
+          >
+            <span className="text-sm font-bold text-black">EXPLORE NOW</span>
+          </button>
         </div>
       </div>
     </div>

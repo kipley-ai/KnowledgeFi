@@ -8,12 +8,13 @@ import CreateChatbotModal from "@/components/toast-4";
 import { useNftDetail } from "@/hooks/api/nft";
 import LoadingIcon from "public/images/loading-icon.svg";
 import ImageInput from "@/components/image-input-2";
-import { number, string } from "zod";
+import { ZodError, number, string, z } from "zod";
 import Switcher from "@/components/switcher";
 import { useAppProvider } from "@/providers/app-provider";
 import { DEFAULT_COVER_IMAGE } from "@/utils/constants";
 import Tooltip from "@/components/tooltip";
 import Image from "next/image";
+import { noMoreThanCharacters } from "@/utils/utils";
 
 interface Category {
   title: string;
@@ -23,6 +24,11 @@ interface Category {
   sort: number;
 }
 
+interface Form {
+  name?: string;
+  pricePerQuery?: number;
+}
+
 const ChatBotForm = () => {
   useEffect(() => {
     setHeaderTitle("");
@@ -30,7 +36,6 @@ const ChatBotForm = () => {
 
   const title = "Create Chatbot";
   const { setHeaderTitle } = useAppProvider();
-  const [characterName, setCharacterName] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
   const [categories, setCategories] = useState<Category[]>([]);
@@ -46,12 +51,37 @@ const ChatBotForm = () => {
   const [selectedFile, setSelectedFile] = useState<any>("");
   const [mode, setMode] = useState(0);
   const [toneData, setToneData] = useState("");
-  const [pricePerQuery, setPricePerQuery] = useState(0);
   const { setStep, setSftId } = useCreateChatbotContext();
+
+  const [errorMessage, setErrorMessage] = useState<any>({});
+  const [allowGenerate, setAllowGenerate] = useState(false);
+  const [form, setForm] = useState<Form>({});
 
   const { data: twitterSession } = useSession();
 
   const categoryList = useGetCategory();
+
+  const formValidation = z.object({
+    name: z
+      .string({
+        required_error: "Name is required",
+      })
+      .min(1, "Name is required")
+      .max(100, noMoreThanCharacters(100)),
+
+    pricePerQuery: z
+      .string({
+        required_error: "Price per query is required",
+      })
+      .min(1, "Price per query is required"),
+  });
+
+  const handleFormChange = (name: string, value: any) => {
+    setForm({
+      ...form,
+      [name]: value,
+    });
+  };
 
   if (twitterSession?.user) {
     twitterSession?.user?.username;
@@ -70,23 +100,18 @@ const ChatBotForm = () => {
 
   const handleSubmit = (event: any) => {
     event.preventDefault();
-    const formData = new FormData();
-    formData.append("profileImage", profileImage);
-    formData.append("characterName", characterName);
-    // formData.append("description", description);
-    // formData.append("category", category);
-    console.log(twitterSession?.user);
-    console.log(selectedFile);
+
+    if (!validateForm()) return;
 
     createChatbot.mutate(
       {
         profile_image: selectedFile,
-        name: characterName,
+        name: form.name as string,
         sft_id: sftId as string,
         // kb_id: nftData?.data.data.kb_id as string,
         kb_id: kbId as string,
         tone: toneData,
-        price_per_query: pricePerQuery,
+        price_per_query: form.pricePerQuery as number,
         // category_id: category,
         // description: description,
         // instruction: instructions,
@@ -154,6 +179,29 @@ const ChatBotForm = () => {
     }
   }, [mode]);
 
+  const validateForm = () => {
+    let errorTmp = {};
+    try {
+      formValidation.parse(form);
+    } catch (error) {
+      const er = error as ZodError;
+      er.errors.map((e) => {
+        errorTmp = {
+          ...errorTmp,
+          [e.path[0]]: e.message,
+        };
+      });
+    } finally {
+      setErrorMessage(errorTmp);
+
+      if (Object.keys(errorTmp).length > 0) {
+        return false;
+      }
+
+      return true;
+    }
+  };
+
   return (
     <>
       {/* <CreateChatbotModal
@@ -206,12 +254,19 @@ const ChatBotForm = () => {
                   <input
                     id="characterName"
                     type="text"
-                    value={characterName}
-                    onChange={(e) => setCharacterName(e.target.value)}
+                    value={form.name}
+                    onChange={(e) => handleFormChange("name", e.target.value)}
                     className="mt-2 w-full rounded-md border-2 border-gray-800 bg-transparent text-xs text-white lg:text-sm"
                     placeholder="Name your Chatbot"
                     maxLength={100}
                   />
+                  {errorMessage && errorMessage.name ? (
+                    <div className=" text-xs text-red-400">
+                      {errorMessage.name}
+                    </div>
+                  ) : (
+                    <div className="text-xs opacity-0 lg:text-sm">a</div>
+                  )}
                 </div>
                 {/* <p className="mt-2 text-xs text-gray-400">
                 The name of your AI character.
@@ -271,11 +326,19 @@ const ChatBotForm = () => {
                     name="pricePerQuery"
                     placeholder="e.g. 1"
                     onChange={(e) => {
-                      if (parseFloat(e.target.value) < 0) setPricePerQuery(0);
-                      else setPricePerQuery(parseFloat(e.target.value));
+                      if (parseFloat(e.target.value) < 0)
+                        handleFormChange("pricePerQuery", 0);
+                      else handleFormChange("pricePerQuery", e.target.value);
                     }}
-                    value={pricePerQuery}
+                    value={form.pricePerQuery}
                   />
+                  {errorMessage && errorMessage.pricePerQuery ? (
+                    <div className=" text-xs text-red-400">
+                      {errorMessage.pricePerQuery}
+                    </div>
+                  ) : (
+                    <div className="text-xs opacity-0 lg:text-sm">a</div>
+                  )}
                 </div>
               </div>
             </div>
@@ -395,7 +458,7 @@ const ChatBotForm = () => {
               </h5>
             </button>
             <button
-              className="group flex items-center justify-center rounded-sm bg-[#01F7FF] p-2 px-5 ring-2 ring-gray-600 transition-all duration-200 ease-in-out hover:brightness-75"
+              className="group flex items-center justify-center rounded-sm bg-[#01F7FF] p-2 px-5 ring-2 ring-gray-600 transition-all duration-200 ease-in-out hover:brightness-75 disabled:bg-gray-500"
               type="submit"
             >
               <h5 className="text-xs font-semibold text-black transition-colors duration-200 ease-in-out lg:text-sm">
