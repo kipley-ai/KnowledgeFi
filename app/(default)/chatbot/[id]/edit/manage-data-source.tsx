@@ -8,65 +8,75 @@ import { useParams } from "next/navigation";
 import { useKBDetail, useKBItem, useDeleteKBItem } from "@/hooks/api/kb";
 import Link from "next/link";
 import { KBItem } from "@/lib/types";
+import { PaginationController } from "@/components/pagination-2/controller";
+import { keepPreviousData } from "@tanstack/react-query";
+import { FaSpinner } from "react-icons/fa6";
 
 const ManageDataSources = () => {
   const [checkHeader, setCheckHeader] = useState(false);
   const [checkRow, setCheckRow] = useState<boolean[]>([]);
   const deleteItemAPI = useDeleteKBItem();
-  const data = [
-    {
-      from: "Twitter",
-      type: "File",
-      size: "5 Bytes",
-      lastUpdated: "2024-02-11 08:12:09 UTC",
-      status: "Completed",
-    },
-    {
-      from: "Twitter",
-      type: "File",
-      size: "5 Bytes",
-      lastUpdated: "2024-02-11 08:12:09 UTC",
-      status: "Failed",
-    },
-    {
-      from: "Twitter",
-      type: "File",
-      size: "5 Bytes",
-      lastUpdated: "2024-02-11 08:12:09 UTC",
-      status: "Completed",
-    },
-    {
-      from: "Twitter",
-      type: "File",
-      size: "5 Bytes",
-      lastUpdated: "2024-02-11 08:12:09 UTC",
-      status: "Completed",
-    },
-    {
-      from: "Twitter",
-      type: "File",
-      size: "5 Bytes",
-      lastUpdated: "2024-02-11 08:12:09 UTC",
-      status: "Completed",
-    },
-    // ... more data
-  ];
+  // const data = [
+  //   {
+  //     from: "Twitter",
+  //     type: "File",
+  //     size: "5 Bytes",
+  //     lastUpdated: "2024-02-11 08:12:09 UTC",
+  //     status: "Completed",
+  //   },
+  //   {
+  //     from: "Twitter",
+  //     type: "File",
+  //     size: "5 Bytes",
+  //     lastUpdated: "2024-02-11 08:12:09 UTC",
+  //     status: "Failed",
+  //   },
+  //   {
+  //     from: "Twitter",
+  //     type: "File",
+  //     size: "5 Bytes",
+  //     lastUpdated: "2024-02-11 08:12:09 UTC",
+  //     status: "Completed",
+  //   },
+  //   {
+  //     from: "Twitter",
+  //     type: "File",
+  //     size: "5 Bytes",
+  //     lastUpdated: "2024-02-11 08:12:09 UTC",
+  //     status: "Completed",
+  //   },
+  //   {
+  //     from: "Twitter",
+  //     type: "File",
+  //     size: "5 Bytes",
+  //     lastUpdated: "2024-02-11 08:12:09 UTC",
+  //     status: "Completed",
+  //   },
+  //   // ... more data
+  // ];
   const { id } = useParams();
 
   const chatbotDetail = useChatbotDetail({
     chatbot_id: id as string,
   });
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [pageSize, setPageSize] = useState<number>(8);
 
-  const kbItem = useKBItem({
-    kb_id: chatbotDetail.data?.data.data.kb_id as string,
-  });
+  const { isPending, isError, error, data, isFetching, refetch:kbItemReftech, status } = useKBItem(
+    {
+      kb_id: chatbotDetail.data?.data.data.kb_id as string,
+      page: currentPage,
+      page_size: pageSize,
+    },
+    keepPreviousData,
+  );
 
   useEffect(() => {
-    if (kbItem.status === "success") {
-      let temp = kbItem.data?.data.data.kb_item_data.map(() => false);
+    if (status === "success") {
+      let temp = data?.data.data.kb_item_data.map(() => false);
       setCheckRow(temp);
     }
-  }, [kbItem.data?.data.data.kb_item_data]);
+  }, [data?.data.data.kb_item_data]);
 
   const handleCheckRow = (index: number) => {
     let temp = [...checkRow];
@@ -89,7 +99,7 @@ const ManageDataSources = () => {
       return acc;
     }, []);
     const selectedItem = selectedIndexes.map(
-      (index) => kbItem.data?.data.data.kb_item_data[index].item_name!!,
+      (index) => data?.data.data.kb_item_data[index].item_name!!,
     );
 
     deleteItemAPI.mutate(
@@ -99,7 +109,7 @@ const ManageDataSources = () => {
       },
       {
         onSuccess: () => {
-          kbItem.refetch();
+          kbItemReftech();
         },
       },
     );
@@ -108,152 +118,164 @@ const ManageDataSources = () => {
   const kbDetail = useKBDetail({
     kb_id: chatbotDetail.data?.data.data.kb_id as string,
   });
+  
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
 
-  return (
-    <div className="flex flex-col py-20 font-semibold text-[#7C878E] sm:px-6 lg:px-0">
-      <div className="mb-4 flex items-center justify-between">
-        <h1 className="text-2xl font-normal">Manage Data Sources</h1>
-        {/* Add New Button */}
-        {kbDetail.data?.data.data.type !== "twitter" && (
-          <Link href={"/chatbot/" + id + "/add"}>
-            <button
-              className="flex items-center justify-center rounded-3xl bg-[#01F7FF] px-8 py-2"
-              type="submit"
-            >
-              <h5 className="mr-3 flex-grow text-sm text-black">Add New</h5>
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 20 20"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
+  if (isPending) {
+    return (
+      <div className="flex h-32 w-full items-center justify-center gap-4">
+        <FaSpinner size={20} className="animate-spin" />
+        <p className="text-md text-gray-300">Loading</p>
+      </div>
+    );
+  }
+
+  if (isError) {
+    return <div>Error: {error.message}</div>;
+  }
+    
+  const { kb_item_data: kbItemData, kb_item_count: kbItemCount } = data.data.data;
+
+  if (kbItemCount > 0) {
+    const totalPages = Math.ceil(kbItemCount / pageSize);
+
+    return (
+      <div className="flex flex-col py-20 font-semibold text-[#7C878E] sm:px-6 lg:px-0">
+        <div className="mb-4 flex items-center justify-between">
+          <h1 className="text-2xl font-normal">Manage Data Sources</h1>
+          {/* Add New Button */}
+          {kbDetail.data?.data.data.type !== "twitter" && (
+            <Link href={"/chatbot/" + id + "/add"}>
+              <button
+                className="flex items-center justify-center rounded-3xl bg-[#01F7FF] px-8 py-2"
+                type="submit"
               >
-                <path
-                  d="M10.0001 4.16602V15.8327M4.16675 9.99935H15.8334"
-                  stroke="#292D32"
-                  stroke-width="2.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
-            </button>
-          </Link>
-        )}
-      </div>
-
-      {/* Selected count and Delete Button */}
-      <div className="my-4 flex items-center justify-end">
-        {checkRow.includes(true) ? (
-          <div className="flex items-center">
-            <span className="mr-10">
-              {checkRow.filter((value) => value === true).length} selected
-            </span>
-            <button
-              className="flex items-center justify-center rounded-3xl border-2 border-[#FF6C3E] bg-transparent px-9 py-2"
-              type="submit"
-              onClick={handleDelete}
-            >
-              <h5 className="flex-grow text-sm font-semibold text-[#FF6C3E]">
-                Delete
-              </h5>
-            </button>
-          </div>
-        ) : (
-          <div>
-            <button className="flex items-center justify-center rounded-3xl border-2 border-[#FF6C3E] bg-transparent px-9 py-2 opacity-0">
-              <h5 className="flex-grow text-sm font-semibold text-[#FF6C3E]">
-                Delete
-              </h5>
-            </button>
-          </div>
-        )}
-      </div>
-
-      {/* Table */}
-      <div className="overflow-x-auto">
-        <table className="min-w-full table-auto border-b border-[#393E44]">
-          <thead className="border-b border-t border-[#393E44] text-left">
-            <tr>
-              <th className="px-3 py-7">
-                <div
-                  className={`rounded  ${checkHeader ? "bg-[#01F7FF]" : "border-2 border-[#7C878E] bg-transparent"} flex h-4 w-4 items-center justify-center`}
-                  onClick={() => handleCheckAll()}
+                <h5 className="mr-3 flex-grow text-sm text-black">Add New</h5>
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 20 20"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
                 >
-                  <Image
-                    src={CheckIcon}
-                    className={`${checkHeader ? "" : "hidden"}`}
-                    alt="Check Icon"
+                  <path
+                    d="M10.0001 4.16602V15.8327M4.16675 9.99935H15.8334"
+                    stroke="#292D32"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
                   />
-                </div>
-              </th>{" "}
-              {/* Header Checkbox */}
-              <th className="">From</th>
-              <th className="">Type</th>
-              <th className="">Size</th>
-              <th className="">Last Updated</th>
-              <th className="">Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {kbItem.data?.data.data.kb_item_data.map((row: KBItem, index: any) => (
-              <tr key={index}>
-                <td className="px-3 py-7">
+                </svg>
+              </button>
+            </Link>
+          )}
+        </div>
+
+        {/* Selected count and Delete Button */}
+        <div className="my-4 flex items-center justify-end">
+          {checkRow.includes(true) ? (
+            <div className="flex items-center">
+              <span className="mr-10">
+                {checkRow.filter((value) => value === true).length} selected
+              </span>
+              <button
+                className="flex items-center justify-center rounded-3xl border-2 border-[#FF6C3E] bg-transparent px-9 py-2"
+                type="submit"
+                onClick={handleDelete}
+              >
+                <h5 className="flex-grow text-sm font-semibold text-[#FF6C3E]">
+                  Delete
+                </h5>
+              </button>
+            </div>
+          ) : (
+            <div>
+              <button className="flex items-center justify-center rounded-3xl border-2 border-[#FF6C3E] bg-transparent px-9 py-2 opacity-0">
+                <h5 className="flex-grow text-sm font-semibold text-[#FF6C3E]">
+                  Delete
+                </h5>
+              </button>
+            </div>
+          )}
+        </div>
+
+        {/* Table */}
+        <div className="overflow-x-auto">
+          <table className="min-w-full table-auto border-b border-[#393E44]">
+            <thead className="border-b border-t border-[#393E44] text-left">
+              <tr>
+                <th className="px-3 py-7">
                   <div
-                    className={`rounded  ${checkRow[index] ? "bg-[#01F7FF]" : "border-2 border-[#7C878E] bg-transparent"} flex h-4 w-4 items-center justify-center`}
-                    onClick={() => handleCheckRow(index)}
+                    className={`rounded  ${checkHeader ? "bg-[#01F7FF]" : "border-2 border-[#7C878E] bg-transparent"} flex h-4 w-4 items-center justify-center`}
+                    onClick={() => handleCheckAll()}
                   >
                     <Image
                       src={CheckIcon}
-                      className={`${checkRow[index] ? "" : "hidden"}`}
+                      className={`${checkHeader ? "" : "hidden"}`}
                       alt="Check Icon"
                     />
                   </div>
-                </td>{" "}
-                {/* Row Checkbox */}
-                <td className="max-w-44 truncate pr-3">{row.item_name}</td>
-                <td className="">{row.item_type}</td>
-                <td className="">{row.size}</td>
-                <td className="">{row.created_at}</td>
-                <td className="">
-                  <span
-                    className={`inline-flex rounded-full text-left leading-5 ${row.status === "Completed" ? "text-[#BDFF9E]" : "text-[#F85C72]"}`}
-                  >
-                    {row.status}
-                  </span>
-                </td>
+                </th>{" "}
+                {/* Header Checkbox */}
+                <th className="">From</th>
+                <th className="">Type</th>
+                <th className="">Size</th>
+                <th className="">Last Updated</th>
+                <th className="">Status</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-
-      {/* Pagination */}
-      {/* <div className="flex justify-center mt-4">
-                <div className="flex rounded-md">
-                    <a href="#" className="py-2 px-4 text-gray-500 bg-gray-700 hover:bg-gray-600 rounded-l">
-                        {'<'}
-                    </a>
-                    
-                    <a href="#" className="py-2 px-4 bg-blue-500 hover:bg-blue-600">1</a>
-                    
-                    <a href="#" className="py-2 px-4 text-gray-500 bg-gray-700 hover:bg-gray-600 rounded-r">
-                        {'>'}
-                    </a>
-                </div>
-            </div> */}
-      <div className="mt-4 flex flex-row items-center justify-center space-x-12">
-        <Image src={ArrowIcon} alt="Previous Icon" />
-        <div className="flex h-8 w-8 items-center justify-center rounded border border-[#01F7FF] text-center text-[#01F7FF]">
-          1
+            </thead>
+            <tbody>
+              {kbItemData.map((row: KBItem, index: any) => (
+                <tr key={index}>
+                  <td className="px-3 py-7">
+                    <div
+                      className={`rounded  ${checkRow[index] ? "bg-[#01F7FF]" : "border-2 border-[#7C878E] bg-transparent"} flex h-4 w-4 items-center justify-center`}
+                      onClick={() => handleCheckRow(index)}
+                    >
+                      <Image
+                        src={CheckIcon}
+                        className={`${checkRow[index] ? "" : "hidden"}`}
+                        alt="Check Icon"
+                      />
+                    </div>
+                  </td>{" "}
+                  {/* Row Checkbox */}
+                  <td className="max-w-44 truncate pr-3">{row.item_name}</td>
+                  <td className="">{row.item_type}</td>
+                  <td className="">{row.size}</td>
+                  <td className="">{row.created_at}</td>
+                  <td className="">
+                    <span
+                      className={`inline-flex rounded-full text-left leading-5 ${row.status === "Completed" ? "text-[#BDFF9E]" : "text-[#F85C72]"}`}
+                    >
+                      {row.status}
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
-        <div>2</div>
-        <div>3</div>
-        <div>...</div>
-        <div>10</div>
-        <Image src={ArrowIcon} alt="Next Icon" className="rotate-180" />
+        <div className="mt-4 flex flex-row items-center justify-center space-x-12">
+          <div className="flex flex-col items-center">
+            <div
+              className={`${!isFetching && "invisible"} flex w-full items-center justify-center gap-4`}
+            >
+              <FaSpinner size={20} className="animate-spin" />
+              <p className="text-md text-gray-300">Loading</p>
+            </div>
+            <PaginationController
+              currentPage={currentPage}
+              onPageChange={handlePageChange}
+              totalPages={totalPages}
+            />
+          </div>
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
 };
 
 export default ManageDataSources;

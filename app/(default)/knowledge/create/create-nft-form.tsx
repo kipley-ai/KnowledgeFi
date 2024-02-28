@@ -42,7 +42,10 @@ export default function NFT() {
   const [errorMessage, setErrorMessage] = useState<any>({});
   const [allowGenerate, setAllowGenerate] = useState(false);
   const { data: twitterSession } = useSession();
-  const [form, setForm] = useState<Form>({});
+  const [form, setForm] = useState<Form>({
+    shareSupply: "10000",
+    comissionRate: 1,
+  });
   const [selectedFile, setSelectedFile] = useState<string>(DEFAULT_COVER_IMAGE);
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [nftIdCreated, setNftIdCreated] = useState("");

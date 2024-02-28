@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, keepPreviousData } from "@tanstack/react-query";
 import { useAccount } from "wagmi";
 import axios from "axios";
 import { ICreateKBAndNFTParams, IKBDetail, IKBItem } from "../interfaces";
@@ -56,17 +56,21 @@ export const useDeleteKBItem = () => {
 	});
 }
 
-export const useKBItem = (params: IKBItem) => {
+export const useKBItem = (
+	params: IKBItem,
+	placeholderData: typeof keepPreviousData | undefined = undefined,
+) => {
 	const { address } = useAccount();
 
 	return useQuery({
-		queryKey: ["kb-item", params.kb_id],
+		queryKey: ["kb-item", params.page],
 		queryFn: () =>
 			axios.post<KBItemResponse>("/api/kb/item", params, {
 				headers: {
 					"x-kf-user-id": address,
 				},
 			}),
+			placeholderData: placeholderData,
 	});
 };
 

@@ -192,7 +192,7 @@ const MainCanvas = React.forwardRef((props, forwardRef) => {
           }}
           shadows
           eventSource={forwardRef}
-          // frameloop="demand"
+        // frameloop="demand"
         >
           <fog
             attach="fog"
@@ -349,6 +349,7 @@ const Section2 = () => {
       alignItems="center"
       justifyContent="center"
       p={belowSM ? 2 : 5}
+      mt={5} mb={5}
     >
       <Typography
         component={Box}
@@ -360,9 +361,9 @@ const Section2 = () => {
         justifyContent="center"
         flexDirection="column"
       >
-        <Box pb={2}>
-          <Typography variant="h1" fontWeight="600" lineHeight="1">
-            There is a fierce battle underway for our place in the AI era.
+        <Box pb={3}>
+          <Typography variant="h1" fontWeight="600" lineHeight="1" className="z-[99999]">
+            A fierce battle is underway for ownership of the AI future.
           </Typography>
         </Box>
         <Box
@@ -370,7 +371,7 @@ const Section2 = () => {
           alignItems="center"
           justifyContent="center"
           flexDirection="column"
-          // overflow="scroll"
+        // overflow="scroll"
         >
           <Box
             pb={2}
@@ -379,12 +380,8 @@ const Section2 = () => {
             justifyContent="center"
             flexDirection="column"
           >
-            <Box>
-              AI has achieved amazing progress through being trained on our
-              collective data and knowledge.
-            </Box>
-            <Box>
-              But the lack of digital property rights in AI assets is resulting
+            <Box pt={1} pb={2} className="z-[99999]">
+              The lack of digital property rights in AI assets is resulting
               in dangerous monopolies.
             </Box>
           </Box>
@@ -395,34 +392,34 @@ const Section2 = () => {
             justifyContent="center"
             flexDirection="column"
           >
-            <Box>
+            <Box className="z-[99999]">
               We are in danger of being excluded from the economic benefits of
               the AI future.
             </Box>
-            <Box>
+            <Box className="z-[99999]">
               Only through reclaiming our digital property rights, can we secure
               our participation rights in the economic benefits brought by AI.
             </Box>
 
-            <Box py={4}></Box>
-            <Box>
+            <Box py={5} pt={2}></Box>
+            <Box className="z-[99999]">
               Powered by KIP Protocol, KnowledgeFi.xyz is a full decentralised
               platform that unlocks{" "}
             </Box>
-            <Box>
+            <Box className="z-[99999]">
               {" "}
               true digital property rights of Knowledge Assets, and empowers
               monetisation through Web3.{" "}
             </Box>
           </Box>
 
-          <Box pb={1} mt={1}>
+          <Box pb={1} mt={1} className="z-[99999]">
             <Typography variant="h4" fontWeight="600">
               Your Knowledge is your Property. Take it back.
             </Typography>
           </Box>
-          <Box>
-            <Typography variant="h4" fontWeight="600">
+          <Box py={2} className="z-[99999]">
+            <Typography variant="h1" fontWeight="600">
               Welcome to KnowledgeFi.
             </Typography>
             <Box pb={2} mt={5} className="relative"></Box>

@@ -13,13 +13,17 @@ export default function ModalLoginTwitter({
   isOpen,
   setIsOpen,
   redirectUrl,
+	onSuccess,
+	onError,
 }: {
   isOpen: boolean;
   setIsOpen: any;
   redirectUrl?: string;
+	onSuccess?: () => void;
+	onError?: () => void;
 }) {
   const handleLoginButton = () => {
-    signIn("twitter", { callbackUrl: redirectUrl });
+    signIn("twitter", { callbackUrl: redirectUrl }).then(onSuccess).catch(onError);
   };
 
   return (
