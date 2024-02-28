@@ -85,7 +85,7 @@ function App() {
           isMobileDevices={isMobileDevices}
           hideText={hideText}
         />
-        <div className="absolute bottom-20 flex w-full flex-row justify-center">
+        <div className="absolute bottom-[8vh] min-[600px]:bottom-[20vh] lg:bottom-[10vh] xl:bottom-[12vh] flex w-full flex-row justify-center">
           <button
             className="rounded-md bg-aqua-700 px-6 py-3"
             onClick={() => setWelcomePage("kip-video")}
