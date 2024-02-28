@@ -277,12 +277,7 @@ export default function NFT() {
                     className="placeholder-text-[#7C878E] w-11/12 rounded-xl bg-transparent text-xs text-[#DDD] lg:text-sm"
                     type="text"
                     name="tokenSymbol"
-                    placeholder={
-                      "e.g. " +
-                      (form.name
-                        ? form.name?.slice(0, 4).toUpperCase()
-                        : "BAYC")
-                    }
+                    placeholder={form.name ? "e.g. "+form.name?.replace(' ', '').slice(0, 4).toUpperCase() : "Enter NFT Token Symbol"}
                     value={form?.symbol}
                     onChange={(e) => handleFormChange("symbol", e.target.value)}
                   />
