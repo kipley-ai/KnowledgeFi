@@ -362,7 +362,7 @@ const Section2 = () => {
         flexDirection="column"
       >
         <Box pb={3}>
-          <Typography variant="h1" fontWeight="600" lineHeight="1">
+          <Typography variant="h1" fontWeight="600" lineHeight="1" className="z-[99999]">
             A fierce battle is underway for ownership of the AI future.
           </Typography>
         </Box>
@@ -380,7 +380,7 @@ const Section2 = () => {
             justifyContent="center"
             flexDirection="column"
           >
-            <Box pt={1} pb={2}>
+            <Box pt={1} pb={2} className="z-[99999]">
               The lack of digital property rights in AI assets is resulting
               in dangerous monopolies.
             </Box>
@@ -392,33 +392,33 @@ const Section2 = () => {
             justifyContent="center"
             flexDirection="column"
           >
-            <Box>
+            <Box className="z-[99999]">
               We are in danger of being excluded from the economic benefits of
               the AI future.
             </Box>
-            <Box>
+            <Box className="z-[99999]">
               Only through reclaiming our digital property rights, can we secure
               our participation rights in the economic benefits brought by AI.
             </Box>
 
             <Box py={5} pt={2}></Box>
-            <Box>
+            <Box className="z-[99999]">
               Powered by KIP Protocol, KnowledgeFi.xyz is a full decentralised
               platform that unlocks{" "}
             </Box>
-            <Box>
+            <Box className="z-[99999]">
               {" "}
               true digital property rights of Knowledge Assets, and empowers
               monetisation through Web3.{" "}
             </Box>
           </Box>
 
-          <Box pb={1} mt={1}>
+          <Box pb={1} mt={1} className="z-[99999]">
             <Typography variant="h4" fontWeight="600">
               Your Knowledge is your Property. Take it back.
             </Typography>
           </Box>
-          <Box py={2}>
+          <Box py={2} className="z-[99999]">
             <Typography variant="h1" fontWeight="600">
               Welcome to KnowledgeFi.
             </Typography>
