@@ -82,8 +82,7 @@ export default function SelectDataElements() {
   // const mintNFTRedirect = sessionStorage.getItem("mintNFTRedirect");
 
   // if (mintNFTRedirect === "true" && twitterStatus == "authenticated") {
-  // setStep("mint_nft");
-  // sessionStorage.removeItem("mintNFTRedirect");
+  // setStep("mint_nft"); // sessionStorage.removeItem("mintNFTRedirect");
   // }
 
   return (
@@ -92,6 +91,13 @@ export default function SelectDataElements() {
         isOpen={showTwitterLogin}
         setIsOpen={setShowTwitterLogin}
         redirectUrl="/onboarding"
+        onSuccess={() => {
+					console.log("Twitter login succeed.")
+          setStep("mint_nft");
+        }}
+				onError={() => {
+					console.log("Twitter login error.")
+				}}
       />
       {step == "data_source" ? (
         <div className="flex flex-col px-6 pb-20 lg:px-8 xl:px-32">
@@ -113,7 +119,7 @@ export default function SelectDataElements() {
           <div className="flex justify-end">
             {isComingSoon && (
               <button
-                className="mt-8 flex flex-row gap-2 items-center justify-between rounded-sm bg-[#01F7FF] py-3 px-5 hover:brightness-75"
+                className="mt-8 flex flex-row items-center justify-between gap-2 rounded-sm bg-[#01F7FF] px-5 py-3 hover:brightness-75"
                 type="submit"
                 onClick={handleContinue}
               >
