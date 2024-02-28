@@ -5,6 +5,7 @@ import type { Session } from "next-auth";
 import type { JWT } from "next-auth/jwt";
 
 const handler = NextAuth({
+	debug: true,
 	providers: [
 		TwitterProvider({
 			clientId: process.env.TWITTER_CLIENT_ID as string,
