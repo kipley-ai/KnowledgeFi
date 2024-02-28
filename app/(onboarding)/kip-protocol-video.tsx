@@ -12,6 +12,7 @@ function KipProtocolVideo() {
         autoPlay
         muted
         onEnded={() => setShowButton(true)}
+        playsInline
       />
       {showButton && (
         <div className="absolute bottom-20 flex w-full flex-row justify-center">
