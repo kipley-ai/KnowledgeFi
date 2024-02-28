@@ -91,7 +91,7 @@ export default function SelectDataElements() {
       <ModalLoginTwitter
         isOpen={showTwitterLogin}
         setIsOpen={setShowTwitterLogin}
-        redirectUrl="/knowledge/create"
+        redirectUrl="/onboarding"
       />
       {step == "data_source" ? (
         <div className="flex flex-col px-6 pb-20 lg:px-8 xl:px-32">
