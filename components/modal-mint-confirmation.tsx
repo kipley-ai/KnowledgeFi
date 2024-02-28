@@ -71,7 +71,7 @@ export default function ModalMintConfirmation({
             <span className="text-2xl font-extrabold leading-tight text-aqua-700">
               FREE
             </span>
-            <span className="line-through">50$KIP</span>
+            <span className="line-through">50$KFI</span>
           </div>
         </div>
         <span className="text-lg italic text-aqua-700">

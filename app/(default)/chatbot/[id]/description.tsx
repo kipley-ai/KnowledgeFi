@@ -14,7 +14,7 @@ import { FaSpinner } from "react-icons/fa6";
 import { useGetChatbotPrice } from "@/hooks/api/chatbot";
 
 export default function ChatbotDescription() {
-  const tokenSymbol = "$KIP";
+  const tokenSymbol = "$KFI";
   const { id } = useParams();
   const { data: chatbotData } = useChatbotDetail({ chatbot_id: id as string });
   const { data: chatbotPrice, isFetched: isPriceFetched } = useGetChatbotPrice({ chatbot_id: id as string });

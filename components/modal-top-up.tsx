@@ -90,7 +90,7 @@ export default function ModalTopUp({
         <div className="inline-flex items-center justify-between self-stretch p-5 pt-0">
           <div className="w-80 text-base font-semibold leading-10 text-gray-50">
             <span>Get Credits by Paying </span>
-            <span className="text-aqua-700">$KIP </span>
+            <span className="text-aqua-700">$KFI </span>
             <span>token</span>
           </div>
         </div>
@@ -175,7 +175,7 @@ export default function ModalTopUp({
         <div className="inline-flex items-center justify-between self-stretch p-5 pt-2 ">
           <div className="w-80 text-sm font-semibold leading-10 text-gray-50">
             <span>You are paying </span>
-            <span className="text-aqua-700">{form?.amount} $KIP</span>
+            <span className="text-aqua-700">{form?.amount} $KFI</span>
           </div>
         </div>
         <div className="inline-flex items-center justify-between self-stretch p-5">
