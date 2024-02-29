@@ -71,7 +71,7 @@ const Header = () => {
   });
 
   return (
-    <div className="sticky top-0 z-10 flex items-center justify-between bg-neutral-900 py-3 lg:-top-8 xl:py-5">
+    <div className="sticky top-0 z-10 flex items-center justify-between py-3 lg:-top-8 xl:py-4">
       <div className="flex w-full flex-col gap-5">
         <div className="flex items-start justify-between">
           <div className="flex items-center gap-3">
@@ -90,8 +90,8 @@ const Header = () => {
               EXPLORE THE POSSIBILITIES OF AI CHAT
             </h1>
           </div>
-          <div>
-            {/* <button
+          {/* <div>
+            <button
               className="ml-3 self-end rounded-full text-gray-400 hover:text-blue-500"
               onClick={() => {
                 newSession.mutate(
@@ -120,20 +120,20 @@ const Header = () => {
                   fill="#6B7280"
                 />
               </svg>
-            </button> */}
+            </button>
             <button
               className="ml-4 rounded-2xl border border-2 border-gray-500 px-3 text-base text-gray-400 md:hidden"
               onClick={toggleSidebar}
             >
               Info
             </button>
-          </div>
+          </div> */}
         </div>
       </div>
-      <SidebarRight isOpen={isSidebarOpen} onClose={closeSidebar}>
+      {/* <SidebarRight isOpen={isSidebarOpen} onClose={closeSidebar}>
         <Description />
         <CreditBalance />
-      </SidebarRight>
+      </SidebarRight> */}
     </div>
   );
 };

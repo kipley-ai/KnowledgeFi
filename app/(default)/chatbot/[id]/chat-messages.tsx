@@ -36,7 +36,7 @@ const ChatbotInfo = () => {
   });
 
   return (
-    <div className="box flex w-full flex-col divide-y-2 divide-aqua-700">
+    <div className="box mb-2 flex w-full flex-col divide-y-2 divide-aqua-700">
       <div className="px-6">
         <h1
           className="font-semibold text-aqua-700 md:text-2xl"

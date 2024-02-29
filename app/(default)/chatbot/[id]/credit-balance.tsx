@@ -18,13 +18,13 @@ export default function CreditBalance() {
   }, []);
 
   return (
-    <div className="flex w-full flex-col justify-start gap-2 py-6 px-6 text-white">
+    <div className="flex w-full flex-col justify-start gap-2 py-6 px-5 text-white">
       <ModalTopUp isOpen={modalTopUp} setIsOpen={setModalTopUp} />
       <div className="flex items-center items-center justify-between">
         <div className="flex items-center gap-3">
           <svg
-            width="16"
-            height="16"
+            width="19"
+            height="19"
             viewBox="0 0 16 16"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -37,7 +37,7 @@ export default function CreditBalance() {
             />
           </svg>
 
-          <h6 className="text-sm">CREDIT BALANCE</h6>
+          <h6 className="text-lg tracking-tight">CREDIT BALANCE</h6>
         </div>
         <button
           className="self-end rounded-full text-gray-400 hover:text-blue-500"
