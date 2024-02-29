@@ -69,9 +69,9 @@ const Header = () => {
     //   appDetail?.data?.data.data.app_info.plugin_meta_data.chat_history_api
     //     .request_url,
   });
- 
+
   return (
-    <div className="sticky z-10 top-0 flex items-center justify-between py-3 text-white lg:-top-8 xl:py-5 bg-neutral-900">
+    <div className="sticky top-0 z-10 flex items-center justify-between bg-neutral-900 py-3 lg:-top-8 xl:py-5">
       <div className="flex w-full flex-col gap-5">
         <div className="flex items-start justify-between">
           <div className="flex items-center gap-3">

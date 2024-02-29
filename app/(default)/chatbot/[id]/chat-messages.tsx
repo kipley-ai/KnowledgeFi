@@ -22,6 +22,8 @@ import { useAppProvider } from "@/providers/app-provider";
 import { useCreditBalanceContext } from "./credit-balance-context";
 import { useCreditBalance } from "@/hooks/api/credit";
 
+import "./chat-messages.css"
+
 const ChatbotInfo = () => {
   const { id } = useParams();
 
@@ -34,10 +36,10 @@ const ChatbotInfo = () => {
   });
 
   return (
-    <div className="flex w-full flex-col divide-y-2 divide-aqua-700 border-2 border-aqua-700">
+    <div className="box flex w-full flex-col divide-y-2 divide-aqua-700">
       <div className="px-6">
         <h1
-          className="font-semibold text-aqua-700 md:text-3xl"
+          className="font-semibold text-aqua-700 md:text-2xl"
           style={{
             textShadow: "0 0 10px #01F7FF",
           }}
@@ -51,21 +53,21 @@ const ChatbotInfo = () => {
             src={chatbotData?.data.data.profile_image as string}
             alt="Profile"
             className="rounded-full"
-            width={130}
-            height={130}
+            width={100}
+            height={100}
           />
-          <p className="text-md">{chatbotData?.data.data.description}</p>
+          <p className="text-sm line-clamp-4">{chatbotData?.data.data.description}</p>
         </div>
         <div className="relative z-10 flex justify-end">
           <Image
             src={nftData?.data.data.profile_image as string}
             alt="Profile"
             className=""
-            width={130}
-            height={130}
+            width={100}
+            height={100}
           />
         </div>
-        <div className="absolute left-20 top-0 bottom-0 m-auto w-9/12 h-3/6 border-b-2 border-l-2 bg-transparent border-aqua-700"></div>
+        <div className="absolute left-20 top-0 bottom-0 m-auto w-7/12 sm:w-9/12 xl:w-10/12 h-3/6 border-b-2 border-l-2 bg-transparent border-aqua-700"></div>
       </div>
     </div>
   );
