@@ -4,7 +4,7 @@ import DataSource from "../page";
 export default function Page() {
   return (
     <CreateChatbotProvider>
-      <DataSource />
+      <DataSource twitterRedirectUrl="/knowledge/create/iframe" />
     </CreateChatbotProvider>
   );
 }
