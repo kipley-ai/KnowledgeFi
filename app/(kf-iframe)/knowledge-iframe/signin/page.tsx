@@ -2,20 +2,15 @@
 
 import { signIn } from "next-auth/react";
 import { useEffect } from "react";
-import { useAccount } from "wagmi";
 
-function page() {
-  const { status } = useAccount();
-
+function Page() {
   useEffect(() => {
-    if (status === "connected") {
-      signIn("twitter", {
-        callbackUrl: "/knowledge/create/iframe?ts=1",
-      });
-    }
-  }, [status]);
+    signIn("twitter", {
+      callbackUrl: "/knowledge/create/iframe?ts=1",
+    });
+  }, []);
 
   return null;
 }
 
-export default page;
+export default Page;
