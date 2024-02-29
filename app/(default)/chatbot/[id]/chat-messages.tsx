@@ -3,7 +3,6 @@ import {
   useChatSession,
   useChatboxWS,
 } from "@/hooks/api/chatbox";
-import { useNftDetail } from "@/hooks/api/nft";
 import { useEffect, useState, useRef } from "react";
 import { useCreateChatbotContext } from "./create-chatbot-context";
 import LastMessage, { CopyButton } from "./last-message";
@@ -21,57 +20,6 @@ import { useCreditDeduction } from "@/hooks/api/credit";
 import { useAppProvider } from "@/providers/app-provider";
 import { useCreditBalanceContext } from "./credit-balance-context";
 import { useCreditBalance } from "@/hooks/api/credit";
-
-import "./chat-messages.css"
-
-const ChatbotInfo = () => {
-  const { id } = useParams();
-
-  const { data: chatbotData } = useChatbotDetail({
-    chatbot_id: id as string,
-  });
-
-  const { data: nftData } = useNftDetail({
-    sft_id: chatbotData?.data.data.sft_id as string,
-  });
-
-  return (
-    <div className="box mb-2 flex w-full flex-col divide-y-2 divide-aqua-700">
-      <div className="px-6">
-        <h1
-          className="font-semibold text-aqua-700 md:text-2xl"
-          style={{
-            textShadow: "0 0 10px #01F7FF",
-          }}
-        >
-          {chatbotData?.data.data.name}
-        </h1>
-      </div>
-      <div className="relative flex flex-col gap-2 px-6 py-4">
-        <div className="relative z-10 flex items-center gap-8">
-          <Image
-            src={chatbotData?.data.data.profile_image as string}
-            alt="Profile"
-            className="rounded-full"
-            width={100}
-            height={100}
-          />
-          <p className="text-sm line-clamp-4">{chatbotData?.data.data.description}</p>
-        </div>
-        <div className="relative z-10 flex justify-end">
-          <Image
-            src={nftData?.data.data.profile_image as string}
-            alt="Profile"
-            className=""
-            width={100}
-            height={100}
-          />
-        </div>
-        <div className="absolute left-20 top-0 bottom-0 m-auto w-7/12 sm:w-9/12 xl:w-10/12 h-3/6 border-b-2 border-l-2 bg-transparent border-aqua-700"></div>
-      </div>
-    </div>
-  );
-};
 
 const MessageList = () => {
   const [answersStream, setAnswersStream] = useState<string[]>([]);
@@ -214,8 +162,6 @@ const MessageList = () => {
   }, [lastJsonMessage]);
 
   return (
-    <>
-    <ChatbotInfo />
     <div className="flex grow flex-col gap-2 overflow-auto h-auto md:space-y-4">
       <FirstAnswer
         profileImage={chatbotData?.data.data.profile_image}
@@ -262,7 +208,6 @@ const MessageList = () => {
       )}
       <div ref={fieldRef}></div>
     </div>
-    </>
   );
 };
 

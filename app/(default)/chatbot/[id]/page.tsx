@@ -1,5 +1,6 @@
 "use client";
 import Header from "./header";
+import ChatbotInfo from "./chatbot-info";
 import MessageList from "./chat-messages";
 import MessageInput from "./message-input";
 import { useRouter } from "next/navigation";
@@ -46,6 +47,7 @@ export default function ChatBotPage() {
         <div className="mx-auto flex h-[calc(100vh-70px)] w-full flex-col pb-4 md:w-3/4 lg:h-[calc(100vh-120px)]">
           <CreateChatbotProvider>
             <Header />
+            <ChatbotInfo />
             <MessageList />
             <MessageInput />
           </CreateChatbotProvider>
