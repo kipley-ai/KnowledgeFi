@@ -32,7 +32,7 @@ export default function Home() {
   if (isConnected && (sign || verifStatus === "authenticated")) {
     return redirect(nextUrl);
   } else {
-    if (nextUrl === "/knowledge/create/iframe") {
+    if (nextUrl.startsWith("/knowledge/create/iframe")) {
       return (
         <div className="flex h-[100dvh] items-center justify-center overflow-hidden bg-neutral-900">
           <GetInvolvedButton
