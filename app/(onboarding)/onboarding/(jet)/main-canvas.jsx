@@ -371,6 +371,7 @@ const Section2 = () => {
           alignItems="center"
           justifyContent="center"
           flexDirection="column"
+          mt={3}
         // overflow="scroll"
         >
           <Box
@@ -401,7 +402,7 @@ const Section2 = () => {
               our participation rights in the economic benefits brought by AI.
             </Box>
 
-            <Box py={5} pt={2}></Box>
+            <Box py={5} pt={7}></Box>
             <Box className="z-[99999]">
               Powered by KIP Protocol, KnowledgeFi.xyz is a full decentralised
               platform that unlocks{" "}
