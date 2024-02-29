@@ -113,7 +113,8 @@ const ImageInput = ({ selectedFile, setSelectedFile }: any) => {
                   <p className="text-xs text-white">Drop your files here OR</p>
                   <p className="text-xs text-[#01F7FF]">Click here to browse</p>
                   <p className="text-xs text-[#777E90]">
-                    PNG, GIF, WEBP,PDF or JPEG. Max 250MB.
+                    PNG, GIF, WEBP or JPEG.<br />
+                    Max 10MB.
                   </p>
                 </div>
               )}
