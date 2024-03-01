@@ -166,7 +166,7 @@ const MessageInput = () => {
     '"';
 
   return (
-    <div className="sticky inset-x-0 bottom-4 mt-6 flex w-auto items-center rounded-md border border-gray-600 px-4 py-2 focus-within:border-[#01F7FF] lg:bottom-0 lg:w-full">
+    <div className="sticky inset-x-0 bottom-4 mt-6 flex w-auto items-center rounded-md border border-gray-600 px-4 py-2 focus-within:border-[#01F7FF] bg-neutral-900 lg:bottom-0 lg:w-full">
       {/* Profile picture placeholder */}
       {/* <Image src={Avatar} alt="Profile" className="w-8 h-8 rounded-full mr-4" /> */}
       {/* Input Field */}
@@ -177,7 +177,7 @@ const MessageInput = () => {
           if (e.key === "Enter") handleSendMessage();
           // console.log(e.key)
         }}
-        className="flex-grow border-0 bg-transparent text-white placeholder-gray-300 caret-[#01F7FF] outline-none focus:ring-0"
+        className="flex-grow border-0 bg-neutral-900 text-white placeholder-gray-300 caret-[#01F7FF] outline-none focus:ring-0"
         value={newQuestion}
         onChange={(e) => {
           setNewQuestion(e.target.value);

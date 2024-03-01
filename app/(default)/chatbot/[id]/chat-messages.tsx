@@ -3,7 +3,6 @@ import {
   useChatSession,
   useChatboxWS,
 } from "@/hooks/api/chatbox";
-import { useNftDetail } from "@/hooks/api/nft";
 import { useEffect, useState, useRef } from "react";
 import { useCreateChatbotContext } from "./create-chatbot-context";
 import LastMessage, { CopyButton } from "./last-message";
@@ -163,7 +162,7 @@ const MessageList = () => {
   }, [lastJsonMessage]);
 
   return (
-    <div className="flex grow flex-col gap-2 overflow-auto md:space-y-4">
+    <div className="flex grow flex-col gap-2 overflow-auto h-auto md:space-y-4">
       <FirstAnswer
         profileImage={chatbotData?.data.data.profile_image}
         sender={"bot"}

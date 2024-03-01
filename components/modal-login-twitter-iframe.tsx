@@ -13,17 +13,19 @@ export default function ModalLoginTwitter({
   isOpen,
   setIsOpen,
   redirectUrl,
-	onSuccess,
-	onError,
+  onSuccess,
+  onError,
 }: {
   isOpen: boolean;
   setIsOpen: any;
   redirectUrl?: string;
-	onSuccess?: () => void;
-	onError?: () => void;
+  onSuccess?: () => void;
+  onError?: () => void;
 }) {
   const handleLoginButton = () => {
-    signIn("twitter", { callbackUrl: redirectUrl }).then(onSuccess).catch(onError);
+    if (window.top) {
+      window.top.location.href = "/knowledge-iframe/signin";
+    }
   };
 
   return (

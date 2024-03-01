@@ -33,7 +33,9 @@ export interface UIFile {
   aborter: AbortController | null;
 }
 
-export default function DataSource() {
+export default function DataSource({
+  twitterRedirectUrl = "/knowledge/create",
+}: any) {
   const title = "Create Knowledge Assets";
   const { setHeaderTitle } = useAppProvider();
 
@@ -90,7 +92,7 @@ export default function DataSource() {
       <ModalLoginTwitter
         isOpen={showTwitterLogin}
         setIsOpen={setShowTwitterLogin}
-        redirectUrl="/knowledge/create"
+        redirectUrl={twitterRedirectUrl}
       />
       {step == "data_source" ? (
         <div className="flex flex-col bg-[#292D32] px-6 py-10 pb-20 lg:px-8 xl:px-32">
@@ -105,7 +107,7 @@ export default function DataSource() {
             setSelectedButton={setSelectedButton}
           />
           <div className="flex justify-end">
-            {isComingSoon ? 
+            {isComingSoon ? (
               <button
                 className="mt-8 flex flex-row items-center justify-between rounded-3xl bg-[#01F7FF] p-2 px-5"
                 type="submit"
@@ -134,8 +136,9 @@ export default function DataSource() {
                   </svg>
                 ) : null}
               </button>
-            : <></>
-            }
+            ) : (
+              <></>
+            )}
           </div>
         </div>
       ) : step == "upload_files" ? (

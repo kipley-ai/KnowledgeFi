@@ -1,5 +1,6 @@
 "use client";
 import Header from "./header";
+import ChatbotInfo from "./chatbot-info";
 import MessageList from "./chat-messages";
 import MessageInput from "./message-input";
 import { useRouter } from "next/navigation";
@@ -43,20 +44,21 @@ export default function ChatBotPage() {
   return (
     <div className="flex h-full flex-col px-4 md:flex-row md:px-0">
       <CreditBalanceProvider>
-        <div className="flex h-[calc(100vh-70px)] w-full flex-col border-[#393E44] pb-4 md:w-3/4 md:border-r-2 md:px-6 lg:h-[calc(100vh-120px)] xl:px-16">
+        <div className="mx-auto flex h-[calc(100vh-70px)] w-full flex-col pb-4 md:w-3/4 lg:h-[calc(100vh-120px)]">
           <CreateChatbotProvider>
             <Header />
+            <ChatbotInfo />
             <MessageList />
             <MessageInput />
           </CreateChatbotProvider>
         </div>
-        <div className="hidden w-1/4 flex-col md:flex">
+        {/* <div className="hidden w-1/4 flex-col md:flex">
           <div className="sticky top-0 flex h-fit w-full flex-col items-start divide-y-2 divide-[#393E44] lg:-top-8">
             <Description />
             <CreditBalance />
           </div>
           <div></div>
-        </div>
+        </div> */}
       </CreditBalanceProvider>
     </div>
   );

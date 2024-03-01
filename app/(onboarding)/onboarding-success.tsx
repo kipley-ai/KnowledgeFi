@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import OnboardingProgress from "./onboarding-progress";
 import Image from "next/image";
 import CheckIcon from "public/images/double-check.svg";
-import OnboardingSuccessImage from "public/images/onboarding-success.png";
+import OnboardingSuccessImage from "public/images/onboarding-success.gif";
 import { DM_Sans, Poppins } from "next/font/google";
 import { useRouter } from "next/navigation";
 
@@ -67,7 +67,7 @@ export default function OnboardingSuccess() {
         <div className="flex w-full justify-center">
           <button
             onClick={() => router.push("/dashboard")}
-            className="rounded-full bg-[#353945] px-12 py-4 text-base font-bold text-[#01F7FF]"
+            className="font-mono rounded-full bg-[#353945] px-12 py-4 text-base font-bold text-[#01F7FF]"
           >
             Enter KnowledgeFi Homepage
           </button>
