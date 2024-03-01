@@ -10,17 +10,12 @@ import { useEffect } from "react";
 
 export default function CreditBalance() {
   const { modalTopUp, setModalTopUp } = useAppProvider();
-  const { creditBalance } = useCreditBalanceContext();
-  const { data: creditBalanceData } = useCreditBalance();
-
-  useEffect(() => {
-    console.log(creditBalanceData);
-  }, []);
+  const { creditBalance, setRefetch } = useCreditBalanceContext();
 
   return (
     <div className="flex w-full flex-col justify-start gap-2 py-6 px-5 text-white">
       <ModalTopUp isOpen={modalTopUp} setIsOpen={setModalTopUp} />
-      <div className="flex items-center items-center justify-between">
+      <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <svg
             width="19"
@@ -41,7 +36,7 @@ export default function CreditBalance() {
         </div>
         <button
           className="self-end rounded-full text-gray-400 hover:text-blue-500"
-          onClick={() => console.log("Refresh Credit Balance")}
+          onClick={() => setRefetch(true)}
         >
           <div className="rounded-full border-gray-700 p-1 font-semibold">
             <svg
