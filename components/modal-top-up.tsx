@@ -55,6 +55,10 @@ export default function ModalTopUp({
         await approve(bal);
       }
 
+      setContinueBtn({
+        disable: false,
+        text: "Continue",
+      });
       await recharge(form.amount!);
 
       setIsOpen(false);
