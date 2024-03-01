@@ -71,7 +71,7 @@ export default function Dashboard() {
   });
 
   const incrementAmount = 6;
-  const [pageSize, setPageSize] = useState(12);
+  const [pageSize, setPageSize] = useState(20);
 
   const botsQuery = useChatbotList(
     {
@@ -108,14 +108,14 @@ export default function Dashboard() {
         {/* <div className="grid grid-cols-6"> */}
         {botsQuery.data?.data.data
           ? botsQuery.data.data.data.chatbot_data.map((botData) => {
-              return (
-                <BotItem
-                  key={botData.chatbot_id}
-                  botData={botData}
-                  onClick={() => {}}
-                />
-              );
-            })
+            return (
+              <BotItem
+                key={botData.chatbot_id}
+                botData={botData}
+                onClick={() => { }}
+              />
+            );
+          })
           : null}
       </div>
 
