@@ -2,9 +2,10 @@
 
 import ModalBlank from "@/components/modal-blank-2";
 import { recharge } from "@/smart-contract/kip-protocol-contract";
-import { allowance, approve } from "@/smart-contract/kip-token";
-import { KIP_TOKEN_APPROVE_VALUE } from "@/utils/constants";
+import { allowance, approve, balanceOf } from "@/smart-contract/kip-token";
+import { KIP_TOKEN_DECIMAL } from "@/utils/constants";
 import { useState } from "react";
+import Notification from "@/components/notification";
 
 interface Form {
   amount?: number;
@@ -18,6 +19,12 @@ export default function ModalTopUp({
   setIsOpen: any;
 }) {
   const [form, setForm] = useState<Form>({});
+  const [continueBtn, setContinueBtn] = useState({
+    disable: false,
+    text: "Continue",
+  });
+
+  const [toast3ErrorOpen, setToast3ErrorOpen] = useState<boolean>(false);
 
   const handleFormChange = (name: string, value: any) => {
     setForm({
@@ -32,23 +39,48 @@ export default function ModalTopUp({
     }
 
     try {
-      const allw = await allowance();
-      console.log("allw", allw);
-      if (allw == 0) {
-        const appr = await approve(KIP_TOKEN_APPROVE_VALUE);
-        console.log("appr", appr);
+      const bal = await balanceOf();
+      if (bal === 0) {
+        setToast3ErrorOpen(true);
+        return;
       }
-      const res = await recharge(form.amount!);
-      console.log("res", res);
+
+      const allw = await allowance();
+
+      if (allw < form.amount! * KIP_TOKEN_DECIMAL) {
+        setContinueBtn({
+          disable: true,
+          text: "Approving...",
+        });
+        await approve(bal);
+      }
+
+      await recharge(form.amount!);
 
       setIsOpen(false);
     } catch (error) {
       console.log(error);
+    } finally {
+      setContinueBtn({
+        disable: false,
+        text: "Continue",
+      });
     }
   };
 
   return (
     <ModalBlank isOpen={isOpen} setIsOpen={setIsOpen}>
+      <Notification
+        type="error"
+        open={toast3ErrorOpen}
+        setOpen={setToast3ErrorOpen}
+        className="fixed inset-x-0 top-9 flex items-center justify-center"
+        action={false}
+      >
+        <p className="font-semibold">
+          Insufficient $KFI balance. Please get more $KFI token.
+        </p>
+      </Notification>
       <div className="flex flex-col items-center justify-between rounded-lg p-4 shadow-md">
         <div className="inline-flex items-center justify-between self-stretch p-5">
           <div className="w-80 text-[32px] font-black leading-10 text-gray-50">
@@ -88,7 +120,7 @@ export default function ModalTopUp({
           </button>
         </div>
         <div className="inline-flex items-center justify-between self-stretch p-5 pt-0">
-          <div className="w-80 text-base font-semibold leading-10 text-gray-50">
+          <div className="w-full text-base font-semibold leading-10 text-gray-50">
             <span>Get Credits by Paying </span>
             <span className="text-aqua-700">$KFI </span>
             <span>token</span>
@@ -181,11 +213,12 @@ export default function ModalTopUp({
         <div className="inline-flex items-center justify-between self-stretch p-5">
           <div className="grid w-full grid-cols-1 font-bold text-white">
             <button
-              className="flex flex-row items-center justify-center gap-2 rounded-3xl bg-aqua-700 p-2 px-5"
+              className="flex flex-row items-center justify-center gap-2 rounded-3xl bg-aqua-700 p-2 px-5 disabled:bg-gray-500"
               type="button"
               onClick={handleContinue}
+              disabled={continueBtn.disable}
             >
-              <h5 className="font-semibold text-black">Continue</h5>
+              <h5 className="font-semibold text-black">{continueBtn.text}</h5>
               <svg
                 width="20"
                 height="10"
