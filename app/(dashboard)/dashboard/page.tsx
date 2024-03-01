@@ -17,6 +17,7 @@ import DashboardCard10 from "./dashboard-card-10";
 import DashboardCard11 from "./dashboard-card-11";
 import Switcher from "@/components/switcher";
 import React, { useEffect, useState } from "react";
+import { useRef } from "react";
 import chat_image from "@/public/images/chat-image.png";
 import Image from "next/image";
 import ModalLoginTwitter from "@/components/modal-login-twitter";
@@ -47,18 +48,7 @@ export default function Dashboard() {
   };
   const { modalLogin, setModalLogin } = useAppProvider();
 
-  useEffect(() => {
-    window.addEventListener("resize", handleBreakpoint);
-    setHeaderTitle("Explore"); // Set the title when the component is mounted
-
-    // Optional: Reset the title when the component is unmounted
-    return () => {
-      window.removeEventListener("resize", handleBreakpoint);
-      setHeaderTitle("Default Title");
-
-      document.title = title;
-    };
-  }, [breakpoint]);
+  const loadMoreRef = useRef(null);
 
   const chatSessionAPI = useChatSession({
     user_id: "test",
@@ -82,9 +72,49 @@ export default function Dashboard() {
     keepPreviousData,
   );
 
+  const [hasMoreBots, setHasMoreBots] = useState(true);
+
+
   const handleLoadMore = (e: React.MouseEvent) => {
     setPageSize((prevSize) => prevSize + incrementAmount);
   };
+
+  useEffect(() => {
+    // Setup for window resize event listener and IntersectionObserver as before
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const isIntersecting = entries[0].isIntersecting;
+        const totalBots = botsQuery.data?.data.data.chatbot_count ?? 0; // Use ?? to provide a default value
+
+        // Check conditions before loading more items
+        if (isIntersecting && !botsQuery.isFetching && pageSize < totalBots) {
+          console.log('Loading more items'); // For debugging
+          setPageSize((prevSize) => prevSize + incrementAmount);
+        }
+      },
+      {
+        root: null,
+        rootMargin: "0px",
+        threshold: 1.0,
+      }
+    );
+
+    if (loadMoreRef.current) {
+      observer.observe(loadMoreRef.current);
+    }
+
+    // Cleanup function remains the same
+    return () => {
+      if (loadMoreRef.current) {
+        observer.unobserve(loadMoreRef.current);
+      }
+      window.removeEventListener("resize", handleBreakpoint);
+      setHeaderTitle("Default Title");
+      document.title = title;
+    };
+  }, [breakpoint, pageSize, botsQuery.isFetching]); // Ensure dependencies are correctly listed
+
 
   return (
     <div className="w-full max-w-[96rem] bg-stone-800 px-4 py-8 sm:px-6 lg:px-12">
@@ -119,11 +149,10 @@ export default function Dashboard() {
           : null}
       </div>
 
-      {botsQuery.isFetching ? (
-        <LoadMoreSpinner />
-      ) : (
-        <LoadMore handleLoadMore={handleLoadMore} />
-      )}
+      <div ref={loadMoreRef} className="mb-8">
+        {botsQuery.isFetching && <LoadMoreSpinner />}
+      </div>
+
     </div>
   );
 }
