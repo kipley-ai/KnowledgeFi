@@ -150,6 +150,7 @@ export default function NFT() {
                 {
                   onSuccess: (data) => {
                     setTimeout(() => {
+                      setIsMinting(false);
                       setShowModal(true);
                       setisConfirmModalOpen(false);
                     }, 3000);
@@ -161,8 +162,8 @@ export default function NFT() {
               );
             } catch (error: any) {
               console.log(error);
+              setIsMinting(false);
             }
-            setIsMinting(false);
           },
         },
       );

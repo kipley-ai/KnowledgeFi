@@ -37,7 +37,10 @@ export default function SuccessFailModal({
     const { data: nftData } = useNftDetail({
         sft_id: kbIdCreated as string,
     });
-    const nftOpenSeaLink = `${process.env.NEXT_PUBLIC_OPENSEA_URL}/${nftData?.data.data.sft_address}`;
+    let nftOpenSeaLink = "";
+    if (nftData) {
+        nftOpenSeaLink = `${process.env.NEXT_PUBLIC_OPENSEA_URL}/${nftData?.data?.data?.sft_address}`;
+    }
     // TODO: add fail type
     return (
         <ModalBlank isOpen={open} setIsOpen={setOpen}>
