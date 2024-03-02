@@ -74,7 +74,6 @@ export default function Dashboard() {
 
   const [hasMoreBots, setHasMoreBots] = useState(true);
 
-
   const handleLoadMore = (e: React.MouseEvent) => {
     setPageSize((prevSize) => prevSize + incrementAmount);
   };
@@ -89,7 +88,7 @@ export default function Dashboard() {
 
         // Check conditions before loading more items
         if (isIntersecting && !botsQuery.isFetching && pageSize < totalBots) {
-          console.log('Loading more items'); // For debugging
+          console.log("Loading more items"); // For debugging
           setPageSize((prevSize) => prevSize + incrementAmount);
         }
       },
@@ -97,7 +96,7 @@ export default function Dashboard() {
         root: null,
         rootMargin: "0px",
         threshold: 1.0,
-      }
+      },
     );
 
     if (loadMoreRef.current) {
@@ -110,11 +109,10 @@ export default function Dashboard() {
         observer.unobserve(loadMoreRef.current);
       }
       window.removeEventListener("resize", handleBreakpoint);
-      setHeaderTitle("Default Title");
+      setHeaderTitle("Explore");
       document.title = title;
     };
   }, [breakpoint, pageSize, botsQuery.isFetching]); // Ensure dependencies are correctly listed
-
 
   return (
     <div className="w-full max-w-[96rem] bg-stone-800 px-4 py-8 sm:px-6 lg:px-12">
@@ -138,21 +136,20 @@ export default function Dashboard() {
         {/* <div className="grid grid-cols-6"> */}
         {botsQuery.data?.data.data
           ? botsQuery.data.data.data.chatbot_data.map((botData) => {
-            return (
-              <BotItem
-                key={botData.chatbot_id}
-                botData={botData}
-                onClick={() => { }}
-              />
-            );
-          })
+              return (
+                <BotItem
+                  key={botData.chatbot_id}
+                  botData={botData}
+                  onClick={() => {}}
+                />
+              );
+            })
           : null}
       </div>
 
       <div ref={loadMoreRef} className="mb-8">
         {botsQuery.isFetching && <LoadMoreSpinner />}
       </div>
-
     </div>
   );
 }

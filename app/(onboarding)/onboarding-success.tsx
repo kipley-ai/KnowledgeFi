@@ -46,8 +46,8 @@ export default function OnboardingSuccess() {
             justifyContent: "center",
           }}
         >
-          <p className="font-mono text-5xl font-semibold text-white">
-            Well done!
+          <p className="font-mono text-4xl font-semibold text-white text-center">
+            Ready to Monetise!
           </p>
         </div>
         <div
@@ -61,7 +61,7 @@ export default function OnboardingSuccess() {
             className="mr-4"
           />
           <h1 className="font-mono text-base font-semibold">
-            Your Knowledge Asset is created successfully!
+            Your chatbot has been created successfully!
           </h1>
         </div>
         <div className="flex w-full justify-center">
