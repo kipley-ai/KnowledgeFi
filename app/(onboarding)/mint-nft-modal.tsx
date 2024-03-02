@@ -39,7 +39,7 @@ export default function SuccessFailModal({
     const { data: nftData } = useNftDetail({
         sft_id: kbIdCreated as string,
     });
-    let nftOpenSeaLink = "";
+    let nftOpenSeaLink = `${process.env.NEXT_PUBLIC_OPENSEA_URL}`;
     if (nftData) {
         nftOpenSeaLink = `${process.env.NEXT_PUBLIC_OPENSEA_URL}/${nftData?.data?.data?.sft_address}`;
     }
@@ -57,7 +57,7 @@ export default function SuccessFailModal({
                 </div>
                 <div className='flex w-full'>
                 <button
-                    onClick={() => router.push('/nft')}
+                    disabled={!!nftOpenSeaLink}
                     className="bg-[#353945] rounded-3xl w-full py-2 text-[#01F7FF] text-sm mr-4"
                 >
                     <Link href={nftOpenSeaLink} target="_blank">
