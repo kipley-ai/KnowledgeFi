@@ -1,9 +1,12 @@
 import Image from 'next/image'
+import Link from 'next/link'
 import CheckIcon from 'public/images/check-icon.svg';
 import CrossIcon from "public/images/cross-icon.svg";
-import ModalBlank from '@/components/modal-blank-2';
+import ModalBlank from '@/components/modal-blank-3';
 import { DM_Sans, Poppins } from 'next/font/google';
 import { useRouter } from 'next/navigation';
+import { useCreateChatbotContext } from "./create-knowledge-context";
+import { useNftDetail } from "@/hooks/api/nft";
 
 interface ToastProps {
   children: React.ReactNode
@@ -32,6 +35,14 @@ export default function SuccessFailModal({
   kbIdCreated,
 }: ToastProps) {
     const router = useRouter();
+    const { setStep } = useCreateChatbotContext();
+    const { data: nftData } = useNftDetail({
+        sft_id: kbIdCreated as string,
+    });
+    let nftOpenSeaLink = "";
+    if (nftData) {
+        nftOpenSeaLink = `${process.env.NEXT_PUBLIC_OPENSEA_URL}/${nftData?.data?.data?.sft_address}`;
+    }
     // TODO: add fail type
     return (
         <ModalBlank isOpen={open} setIsOpen={setOpen}>
@@ -49,10 +60,12 @@ export default function SuccessFailModal({
                     onClick={() => router.push('/nft')}
                     className="bg-[#353945] rounded-3xl w-full py-2 text-[#01F7FF] text-sm mr-4"
                 >
-                    View My SFTs
+                    <Link href={nftOpenSeaLink} target="_blank">
+                        View My SFTs
+                    </Link>
                 </button>
                 <button
-                    onClick={() => router.push('/nft/'+kbIdCreated+'/create-chatbot')}
+                    onClick={() => setStep("create_chatbot")}
                     className="bg-[#353945] rounded-3xl w-full py-2 text-[#01F7FF] text-sm"
                 >
                     Create Chatbot
