@@ -49,7 +49,9 @@ export default function NFT() {
   const [selectedFile, setSelectedFile] = useState<string>(DEFAULT_COVER_IMAGE);
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [nftIdCreated, setNftIdCreated] = useState("");
+  const [sftAddress, setSftAddress] = useState("");
   const [isConfirmModalOpen, setisConfirmModalOpen] = useState(false);
+  const [isMinting, setIsMinting] = useState(false);
   const mintNFTAPI = useMintNFT();
 
   const formValidation = z.object({
@@ -97,6 +99,7 @@ export default function NFT() {
 
   const handleMintNFT = async () => {
     try {
+      setIsMinting(true);
       console.log(createKb.type, twitterSession?.user);
       let assetUrl;
 
@@ -142,11 +145,24 @@ export default function NFT() {
                 parseInt(form.shareSupply!),
                 asset_id,
               );
-              mintNFTAPI.mutate({ kb_id: kb_id });
-              setShowModal(true);
+              mintNFTAPI.mutate(
+                { kb_id: kb_id },
+                {
+                  onSuccess: (data) => {
+                    setTimeout(() => {
+                      setShowModal(true);
+                      setisConfirmModalOpen(false);
+                    }, 3000);
+                  },
+                  onError: (error) => {
+                    console.log(error);
+                  },
+                },
+              );
             } catch (error: any) {
               console.log(error);
             }
+            setIsMinting(false);
           },
         },
       );
@@ -191,9 +207,10 @@ export default function NFT() {
         setIsOpen={setisConfirmModalOpen}
         nftImage={selectedFile}
         handleMintNFT={handleMintNFT}
+        isMinting={isMinting}
       />
       <MintNFTModal
-        children={"Your Knowledge Asset is created successfully"}
+        children={"Your Knowledge Asset SFT is created successfully!"}
         open={showModal}
         setOpen={setShowModal}
         kbIdCreated={nftIdCreated}
