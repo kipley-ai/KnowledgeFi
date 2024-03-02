@@ -12,6 +12,7 @@ import {
   useGetSession,
   useNewSession,
 } from "@/hooks/api/chatbot";
+import { useChatHistory } from "@/hooks/api/chatbox";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Avatar from "public/images/avatar-gradient-icon.svg";
@@ -31,6 +32,8 @@ const MessageInput = () => {
 
     // Loading
     setReplyStatus,
+
+    setButtonSession,
   } = useCreateChatbotContext();
 
   const searchParams = useSearchParams();
@@ -42,6 +45,12 @@ const MessageInput = () => {
   const chatSession = useGetSession({ chatbot_id: id as string });
   const newSession = useNewSession();
   const pluginConfig = useDefaultValue({ key: "plugin_config" });
+  const chatHistoryAPI = useChatHistory({
+    session_id: chatSession.data?.data.data?.session_id,
+    app_id: id as string,
+    page_num: 1,
+    page_size: 10,
+  });
 
   const [model, setModel] = useState("gpt-3.5-turbo");
   const [promptTemplate2, setPromptTemplate2] = useState(
@@ -165,47 +174,70 @@ const MessageInput = () => {
     promptTemplate2 +
     '"';
 
+  const handleClearChat = () => {
+    newSession.mutate(
+      { chatbot_id: id as string },
+      {
+        onSuccess(data, variables, context) {
+          chatSession.refetch();
+          chatHistoryAPI.refetch();
+          setButtonSession((prev: boolean) => !prev);
+        },
+      },
+    );
+  };
+
   return (
-    <div className="sticky inset-x-0 bottom-4 mt-6 flex w-auto items-center rounded-md border border-gray-600 px-4 py-2 focus-within:border-[#01F7FF] bg-neutral-900 lg:bottom-0 lg:w-full">
-      {/* Profile picture placeholder */}
-      {/* <Image src={Avatar} alt="Profile" className="w-8 h-8 rounded-full mr-4" /> */}
-      {/* Input Field */}
-      <input
-        type="text"
-        placeholder="Ask me anything"
-        onKeyDown={(e) => {
-          if (e.key === "Enter") handleSendMessage();
-          // console.log(e.key)
-        }}
-        className="flex-grow border-0 bg-neutral-900 text-white placeholder-gray-300 caret-[#01F7FF] outline-none focus:ring-0"
-        value={newQuestion}
-        onChange={(e) => {
-          setNewQuestion(e.target.value);
-        }}
-      />
-      {/* Icons or buttons */}
-      <div className="ml-4 flex items-center">
-        <button
-          className="text-light-blue"
-          onClick={(e) => {
-            handleSendMessage();
+    <div className="sticky inset-x-0 bottom-4 mt-6 flex gap-4 w-auto items-center">
+      <button
+        className="rounded-2xl border border-gray-600 px-2 text-sm text-gray-600"
+        onClick={handleClearChat}
+      >
+        CLEAR
+        <br />
+        CHAT
+      </button>
+      <div className="flex rounded-md border border-gray-600 bg-neutral-900 px-4 py-1 focus-within:border-[#01F7FF] lg:bottom-0 lg:w-full">
+        {/* Profile picture placeholder */}
+        {/* <Image src={Avatar} alt="Profile" className="w-8 h-8 rounded-full mr-4" /> */}
+        {/* Input Field */}
+        <input
+          type="text"
+          placeholder="Ask me anything"
+          onKeyDown={(e) => {
+            if (e.key === "Enter") handleSendMessage();
+            // console.log(e.key)
           }}
-        >
-          <svg
-            width="20"
-            height="14"
-            viewBox="0 0 20 14"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
+          className="flex-grow border-0 bg-neutral-900 text-white placeholder-gray-300 caret-[#01F7FF] outline-none focus:ring-0"
+          value={newQuestion}
+          onChange={(e) => {
+            setNewQuestion(e.target.value);
+          }}
+        />
+        {/* Icons or buttons */}
+        <div className="ml-4 flex items-center">
+          <button
+            className="text-light-blue"
+            onClick={(e) => {
+              handleSendMessage();
+            }}
           >
-            <path
-              fill-rule="evenodd"
-              clip-rule="evenodd"
-              d="M2.62268e-07 6L3.49691e-07 8L15 8L15 10L17 10L17 8L20 8L20 6L17 6L17 4L15 4L15 6L2.62268e-07 6ZM13 2L15 2L15 4L13 4L13 2ZM13 2L11 2L11 -4.80823e-07L13 -5.68248e-07L13 2ZM13 12L15 12L15 10L13 10L13 12ZM13 12L11 12L11 14L13 14L13 12Z"
-              fill="#00FFFF"
-            />
-          </svg>
-        </button>
+            <svg
+              width="20"
+              height="14"
+              viewBox="0 0 20 14"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M2.62268e-07 6L3.49691e-07 8L15 8L15 10L17 10L17 8L20 8L20 6L17 6L17 4L15 4L15 6L2.62268e-07 6ZM13 2L15 2L15 4L13 4L13 2ZM13 2L11 2L11 -4.80823e-07L13 -5.68248e-07L13 2ZM13 12L15 12L15 10L13 10L13 12ZM13 12L11 12L11 14L13 14L13 12Z"
+                fill="#00FFFF"
+              />
+            </svg>
+          </button>
+        </div>
       </div>
     </div>
   );
