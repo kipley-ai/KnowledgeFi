@@ -7,8 +7,11 @@ import { useDisconnect, useAccount } from "wagmi";
 import defaultAvatar from "@/public/images/avatar-default-02.svg";
 import { useAppProvider } from "@/providers/app-provider";
 import ModalTopUp from "../modal-top-up";
+import ModalTopUpSuccessful from "@/components/modal-top-up-successful";
+import ModalTopUpFailed from "@/components/modal-top-up-failed";
 import { useCreditBalance } from "@/hooks/api/credit";
 import Link from "next/link";
+import { FaSpinner } from "react-icons/fa";
 
 type StatusType = "online" | "busy" | "away" | "offline";
 
@@ -33,7 +36,7 @@ const AvatarWithStatus: React.FC<AvatarWithStatusProps> = ({
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const { disconnect } = useDisconnect();
-  const { modalTopUp, setModalTopUp } = useAppProvider();
+  const { modalTopUp, setModalTopUp, topUpStatus, setTopUpStatus, modalTopUpSuccessful, setModalTopUpSuccessful, modalTopUpFailed, setModalTopUpFailed } = useAppProvider();
   const { address } = useAccount();
 
   const { data: creditBalanceData } = useCreditBalance();
@@ -57,9 +60,20 @@ const AvatarWithStatus: React.FC<AvatarWithStatusProps> = ({
     };
   }, []);
 
+  useEffect(() => {
+    if (topUpStatus === "PENDING") {
+      setTimeout(() => {
+        setTopUpStatus("UNDEFINED");
+        setModalTopUpSuccessful(true);
+      }, 5000);
+    }
+  }, [topUpStatus]);
+
   return (
     <div className="relative inline-block" ref={dropdownRef}>
-      <ModalTopUp isOpen={modalTopUp} setIsOpen={setModalTopUp} />
+      <ModalTopUpSuccessful isOpen={modalTopUpSuccessful} setIsOpen={setModalTopUpSuccessful} />
+      <ModalTopUpFailed isOpen={modalTopUpFailed} setIsOpen={setModalTopUpFailed} />
+      <ModalTopUp isOpen={modalTopUp} setIsOpen={setModalTopUp} setTopUpStatus={setTopUpStatus} />
       <div onClick={toggleDropdown} className="min-w-10 cursor-pointer">
         {/* <img src={image} alt="Avatar" className="w-12 h-12 rounded-full" /> */}
         {image === "" ? (
@@ -94,13 +108,21 @@ const AvatarWithStatus: React.FC<AvatarWithStatusProps> = ({
               <div className="text-lg font-semibold text-[#FCFCFD]">
                 {creditBalanceData?.data.data.credit_balance} credits
               </div>
-              <div className="mt-2 flex items-center rounded-full border border-[#01F7FF] px-1 py-1">
-                <button className="w-full" onClick={() => setModalTopUp(true)}>
-                  <span className="text-sm font-bold text-[#FCFCFD] duration-200">
-                    Top up credits
-                  </span>
-                </button>
-              </div>
+              {topUpStatus === "PENDING" && (
+                <div className="flex items-center">
+                  <FaSpinner className="animate-spin" />
+                  <span className="ml-2 text-xs font-medium">Processing Top Up...</span>
+                </div>
+              )}
+              <button 
+                className="w-full mt-2 flex items-center rounded-full border border-[#01F7FF] px-2 py-2 disabled:brightness-50" 
+                onClick={() => setModalTopUp(true)}
+                disabled={topUpStatus === "PENDING"}
+              >
+                <span className="text-sm font-bold text-[#FCFCFD] duration-200">
+                  Top up credits
+                </span>
+              </button>
             </div>
           </div>
           <Link

@@ -1,7 +1,10 @@
 import Image from "next/image";
+import { FaSpinner } from "react-icons/fa";
 import CreditIcon from "public/images/credit-icon.svg";
 import ProgressBar from "@/components/progress-bar";
 import ModalTopUp from "@/components/modal-top-up";
+import ModalTopUpSuccessful from "@/components/modal-top-up-successful";
+import ModalTopUpFailed from "@/components/modal-top-up-failed";
 import Refresh from "public/images/refresh.png";
 import { useCreditBalanceContext } from "./credit-balance-context";
 import { useCreditBalance } from "@/hooks/api/credit";
@@ -9,12 +12,23 @@ import { useAppProvider } from "@/providers/app-provider";
 import { useEffect } from "react";
 
 export default function CreditBalance() {
-  const { modalTopUp, setModalTopUp } = useAppProvider();
+  const { modalTopUp, setModalTopUp, topUpStatus, setTopUpStatus, modalTopUpSuccessful, setModalTopUpSuccessful, modalTopUpFailed, setModalTopUpFailed } = useAppProvider();
   const { creditBalance, setRefetch } = useCreditBalanceContext();
 
+  useEffect(() => {
+    if (topUpStatus === "PENDING") {
+      setTimeout(() => {
+        setTopUpStatus("UNDEFINED");
+        setModalTopUpSuccessful(true);
+      }, 5000);
+    }
+  }, [topUpStatus]);
+
   return (
-    <div className="flex w-full flex-col justify-start gap-2 py-6 px-5 text-white">
-      <ModalTopUp isOpen={modalTopUp} setIsOpen={setModalTopUp} />
+    <div className="flex w-full flex-col justify-start gap-2 px-5 py-6 text-white">
+      <ModalTopUpSuccessful isOpen={modalTopUpSuccessful} setIsOpen={setModalTopUpSuccessful} />
+      <ModalTopUpFailed isOpen={modalTopUpFailed} setIsOpen={setModalTopUpFailed} />
+      <ModalTopUp isOpen={modalTopUp} setIsOpen={setModalTopUp} setTopUpStatus={setTopUpStatus} />
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <svg
@@ -57,18 +71,26 @@ export default function CreditBalance() {
         </button>
       </div>
       <p>
-        <span className="text-sm font-medium lg:text-md">
+        <span className="lg:text-md text-sm font-medium">
           {creditBalance} CREDITS
         </span>
       </p>
       {/* <ProgressBar current={79.99} total={300} /> */}
-      <div className="mt-2 flex items-center rounded-md border-2 border-[#01F7FF] px-1 py-1">
-        <button className="w-full" onClick={() => setModalTopUp(true)}>
-          <span className="text-xs font-medium text-[#FCFCFD] duration-200">
-            TOP UP CREDITS
-          </span>
-        </button>
-      </div>
+      {topUpStatus === "PENDING" && (
+        <div className="flex items-center">
+          <FaSpinner className="animate-spin" />
+          <span className="ml-2 text-xs font-medium">Processing Top Up...</span>
+        </div>
+      )}
+      <button
+        className="mt-2 flex w-full justify-center rounded-md border-2 border-[#01F7FF] px-2 py-2 disabled:brightness-50"
+        onClick={() => setModalTopUp(true)}
+        disabled={topUpStatus === "PENDING"}
+      >
+        <span className="text-xs font-medium text-[#FCFCFD] duration-200">
+          TOP UP CREDITS
+        </span>
+      </button>
     </div>
   );
 }

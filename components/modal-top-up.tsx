@@ -1,13 +1,23 @@
 "use client";
 
-import ModalBlank from "@/components/modal-blank-2";
+import ModalBlank from "@/components/modal-blank-3";
 import { recharge } from "@/smart-contract/kip-protocol-contract";
 import { allowance, approve, balanceOf } from "@/smart-contract/kip-token";
 import { KIP_TOKEN_DECIMAL } from "@/utils/constants";
 import { useState } from "react";
 import Notification from "@/components/notification";
+import ModalTopUpSuccessful from "./modal-top-up-successful";
+import ModalTopUpFailed from "./modal-top-up-failed";
+import ModalTopUpPending from "./modal-top-up-pending";
 import { useSwitchToSepolia } from "@/hooks/useSwitchNetwork";
 import { useSwitchToPolygon } from "@/hooks/useSwitchNetwork";
+
+enum Status {
+  Successful = "SUCCESSFUL",
+  Failed = "FAILED",
+  Pending = "PENDING",
+  Undefined = "UNDEFINED",
+}
 
 interface Form {
   amount?: number;
@@ -16,9 +26,11 @@ interface Form {
 export default function ModalTopUp({
   isOpen,
   setIsOpen,
+  setTopUpStatus,
 }: {
   isOpen: boolean;
   setIsOpen: any;
+  setTopUpStatus?: any;
 }) {
   const [form, setForm] = useState<Form>({});
   const [continueBtn, setContinueBtn] = useState({
@@ -61,21 +73,21 @@ export default function ModalTopUp({
       if (allw < form.amount! * KIP_TOKEN_DECIMAL) {
         setContinueBtn({
           disable: true,
-          text: "Approving...",
+          text: "Topping up...",
         });
         await approve(bal);
       }
 
       setContinueBtn({
         disable: false,
-        text: "Continue",
+        text: "Processing...",
       });
       await recharge(form.amount!);
-
+      // TODO: API call to update the user's balance
+      setTopUpStatus("PENDING");
       setIsOpen(false);
     } catch (error) {
       console.log(error);
-    } finally {
       setContinueBtn({
         disable: false,
         text: "Continue",
@@ -236,22 +248,24 @@ export default function ModalTopUp({
                 disabled={continueBtn.disable}
               >
                 <h5 className="font-semibold text-black">{continueBtn.text}</h5>
-                <svg
-                  width="20"
-                  height="10"
-                  viewBox="0 0 20 10"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M17.98 5.7901C18.8936 5.7901 19.6343 6.53075 19.6343 7.44439V7.44439C19.6343 8.35803 18.8936 9.09868 17.98 9.09868L1.65435 9.09868C0.74071 9.09868 5.90253e-05 8.35803 5.90618e-05 7.44439V7.44439C5.90983e-05 6.53075 0.740711 5.7901 1.65435 5.7901L17.98 5.7901Z"
-                    fill="#151515"
-                  />
-                  <path
-                    d="M18.932 5.9907C19.5219 6.63674 19.5219 7.68418 18.932 8.33022C18.3422 8.97626 17.3859 8.97626 16.7961 8.33022L12.3947 3.50927C11.8049 2.86322 11.8049 1.81578 12.3947 1.16974C12.9845 0.523702 13.9408 0.523702 14.5306 1.16974L18.932 5.9907Z"
-                    fill="#151515"
-                  />
-                </svg>
+                {continueBtn.text === "Continue" && (
+                  <svg
+                    width="20"
+                    height="10"
+                    viewBox="0 0 20 10"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M17.98 5.7901C18.8936 5.7901 19.6343 6.53075 19.6343 7.44439V7.44439C19.6343 8.35803 18.8936 9.09868 17.98 9.09868L1.65435 9.09868C0.74071 9.09868 5.90253e-05 8.35803 5.90618e-05 7.44439V7.44439C5.90983e-05 6.53075 0.740711 5.7901 1.65435 5.7901L17.98 5.7901Z"
+                      fill="#151515"
+                    />
+                    <path
+                      d="M18.932 5.9907C19.5219 6.63674 19.5219 7.68418 18.932 8.33022C18.3422 8.97626 17.3859 8.97626 16.7961 8.33022L12.3947 3.50927C11.8049 2.86322 11.8049 1.81578 12.3947 1.16974C12.9845 0.523702 13.9408 0.523702 14.5306 1.16974L18.932 5.9907Z"
+                      fill="#151515"
+                    />
+                  </svg>
+                )}
               </button>
             )}
           </div>

@@ -18,6 +18,12 @@ interface ContextProps {
   setModalLogin: Dispatch<SetStateAction<boolean>>;
   modalTopUp: boolean;
   setModalTopUp: Dispatch<SetStateAction<boolean>>;
+  topUpStatus: string;
+  setTopUpStatus: Dispatch<SetStateAction<string>>;
+  modalTopUpSuccessful: boolean;
+  setModalTopUpSuccessful: Dispatch<SetStateAction<boolean>>;
+  modalTopUpFailed: boolean;
+  setModalTopUpFailed: Dispatch<SetStateAction<boolean>>;
   toast: any;
   setToast: Dispatch<SetStateAction<any>>;
   verifStatus: AuthenticationStatus;
@@ -33,6 +39,12 @@ const AppContext = createContext<ContextProps>({
   setModalLogin: (): boolean => false,
   modalTopUp: false,
   setModalTopUp: (): boolean => false,
+  topUpStatus: "UNDEFINED",
+  setTopUpStatus: () => "UNDEFINED",
+  modalTopUpSuccessful: false,
+  setModalTopUpSuccessful: () => false,
+  modalTopUpFailed: false,
+  setModalTopUpFailed: () => false,
   toast: {},
   setToast: () => {},
   verifStatus: "unauthenticated",
@@ -48,6 +60,9 @@ export default function AppProvider({
   const [headerTitle, setHeaderTitle] = useState("");
   const [modalLogin, setModalLogin] = useState(false);
   const [modalTopUp, setModalTopUp] = useState(false);
+  const [topUpStatus, setTopUpStatus] = useState("UNDEFINED");
+  const [modalTopUpSuccessful, setModalTopUpSuccessful] = useState(false);
+  const [modalTopUpFailed, setModalTopUpFailed] = useState(false);
   const [toast, setToast] = useState(false);
   const [verifStatus, setVerifStatus] =
     useState<AuthenticationStatus>("unauthenticated");
@@ -63,6 +78,12 @@ export default function AppProvider({
         setModalLogin,
         modalTopUp,
         setModalTopUp,
+        topUpStatus,
+        setTopUpStatus,
+        modalTopUpSuccessful,
+        setModalTopUpSuccessful,
+        modalTopUpFailed,
+        setModalTopUpFailed,
         toast,
         setToast,
         verifStatus,
