@@ -208,7 +208,6 @@ export default function AccountSettings() {
 
   return (
     <div className="flex w-5/6 flex-col px-10 py-8">
-      <ModalTopUp isOpen={modalTopUp} setIsOpen={setModalTopUp} />
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-semibold text-slate-100">
           Account Information
@@ -329,12 +328,6 @@ export default function AccountSettings() {
               User Overview
             </h4>
           </div>
-          <button
-            className="rounded-full bg-[#B1E5FC] px-4 py-3 text-base font-semibold text-[#1A1D1F]"
-            onClick={() => setModalTopUp(true)}
-          >
-            Top up credits
-          </button>
         </div>
         <div className="flex">
           {/* <div className="mr-3 w-1/2 rounded-xl bg-[#293135] p-8">

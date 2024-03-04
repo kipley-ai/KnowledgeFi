@@ -17,18 +17,13 @@ export default function CreditBalance() {
 
   useEffect(() => {
     if (topUpStatus === "PENDING") {
-      setTimeout(() => {
-        setTopUpStatus("UNDEFINED");
-        setModalTopUpSuccessful(true);
-      }, 5000);
+      setTopUpStatus("UNDEFINED");
+      setModalTopUpSuccessful(true);
     }
   }, [topUpStatus]);
 
   return (
     <div className="flex w-full flex-col justify-start gap-2 px-5 py-6 text-white">
-      <ModalTopUpSuccessful isOpen={modalTopUpSuccessful} setIsOpen={setModalTopUpSuccessful} />
-      <ModalTopUpFailed isOpen={modalTopUpFailed} setIsOpen={setModalTopUpFailed} />
-      <ModalTopUp isOpen={modalTopUp} setIsOpen={setModalTopUp} setTopUpStatus={setTopUpStatus} />
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <svg
@@ -91,6 +86,9 @@ export default function CreditBalance() {
           TOP UP CREDITS
         </span>
       </button>
+      <ModalTopUpSuccessful isOpen={modalTopUpSuccessful} setIsOpen={setModalTopUpSuccessful} />
+      <ModalTopUpFailed isOpen={modalTopUpFailed} setIsOpen={setModalTopUpFailed} />
+      <ModalTopUp isOpen={modalTopUp} setIsOpen={setModalTopUp} setTopUpStatus={setTopUpStatus} />
     </div>
   );
 }

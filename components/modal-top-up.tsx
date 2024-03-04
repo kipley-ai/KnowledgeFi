@@ -79,15 +79,18 @@ export default function ModalTopUp({
       }
 
       setContinueBtn({
-        disable: false,
+        disable: true,
         text: "Processing...",
       });
       await recharge(form.amount!);
       // TODO: API call to update the user's balance
-      setTopUpStatus("PENDING");
-      setIsOpen(false);
+      setTimeout(() => {
+        setTopUpStatus("PENDING");
+        setIsOpen(false);
+      }, 3000);
     } catch (error) {
       console.log(error);
+    } finally {
       setContinueBtn({
         disable: false,
         text: "Continue",
@@ -248,7 +251,7 @@ export default function ModalTopUp({
                 disabled={continueBtn.disable}
               >
                 <h5 className="font-semibold text-black">{continueBtn.text}</h5>
-                {continueBtn.text === "Continue" && (
+                {!continueBtn.disable && (
                   <svg
                     width="20"
                     height="10"
