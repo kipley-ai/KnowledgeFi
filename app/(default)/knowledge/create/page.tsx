@@ -13,6 +13,7 @@ import { useCreateChatbotContext } from "./create-knowledge-context";
 import Local from "./local";
 import Notion from "./notion";
 import ModalLoginTwitter from "@/components/modal-login-twitter";
+import { KF_TITLE } from "@/utils/constants";
 
 export type PossibleOption =
   | "files"
@@ -36,7 +37,7 @@ export interface UIFile {
 export default function DataSource({
   twitterRedirectUrl = "/knowledge/create",
 }: any) {
-  const title = "Create Knowledge Assets";
+  const title = KF_TITLE + "Create Knowledge Assets";
   const { setHeaderTitle } = useAppProvider();
 
   useEffect(() => {

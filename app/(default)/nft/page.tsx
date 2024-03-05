@@ -14,6 +14,7 @@ import { PaginationController } from "@/components/pagination-2/controller";
 
 import { useRouter } from "next/navigation";
 import { useUserDetail } from "@/hooks/api/user";
+import { KF_TITLE } from "@/utils/constants";
 
 type NoDataProps = {
   item: string;
@@ -247,7 +248,7 @@ const BotList = () => {
 };
 
 export default function NFT() {
-  const title = "My Assets";
+  const title = KF_TITLE + "My Assets";
   const { setHeaderTitle } = useAppProvider();
 
   const handleLoadMore = () => {

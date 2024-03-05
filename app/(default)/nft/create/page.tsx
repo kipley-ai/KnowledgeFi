@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 
 import { useRouter } from "next/navigation";
 import { useUserDetail } from "@/hooks/api/user";
+import { KF_TITLE } from "@/utils/constants";
 
 // export const metadata = {
 //     title: 'SFT - Mosaic',
@@ -20,7 +21,7 @@ interface Form {
 }
 
 export default function NFT() {
-  const title = "Create SFT";
+  const title = KF_TITLE + "Create SFT";
   const { setHeaderTitle } = useAppProvider();
 
   const [category, setCategory] = useState("");

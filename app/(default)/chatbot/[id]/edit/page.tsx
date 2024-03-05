@@ -7,10 +7,11 @@ import ManageDataSources from "./manage-data-source";
 
 import { useRouter } from "next/navigation";
 import { useUserDetail } from "@/hooks/api/user";
+import { KF_TITLE } from "@/utils/constants";
 
 export default function EditChatbot() {
   const { setHeaderTitle } = useAppProvider();
-  const title = "Edit Chatbot";
+  const title = KF_TITLE + "Edit Chatbot";
 
   const [activeTab, setActiveTab] = useState("settings");
 

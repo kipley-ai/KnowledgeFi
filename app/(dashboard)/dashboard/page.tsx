@@ -33,9 +33,10 @@ import { useChatbotList } from "@/hooks/api/chatbot";
 import { keepPreviousData } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { KF_TITLE } from "@/utils/constants";
 
 export default function Dashboard() {
-  const title = "Dashboard";
+  const title = KF_TITLE + "Dashboard";
 
   const { setHeaderTitle } = useAppProvider();
   const [mode, setMode] = useState(0);

@@ -11,7 +11,7 @@ import ImageInput from "@/components/image-input-2";
 import { ZodError, number, string, z } from "zod";
 import Switcher from "@/components/switcher";
 import { useAppProvider } from "@/providers/app-provider";
-import { DEFAULT_COVER_IMAGE } from "@/utils/constants";
+import { DEFAULT_COVER_IMAGE, KF_TITLE } from "@/utils/constants";
 import Tooltip from "@/components/tooltip";
 import { noMoreThanCharacters } from "@/utils/utils";
 
@@ -33,7 +33,7 @@ const ChatBotForm = () => {
     setHeaderTitle("");
   }, []);
 
-  const title = "Create Chatbot";
+  const title = KF_TITLE + "Create Chatbot";
   const { setHeaderTitle } = useAppProvider();
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
@@ -154,7 +154,7 @@ const ChatBotForm = () => {
   // `;
 
   useEffect(() => {
-    const title = "Create Chatbot";
+    const title = KF_TITLE + "Create Chatbot";
     document.title = title;
 
     return () => setHeaderTitle("");

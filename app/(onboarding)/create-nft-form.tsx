@@ -12,7 +12,7 @@ import MintNFTModal from "./mint-nft-modal";
 import ImageInput from "@/components/image-input";
 import LoadingIcon from "public/images/loading-icon.svg";
 import MintConfirmationModal from "@/components/modal-mint-confirmation";
-import { DEFAULT_COVER_IMAGE } from "@/utils/constants";
+import { DEFAULT_COVER_IMAGE, KF_TITLE } from "@/utils/constants";
 import Tooltip from "@/components/tooltip";
 import ArrowRight from "public/images/arrow-right.svg";
 import { ZodError, z } from "zod";
@@ -92,7 +92,7 @@ export default function NFT() {
   };
 
   useEffect(() => {
-    const title = "Mint SFT";
+    const title = KF_TITLE + "Mint SFT";
     document.title = title;
 
     return () => setHeaderTitle("");

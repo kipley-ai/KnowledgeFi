@@ -14,6 +14,7 @@ import Local from "./local";
 import Notion from "./notion";
 import ModalLoginTwitter from "@/components/modal-login-twitter";
 import OnboardingProgress from "./onboarding-progress";
+import { KF_TITLE } from "@/utils/constants";
 
 export type PossibleOption =
   | "files"
@@ -39,7 +40,7 @@ export default function SelectDataElements() {
   const searchParams = useSearchParams();
   const nextStep = searchParams.get("nextStep");
 
-  const title = "Create Knowledge Assets";
+  const title = KF_TITLE + "Create Knowledge Assets";
   const { setHeaderTitle } = useAppProvider();
 
   useEffect(() => {
