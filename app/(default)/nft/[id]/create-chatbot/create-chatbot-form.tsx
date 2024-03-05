@@ -6,7 +6,7 @@ import { useGetCategory } from "@/hooks/api/chatbot";
 import { useSession } from "next-auth/react";
 import CreateChatbotModal from "@/components/toast-4";
 import { useNftDetail } from "@/hooks/api/nft";
-import LoadingIcon from "public/images/loading-icon.svg";
+// import LoadingIcon from "public/images/loading-icon.svg";
 import ImageInput from "@/components/image-input-2";
 import { ZodError, number, string, z } from "zod";
 import Switcher from "@/components/switcher";
@@ -14,6 +14,7 @@ import { useAppProvider } from "@/providers/app-provider";
 import { DEFAULT_COVER_IMAGE, KF_TITLE } from "@/utils/constants";
 import Tooltip from "@/components/tooltip";
 import { noMoreThanCharacters } from "@/utils/utils";
+import Loader from "@/components/loader";
 
 interface Category {
   title: string;
@@ -213,6 +214,7 @@ const ChatBotForm = () => {
 					Give some general information about your character.
 				</h5> */}
           <hr className="my-4 border border-gray-600" />
+          <Loader/>
         </div>
         <form className="mx-5 flex flex-col md:mx-32" onSubmit={handleSubmit}>
           <div className="flex">
