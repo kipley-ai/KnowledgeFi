@@ -36,7 +36,10 @@ const ChatBotForm = () => {
 
   const title = KF_TITLE + "Create Chatbot";
   const { setHeaderTitle } = useAppProvider();
-  const [description, setDescription] = useState("");
+  const [description, setDescription] = useState({
+    tmp: true,
+    value: "",
+  });
   const [category, setCategory] = useState("");
   const [categories, setCategories] = useState<Category[]>([]);
   const [profileImage, setProfileImage] = useState("");
@@ -83,6 +86,15 @@ const ChatBotForm = () => {
     });
   };
 
+  useEffect(() => {
+    if (form.name && description.tmp) {
+      setDescription({
+        tmp: true,
+        value: `This is the AI Chatbot Twin of ${form.name}`,
+      });
+    }
+  }, [form.name]);
+
   if (twitterSession?.user) {
     twitterSession?.user?.username;
   }
@@ -113,7 +125,7 @@ const ChatBotForm = () => {
         tone: toneData,
         price_per_query: form.pricePerQuery as number,
         // category_id: category,
-        // description: description,
+        description: description.value,
         // instruction: instructions,
         // example_conversation: example,
       },
@@ -234,7 +246,7 @@ const ChatBotForm = () => {
           onSubmit={handleSubmit}
         >
           <div className="flex">
-            <div className="flex items-center justify-center">
+            <div className="flex justify-center">
               <ImageInput
                 selectedFile={selectedFile}
                 setSelectedFile={setSelectedFile}
@@ -271,6 +283,27 @@ const ChatBotForm = () => {
                 {/* <p className="mt-2 text-xs text-gray-400">
                 The name of your AI character.
               </p> */}
+              </div>
+              <div>
+                <label
+                  htmlFor="description"
+                  className="block text-sm font-semibold text-white"
+                >
+                  Description
+                </label>
+                <div className="mt-1">
+                  <textarea
+                    id="description"
+                    value={description.value}
+                    onChange={(e) =>
+                      setDescription({ tmp: false, value: e.target.value })
+                    }
+                    placeholder={"Describe your Chatbot"}
+                    className="mt-2 w-full rounded-md border-2 border-gray-800 bg-transparent text-xs text-white lg:text-sm"
+                    rows={3}
+                    maxLength={1000}
+                  />
+                </div>
               </div>
               <div>
                 {/* <label
