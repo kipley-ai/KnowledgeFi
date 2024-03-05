@@ -4,7 +4,11 @@ import { mintNFT } from "@/smart-contract/kip-protocol-contract";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useCreateChatbotContext } from "./create-knowledge-context";
-import { useCreateKBAndMintNFT, useMintNFT } from "@/hooks/api/kb";
+import {
+  useCreateKBAndMintNFT,
+  useMintNFT,
+  useScrapeTwitter,
+} from "@/hooks/api/kb";
 import { useSession } from "next-auth/react";
 import { uploadFileS3 } from "@/app/api/upload/s3/helper";
 import MintNFTModal from "./mint-nft-modal";
@@ -53,6 +57,14 @@ export default function NFT() {
   const [sftAddress, setSftAddress] = useState("");
   const [isConfirmModalOpen, setisConfirmModalOpen] = useState(false);
   const [isMinting, setIsMinting] = useState(false);
+
+  const scrapeTwitter = useScrapeTwitter();
+
+  useEffect(() => {
+    if (createKb.type == "twitter" && twitterSession?.user?.username) {
+      scrapeTwitter.mutate({ username: twitterSession?.user?.username });
+    }
+  }, []);
   const mintNFTAPI = useMintNFT();
 
   const formValidation = z.object({
