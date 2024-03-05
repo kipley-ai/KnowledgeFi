@@ -4,7 +4,7 @@ import React from "react";
 import { useSwitchToSepolia } from "@/hooks/useSwitchNetwork";
 import { useSwitchToPolygon } from "@/hooks/useSwitchNetwork";
 import { useNetwork } from "wagmi";
-import Loader from "@/components/loader";
+// import Loader from "@/components/loader";
 
 const SwitchNetwork = () => {
   const { chain } = useNetwork();
@@ -12,7 +12,7 @@ const SwitchNetwork = () => {
   return (
     <div>
       <span>Current Network: {chain?.name}</span>
-      <Loader />
+      {/* <Loader /> */}
       <SwitchToPolygonButton />
       <SwitchToSepoliaButton />
     </div>

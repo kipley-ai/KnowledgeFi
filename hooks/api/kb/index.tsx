@@ -110,7 +110,7 @@ export const useScrapeTwitterStatus = (params: { username: string }) => {
     queryKey: ["scrape-twitter-status", params.username],
     queryFn: () =>
       axios.post<{
-        status: "in progress" | "failed" | "success";
+        status: "in progress" | "failed" | "success" | "processing";
         msg: string;
         data: any;
       }>("/api/kb/scrape_twitter_status", params, {

@@ -1,6 +1,7 @@
-import { useScrapeTwitterStatus } from "@/hooks/api/kb";
+import { useScrapeTwitter, useScrapeTwitterStatus } from "@/hooks/api/kb";
+import { delay } from "@/utils/utils";
 import { useSession } from "next-auth/react";
-import { use, useEffect } from "react";
+import { use, useEffect, useState } from "react";
 
 export const TwitterScrapingStatus = () => {
   const { data: twitterData, status: authStatus } = useSession();
@@ -9,18 +10,34 @@ export const TwitterScrapingStatus = () => {
     return null;
   }
 
-  const { data: scrapeStatus, isLoading } = useScrapeTwitterStatus({
+  const scrapeTwitter = useScrapeTwitter();
+
+  const {
+    data: scrapeStatus,
+    isLoading,
+    refetch,
+  } = useScrapeTwitterStatus({
     username: twitterData?.user?.username!,
   });
 
   useEffect(() => {
-    console.log("authStatus", authStatus);
-    console.log("scrapeStatus", scrapeStatus);
-  }, [authStatus, scrapeStatus]);
+    if (twitterData?.user?.username) {
+      scrapeTwitter.mutate({ username: twitterData?.user?.username });
+    }
 
-  if (isLoading || scrapeStatus?.status === "in progress") {
+    const asyncRefetch = async () => {
+      for (let i = 0; i < 4; i++) {
+        await refetch();
+        await delay(3000);
+      }
+    };
+
+    asyncRefetch();
+  }, []);
+
+  if (isLoading || scrapeStatus?.status === "processing") {
     return (
-      <li className="flex items-center justify-center text-white text-wrap">
+      <li className="flex items-center justify-center text-wrap text-white">
         <svg
           aria-hidden="true"
           className="me-2 h-6 w-6 animate-spin fill-[#08f4fc] text-gray-200 dark:text-gray-600"
@@ -37,14 +54,14 @@ export const TwitterScrapingStatus = () => {
             fill="currentFill"
           />
         </svg>
-        <span className="text-xs">Processing your twitter posts...</span>
+        <span className="text-xs">Your Twitter Posts are processing...</span>
       </li>
     );
   }
 
   if (scrapeStatus?.status === "success") {
     return (
-      <li className="flex items-center text-white w-full">
+      <li className="flex w-full items-center text-white">
         <svg
           className="me-2 h-6 w-6 flex-shrink-0 text-green-500 dark:text-green-400"
           aria-hidden="true"
@@ -54,6 +71,7 @@ export const TwitterScrapingStatus = () => {
         >
           <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z" />
         </svg>
+        <span className="text-xs">Your Twitter Posts are ready!</span>
       </li>
     );
   }

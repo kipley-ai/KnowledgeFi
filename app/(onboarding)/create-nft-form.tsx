@@ -60,14 +60,6 @@ export default function NFT() {
   const [isMinting, setIsMinting] = useState(false);
   const mintNFTAPI = useMintNFT();
 
-  const scrapeTwitter = useScrapeTwitter();
-
-  useEffect(() => {
-    if (createKb.type == "twitter" && twitterSession?.user?.username) {
-      scrapeTwitter.mutate({ username: twitterSession?.user?.username });
-    }
-  }, []);
-
   const formValidation = z.object({
     name: z
       .string({
