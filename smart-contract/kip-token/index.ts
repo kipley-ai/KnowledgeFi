@@ -46,3 +46,9 @@ export async function balanceOf() {
   const { contractWrite } = await getKipTokenContract();
   return await contractWrite.balanceOf(signer.address);
 }
+
+export async function mintToken(amount: number) {
+  const signer = await getSigner();
+  const { contractWrite } = await getKipTokenContract();
+  return await contractWrite.mint(signer.address, BigInt(amount));
+}
