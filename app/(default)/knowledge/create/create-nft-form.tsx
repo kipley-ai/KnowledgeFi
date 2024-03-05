@@ -4,7 +4,11 @@ import { mintNFT } from "@/smart-contract/kip-protocol-contract";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useCreateChatbotContext } from "./create-knowledge-context";
-import { useCreateKBAndMintNFT, useMintNFT } from "@/hooks/api/kb";
+import {
+  useCreateKBAndMintNFT,
+  useMintNFT,
+  useScrapeTwitter,
+} from "@/hooks/api/kb";
 import { useSession } from "next-auth/react";
 import { uploadFileS3 } from "@/app/api/upload/s3/helper";
 import MintNFTModal from "./mint-nft-modal";
@@ -15,6 +19,7 @@ import { DEFAULT_COVER_IMAGE, KF_TITLE } from "@/utils/constants";
 import Tooltip from "@/components/tooltip";
 import { ZodError, z } from "zod";
 import { noMoreThanCharacters } from "@/utils/utils";
+import { TwitterScrapingStatus } from "@/components/twitter-scraping-status";
 
 // export const metadata = {
 //     title: 'SFT - Mosaic',
@@ -52,6 +57,14 @@ export default function NFT() {
   const [sftAddress, setSftAddress] = useState("");
   const [isConfirmModalOpen, setisConfirmModalOpen] = useState(false);
   const [isMinting, setIsMinting] = useState(false);
+
+  const scrapeTwitter = useScrapeTwitter();
+
+  useEffect(() => {
+    if (createKb.type == "twitter" && twitterSession?.user?.username) {
+      scrapeTwitter.mutate({ username: twitterSession?.user?.username });
+    }
+  }, []);
   const mintNFTAPI = useMintNFT();
 
   const formValidation = z.object({
@@ -218,7 +231,12 @@ export default function NFT() {
       />
       <div className="flex flex-col bg-[#292D32] px-6 py-8 pb-14 lg:px-8 xl:px-32">
         <div>
-          <h1 className="text-2xl font-semibold text-white">Mint SFT</h1>
+          <div className="flex items-center justify-between">
+            <h1 className="text-2xl font-semibold text-white">Mint SFT </h1>
+            <div>
+              {createKb.type == "twitter" ? <TwitterScrapingStatus /> : ""}
+            </div>
+          </div>
           <hr className="my-4 border border-gray-600" />
         </div>
         <form>

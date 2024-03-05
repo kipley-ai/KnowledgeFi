@@ -42,7 +42,7 @@ const ChatBotForm = () => {
     tmp: true,
     value: "",
   });
-  const [category, setCategory] = useState("");
+  const [showModal, setShowModal] = useState(false);
   const [categories, setCategories] = useState<Category[]>([]);
   const [profileImage, setProfileImage] = useState("");
   const [profileImageUrl, setProfileImageUrl] = useState("");
@@ -136,7 +136,7 @@ const ChatBotForm = () => {
       },
       {
         async onSuccess() {
-          setStep("free_kfi");
+          setShowModal(true);
         },
       },
     );
@@ -244,11 +244,13 @@ const ChatBotForm = () => {
 
   return (
     <>
-      {/* <CreateChatbotModal
+      <CreateChatbotModal
         children={"Your chatbot has been created successfully!"}
         open={showModal}
         setOpen={setShowModal}
-      /> */}
+        onDone={() => setStep("free_kfi")}
+        onClose={() => setStep("free_kfi")}
+      />
       <div className="-mx-28 flex flex-col py-4 sm:px-6 lg:px-32">
         <div className="mx-5 mb-6 md:mx-32">
           <div className="flex justify-between">
