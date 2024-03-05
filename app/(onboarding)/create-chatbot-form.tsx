@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { useCreateChatbotAPI } from "@/hooks/api/chatbot";
+import { useChatbotPKLStatus, useCreateChatbotAPI } from "@/hooks/api/chatbot";
 import { useCreateChatbotContext } from "./create-knowledge-context";
 import { useGetCategory } from "@/hooks/api/chatbot";
 import { useSession } from "next-auth/react";
@@ -65,6 +65,9 @@ const ChatBotForm = () => {
   const { data: twitterSession } = useSession();
 
   const categoryList = useGetCategory();
+
+  const [ chatbotPKLStatus, setChatbotPKLStatus ] = useState<any>(false);
+  const [ willRefetch, setWillRefetch ] = useState<boolean>(true);
 
   const formValidation = z.object({
     name: z
@@ -192,6 +195,29 @@ const ChatBotForm = () => {
       setToneData("instruction_2");
     }
   }, [mode]);
+  
+  const { data, isFetching, isError, isSuccess, refetch } = useChatbotPKLStatus({
+    kb_id: kbId as string, 
+    willRefetch : willRefetch,
+  });
+
+  useEffect(() => {
+    if (!isFetching && isSuccess && data) {
+      console.log(data.data.status)
+      switch (data.data.status) {
+        case "success":
+          setWillRefetch(false);
+          setChatbotPKLStatus(true);
+          break;
+        case "error":
+          setWillRefetch(true);
+          setChatbotPKLStatus(false);
+          break;
+        default:
+          setWillRefetch(false);
+      }
+    }
+  }, [data]);
 
   const validateForm = () => {
     let errorTmp = {};
@@ -225,21 +251,48 @@ const ChatBotForm = () => {
       /> */}
       <div className="-mx-28 flex flex-col py-4 sm:px-6 lg:px-32">
         <div className="mx-5 mb-6 md:mx-32">
-          <div className="mt-3 flex items-center gap-6">
-            <div
-              className="h-full cursor-pointer"
-              onClick={() => setStep("mint_nft")}
-            >
-              <Image
-                src={"/images/corner-up-left.png"}
-                alt="icon"
-                width={24}
-                height={24}
-              />
+          <div className="flex justify-between">
+            <div className="mt-3 flex items-center gap-6">
+              <div
+                className="h-full cursor-pointer"
+                onClick={() => setStep("mint_nft")}
+              >
+                <Image
+                  src={"/images/corner-up-left.png"}
+                  alt="icon"
+                  width={24}
+                  height={24}
+                />
+              </div>
+              <h1 className="text-2xl font-semibold text-white">
+                CREATE CHATBOT
+              </h1>
             </div>
-            <h1 className="text-2xl font-semibold text-white">
-              CREATE CHATBOT
-            </h1>
+            <div className="flex w-60">
+              {chatbotPKLStatus ? 
+                <>
+                <Image
+                    src={SpinnerCheckIcon}
+                    alt="Profile"
+                    className="mr-3"
+                    width={40}
+                    height={40}
+                  />
+                <span className="text-sm font-light text-white text-wrap">Your Knowledge Asset are ready!</span>
+              </>
+              : 
+                <>
+                  <Image
+                      src={SpinnerIcon}
+                      alt="Profile"
+                      className="animate-spin mr-3"
+                      width={40}
+                      height={40}
+                    />
+                  <span className="text-sm font-light text-white text-wrap">Your Knowledge Asset are vectorising…</span>
+                </>
+              }
+            </div>
           </div>
           <hr className="my-4 border border-gray-600" />
         </div>

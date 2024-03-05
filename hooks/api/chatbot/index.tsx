@@ -10,7 +10,6 @@ import {
   ICreateChatbotParams,
   IChatbotDetailParams,
   IUpdateChatbotParams,
-  IChatbotPKLParams,
   IChatbotList,
 } from "../interfaces";
 import { ChatbotDataListResponse, ChatbotDetailResponse } from "@/lib/types";
@@ -171,7 +170,7 @@ export const useGetChatbotPrice = (params: IChatbotDetailParams) => {
   });
 }
 
-export const useChatbotPKLStatus = (params: IChatbotPKLParams) => {
+export const useChatbotPKLStatus = (params: any) => {
   const { address } = useAccount();
 
   return useQuery({
@@ -182,5 +181,7 @@ export const useChatbotPKLStatus = (params: IChatbotPKLParams) => {
           "x-kf-user-id": address,
         },
       }),
+      refetchInterval: 3000,
+      enabled: params.willRefetch,
   });
 }

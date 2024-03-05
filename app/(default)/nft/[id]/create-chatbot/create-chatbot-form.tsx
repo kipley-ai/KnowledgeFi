@@ -66,10 +66,9 @@ const ChatBotForm = () => {
   const { data: twitterSession } = useSession();
 
   const categoryList = useGetCategory();
-  const chatbotPKLStatus = useChatbotPKLStatus({kb_id: nftData?.data.data.kb_id as string});
-  // const [chatbotPKLStatus, setChatbotPKLStatus] = useState<any>(null);
-  // let getchatbotPKLStatus = useChatbotPKLStatus({kb_id: nftData?.data.data.kb_id as string});
-  // setChatbotPKLStatus(getchatbotPKLStatus.data?.data.status)
+
+  const [ chatbotPKLStatus, setChatbotPKLStatus ] = useState<any>(false);
+  const [ willRefetch, setWillRefetch ] = useState<boolean>(true);
 
   const formValidation = z.object({
     name: z
@@ -196,29 +195,27 @@ const ChatBotForm = () => {
     }
   }, [mode]);
   
-  // useEffect(() => {
-  //   chatbotPKLStatus = useChatbotPKLStatus({kb_id: nftData?.data.data.kb_id as string});
-  // }, [chatbotPKLStatus]);
+  const { data, isFetching, isError, isSuccess, refetch } = useChatbotPKLStatus({
+    kb_id: nftData?.data.data.kb_id as string, 
+    willRefetch : willRefetch,
+  });
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       getchatbotPKLStatus = useChatbotPKLStatus({ kb_id: nftData?.data.data.kb_id as string });
-  //       setChatbotPKLStatus(getchatbotPKLStatus.data?.data.status);
-  //     } catch (error) {
-  //       console.error('Error fetching chatbot pkl status:', error);
-  //     }
-  //   };
-
-  //   // Call fetchData initially
-  //   fetchData();
-
-  //   // Call fetchData every 3 seconds
-  //   const intervalId = setInterval(fetchData, 3000);
-
-  //   // Cleanup interval to avoid memory leaks
-  //   return () => clearInterval(intervalId);
-  // }, [nftData]);
+  useEffect(() => {
+    if (!isFetching && isSuccess && data) {
+      switch (data.data.status) {
+        case "success":
+          setWillRefetch(false);
+          setChatbotPKLStatus(true);
+          break;
+        case "error":
+          setWillRefetch(true);
+          setChatbotPKLStatus(false);
+          break;
+        default:
+          setWillRefetch(false);
+      }
+    }
+  }, [data]);
 
   const validateForm = () => {
     let errorTmp = {};
@@ -258,7 +255,18 @@ const ChatBotForm = () => {
             <h1 className="text-2xl font-semibold text-white">Create Chatbot</h1>
           </div>
           <div className="flex w-60">
-            {chatbotPKLStatus.data?.data.status === "error" ? 
+            {chatbotPKLStatus ? 
+              <>
+              <Image
+                  src={SpinnerCheckIcon}
+                  alt="Profile"
+                  className="mr-3"
+                  width={40}
+                  height={40}
+                />
+              <span className="text-sm font-light text-white text-wrap">Your Knowledge Asset are ready!</span>
+            </>
+            : 
               <>
                 <Image
                     src={SpinnerIcon}
@@ -268,17 +276,6 @@ const ChatBotForm = () => {
                     height={40}
                   />
                 <span className="text-sm font-light text-white text-wrap">Your Knowledge Asset are vectorising…</span>
-              </>
-            : 
-              <>
-                <Image
-                    src={SpinnerCheckIcon}
-                    alt="Profile"
-                    className="mr-3"
-                    width={40}
-                    height={40}
-                  />
-                <span className="text-sm font-light text-white text-wrap">Your Knowledge Asset are ready!</span>
               </>
             }
           </div>
