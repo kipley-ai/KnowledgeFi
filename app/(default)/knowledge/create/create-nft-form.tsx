@@ -15,6 +15,7 @@ import { DEFAULT_COVER_IMAGE, KF_TITLE } from "@/utils/constants";
 import Tooltip from "@/components/tooltip";
 import { ZodError, z } from "zod";
 import { noMoreThanCharacters } from "@/utils/utils";
+import { TwitterScrapingStatus } from "@/components/twitter-scraping-status";
 
 // export const metadata = {
 //     title: 'SFT - Mosaic',
@@ -218,7 +219,12 @@ export default function NFT() {
       />
       <div className="flex flex-col bg-[#292D32] px-6 py-8 pb-14 lg:px-8 xl:px-32">
         <div>
-          <h1 className="text-2xl font-semibold text-white">Mint SFT</h1>
+          <div className="flex items-center justify-between">
+            <h1 className="text-2xl font-semibold text-white">Mint SFT </h1>
+            <div>
+              {createKb.type == "twitter" ? <TwitterScrapingStatus /> : ""}
+            </div>
+          </div>
           <hr className="my-4 border border-gray-600" />
         </div>
         <form>
