@@ -15,6 +15,8 @@ import { DEFAULT_COVER_IMAGE, KF_TITLE } from "@/utils/constants";
 import Tooltip from "@/components/tooltip";
 import Image from "next/image";
 import { noMoreThanCharacters } from "@/utils/utils";
+import SpinnerIcon from "@/public/images/spinner-icon.svg";
+import SpinnerCheckIcon from "@/public/images/spinner-check-icon.svg";
 
 interface Category {
   title: string;

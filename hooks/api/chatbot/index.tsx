@@ -10,6 +10,7 @@ import {
   ICreateChatbotParams,
   IChatbotDetailParams,
   IUpdateChatbotParams,
+  IChatbotPKLParams,
   IChatbotList,
 } from "../interfaces";
 import { ChatbotDataListResponse, ChatbotDetailResponse } from "@/lib/types";
@@ -163,6 +164,20 @@ export const useGetChatbotPrice = (params: IChatbotDetailParams) => {
     queryKey: ["chatbot", "price", params.chatbot_id],
     queryFn: () =>
       axios.post("/api/chatbot/price", params, {
+        headers: {
+          "x-kf-user-id": address,
+        },
+      }),
+  });
+}
+
+export const useChatbotPKLStatus = (params: IChatbotPKLParams) => {
+  const { address } = useAccount();
+
+  return useQuery({
+    queryKey: ["chatbot", "pkl", params.kb_id],
+    queryFn: () =>
+      axios.post("/api/chatbot/pkl", params, {
         headers: {
           "x-kf-user-id": address,
         },

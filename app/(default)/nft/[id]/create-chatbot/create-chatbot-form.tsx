@@ -3,6 +3,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useCreateChatbotAPI } from "@/hooks/api/chatbot";
 import { useCreateChatbotContext } from "./create-chatbot-context";
 import { useGetCategory } from "@/hooks/api/chatbot";
+import { useChatbotPKLStatus } from "@/hooks/api/chatbot";
 import { useSession } from "next-auth/react";
 import CreateChatbotModal from "@/components/toast-4";
 import { useNftDetail } from "@/hooks/api/nft";
@@ -14,7 +15,9 @@ import { useAppProvider } from "@/providers/app-provider";
 import { DEFAULT_COVER_IMAGE, KF_TITLE } from "@/utils/constants";
 import Tooltip from "@/components/tooltip";
 import { noMoreThanCharacters } from "@/utils/utils";
-import Loader from "@/components/loader";
+import SpinnerIcon from "@/public/images/spinner-icon.svg";
+import SpinnerCheckIcon from "@/public/images/spinner-check-icon.svg";
+import Image from "next/image";
 
 interface Category {
   title: string;
@@ -63,6 +66,10 @@ const ChatBotForm = () => {
   const { data: twitterSession } = useSession();
 
   const categoryList = useGetCategory();
+  const chatbotPKLStatus = useChatbotPKLStatus({kb_id: nftData?.data.data.kb_id as string});
+  // const [chatbotPKLStatus, setChatbotPKLStatus] = useState<any>(null);
+  // let getchatbotPKLStatus = useChatbotPKLStatus({kb_id: nftData?.data.data.kb_id as string});
+  // setChatbotPKLStatus(getchatbotPKLStatus.data?.data.status)
 
   const formValidation = z.object({
     name: z
@@ -188,6 +195,30 @@ const ChatBotForm = () => {
       setToneData("instruction_2");
     }
   }, [mode]);
+  
+  // useEffect(() => {
+  //   chatbotPKLStatus = useChatbotPKLStatus({kb_id: nftData?.data.data.kb_id as string});
+  // }, [chatbotPKLStatus]);
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       getchatbotPKLStatus = useChatbotPKLStatus({ kb_id: nftData?.data.data.kb_id as string });
+  //       setChatbotPKLStatus(getchatbotPKLStatus.data?.data.status);
+  //     } catch (error) {
+  //       console.error('Error fetching chatbot pkl status:', error);
+  //     }
+  //   };
+
+  //   // Call fetchData initially
+  //   fetchData();
+
+  //   // Call fetchData every 3 seconds
+  //   const intervalId = setInterval(fetchData, 3000);
+
+  //   // Cleanup interval to avoid memory leaks
+  //   return () => clearInterval(intervalId);
+  // }, [nftData]);
 
   const validateForm = () => {
     let errorTmp = {};
@@ -219,14 +250,43 @@ const ChatBotForm = () => {
         open={showModal}
         setOpen={setShowModal}
       />
+      {/* <div className="flex flex-col bg-[#292D32] py-8 sm:px-6 lg:px-0"> */}
       <div className="flex flex-col bg-[#292D32] py-8 sm:px-6 lg:px-0">
         <div className="mx-5 md:mx-32">
-          <h1 className="text-2xl font-semibold text-white">Create Chatbot</h1>
+        <div className="flex justify-between">
+          <div className="">
+            <h1 className="text-2xl font-semibold text-white">Create Chatbot</h1>
+          </div>
+          <div className="flex w-60">
+            {chatbotPKLStatus.data?.data.status === "error" ? 
+              <>
+                <Image
+                    src={SpinnerIcon}
+                    alt="Profile"
+                    className="animate-spin mr-3"
+                    width={40}
+                    height={40}
+                  />
+                <span className="text-sm font-light text-white text-wrap">Your Knowledge Asset are vectorising…</span>
+              </>
+            : 
+              <>
+                <Image
+                    src={SpinnerCheckIcon}
+                    alt="Profile"
+                    className="mr-3"
+                    width={40}
+                    height={40}
+                  />
+                <span className="text-sm font-light text-white text-wrap">Your Knowledge Asset are ready!</span>
+              </>
+            }
+          </div>
+        </div>
           {/* <h5 className="text-md text-[#7C878E]">
 					Give some general information about your character.
 				</h5> */}
           <hr className="my-4 border border-gray-600" />
-          <Loader/>
         </div>
         <form className="mx-5 flex flex-col md:mx-32" onSubmit={handleSubmit}>
           <div className="flex">

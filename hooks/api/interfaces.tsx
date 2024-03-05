@@ -64,6 +64,10 @@ export interface IUpdateChatbotParams {
   profile_image: string;
 }
 
+export interface IChatbotPKLParams {
+  kb_id: string;
+}
+
 export interface IPaginate {
   page?: number;
   page_size?: number;
