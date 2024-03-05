@@ -18,55 +18,55 @@ export default function OnboardingProgress({ step = 1 }: { step?: number }) {
       <div className="mx-auto w-full max-w-md">
         <div className="relative">
           <div
-            className="absolute left-16 right-10 top-1/4 -mt-px h-0.5  bg-[#50575F]"
+            className="absolute left-12 right-8 top-1/4 -mt-px h-0.5 bg-[#50575F]"
             aria-hidden="true"
           ></div>
-          <ul className="relative flex w-full justify-between">
-            <li className="relative right-9">
+          <ul className="relative flex justify-between">
+            <li className="flex-1">
               <div className="flex justify-center">
-                <span
-                  className="text-[#01F7FF]"
-                >
+                <span className="text-[#01F7FF]">
                   {step > 1 ? <BoxWithNumber number="✓" /> : <BoxWithNumber number={1} />}
                 </span>
               </div>
               <div className="flex justify-center">
-                <span
-                  className={`text-sm font-medium ${step >= 1 ? "text-[#00FFFF]" : "text-[#00FFFF]"}`}
-                >
+                <span className={`text-sm font-medium text-center ${step >= 1 ? "text-[#00FFFF]" : "text-[#00FFFF]"}`}>
                   Select Data Elements
                 </span>
               </div>
             </li>
-            <li>
+            <li className="flex-1">
               <div className="flex justify-center">
-                <span
-                  className="text-[#01F7FF]"
-                >
+                <span className="text-[#01F7FF]">
                   {step > 2 ? <BoxWithNumber number="✓" /> : <BoxWithNumber number={2} />}
                 </span>
               </div>
               <div className="flex justify-center">
-                <span
-                  className={`text-sm font-medium ${step >= 2 ? "text-[#00FFFF]" : "text-[#00FFFF]"}`}
-                >
+                <span className={`text-sm font-medium text-center ${step >= 2 ? "text-[#00FFFF]" : "text-[#00FFFF]"}`}>
                   Mint SFT
                 </span>
               </div>
             </li>
-            <li className="relative left-8">
+            <li className="flex-1">
               <div className="flex justify-center">
-                <span
-                  className="text-[#01F7FF]"
-                >
+                <span className="text-[#01F7FF]">
                   {step > 3 ? <BoxWithNumber number="✓" /> : <BoxWithNumber number={3} />}
                 </span>
               </div>
               <div className="flex justify-center">
-                <span
-                  className={`text-sm font-medium ${step >= 3 ? "text-[#00FFFF]" : "text-[#00FFFF]"}`}
-                >
+                <span className={`text-sm font-medium text-center ${step >= 3 ? "text-[#00FFFF]" : "text-[#00FFFF]"}`}>
                   Create Chatbot
+                </span>
+              </div>
+            </li>
+            <li className="flex-1">
+              <div className="flex justify-center">
+                <span className="text-[#01F7FF]">
+                  {step > 4 ? <BoxWithNumber number="✓" /> : <BoxWithNumber number={4} />}
+                </span>
+              </div>
+              <div className="flex justify-center">
+                <span className={`text-sm font-medium text-center ${step >= 4 ? "text-[#00FFFF]" : "text-[#00FFFF]"}`}>
+                  Get KFI Token
                 </span>
               </div>
             </li>

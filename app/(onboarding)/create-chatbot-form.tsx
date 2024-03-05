@@ -131,7 +131,7 @@ const ChatBotForm = () => {
       },
       {
         async onSuccess() {
-          setStep("onboarding_success");
+          setStep("free_kfi");
         },
       },
     );
