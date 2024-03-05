@@ -8,19 +8,47 @@ import ModalTopUpFailed from "@/components/modal-top-up-failed";
 import Refresh from "public/images/refresh.png";
 import { useCreditBalanceContext } from "./credit-balance-context";
 import { useCreditBalance } from "@/hooks/api/credit";
+import { useRechargeStatus } from "@/hooks/api/user";
 import { useAppProvider } from "@/providers/app-provider";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 
 export default function CreditBalance() {
-  const { modalTopUp, setModalTopUp, topUpStatus, setTopUpStatus, modalTopUpSuccessful, setModalTopUpSuccessful, modalTopUpFailed, setModalTopUpFailed } = useAppProvider();
+  const [ topUpStatus, setTopUpStatus ] = useState<string>("");
+  const [ willRefetch, setWillRefetch ] = useState<boolean>(true);
+  const [ modalTopUpSuccessful, setModalTopUpSuccessful ] = useState<boolean>(false);
+  const [ modalTopUpFailed, setModalTopUpFailed ] = useState<boolean>(false);
+
+  const { modalTopUp, setModalTopUp } = useAppProvider();
   const { creditBalance, setRefetch } = useCreditBalanceContext();
+  
+  const { data, isFetching, isError, isSuccess, refetch } = useRechargeStatus({
+    topUpStatus,
+    willRefetch,
+  });
 
   useEffect(() => {
-    if (topUpStatus === "PENDING") {
-      setTopUpStatus("UNDEFINED");
-      setModalTopUpSuccessful(true);
+    if (!isFetching && isSuccess && data) {
+      switch (data.data.data[0]?.status) {
+        case "success":
+          setTopUpStatus("");
+          setModalTopUpSuccessful(true);
+          setWillRefetch(false);
+          break;
+        case "failed":
+          setTopUpStatus("");
+          setModalTopUpFailed(true);
+          setWillRefetch(false);
+          break;
+        case "processing":
+          setTopUpStatus("processing");
+          setWillRefetch(true);
+          break;
+        default:
+          setTopUpStatus("");
+          setWillRefetch(false);
+      }
     }
-  }, [topUpStatus]);
+  }, [data]);
 
   return (
     <div className="flex w-full flex-col justify-start gap-2 px-5 py-6 text-white">
@@ -70,17 +98,16 @@ export default function CreditBalance() {
           {creditBalance} CREDITS
         </span>
       </p>
-      {/* <ProgressBar current={79.99} total={300} /> */}
-      {topUpStatus === "PENDING" && (
+      {topUpStatus === "processing" && (
         <div className="flex items-center">
           <FaSpinner className="animate-spin" />
-          <span className="ml-2 text-xs font-medium">Processing Top Up...</span>
+          <span className="ml-2 text-xs font-medium">Processing Top-Up...</span>
         </div>
       )}
       <button
         className="mt-2 flex w-full justify-center rounded-md border-2 border-[#01F7FF] px-2 py-2 disabled:brightness-50"
         onClick={() => setModalTopUp(true)}
-        disabled={topUpStatus === "PENDING"}
+        disabled={topUpStatus === "processing"}
       >
         <span className="text-xs font-medium text-[#FCFCFD] duration-200">
           TOP UP CREDITS

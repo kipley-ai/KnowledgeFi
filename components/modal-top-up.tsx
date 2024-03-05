@@ -11,13 +11,7 @@ import ModalTopUpFailed from "./modal-top-up-failed";
 import ModalTopUpPending from "./modal-top-up-pending";
 import { useSwitchToSepolia } from "@/hooks/useSwitchNetwork";
 import { useSwitchToPolygon } from "@/hooks/useSwitchNetwork";
-
-enum Status {
-  Successful = "SUCCESSFUL",
-  Failed = "FAILED",
-  Pending = "PENDING",
-  Undefined = "UNDEFINED",
-}
+import { useAddRecharge } from "@/hooks/api/user";
 
 interface Form {
   amount?: number;
@@ -49,6 +43,8 @@ export default function ModalTopUp({
   const switchToTargetNetwork = isDevelopment ? switchToSepolia : switchToPolygon;
   const targetNetworkName = isDevelopment ? "Sepolia" : "Polygon";
 
+  const addRecharge = useAddRecharge();
+
   const handleFormChange = (name: string, value: any) => {
     setForm({
       ...form,
@@ -69,13 +65,14 @@ export default function ModalTopUp({
       }
 
       const allw = await allowance();
+      let txId;
 
       if (allw < form.amount! * KIP_TOKEN_DECIMAL) {
         setContinueBtn({
           disable: true,
           text: "Topping up...",
         });
-        await approve(bal);
+        txId = await approve(bal);
       }
 
       setContinueBtn({
@@ -83,11 +80,24 @@ export default function ModalTopUp({
         text: "Processing...",
       });
       await recharge(form.amount!);
-      // TODO: API call to update the user's balance
-      setTimeout(() => {
-        setTopUpStatus("PENDING");
-        setIsOpen(false);
-      }, 3000);
+
+      if (txId === undefined || txId === null) {
+        throw new Error("Transaction ID is undefined or null");
+      }
+      addRecharge.mutate(
+        {
+          tx_id: txId,
+        },
+        {
+          onSuccess: () => {
+            setTopUpStatus("processing");
+            setIsOpen(false);
+          },
+          onError: (error) => {
+            console.log(error);
+          },
+        }
+      );
     } catch (error) {
       console.log(error);
     } finally {
