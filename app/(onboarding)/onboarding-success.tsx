@@ -29,7 +29,7 @@ export default function OnboardingSuccess() {
   const router = useRouter();
   return (
     <div className="flex flex-col justify-center px-6 pb-20 pt-6 lg:px-8 xl:px-32">
-      <OnboardingProgress step={4} />
+      <OnboardingProgress step={5} />
       <div
         className={`flex w-[610px] flex-col items-center justify-center self-center rounded-2xl px-7 py-12 text-white ${dmsans.className} font-semibold`}
       >
