@@ -17,6 +17,7 @@ export const TwitterScrapingStatus = ({
     data: scrapeStatus,
     error: scrapeError,
     refetch: refetchScrapeStatus,
+    isFetching: isFetchingScrapeStatus,
   } = useScrapeTwitterStatus({
     username: twitterData?.user?.username!,
   });
@@ -26,14 +27,14 @@ export const TwitterScrapingStatus = ({
       scrapeTwitter.mutate({ username: twitterData?.user?.username });
     }
 
-    const asyncRefetchUntilResult = async () => {
-      while (scrapeStatus?.status === "processing") {
+    const asyncRefetch = async () => {
+      while (true) {
         await refetchScrapeStatus();
         await delay(3000);
       }
     };
 
-    asyncRefetchUntilResult();
+    asyncRefetch();
   }, []);
 
   useEffect(() => {
