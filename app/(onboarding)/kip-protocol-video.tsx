@@ -4,7 +4,9 @@ import GetInvolvedButton from "@/components/GetInvolvedButton/get-involved-butto
 import { useState } from "react";
 
 function KipProtocolVideo() {
+  // Always show the button on dev environment
   const [showButton, setShowButton] = useState(false);
+
   return (
     <div className="flex flex-col items-center justify-center">
       <video

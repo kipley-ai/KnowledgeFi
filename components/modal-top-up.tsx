@@ -40,7 +40,9 @@ export default function ModalTopUp({
 
   // Determine which network is currently active and which switch function to use
   const isTargetNetworkActive = isDevelopment ? isSepolia : isPolygon;
-  const switchToTargetNetwork = isDevelopment ? switchToSepolia : switchToPolygon;
+  const switchToTargetNetwork = isDevelopment
+    ? switchToSepolia
+    : switchToPolygon;
   const targetNetworkName = isDevelopment ? "Sepolia" : "Polygon";
 
   const addRecharge = useAddRecharge();
@@ -65,42 +67,43 @@ export default function ModalTopUp({
       }
 
       const allw = await allowance();
-      let txId;
 
       if (allw < form.amount! * KIP_TOKEN_DECIMAL) {
         setContinueBtn({
           disable: true,
-          text: "Topping up...",
+          text: "Approving...",
         });
-        txId = await approve(bal);
+        const approveTx = await approve(bal);
+        await approveTx.wait();
       }
 
       setContinueBtn({
         disable: true,
-        text: "Processing...",
+        text: "Confirming...",
       });
-      await recharge(form.amount!);
 
-      if (txId === undefined || txId === null) {
-        throw new Error("Transaction ID is undefined or null");
-      }
+      const rechargeTx = await recharge(form.amount!);
+
       addRecharge.mutate(
         {
-          tx_id: txId,
+          tx_id: rechargeTx.hash,
         },
         {
           onSuccess: () => {
             setTopUpStatus("processing");
             setIsOpen(false);
+            setContinueBtn({
+              disable: false,
+              text: "Continue",
+            });
           },
           onError: (error) => {
             console.log(error);
           },
-        }
+        },
       );
     } catch (error) {
       console.log(error);
-    } finally {
       setContinueBtn({
         disable: false,
         text: "Continue",
@@ -183,8 +186,9 @@ export default function ModalTopUp({
         <div className="inline-flex items-center justify-between self-stretch px-5 py-0">
           <div className="grid w-full grid-cols-3 gap-3 font-bold text-white">
             <button
-              className={`flex h-12 flex-col items-center justify-center rounded-3xl border-2 ${form?.amount == 50 ? "border-aqua-700" : "border-[#50575F]"
-                }`}
+              className={`flex h-12 flex-col items-center justify-center rounded-3xl border-2 ${
+                form?.amount == 50 ? "border-aqua-700" : "border-[#50575F]"
+              }`}
               onClick={() => {
                 handleFormChange("amount", 50);
               }}
@@ -192,8 +196,9 @@ export default function ModalTopUp({
               <span className="text-sm font-bold leading-6">50</span>
             </button>
             <button
-              className={`flex h-12 flex-col items-center justify-center rounded-3xl border-2 ${form?.amount == 100 ? "border-aqua-700" : "border-[#50575F]"
-                }`}
+              className={`flex h-12 flex-col items-center justify-center rounded-3xl border-2 ${
+                form?.amount == 100 ? "border-aqua-700" : "border-[#50575F]"
+              }`}
               onClick={() => {
                 handleFormChange("amount", 100);
               }}
@@ -201,8 +206,9 @@ export default function ModalTopUp({
               <span className="text-sm font-bold leading-6">100</span>
             </button>
             <button
-              className={`flex h-12 flex-col items-center justify-center rounded-3xl border-2 ${form?.amount == 300 ? "border-aqua-700" : "border-[#50575F]"
-                }`}
+              className={`flex h-12 flex-col items-center justify-center rounded-3xl border-2 ${
+                form?.amount == 300 ? "border-aqua-700" : "border-[#50575F]"
+              }`}
               onClick={() => {
                 handleFormChange("amount", 300);
               }}
@@ -210,8 +216,9 @@ export default function ModalTopUp({
               <span className="text-sm font-bold leading-6">300</span>
             </button>
             <button
-              className={`flex h-12 flex-col items-center justify-center rounded-3xl border-2 ${form?.amount == 500 ? "border-aqua-700" : "border-[#50575F]"
-                }`}
+              className={`flex h-12 flex-col items-center justify-center rounded-3xl border-2 ${
+                form?.amount == 500 ? "border-aqua-700" : "border-[#50575F]"
+              }`}
               onClick={() => {
                 handleFormChange("amount", 500);
               }}
@@ -219,8 +226,9 @@ export default function ModalTopUp({
               <span className="text-sm font-bold leading-6">500</span>
             </button>
             <button
-              className={`flex h-12 flex-col items-center justify-center rounded-3xl border-2 ${form?.amount == 750 ? "border-aqua-700" : "border-[#50575F]"
-                }`}
+              className={`flex h-12 flex-col items-center justify-center rounded-3xl border-2 ${
+                form?.amount == 750 ? "border-aqua-700" : "border-[#50575F]"
+              }`}
               onClick={() => {
                 handleFormChange("amount", 750);
               }}
@@ -228,8 +236,9 @@ export default function ModalTopUp({
               <span className="text-sm font-bold leading-6">750</span>
             </button>
             <button
-              className={`flex h-12 flex-col items-center justify-center rounded-3xl border-2 ${form?.amount == 1000 ? "border-aqua-700" : "border-[#50575F]"
-                }`}
+              className={`flex h-12 flex-col items-center justify-center rounded-3xl border-2 ${
+                form?.amount == 1000 ? "border-aqua-700" : "border-[#50575F]"
+              }`}
               onClick={() => {
                 handleFormChange("amount", 1000);
               }}
@@ -251,7 +260,9 @@ export default function ModalTopUp({
                 className="flex flex-row items-center justify-center gap-2 rounded-3xl bg-aqua-700 p-2 px-5 hover:brightness-75"
                 onClick={switchToTargetNetwork}
               >
-                <h5 className="font-semibold text-black">Change Network to {targetNetworkName}</h5>
+                <h5 className="font-semibold text-black">
+                  Change Network to {targetNetworkName}
+                </h5>
               </button>
             ) : (
               <button

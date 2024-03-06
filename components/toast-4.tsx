@@ -30,8 +30,8 @@ export default function SuccessFailModal({
   type = "",
   open,
   setOpen,
-  onDone = () => router.push("/nft"),
-  onClose = () => router.push("/nft"),
+  onDone,
+  onClose,
 }: ToastProps) {
   const router = useRouter();
   // TODO: add fail type
@@ -46,7 +46,7 @@ export default function SuccessFailModal({
             className="h-[30px] w-[30px] cursor-pointer"
             src={CrossIcon}
             alt="cross icon"
-            onClick={onClose}
+            onClick={onClose || (() => router.push("/nft"))}
           />
         </div>
         <div
@@ -60,7 +60,7 @@ export default function SuccessFailModal({
           {children}
         </div>
         <button
-          onClick={onDone}
+          onClick={onDone || (() => router.push("/nft"))}
           className="w-full rounded-3xl bg-[#353945] py-2 text-sm text-[#01F7FF]"
         >
           Done

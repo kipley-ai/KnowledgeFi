@@ -32,7 +32,7 @@ const ChatbotInfo = () => {
           height={24}
         />
       </button>
-      <div className="box mb-2 flex w-full flex-col divide-y-2 divide-aqua-700">
+      <div className="mb-2 flex w-full flex-col divide-y-2 divide-aqua-700 border-2 border-aqua-700">
         <div className="px-6">
           <h1
             className="font-semibold text-aqua-700 md:text-2xl"
@@ -76,7 +76,7 @@ const ChatbotInfo = () => {
               </a>
             </div>
           </div>
-          <div className="absolute bottom-0 left-20 top-0 m-auto h-3/6 w-7/12 border-b-2 border-l-2 border-aqua-700 bg-transparent sm:w-9/12 xl:w-10/12"></div>
+          <div className="box absolute bottom-0 left-20 top-0 m-auto h-3/6 w-7/12 bg-transparent sm:w-9/12 xl:w-10/12"></div>
         </div>
       </div>
     </div>
