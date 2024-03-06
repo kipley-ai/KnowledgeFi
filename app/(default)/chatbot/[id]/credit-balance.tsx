@@ -13,42 +13,46 @@ import { useAppProvider } from "@/providers/app-provider";
 import { useState, useEffect } from "react";
 
 export default function CreditBalance() {
-  const [ topUpStatus, setTopUpStatus ] = useState<string>("");
-  const [ willRefetch, setWillRefetch ] = useState<boolean>(true);
-  const [ modalTopUpSuccessful, setModalTopUpSuccessful ] = useState<boolean>(false);
-  const [ modalTopUpFailed, setModalTopUpFailed ] = useState<boolean>(false);
+  const [topUpStatus, setTopUpStatus] = useState<string>("");
+  const [willRefetch, setWillRefetch] = useState<boolean>(true);
+  const [modalTopUpSuccessful, setModalTopUpSuccessful] =
+    useState<boolean>(false);
+  const [modalTopUpFailed, setModalTopUpFailed] = useState<boolean>(false);
 
   const { modalTopUp, setModalTopUp } = useAppProvider();
   const { creditBalance, setRefetch } = useCreditBalanceContext();
-  
-  const { data, isFetching, isError, isSuccess, refetch } = useRechargeStatus({
-    topUpStatus,
-    willRefetch,
-  });
+
+  const { data } = useRechargeStatus({ willRefetch });
 
   useEffect(() => {
-    if (!isFetching && isSuccess && data) {
-      switch (data.data.data[0]?.status) {
-        case "success":
-          setTopUpStatus("");
-          setModalTopUpSuccessful(true);
-          setWillRefetch(false);
-          break;
-        case "failed":
-          setTopUpStatus("");
-          setModalTopUpFailed(true);
-          setWillRefetch(false);
-          break;
-        case "processing":
-          setTopUpStatus("processing");
-          setWillRefetch(true);
-          break;
-        default:
-          setTopUpStatus("");
-          setWillRefetch(false);
+    if (data) {
+      if (topUpStatus === "processing") {
+        switch (data.data.data[0]?.status) {
+          case "success":
+            setModalTopUpSuccessful(true);
+            setWillRefetch(false);
+            setTopUpStatus("");
+            break;
+          case "failed":
+            setModalTopUpFailed(true);
+            setWillRefetch(false);
+            setTopUpStatus("");
+            break;
+          default:
+            setWillRefetch(true);
+        }
+      } else if (topUpStatus === "") {
+        switch (data.data.data[0]?.status) {
+          case "processing":
+            setTopUpStatus("processing");
+            setWillRefetch(true);
+            break;
+          default:
+            setWillRefetch(false);
+        }
       }
     }
-  }, [data]);
+  }, [data, topUpStatus]);
 
   return (
     <div className="flex w-full flex-col justify-start gap-2 px-5 py-6 text-white">
@@ -113,9 +117,19 @@ export default function CreditBalance() {
           TOP UP CREDITS
         </span>
       </button>
-      <ModalTopUpSuccessful isOpen={modalTopUpSuccessful} setIsOpen={setModalTopUpSuccessful} />
-      <ModalTopUpFailed isOpen={modalTopUpFailed} setIsOpen={setModalTopUpFailed} />
-      <ModalTopUp isOpen={modalTopUp} setIsOpen={setModalTopUp} setTopUpStatus={setTopUpStatus} />
+      <ModalTopUpSuccessful
+        isOpen={modalTopUpSuccessful}
+        setIsOpen={setModalTopUpSuccessful}
+      />
+      <ModalTopUpFailed
+        isOpen={modalTopUpFailed}
+        setIsOpen={setModalTopUpFailed}
+      />
+      <ModalTopUp
+        isOpen={modalTopUp}
+        setIsOpen={setModalTopUp}
+        setTopUpStatus={setTopUpStatus}
+      />
     </div>
   );
 }

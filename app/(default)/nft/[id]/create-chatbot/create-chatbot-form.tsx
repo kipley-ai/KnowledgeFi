@@ -67,8 +67,8 @@ const ChatBotForm = () => {
 
   const categoryList = useGetCategory();
 
-  const [ chatbotPKLStatus, setChatbotPKLStatus ] = useState<any>(false);
-  const [ willRefetch, setWillRefetch ] = useState<boolean>(true);
+  const [chatbotPKLStatus, setChatbotPKLStatus] = useState<any>(false);
+  const [willRefetch, setWillRefetch] = useState<boolean>(true);
 
   const formValidation = z.object({
     name: z
@@ -194,11 +194,13 @@ const ChatBotForm = () => {
       setToneData("instruction_2");
     }
   }, [mode]);
-  
-  const { data, isFetching, isError, isSuccess, refetch } = useChatbotPKLStatus({
-    kb_id: nftData?.data.data.kb_id as string, 
-    willRefetch : willRefetch,
-  });
+
+  const { data, isFetching, isError, isSuccess, refetch } = useChatbotPKLStatus(
+    {
+      kb_id: nftData?.data?.data.kb_id as string,
+      willRefetch: willRefetch,
+    },
+  );
 
   useEffect(() => {
     if (!isFetching && isSuccess && data) {
@@ -250,36 +252,42 @@ const ChatBotForm = () => {
       {/* <div className="flex flex-col bg-[#292D32] py-8 sm:px-6 lg:px-0"> */}
       <div className="flex flex-col bg-[#292D32] py-8 sm:px-6 lg:px-0">
         <div className="mx-5 md:mx-32">
-        <div className="flex justify-between">
-          <div className="">
-            <h1 className="text-2xl font-semibold text-white">Create Chatbot</h1>
-          </div>
-          <div className="flex w-60">
-            {chatbotPKLStatus ? 
-              <>
-              <Image
-                  src={SpinnerCheckIcon}
-                  alt="Profile"
-                  className="mr-3"
-                  width={40}
-                  height={40}
-                />
-              <span className="text-sm font-light text-white text-wrap">Your Knowledge Asset are ready!</span>
-            </>
-            : 
-              <>
-                <Image
-                    src={SpinnerIcon}
+          <div className="flex justify-between">
+            <div className="">
+              <h1 className="text-2xl font-semibold text-white">
+                Create Chatbot
+              </h1>
+            </div>
+            <div className="flex w-60">
+              {chatbotPKLStatus ? (
+                <>
+                  <Image
+                    src={SpinnerCheckIcon}
                     alt="Profile"
-                    className="animate-spin mr-3"
+                    className="mr-3"
                     width={40}
                     height={40}
                   />
-                <span className="text-sm font-light text-white text-wrap">Your Knowledge Asset are vectorising…</span>
-              </>
-            }
+                  <span className="text-wrap text-sm font-light text-white">
+                    Your Knowledge Asset are ready!
+                  </span>
+                </>
+              ) : (
+                <>
+                  <Image
+                    src={SpinnerIcon}
+                    alt="Profile"
+                    className="mr-3 animate-spin"
+                    width={40}
+                    height={40}
+                  />
+                  <span className="text-wrap text-sm font-light text-white">
+                    Your Knowledge Asset are vectorising…
+                  </span>
+                </>
+              )}
+            </div>
           </div>
-        </div>
           {/* <h5 className="text-md text-[#7C878E]">
 					Give some general information about your character.
 				</h5> */}

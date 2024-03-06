@@ -231,7 +231,7 @@ export const useRechargeStatus = (params: any) => {
           },
         },
       ),
-    refetchInterval: 5000,
+    refetchInterval: 3000,
     enabled: params.willRefetch,
   });
 };
