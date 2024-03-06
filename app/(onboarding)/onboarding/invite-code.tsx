@@ -17,12 +17,12 @@ const InviteCode = ({ address }: InviteCodeProps) => {
 
   const { setStep } = useCreateChatbotContext();
 
-  useEffect(() => {
-		// Skip invite code step if on dev
-    if (process.env.NEXT_PUBLIC_ENV_DEV == "1") {
-      setStep("data_source");
-    }
-  }, []);
+  // useEffect(() => {
+  // 	// Skip invite code step if on dev
+  //   if (process.env.NEXT_PUBLIC_ENV_DEV == "1") {
+  //     setStep("data_source");
+  //   }
+  // }, []);
 
   const { data: isWl, isLoading } = useIsWhitelisted();
 
