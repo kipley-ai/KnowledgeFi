@@ -273,9 +273,9 @@ const NoChatbot = () => {
   const { id } = useParams();
   return (
     <div className="h-full pt-4 md:pt-10">
-      <div className="relative w-full rounded-3xl bg-[#151515]">
+      <div className="relative w-full rounded-xl bg-[#2e2d2d] bg-opacity-40">
         <Image
-          className=" w-full rounded-3xl"
+          className="w-full rounded-lg"
           src={link_nft_chatbot}
           alt={"background"}
         />
@@ -293,7 +293,7 @@ const NoChatbot = () => {
           </h1> */}
           <Link href={"/nft/" + id + "/create-chatbot"}>
             {/* <h1 className="w-fit rounded-full bg-[#01F7FF] px-8 py-1 text-xs font-semibold text-[#292D32] md:py-3 md:text-base"> */}
-            <h1 className="w-fit rounded-full bg-[#01F7FF] px-8 py-1 text-xs font-semibold text-[#292D32] md:py-3 md:text-2xl">
+            <h1 className="w-fit rounded-md bg-[#01F7FF] px-8 py-1 text-xs font-semibold text-[#292D32] md:py-3 md:text-2xl">
               Link Your SFT to Chatbot
             </h1>
           </Link>
