@@ -28,8 +28,7 @@ export async function approve(value: BigInt) {
     process.env.NEXT_PUBLIC_KIP_PROTOCOL_CONTRACT_ADDRESS!,
     value,
   );
-  await tx.wait();
-  return tx.hash;
+  return await tx.wait();
 }
 
 export async function allowance() {

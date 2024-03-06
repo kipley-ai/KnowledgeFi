@@ -65,21 +65,28 @@ export default function ModalTopUp({
       }
 
       const allw = await allowance();
-      let txId;
+      console.log('allw :>> ', allw);
 
       if (allw < form.amount! * KIP_TOKEN_DECIMAL) {
         setContinueBtn({
           disable: true,
-          text: "Topping up...",
+          text: "Approving...",
         });
-        txId = await approve(bal);
+        await approve(bal);
       }
+
+      setContinueBtn({
+        disable: true,
+        text: "Confirming...",
+      });
+
+      const txId = await recharge(form.amount!);
+      console.log('txId :>> ', txId);
 
       setContinueBtn({
         disable: true,
         text: "Processing...",
       });
-      await recharge(form.amount!);
 
       if (txId === undefined || txId === null) {
         throw new Error("Transaction ID is undefined or null");
@@ -92,6 +99,10 @@ export default function ModalTopUp({
           onSuccess: () => {
             setTopUpStatus("processing");
             setIsOpen(false);
+            setContinueBtn({
+              disable: false,
+              text: "Continue",
+            });
           },
           onError: (error) => {
             console.log(error);
@@ -100,7 +111,6 @@ export default function ModalTopUp({
       );
     } catch (error) {
       console.log(error);
-    } finally {
       setContinueBtn({
         disable: false,
         text: "Continue",
