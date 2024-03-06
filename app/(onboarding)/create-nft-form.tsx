@@ -13,6 +13,7 @@ import {
 import { useSession } from "next-auth/react";
 import { uploadFileS3 } from "@/app/api/upload/s3/helper";
 import MintNFTModal from "./mint-nft-modal";
+import ScrapeFailModal from "@/components/scrape-fail-modal";
 import ImageInput from "@/components/image-input";
 import LoadingIcon from "public/images/loading-icon.svg";
 import MintConfirmationModal from "@/components/modal-mint-confirmation";
@@ -41,6 +42,7 @@ interface Form {
 export default function NFT() {
   const { setHeaderTitle, toast, setToast } = useAppProvider();
   const [showModal, setShowModal] = useState(false);
+  const [showFailModal, setShowFailModal] = useState(false);
   const createKBandMintNFT = useCreateKBAndMintNFT();
   const { createKb, createNft } = useCreateChatbotContext();
   const [category, setCategory] = useState("");
@@ -225,6 +227,11 @@ export default function NFT() {
         setOpen={setShowModal}
         kbIdCreated={nftIdCreated}
       />
+      <ScrapeFailModal
+        children={"Sorry, Something went wrong. Please try again."}
+        open={showFailModal}
+        setOpen={setShowFailModal}
+      />
       <div className="flex flex-col px-6 py-4 pb-14 lg:px-8 xl:px-32">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-6">
@@ -242,7 +249,11 @@ export default function NFT() {
             <h1 className="text-2xl font-semibold text-white">MINT SFT</h1>
           </div>
           <div>
-            {createKb.type == "twitter" ? <TwitterScrapingStatus /> : ""}
+            {createKb.type == "twitter" ? (
+              <TwitterScrapingStatus setShowFailModal={setShowFailModal} />
+            ) : (
+              ""
+            )}
           </div>
         </div>
         <hr className="my-4 border border-gray-600" />

@@ -4,14 +4,18 @@ import GetInvolvedButton from "@/components/GetInvolvedButton/get-involved-butto
 import { useState } from "react";
 
 function KipProtocolVideo() {
-  const [showButton, setShowButton] = useState(false);
+  // Always show the button on dev environment
+  const [showButton, setShowButton] = useState(
+    process.env.NEXT_PUBLIC_ENV_DEV == "1" ? true : false,
+  );
+
   return (
     <div className="flex flex-col items-center justify-center">
       <video
         src="/videos/kip-protocol-concept.mp4"
         autoPlay
         muted
-        onEnded={() => setShowButton(true)}
+        onEnded={() => setShowButton(false)}
         playsInline
       />
       {showButton && (

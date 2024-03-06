@@ -32,7 +32,8 @@ export default function Onboarding() {
   if (status === "connected" && (sign || verifStatus === "authenticated")) {
     if (
       userDetail?.data?.status !== "error" &&
-      userDetail?.data?.data.onboarding
+      userDetail?.data?.data.onboarding &&
+      (process.env.NEXT_PUBLIC_ENV_DEV == "1" ? false : true) // Dont skip onboarding in dev
     ) {
       return redirect("/dashboard");
     }
