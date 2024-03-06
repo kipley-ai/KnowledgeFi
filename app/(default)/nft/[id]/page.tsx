@@ -24,8 +24,8 @@ const NFTSection = ({ nftDetail }: { nftDetail: any }) => {
           className="rounded-xl"
           src={nftDetail.profile_image}
           alt="nft image"
-          width={600}
-          height={600}
+          width={368}
+          height={368}
         />
       </div>
       <div className="">
@@ -69,12 +69,14 @@ const NFTSection = ({ nftDetail }: { nftDetail: any }) => {
           <h3 className="text-center text-xl font-bold md:text-left md:text-4xl">
             Data Info
           </h3>
-          <button className="border border-[#00EBFF] text-white font-bold py-2 px-4 rounded inline-flex items-center">
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path fill-rule="evenodd" clip-rule="evenodd" d="M14.8 2H13.2L13.2 3.6H11.6V5.2H10V6.8H8.4V8.4H6.8V10H5.2V11.6H3.6V13.2L2 13.2V16.4V18H3.6H6.8V16.4L8.4 16.4V14.8H10V13.2L11.6 13.2V11.6H13.2V10H14.8V8.4H16.4V6.8H18V5.2H16.4L16.4 3.6H14.8V2ZM14.8 8.4H13.2L13.2 10H11.6V11.6H10V13.2H8.4V14.8H6.8V13.2L5.2 13.2V11.6H6.8V10H8.4V8.4H10V6.8H11.6V5.2H13.2L13.2 6.8H14.8V8.4ZM5.2 13.2H3.6V16.4H6.8V14.8H5.2V13.2Z" fill="#00EBFF" />
-            </svg>
-            <span>Manage Data</span>
-          </button>
+          <Link href={"/chatbot/" + nftDetail.chatbot_id + "/edit"}>
+            <button className="border border-[#00EBFF] text-white font-bold py-2 px-4 rounded inline-flex items-center">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M14.8 2H13.2L13.2 3.6H11.6V5.2H10V6.8H8.4V8.4H6.8V10H5.2V11.6H3.6V13.2L2 13.2V16.4V18H3.6H6.8V16.4L8.4 16.4V14.8H10V13.2L11.6 13.2V11.6H13.2V10H14.8V8.4H16.4V6.8H18V5.2H16.4L16.4 3.6H14.8V2ZM14.8 8.4H13.2L13.2 10H11.6V11.6H10V13.2H8.4V14.8H6.8V13.2L5.2 13.2V11.6H6.8V10H8.4V8.4H10V6.8H11.6V5.2H13.2L13.2 6.8H14.8V8.4ZM5.2 13.2H3.6V16.4H6.8V14.8H5.2V13.2Z" fill="#00EBFF" />
+              </svg>
+              <span>Manage Data</span>
+            </button>
+          </Link>
         </div>
         <div className="bg-[#1D1D1D] p-4 rounded mt-2">
           <div className="flex flex-grow justify-between">
@@ -84,14 +86,8 @@ const NFTSection = ({ nftDetail }: { nftDetail: any }) => {
         </div>
         <div className="bg-[#1D1D1D] p-4 rounded mt-2">
           <div className="flex flex-grow justify-between">
-            <span className="block text-[#7C878E] text-sm font-bold">Data Files Count</span>
-            <span className="block text-white text-sm"></span>
-          </div>
-        </div>
-        <div className="bg-[#1D1D1D] p-4 rounded mt-2">
-          <div className="flex flex-grow justify-between">
-            <span className="block text-[#7C878E] text-sm font-bold">Last Updated</span>
-            <span className="block text-sm">{nftDetail.created_at}</span>
+            <span className="block text-[#7C878E] text-sm font-bold">Last Update Time</span>
+            <span className="block text-sm">{nftDetail.created}</span>
           </div>
         </div>
       </div>
@@ -119,12 +115,12 @@ const ChatbotSection = ({
           />
           <h1 className="text-6xl font-semibold md:text-3xl">
             {chatbotDetail.name}
-            {console.log(chatbotDetail)}
+            {/* {console.log(chatbotDetail)} */}
           </h1>
         </div>
         <div>
           <Link href={"/chatbot/" + chatbotDetail.chatbot_id + "/edit"}>
-            <button className="border border-[#00EBFF] text-white font-bold py-2 px-4 rounded inline-flex items-start">
+            <button className="border border-[#00EBFF] text-white font-bold py-2 px-4 rounded inline-flex">
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path fill-rule="evenodd" clip-rule="evenodd" d="M14.8 2H13.2L13.2 3.6H11.6V5.2H10V6.8H8.4V8.4H6.8V10H5.2V11.6H3.6V13.2L2 13.2V16.4V18H3.6H6.8V16.4L8.4 16.4V14.8H10V13.2L11.6 13.2V11.6H13.2V10H14.8V8.4H16.4V6.8H18V5.2H16.4L16.4 3.6H14.8V2ZM14.8 8.4H13.2L13.2 10H11.6V11.6H10V13.2H8.4V14.8H6.8V13.2L5.2 13.2V11.6H6.8V10H8.4V8.4H10V6.8H11.6V5.2H13.2L13.2 6.8H14.8V8.4ZM5.2 13.2H3.6V16.4H6.8V14.8H5.2V13.2Z" fill="#00EBFF" />
               </svg>
