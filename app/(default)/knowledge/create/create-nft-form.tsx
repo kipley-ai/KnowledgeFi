@@ -20,6 +20,7 @@ import Tooltip from "@/components/tooltip";
 import { ZodError, z } from "zod";
 import { noMoreThanCharacters } from "@/utils/utils";
 import { TwitterScrapingStatus } from "@/components/twitter-scraping-status";
+import ScrapeFailModal from "@/components/scrape-fail-modal";
 
 // export const metadata = {
 //     title: 'SFT - Mosaic',
@@ -58,13 +59,8 @@ export default function NFT() {
   const [isConfirmModalOpen, setisConfirmModalOpen] = useState(false);
   const [isMinting, setIsMinting] = useState(false);
 
-  const scrapeTwitter = useScrapeTwitter();
+  const [showFailModal, setShowFailModal] = useState(false);
 
-  useEffect(() => {
-    if (createKb.type == "twitter" && twitterSession?.user?.username) {
-      scrapeTwitter.mutate({ username: twitterSession?.user?.username });
-    }
-  }, []);
   const mintNFTAPI = useMintNFT();
 
   const formValidation = z.object({
@@ -229,12 +225,21 @@ export default function NFT() {
         setOpen={setShowModal}
         kbIdCreated={nftIdCreated}
       />
+      <ScrapeFailModal
+        children={"Sorry, Something went wrong. Please try again."}
+        open={showFailModal}
+        setOpen={setShowFailModal}
+      />
       <div className="flex flex-col bg-[#292D32] px-6 py-8 pb-14 lg:px-8 xl:px-32">
         <div>
           <div className="flex items-center justify-between">
             <h1 className="text-2xl font-semibold text-white">Mint SFT </h1>
             <div>
-              {createKb.type == "twitter" ? <TwitterScrapingStatus /> : ""}
+              {createKb.type == "twitter" ? (
+                <TwitterScrapingStatus setShowFailModal={setShowFailModal} />
+              ) : (
+                ""
+              )}
             </div>
           </div>
           <hr className="my-4 border border-gray-600" />
