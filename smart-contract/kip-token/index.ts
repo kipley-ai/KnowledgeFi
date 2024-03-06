@@ -28,7 +28,8 @@ export async function approve(value: BigInt) {
     process.env.NEXT_PUBLIC_KIP_PROTOCOL_CONTRACT_ADDRESS!,
     value,
   );
-  return await tx.wait();
+  await tx.wait();
+  return tx.hash;
 }
 
 export async function allowance() {
@@ -44,4 +45,10 @@ export async function balanceOf() {
   const signer = await getSigner();
   const { contractWrite } = await getKipTokenContract();
   return await contractWrite.balanceOf(signer.address);
+}
+
+export async function mintToken(amount: number) {
+  const signer = await getSigner();
+  const { contractWrite } = await getKipTokenContract();
+  return await contractWrite.mint(signer.address, BigInt(amount));
 }

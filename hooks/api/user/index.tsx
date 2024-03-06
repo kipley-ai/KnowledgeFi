@@ -202,3 +202,36 @@ export const useIsWhitelisted = () => {
       ),
   });
 };
+
+export const useAddRecharge = () => {
+  const { address } = useAccount();
+
+  return useMutation({
+    mutationFn: (params: { tx_id: string }) =>
+      axios.post("/api/user/add-recharge", params, {
+        headers: {
+          "x-kf-user-id": address,
+        },
+      }),
+  });
+};
+
+export const useRechargeStatus = (params: any) => {
+  const { address } = useAccount();
+
+  return useQuery({
+    queryKey: ["recharge-status"],
+    queryFn: () =>
+      axios.post(
+        "/api/user/recharge-status",
+        {},
+        {
+          headers: {
+            "x-kf-user-id": address,
+          },
+        },
+      ),
+    refetchInterval: 5000,
+    enabled: params.willRefetch,
+  });
+};

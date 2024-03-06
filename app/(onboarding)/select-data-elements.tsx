@@ -14,6 +14,7 @@ import Local from "./local";
 import Notion from "./notion";
 import ModalLoginTwitter from "@/components/modal-login-twitter";
 import OnboardingProgress from "./onboarding-progress";
+import { KF_TITLE } from "@/utils/constants";
 
 export type PossibleOption =
   | "files"
@@ -38,8 +39,9 @@ export default function SelectDataElements() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const nextStep = searchParams.get("nextStep");
+  const nextType = searchParams.get("nextType");
 
-  const title = "Create Knowledge Assets";
+  const title = KF_TITLE + "Create Knowledge Assets";
   const { setHeaderTitle } = useAppProvider();
 
   useEffect(() => {
@@ -62,7 +64,8 @@ export default function SelectDataElements() {
   const { modalLogin: showTwitterLogin, setModalLogin: setShowTwitterLogin } =
     useAppProvider();
 
-  const { isComingSoon, step, setStep } = useCreateChatbotContext();
+  const { isComingSoon, step, setStep, handleChangeKb } =
+    useCreateChatbotContext();
 
   const comingSoon: PossibleOption[] = ["notion"];
 
@@ -88,7 +91,8 @@ export default function SelectDataElements() {
   // if (mintNFTRedirect === "true" && twitterStatus == "authenticated") {
   // setStep("mint_nft"); // sessionStorage.removeItem("mintNFTRedirect");
   // }
-  if (nextStep && nextStep !== "") {
+  if (nextStep && nextStep !== "" && nextType && nextType !== "") {
+    handleChangeKb("type", nextType);
     setStep(nextStep);
     router.push("/onboarding");
   }
@@ -98,7 +102,7 @@ export default function SelectDataElements() {
       <ModalLoginTwitter
         isOpen={showTwitterLogin}
         setIsOpen={setShowTwitterLogin}
-        redirectUrl="/onboarding?nextStep=mint_nft"
+        redirectUrl="/onboarding?nextStep=mint_nft&nextType=twitter"
       />
       {step == "data_source" ? (
         <div className="flex flex-col px-6 pb-20 lg:px-8 xl:px-32">

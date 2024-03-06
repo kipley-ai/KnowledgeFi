@@ -16,6 +16,7 @@ import { useUserDetail } from "@/hooks/api/user";
 import { redirect, useRouter } from "next/navigation";
 import KipProtocolVideo from "../kip-protocol-video";
 import { useState } from "react";
+import FreeKFI from "../free-kfi-token";
 
 export default function Onboarding() {
   const sign = localStorage.getItem("kip-protocol-signature");
@@ -46,6 +47,8 @@ export default function Onboarding() {
           <MintNFT />
         ) : step == "create_chatbot" ? (
           <CreateChatbot />
+        ) : step == "free_kfi" ? (
+          <FreeKFI />
         ) : step == "onboarding_success" ? (
           <OnboardingSuccess />
         ) : (

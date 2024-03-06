@@ -22,7 +22,7 @@ export interface ICreateChatbotParams {
   kb_id: string;
   price_per_query: number;
   // category_id: string;
-  // description: string;
+  description: string;
   // instruction: string;
   // example_conversation: string;
 }

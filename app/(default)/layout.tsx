@@ -2,9 +2,14 @@
 import Sidebar from "@/components/ui/sidebar";
 import Header from "@/components/ui/header";
 import { useAccount } from "wagmi";
+import { useEffect } from "react";
 import { redirect } from "next/navigation";
 import { usePathname } from "next/navigation";
 import { useUserDetail } from "@/hooks/api/user";
+import { useAppProvider } from "@/providers/app-provider";
+
+import ModalTopUpSuccessful from "@/components/modal-top-up-successful";
+import ModalTopUpFailed from "@/components/modal-top-up-failed";
 
 export default function DefaultLayout({
   children,
@@ -15,6 +20,15 @@ export default function DefaultLayout({
   const pathname = usePathname();
 
   const { data: userDetail, isLoading, isSuccess } = useUserDetail();
+
+  const {
+    topUpStatus,
+    setTopUpStatus,
+    modalTopUpSuccessful,
+    setModalTopUpSuccessful,
+    modalTopUpFailed,
+    setModalTopUpFailed,
+  } = useAppProvider();
 
   if (isLoading) return null;
 
@@ -34,6 +48,8 @@ export default function DefaultLayout({
           {pathname === "/knowledge/create/iframe" ? null : <Sidebar />}
 
           {/* Content area */}
+          <ModalTopUpSuccessful isOpen={modalTopUpSuccessful} setIsOpen={setModalTopUpSuccessful} />
+          <ModalTopUpFailed isOpen={modalTopUpFailed} setIsOpen={setModalTopUpFailed} />
           <div className="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden rounded-lg border-gray-700 bg-stone-800 lg:bg-neutral-900 lg:p-6 lg:pl-0">
             <div className="h-dvh rounded-lg border border-gray-700">
               {/*  Site header */}

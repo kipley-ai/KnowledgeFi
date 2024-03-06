@@ -3,17 +3,21 @@ import { useParams, useRouter } from "next/navigation";
 import { useCreateChatbotAPI } from "@/hooks/api/chatbot";
 import { useCreateChatbotContext } from "./create-chatbot-context";
 import { useGetCategory } from "@/hooks/api/chatbot";
+import { useChatbotPKLStatus } from "@/hooks/api/chatbot";
 import { useSession } from "next-auth/react";
 import CreateChatbotModal from "@/components/toast-4";
 import { useNftDetail } from "@/hooks/api/nft";
-import LoadingIcon from "public/images/loading-icon.svg";
+// import LoadingIcon from "public/images/loading-icon.svg";
 import ImageInput from "@/components/image-input-2";
 import { ZodError, number, string, z } from "zod";
 import Switcher from "@/components/switcher";
 import { useAppProvider } from "@/providers/app-provider";
-import { DEFAULT_COVER_IMAGE } from "@/utils/constants";
+import { DEFAULT_COVER_IMAGE, KF_TITLE } from "@/utils/constants";
 import Tooltip from "@/components/tooltip";
 import { noMoreThanCharacters } from "@/utils/utils";
+import SpinnerIcon from "@/public/images/spinner-icon.svg";
+import SpinnerCheckIcon from "@/public/images/spinner-check-icon.svg";
+import Image from "next/image";
 
 interface Category {
   title: string;
@@ -33,9 +37,12 @@ const ChatBotForm = () => {
     setHeaderTitle("");
   }, []);
 
-  const title = "Create Chatbot";
+  const title = KF_TITLE + "Create Chatbot";
   const { setHeaderTitle } = useAppProvider();
-  const [description, setDescription] = useState("");
+  const [description, setDescription] = useState({
+    tmp: true,
+    value: "",
+  });
   const [category, setCategory] = useState("");
   const [categories, setCategories] = useState<Category[]>([]);
   const [profileImage, setProfileImage] = useState("");
@@ -60,6 +67,9 @@ const ChatBotForm = () => {
 
   const categoryList = useGetCategory();
 
+  const [ chatbotPKLStatus, setChatbotPKLStatus ] = useState<any>(false);
+  const [ willRefetch, setWillRefetch ] = useState<boolean>(true);
+
   const formValidation = z.object({
     name: z
       .string({
@@ -81,6 +91,15 @@ const ChatBotForm = () => {
       [name]: value,
     });
   };
+
+  useEffect(() => {
+    if (form.name && description.tmp) {
+      setDescription({
+        tmp: true,
+        value: `This is the AI Chatbot Twin of ${form.name}`,
+      });
+    }
+  }, [form.name]);
 
   if (twitterSession?.user) {
     twitterSession?.user?.username;
@@ -111,7 +130,7 @@ const ChatBotForm = () => {
         tone: toneData,
         price_per_query: form.pricePerQuery as number,
         // category_id: category,
-        // description: description,
+        description: description.value,
         // instruction: instructions,
         // example_conversation: example,
       },
@@ -154,7 +173,7 @@ const ChatBotForm = () => {
   // `;
 
   useEffect(() => {
-    const title = "Create Chatbot";
+    const title = KF_TITLE + "Create Chatbot";
     document.title = title;
 
     return () => setHeaderTitle("");
@@ -175,6 +194,28 @@ const ChatBotForm = () => {
       setToneData("instruction_2");
     }
   }, [mode]);
+  
+  const { data, isFetching, isError, isSuccess, refetch } = useChatbotPKLStatus({
+    kb_id: nftData?.data.data.kb_id as string, 
+    willRefetch : willRefetch,
+  });
+
+  useEffect(() => {
+    if (!isFetching && isSuccess && data) {
+      switch (data.data.status) {
+        case "success":
+          setWillRefetch(false);
+          setChatbotPKLStatus(true);
+          break;
+        case "error":
+          setWillRefetch(true);
+          setChatbotPKLStatus(false);
+          break;
+        default:
+          setWillRefetch(false);
+      }
+    }
+  }, [data]);
 
   const validateForm = () => {
     let errorTmp = {};
@@ -206,9 +247,39 @@ const ChatBotForm = () => {
         open={showModal}
         setOpen={setShowModal}
       />
+      {/* <div className="flex flex-col bg-[#292D32] py-8 sm:px-6 lg:px-0"> */}
       <div className="flex flex-col bg-[#292D32] py-8 sm:px-6 lg:px-0">
         <div className="mx-5 md:mx-32">
-          <h1 className="text-2xl font-semibold text-white">Create Chatbot</h1>
+        <div className="flex justify-between">
+          <div className="">
+            <h1 className="text-2xl font-semibold text-white">Create Chatbot</h1>
+          </div>
+          <div className="flex w-60">
+            {chatbotPKLStatus ? 
+              <>
+              <Image
+                  src={SpinnerCheckIcon}
+                  alt="Profile"
+                  className="mr-3"
+                  width={40}
+                  height={40}
+                />
+              <span className="text-sm font-light text-white text-wrap">Your Knowledge Asset are ready!</span>
+            </>
+            : 
+              <>
+                <Image
+                    src={SpinnerIcon}
+                    alt="Profile"
+                    className="animate-spin mr-3"
+                    width={40}
+                    height={40}
+                  />
+                <span className="text-sm font-light text-white text-wrap">Your Knowledge Asset are vectorising…</span>
+              </>
+            }
+          </div>
+        </div>
           {/* <h5 className="text-md text-[#7C878E]">
 					Give some general information about your character.
 				</h5> */}
@@ -216,7 +287,7 @@ const ChatBotForm = () => {
         </div>
         <form className="mx-5 flex flex-col md:mx-32" onSubmit={handleSubmit}>
           <div className="flex">
-            <div className="flex items-center justify-center">
+            <div className="flex justify-center">
               <ImageInput
                 selectedFile={selectedFile}
                 setSelectedFile={setSelectedFile}
@@ -227,7 +298,7 @@ const ChatBotForm = () => {
               <div>
                 <label
                   htmlFor="characterName"
-                  className="block text-xs font-semibold text-white lg:text-sm "
+                  className="block text-xs font-semibold text-white lg:text-sm"
                 >
                   Name
                 </label>
@@ -252,6 +323,27 @@ const ChatBotForm = () => {
                 {/* <p className="mt-2 text-xs text-gray-400">
                 The name of your AI character.
               </p> */}
+              </div>
+              <div>
+                <label
+                  htmlFor="description"
+                  className="block text-xs font-semibold text-white lg:text-sm"
+                >
+                  Description
+                </label>
+                <div className="mt-1">
+                  <textarea
+                    id="description"
+                    value={description.value}
+                    onChange={(e) =>
+                      setDescription({ tmp: false, value: e.target.value })
+                    }
+                    placeholder={"Describe your Chatbot"}
+                    className="mt-2 w-full rounded-xl border-2 bg-transparent text-white"
+                    rows={5}
+                    maxLength={1000}
+                  />
+                </div>
               </div>
               <div>
                 <label
@@ -318,42 +410,6 @@ const ChatBotForm = () => {
                     <div className="text-xs opacity-0 lg:text-sm">a</div>
                   )}
                 </div>
-              </div>
-            </div>
-
-            <div className="">
-              <div className="col-span-2">
-                {/* <label
-                  htmlFor="description"
-                  className="block text-sm font-semibold text-white"
-                >
-                  Description
-                </label>
-                <div className="mt-1"> */}
-
-                {/* <input
-                  id="description"
-                  type="text"
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                  className="rounded-xl bg-transparent mt-2 text-white w-full border-2"
-                  placeholder="Describe your Chatbot"
-                /> */}
-
-                {/* <textarea
-                    id="description"
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                    placeholder={"Describe your Chatbot"}
-                    className="mt-2 w-full rounded-xl border-2 bg-transparent text-white"
-                    rows={11}
-                    maxLength={1000}
-                  />
-                </div> */}
-
-                {/* <p className="mt-2 text-xs text-gray-400">
-                Description of your AI character.
-              </p> */}
               </div>
             </div>
             {/* <div className="mx-64 mt-10">

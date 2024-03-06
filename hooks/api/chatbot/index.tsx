@@ -169,3 +169,19 @@ export const useGetChatbotPrice = (params: IChatbotDetailParams) => {
       }),
   });
 }
+
+export const useChatbotPKLStatus = (params: any) => {
+  const { address } = useAccount();
+
+  return useQuery({
+    queryKey: ["chatbot", "pkl", params.kb_id],
+    queryFn: () =>
+      axios.post("/api/chatbot/pkl", params, {
+        headers: {
+          "x-kf-user-id": address,
+        },
+      }),
+      refetchInterval: 3000,
+      enabled: params.willRefetch,
+  });
+}

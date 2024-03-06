@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { useCreateChatbotAPI } from "@/hooks/api/chatbot";
+import { useChatbotPKLStatus, useCreateChatbotAPI } from "@/hooks/api/chatbot";
 import { useCreateChatbotContext } from "./create-knowledge-context";
 import { useGetCategory } from "@/hooks/api/chatbot";
 import { useSession } from "next-auth/react";
@@ -11,10 +11,12 @@ import ImageInput from "@/components/image-input-2";
 import { ZodError, number, string, z } from "zod";
 import Switcher from "@/components/switcher";
 import { useAppProvider } from "@/providers/app-provider";
-import { DEFAULT_COVER_IMAGE } from "@/utils/constants";
+import { DEFAULT_COVER_IMAGE, KF_TITLE } from "@/utils/constants";
 import Tooltip from "@/components/tooltip";
 import Image from "next/image";
 import { noMoreThanCharacters } from "@/utils/utils";
+import SpinnerIcon from "@/public/images/spinner-icon.svg";
+import SpinnerCheckIcon from "@/public/images/spinner-check-icon.svg";
 
 interface Category {
   title: string;
@@ -34,10 +36,13 @@ const ChatBotForm = () => {
     setHeaderTitle("");
   }, []);
 
-  const title = "Create Chatbot";
+  const title = KF_TITLE + "Create Chatbot";
   const { setHeaderTitle } = useAppProvider();
-  const [description, setDescription] = useState("");
-  const [category, setCategory] = useState("");
+  const [description, setDescription] = useState({
+    tmp: true,
+    value: "",
+  });
+  const [showModal, setShowModal] = useState(false);
   const [categories, setCategories] = useState<Category[]>([]);
   const [profileImage, setProfileImage] = useState("");
   const [profileImageUrl, setProfileImageUrl] = useState("");
@@ -61,6 +66,9 @@ const ChatBotForm = () => {
 
   const categoryList = useGetCategory();
 
+  const [ chatbotPKLStatus, setChatbotPKLStatus ] = useState<any>(false);
+  const [ willRefetch, setWillRefetch ] = useState<boolean>(true);
+
   const formValidation = z.object({
     name: z
       .string({
@@ -82,6 +90,15 @@ const ChatBotForm = () => {
       [name]: value,
     });
   };
+
+  useEffect(() => {
+    if (form.name && description.tmp) {
+      setDescription({
+        tmp: true,
+        value: `This is the AI Chatbot Twin of ${form.name}`,
+      });
+    }
+  }, [form.name]);
 
   if (twitterSession?.user) {
     twitterSession?.user?.username;
@@ -113,13 +130,13 @@ const ChatBotForm = () => {
         tone: toneData,
         price_per_query: form.pricePerQuery as number,
         // category_id: category,
-        // description: description,
+        description: description.value,
         // instruction: instructions,
         // example_conversation: example,
       },
       {
         async onSuccess() {
-          setStep("onboarding_success");
+          setShowModal(true);
         },
       },
     );
@@ -156,7 +173,7 @@ const ChatBotForm = () => {
   // `;
 
   useEffect(() => {
-    const title = "Create Chatbot";
+    const title = KF_TITLE + "Create Chatbot";
     document.title = title;
 
     return () => setHeaderTitle("");
@@ -178,6 +195,29 @@ const ChatBotForm = () => {
       setToneData("instruction_2");
     }
   }, [mode]);
+  
+  const { data, isFetching, isError, isSuccess, refetch } = useChatbotPKLStatus({
+    kb_id: kbId as string, 
+    willRefetch : willRefetch,
+  });
+
+  useEffect(() => {
+    if (!isFetching && isSuccess && data) {
+      console.log(data.data.status)
+      switch (data.data.status) {
+        case "success":
+          setWillRefetch(false);
+          setChatbotPKLStatus(true);
+          break;
+        case "error":
+          setWillRefetch(true);
+          setChatbotPKLStatus(false);
+          break;
+        default:
+          setWillRefetch(false);
+      }
+    }
+  }, [data]);
 
   const validateForm = () => {
     let errorTmp = {};
@@ -204,28 +244,57 @@ const ChatBotForm = () => {
 
   return (
     <>
-      {/* <CreateChatbotModal
+      <CreateChatbotModal
         children={"Your chatbot has been created successfully!"}
         open={showModal}
         setOpen={setShowModal}
-      /> */}
+        onDone={() => setStep("free_kfi")}
+        onClose={() => setStep("free_kfi")}
+      />
       <div className="-mx-28 flex flex-col py-4 sm:px-6 lg:px-32">
         <div className="mx-5 mb-6 md:mx-32">
-          <div className="mt-3 flex items-center gap-6">
-            <div
-              className="h-full cursor-pointer"
-              onClick={() => setStep("mint_nft")}
-            >
-              <Image
-                src={"/images/corner-up-left.png"}
-                alt="icon"
-                width={24}
-                height={24}
-              />
+          <div className="flex justify-between">
+            <div className="mt-3 flex items-center gap-6">
+              <div
+                className="h-full cursor-pointer"
+                onClick={() => setStep("mint_nft")}
+              >
+                <Image
+                  src={"/images/corner-up-left.png"}
+                  alt="icon"
+                  width={24}
+                  height={24}
+                />
+              </div>
+              <h1 className="text-2xl font-semibold text-white">
+                CREATE CHATBOT
+              </h1>
             </div>
-            <h1 className="text-2xl font-semibold text-white">
-              CREATE CHATBOT
-            </h1>
+            <div className="flex w-60">
+              {chatbotPKLStatus ? 
+                <>
+                <Image
+                    src={SpinnerCheckIcon}
+                    alt="Profile"
+                    className="mr-3"
+                    width={40}
+                    height={40}
+                  />
+                <span className="text-sm font-light text-white text-wrap">Your Knowledge Asset are ready!</span>
+              </>
+              : 
+                <>
+                  <Image
+                      src={SpinnerIcon}
+                      alt="Profile"
+                      className="animate-spin mr-3"
+                      width={40}
+                      height={40}
+                    />
+                  <span className="text-sm font-light text-white text-wrap">Your Knowledge Asset are vectorising…</span>
+                </>
+              }
+            </div>
           </div>
           <hr className="my-4 border border-gray-600" />
         </div>
@@ -234,7 +303,7 @@ const ChatBotForm = () => {
           onSubmit={handleSubmit}
         >
           <div className="flex">
-            <div className="flex items-center justify-center">
+            <div className="flex justify-center">
               <ImageInput
                 selectedFile={selectedFile}
                 setSelectedFile={setSelectedFile}
@@ -271,6 +340,27 @@ const ChatBotForm = () => {
                 {/* <p className="mt-2 text-xs text-gray-400">
                 The name of your AI character.
               </p> */}
+              </div>
+              <div>
+                <label
+                  htmlFor="description"
+                  className="block text-sm font-semibold text-white"
+                >
+                  Description
+                </label>
+                <div className="mt-1">
+                  <textarea
+                    id="description"
+                    value={description.value}
+                    onChange={(e) =>
+                      setDescription({ tmp: false, value: e.target.value })
+                    }
+                    placeholder={"Describe your Chatbot"}
+                    className="mt-2 w-full rounded-md border-2 border-gray-800 bg-transparent text-xs text-white lg:text-sm"
+                    rows={3}
+                    maxLength={1000}
+                  />
+                </div>
               </div>
               <div>
                 {/* <label

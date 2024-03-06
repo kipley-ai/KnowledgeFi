@@ -40,3 +40,7 @@ export const uploadFile = async (file: any, callback: any) => {
 
 export const noMoreThanCharacters = (number: number) =>
   "no more than " + number + " characters";
+
+export const delay = (ms: number) => {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+};

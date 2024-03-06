@@ -5,18 +5,23 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Image from "next/image";
 import { useCreateChatbotContext } from "./create-knowledge-context";
-import { useCreateKBAndMintNFT, useMintNFT } from "@/hooks/api/kb";
+import {
+  useCreateKBAndMintNFT,
+  useMintNFT,
+  useScrapeTwitter,
+} from "@/hooks/api/kb";
 import { useSession } from "next-auth/react";
 import { uploadFileS3 } from "@/app/api/upload/s3/helper";
 import MintNFTModal from "./mint-nft-modal";
 import ImageInput from "@/components/image-input";
 import LoadingIcon from "public/images/loading-icon.svg";
 import MintConfirmationModal from "@/components/modal-mint-confirmation";
-import { DEFAULT_COVER_IMAGE } from "@/utils/constants";
+import { DEFAULT_COVER_IMAGE, KF_TITLE } from "@/utils/constants";
 import Tooltip from "@/components/tooltip";
 import ArrowRight from "public/images/arrow-right.svg";
 import { ZodError, z } from "zod";
 import { noMoreThanCharacters } from "@/utils/utils";
+import { TwitterScrapingStatus } from "@/components/twitter-scraping-status";
 
 // export const metadata = {
 //     title: 'SFT - Mosaic',
@@ -92,7 +97,7 @@ export default function NFT() {
   };
 
   useEffect(() => {
-    const title = "Mint SFT";
+    const title = KF_TITLE + "Mint SFT";
     document.title = title;
 
     return () => setHeaderTitle("");
@@ -221,19 +226,24 @@ export default function NFT() {
         kbIdCreated={nftIdCreated}
       />
       <div className="flex flex-col px-6 py-4 pb-14 lg:px-8 xl:px-32">
-        <div className="flex items-center gap-6">
-          <div
-            className="h-full cursor-pointer"
-            onClick={() => setStep("data_source")}
-          >
-            <Image
-              src={"/images/corner-up-left.png"}
-              alt="icon"
-              width={24}
-              height={24}
-            />
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-6">
+            <div
+              className="h-full cursor-pointer"
+              onClick={() => setStep("data_source")}
+            >
+              <Image
+                src={"/images/corner-up-left.png"}
+                alt="icon"
+                width={24}
+                height={24}
+              />
+            </div>
+            <h1 className="text-2xl font-semibold text-white">MINT SFT</h1>
           </div>
-          <h1 className="text-2xl font-semibold text-white">MINT SFT</h1>
+          <div>
+            {createKb.type == "twitter" ? <TwitterScrapingStatus /> : ""}
+          </div>
         </div>
         <hr className="my-4 border border-gray-600" />
         <form>

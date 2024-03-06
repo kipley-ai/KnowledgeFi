@@ -15,6 +15,7 @@ import { useCreateChatbotContext } from "./create-chatbot-context";
 import SidebarRight from "@/components/ui/sidebar-right";
 import Description from "./description";
 import CreditBalance from "./credit-balance";
+import { KF_TITLE } from "@/utils/constants";
 
 const archivo = Archivo({
   weight: ["400", "600"],
@@ -37,7 +38,7 @@ const Header = () => {
     sft_id: chatbotData?.data.data.sft_id as string,
   });
 
-  const title = chatbotData?.data.data.name + " - Chatbot";
+  const title = KF_TITLE + chatbotData?.data.data.name + " - Chatbot";
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
@@ -56,9 +57,11 @@ const Header = () => {
   useEffect(() => {
     console.log(chatbotData?.data.data.name);
   }, [chatbotDetailIsSuccess]);
+
   useEffect(() => {
     console.log(nftData?.data.data);
   }, [nftDetailIsSuccess]);
+
   const chatSession = useGetSession({ chatbot_id: id as string });
   const chatHistoryAPI = useChatHistory({
     session_id: chatSession.data?.data.data?.session_id,

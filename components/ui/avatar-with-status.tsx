@@ -6,9 +6,8 @@ import { signOut } from "next-auth/react";
 import { useDisconnect, useAccount } from "wagmi";
 import defaultAvatar from "@/public/images/avatar-default-02.svg";
 import { useAppProvider } from "@/providers/app-provider";
-import ModalTopUp from "../modal-top-up";
-import { useCreditBalance } from "@/hooks/api/credit";
 import Link from "next/link";
+import { FaSpinner } from "react-icons/fa";
 
 type StatusType = "online" | "busy" | "away" | "offline";
 
@@ -33,10 +32,7 @@ const AvatarWithStatus: React.FC<AvatarWithStatusProps> = ({
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const { disconnect } = useDisconnect();
-  const { modalTopUp, setModalTopUp } = useAppProvider();
   const { address } = useAccount();
-
-  const { data: creditBalanceData } = useCreditBalance();
 
   // This function toggles the dropdown's visibility
   const toggleDropdown = () => {
@@ -59,7 +55,6 @@ const AvatarWithStatus: React.FC<AvatarWithStatusProps> = ({
 
   return (
     <div className="relative inline-block" ref={dropdownRef}>
-      <ModalTopUp isOpen={modalTopUp} setIsOpen={setModalTopUp} />
       <div onClick={toggleDropdown} className="min-w-10 cursor-pointer">
         {/* <img src={image} alt="Avatar" className="w-12 h-12 rounded-full" /> */}
         {image === "" ? (
@@ -89,20 +84,8 @@ const AvatarWithStatus: React.FC<AvatarWithStatusProps> = ({
             <div className="text-sm font-medium text-[#FCFCFD]">
               {address && `${address.slice(0, 6)}...${address.slice(-6)}`}
             </div>
-            <div className="mt-2 rounded-lg bg-gray-700 p-2">
-              <div className="text-sm font-medium text-[#FCFCFD]">Balance</div>
-              <div className="text-lg font-semibold text-[#FCFCFD]">
-                {creditBalanceData?.data.data.credit_balance} credits
-              </div>
-              <div className="mt-2 flex items-center rounded-full border border-[#01F7FF] px-1 py-1">
-                <button className="w-full" onClick={() => setModalTopUp(true)}>
-                  <span className="text-sm font-bold text-[#FCFCFD] duration-200">
-                    Top up credits
-                  </span>
-                </button>
-              </div>
-            </div>
           </div>
+          <div className="mx-4 border-t border-gray-300"></div>
           <Link
             href="/manage-account"
             className="block flex px-4 py-2 text-sm capitalize text-[#FCFCFD] hover:bg-blue-500 hover:text-white"

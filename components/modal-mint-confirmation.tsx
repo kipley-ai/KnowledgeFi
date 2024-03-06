@@ -1,7 +1,10 @@
 "use client";
 
+import React from "react";
 import ModalBlank from "@/components/modal-blank-3";
 import Image from "next/image";
+import { useSwitchToSepolia } from "@/hooks/useSwitchNetwork";
+import { useSwitchToPolygon } from "@/hooks/useSwitchNetwork";
 
 export default function ModalMintConfirmation({
   isOpen,
@@ -16,6 +19,17 @@ export default function ModalMintConfirmation({
   handleMintNFT: () => void;
   isMinting?: boolean;
 }) {
+
+  // Determine the environment and accordingly use the switch network hook
+  const isDevelopment = process.env.NEXT_PUBLIC_ENV_DEV === "1";
+  const { isSepolia, switchToSepolia } = useSwitchToSepolia();
+  const { isPolygon, switchToPolygon } = useSwitchToPolygon();
+
+  // Determine which network is currently active and which switch function to use
+  const isTargetNetworkActive = isDevelopment ? isSepolia : isPolygon;
+  const switchToTargetNetwork = isDevelopment ? switchToSepolia : switchToPolygon;
+  const targetNetworkName = isDevelopment ? "Sepolia" : "Polygon";
+
   return (
     <ModalBlank isOpen={isOpen} setIsOpen={setIsOpen}>
       <div className="flex flex-col items-center justify-between rounded-lg p-4 shadow-md">
@@ -81,15 +95,13 @@ export default function ModalMintConfirmation({
         </span>
         <div className="inline-flex items-center justify-between self-stretch p-5">
           <div className="grid w-full grid-cols-1 font-bold text-white">
-            <button
-              className="flex flex-row items-center justify-center gap-2 rounded-3xl bg-aqua-700 p-2 px-5 hover:brightness-75"
-              type="button"
-              onClick={handleMintNFT}
-            >
-              <h5 className="font-bold text-black">
-                {isMinting ? "Minting..." : "Mint Now"}
-              </h5>
-              {!isMinting && (
+            {/* Start the conditional rendering here */}
+            {!isTargetNetworkActive ? (
+              <button
+                className="flex flex-row items-center justify-center gap-2 rounded-3xl bg-aqua-700 p-2 px-5 hover:brightness-75"
+                onClick={switchToTargetNetwork}
+              >
+                <span className="text-black font-semibold">Change Network to {targetNetworkName}</span>
                 <svg
                   width="20"
                   height="10"
@@ -106,8 +118,16 @@ export default function ModalMintConfirmation({
                     fill="#151515"
                   />
                 </svg>
-              )}
-            </button>
+              </button>
+            ) : (
+              <button
+                className={`flex flex-row items-center justify-center gap-2 rounded-3xl text-black font-semibold ${isMinting ? 'bg-gray-500' : 'bg-aqua-700'} p-2 px-5 hover:brightness-75`}
+                onClick={handleMintNFT}
+                disabled={isMinting}
+              >
+                {isMinting ? "Minting..." : "Mint Now"}
+              </button>
+            )}
           </div>
         </div>
       </div>
