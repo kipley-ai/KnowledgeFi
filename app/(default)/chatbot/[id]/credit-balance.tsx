@@ -22,33 +22,24 @@ export default function CreditBalance() {
   const { modalTopUp, setModalTopUp } = useAppProvider();
   const { creditBalance, setRefetch } = useCreditBalanceContext();
 
-  const { data, isFetching, isError, isSuccess, refetch } = useRechargeStatus({
-    topUpStatus,
-    willRefetch,
-  });
+  const { data } = useRechargeStatus({ willRefetch });
 
   useEffect(() => {
-    if (!isFetching && isSuccess && data) {
-      console.log("data :>> ", data.data.data);
+    if (data) {
       if (topUpStatus === "processing") {
         switch (data.data.data[0]?.status) {
           case "success":
-            setTopUpStatus("");
             setModalTopUpSuccessful(true);
             setWillRefetch(false);
+            setTopUpStatus("");
             break;
           case "failed":
-            setTopUpStatus("");
             setModalTopUpFailed(true);
             setWillRefetch(false);
-            break;
-          case "processing":
-            setTopUpStatus("processing");
-            setWillRefetch(true);
+            setTopUpStatus("");
             break;
           default:
-            setTopUpStatus("");
-            setWillRefetch(false);
+            setWillRefetch(true);
         }
       } else if (topUpStatus === "") {
         switch (data.data.data[0]?.status) {
@@ -61,15 +52,7 @@ export default function CreditBalance() {
         }
       }
     }
-  }, [data]);
-
-  // useEffect(() => {
-  //   if (topUpStatus === "processing") {
-  //     setTimeout(() => {
-  //       setTopUpStatus("");
-  //     }, 30000);
-  //   }
-  // }, [topUpStatus]);
+  }, [data, topUpStatus]);
 
   return (
     <div className="flex w-full flex-col justify-start gap-2 px-5 py-6 text-white">
