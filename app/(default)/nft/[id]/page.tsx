@@ -79,19 +79,19 @@ const NFTSection = ({ nftDetail }: { nftDetail: any }) => {
         <div className="bg-[#1D1D1D] p-4 rounded mt-2">
           <div className="flex flex-grow justify-between">
             <span className="block text-[#7C878E] text-sm font-bold">Data Type</span>
-            <span className="block text-white text-sm">Twitter</span>
+            <span className="block text-white text-sm">{nftDetail.type}</span>
           </div>
         </div>
         <div className="bg-[#1D1D1D] p-4 rounded mt-2">
           <div className="flex flex-grow justify-between">
             <span className="block text-[#7C878E] text-sm font-bold">Data Files Count</span>
-            <span className="block text-white text-sm">Twitter</span>
+            <span className="block text-white text-sm"></span>
           </div>
         </div>
         <div className="bg-[#1D1D1D] p-4 rounded mt-2">
           <div className="flex flex-grow justify-between">
             <span className="block text-[#7C878E] text-sm font-bold">Last Updated</span>
-            <span className="block text-sm">Twitter</span>
+            <span className="block text-sm">{nftDetail.created_at}</span>
           </div>
         </div>
       </div>
