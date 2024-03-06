@@ -5,9 +5,7 @@ import { useState } from "react";
 
 function KipProtocolVideo() {
   // Always show the button on dev environment
-  const [showButton, setShowButton] = useState(
-    process.env.NEXT_PUBLIC_ENV_DEV == "1" ? true : false,
-  );
+  const [showButton, setShowButton] = useState(false);
 
   return (
     <div className="flex flex-col items-center justify-center">
@@ -15,7 +13,7 @@ function KipProtocolVideo() {
         src="/videos/kip-protocol-concept.mp4"
         autoPlay
         muted
-        onEnded={() => setShowButton(false)}
+        onEnded={() => setShowButton(true)}
         playsInline
       />
       {showButton && (

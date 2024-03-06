@@ -248,7 +248,7 @@ export default function NFT() {
             </div>
             <h1 className="text-2xl font-semibold text-white">MINT SFT</h1>
           </div>
-          <div>
+          <div className="flex w-60">
             {createKb.type == "twitter" ? (
               <TwitterScrapingStatus setShowFailModal={setShowFailModal} />
             ) : (
