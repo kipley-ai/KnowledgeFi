@@ -59,13 +59,7 @@ export async function mintNFT(
 
 export async function recharge(amount: number) {
   const { contractWrite } = await getKipProtocolContract();
-  try {
-    const tx = await contractWrite.recharge(BigInt(amount * 1e18));
-    await tx.wait();
-    return tx.hash;
-  } catch (e) {
-    console.log(e);
-  }
+  return await contractWrite.recharge(BigInt(amount * 1e18));
 }
 
 export async function tokenProfit(
