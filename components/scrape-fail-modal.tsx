@@ -27,7 +27,7 @@ const poppins = Poppins({
   subsets: ["latin"],
 });
 
-export default function FailModal({ children, open, setOpen }: ToastProps) {
+export default function TwitterFailModal({ children, open, setOpen }: ToastProps) {
   const scrapeTwitter = useScrapeTwitter();
   const { data: twitterData } = useSession();
   const { refetch: refetchScrapeStatus } = useScrapeTwitterStatus({
