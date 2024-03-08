@@ -87,7 +87,8 @@ export const TwitterScrapingStatus = ({
         height={40}
       />
       <span className="text-wrap text-sm font-light text-white">
-        Your Twitter Posts are processing...
+        While we are still processing your twitter posts, you could proceed to
+        mint your SFT.
       </span>
     </>
   );
