@@ -122,7 +122,7 @@ export default function SelectDataElements() {
             setSelectedButton={setSelectedButton}
           />
           <div className="flex justify-end">
-            {isComingSoon && (
+            {/* {isComingSoon && (
               <button
                 className="mt-8 flex flex-row items-center justify-between gap-2 rounded-sm bg-[#01F7FF] px-5 py-3 hover:brightness-75"
                 type="submit"
@@ -140,7 +140,7 @@ export default function SelectDataElements() {
                   />
                 ) : null}
               </button>
-            )}
+            )} */}
           </div>
         </div>
       ) : step == "upload_files" ? (
