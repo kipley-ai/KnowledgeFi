@@ -70,9 +70,9 @@ const NFTCard = ({ nft }: NFTCardProps) => {
         <p className="line-clamp-1 text-sm text-white">
           {nft.price_per_query} {nft.token_symbol}
         </p>
-        <p className="line-clamp-1 text-[12px] text-gray-400">
+        {/* <p className="line-clamp-1 text-[12px] text-gray-400">
           {nft.category || "Uncategorised"}
-        </p>
+        </p> */}
       </div>
       <Link href={`/nft/${nft.sft_id}`}>
         <div className="absolute bottom-0 hidden h-12 w-full items-center justify-center rounded-b-2xl bg-[#01F7FF] group-hover:flex">
@@ -163,9 +163,9 @@ const BotCard = ({ bot }: BotCardProps) => {
       />
       <div className="flex flex-col gap-1 px-4 py-4 pb-6">
         <p className="text-md line-clamp-1 text-white">{bot.name}</p>
-        <p className="line-clamp-1 text-xs text-gray-400">
+        {/* <p className="line-clamp-1 text-xs text-gray-400">
           {bot.category_name || "Uncategorised"}
-        </p>
+        </p> */}
       </div>
       <div className="absolute bottom-0 hidden h-12 w-full divide-x-2 divide-[#01F7FF] rounded-b-2xl border border-2 border-[#01F7FF] bg-[#222325] text-[#01F7FF] group-hover:flex">
         <Link

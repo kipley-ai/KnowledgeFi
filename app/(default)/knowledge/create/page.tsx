@@ -107,7 +107,7 @@ export default function DataSource({
             selectedButton={selectedButton}
             setSelectedButton={setSelectedButton}
           />
-          <div className="flex justify-end">
+          {/* <div className="flex justify-end">
             {isComingSoon ? (
               <button
                 className="mt-8 flex flex-row items-center justify-between rounded-3xl bg-[#01F7FF] p-2 px-5"
@@ -140,7 +140,7 @@ export default function DataSource({
             ) : (
               <></>
             )}
-          </div>
+          </div> */}
         </div>
       ) : step == "upload_files" ? (
         <Local files={localFiles} setFiles={setLocalFiles} />

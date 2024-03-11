@@ -55,7 +55,7 @@ export default function NFT() {
   const [selectedFile, setSelectedFile] = useState<string>(DEFAULT_COVER_IMAGE);
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [nftIdCreated, setNftIdCreated] = useState("");
-  const [sftAddress, setSftAddress] = useState("");
+  const [kbIdCreated, setKbIdCreated] = useState("");
   const [isConfirmModalOpen, setisConfirmModalOpen] = useState(false);
   const [isMinting, setIsMinting] = useState(false);
 
@@ -146,6 +146,7 @@ export default function NFT() {
           async onSuccess(data, variables, context) {
             const { kb_id, nft_id, asset_id } = data.data;
             setNftIdCreated(nft_id);
+            setKbIdCreated(kb_id);
             try {
               await mintNFT(
                 kb_id,
@@ -223,7 +224,8 @@ export default function NFT() {
         children={"Your Knowledge Asset SFT is created successfully!"}
         open={showModal}
         setOpen={setShowModal}
-        kbIdCreated={nftIdCreated}
+        nftIdCreated={nftIdCreated}
+        kbIdCreated={kbIdCreated}
       />
       <ScrapeFailModal
         children={"Sorry, Something went wrong. Please try again."}

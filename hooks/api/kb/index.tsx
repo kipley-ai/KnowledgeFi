@@ -31,6 +31,22 @@ export const useMintNFT = () => {
   });
 };
 
+export const useMintNFTStatus = (kbId: string, isNftMinted: boolean) => {
+  const { address } = useAccount();
+
+  return useQuery({
+    queryKey: ["mint-nft-status", kbId],
+    queryFn: () =>
+      axios.post("/api/kb/mint-nft-status", { kb_id: kbId }, {
+        headers: {
+          "x-kf-user-id": address,
+        },
+      }),
+    enabled: !isNftMinted,
+    refetchInterval: 3000,
+  });
+};
+
 export const useUpdateKB = () => {
   const { address } = useAccount();
 

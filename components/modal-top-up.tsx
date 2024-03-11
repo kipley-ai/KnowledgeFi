@@ -2,7 +2,12 @@
 
 import ModalBlank from "@/components/modal-blank-3";
 import { recharge } from "@/smart-contract/kip-protocol-contract";
-import { allowance, approve, balanceOf } from "@/smart-contract/kip-token";
+import {
+  allowance,
+  approve,
+  balanceOf,
+  mintToken,
+} from "@/smart-contract/kip-token";
 import { KIP_TOKEN_DECIMAL } from "@/utils/constants";
 import { useState } from "react";
 import Notification from "@/components/notification";
@@ -12,6 +17,9 @@ import ModalTopUpPending from "./modal-top-up-pending";
 import { useSwitchToSepolia } from "@/hooks/useSwitchNetwork";
 import { useSwitchToPolygon } from "@/hooks/useSwitchNetwork";
 import { useAddRecharge } from "@/hooks/api/user";
+import { IconContext } from "react-icons";
+import { FaPlus } from "react-icons/fa6";
+import { delay } from "@/utils/utils";
 
 interface Form {
   amount?: number;
@@ -33,6 +41,7 @@ export default function ModalTopUp({
   });
 
   const [toast3ErrorOpen, setToast3ErrorOpen] = useState<boolean>(false);
+  const [minting, setMinting] = useState(false);
   // Determine the environment and accordingly use the switch network hook
   const isDevelopment = process.env.NEXT_PUBLIC_ENV_DEV === "1";
   const { isSepolia, switchToSepolia } = useSwitchToSepolia();
@@ -111,6 +120,18 @@ export default function ModalTopUp({
     }
   };
 
+  const handleMintToken = async () => {
+    try {
+      setMinting(true);
+      await mintToken(1000 * KIP_TOKEN_DECIMAL);
+      await delay(3000);
+    } catch (error) {
+      console.log("handleMintToken", error);
+    } finally {
+      setMinting(false);
+    }
+  };
+
   return (
     <ModalBlank isOpen={isOpen} setIsOpen={setIsOpen}>
       <Notification
@@ -167,6 +188,16 @@ export default function ModalTopUp({
             <span>Get Credits by Paying </span>
             <span className="text-aqua-700">$KFI </span>
             <span>token</span>
+          </div>
+        </div>
+        <div className="inline-flex items-center self-stretch pl-5">
+          <div className="flex cursor-pointer items-center gap-2 hover:brightness-75">
+            <p
+              onClick={handleMintToken}
+              className="text-sm text-gray-500 underline underline-offset-4"
+            >
+              {minting ? "Minting..." : "Claim Free $KFI Token"}
+            </p>
           </div>
         </div>
         <div className="inline-flex items-center justify-between self-stretch p-5">

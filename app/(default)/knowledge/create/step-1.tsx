@@ -19,24 +19,32 @@ const ButtonItem = ({
   isSelected,
   optionIcon,
   optionText,
+  isComingSoon,
 }: {
   onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
   isSelected: boolean;
   optionIcon: ImageSrc;
   optionText: string;
+  isComingSoon: boolean;
 }) => {
   return (
     <button
-      className={`flex flex-col items-center border-2 py-5 md:pt-10 ${isSelected ? "border-[#01F7FF] bg-[#181B1F]" : "border-transparent"} justify-end rounded-2xl`}
+      className={`relative flex flex-col items-center border-2 py-5 md:pt-10 ${isSelected ? "border-[#01F7FF] bg-[#181B1F]" : "border-transparent"} justify-end rounded-2xl`}
       onClick={onClick}
     >
       <Image
         width={48}
         height={48}
         src={optionIcon}
+        className={isComingSoon ? "brightness-50" : ""}
         alt={`${optionText} Icon`}
       />
       <h3 className="pt-6">{optionText}</h3>
+      {isComingSoon && isSelected && (
+        <span className="absolute right-2 top-2 rounded-md border border-aqua-700 bg-aqua-700 px-2 text-xs text-black">
+          COMING SOON
+        </span>
+      )}
     </button>
   );
 };
@@ -98,10 +106,11 @@ export default function Step1({
   const { modalLogin: showTwitterLogin, setModalLogin: setShowTwitterLogin } =
     useAppProvider();
 
-  const { handleChangeKb, setIsComingSoon, setStep } = useCreateChatbotContext();
+  const { handleChangeKb, setIsComingSoon, setStep } =
+    useCreateChatbotContext();
 
   return (
-    <div className="md:mt-10 grid grid-cols-2 md:grid-cols-4 gap-4  font-bold text-white">
+    <div className="grid grid-cols-2 gap-4 font-bold text-white  md:mt-10 md:grid-cols-4">
       {buttons.map((button) => (
         <ButtonItem
           key={button.type}
@@ -124,6 +133,7 @@ export default function Step1({
           isSelected={selectedButton == button.type}
           optionIcon={button.icon}
           optionText={button.text}
+          isComingSoon={button.comingSoon}
         />
       ))}
     </div>
