@@ -58,6 +58,8 @@ const ChatBotForm = () => {
   const [selectedFile, setSelectedFile] = useState<any>(DEFAULT_COVER_IMAGE);
   const [mode, setMode] = useState(0);
   const [toneData, setToneData] = useState("");
+  const [personality, setPersonality] = useState(0);
+  const [personalityData, setPersonalityData] = useState("");
 
   const [errorMessage, setErrorMessage] = useState<any>({});
   const [allowGenerate, setAllowGenerate] = useState(false);
@@ -128,6 +130,7 @@ const ChatBotForm = () => {
         sft_id: id as string,
         kb_id: nftData?.data.data.kb_id as string,
         tone: toneData,
+        personality: personalityData,
         price_per_query: form.pricePerQuery as number,
         // category_id: category,
         description: description.value,
@@ -194,6 +197,14 @@ const ChatBotForm = () => {
       setToneData("instruction_2");
     }
   }, [mode]);
+
+  useEffect(() => {
+    if (personality == 0) {
+      setPersonalityData("instruction");
+    } else if (personality == 1) {
+      setPersonalityData("instruction_2");
+    }
+  }, [personality]);
 
   const { data, isFetching, isError, isSuccess, refetch } = useChatbotPKLStatus(
     {
@@ -348,7 +359,7 @@ const ChatBotForm = () => {
                     }
                     placeholder={"Describe your Chatbot"}
                     className="mt-2 w-full rounded-xl border-2 bg-transparent text-white"
-                    rows={5}
+                    rows={3}
                     maxLength={1000}
                   />
                 </div>
@@ -388,6 +399,21 @@ const ChatBotForm = () => {
                 </select> */}
 
                 {/* <p className="mt-2 text-xs text-gray-400">Category of your AI.</p> */}
+              </div>
+              <div>
+                <label
+                  htmlFor="personality"
+                  className="block text-xs font-semibold text-white lg:text-sm"
+                >
+                  Personality
+                </label>
+                <div className="mt-3">
+                  <Switcher
+                    texts={["More Focused", "More Creative"]}
+                    mode={personality}
+                    setWhich={setPersonality}
+                  />
+                </div>
               </div>
               <div>
                 <label className=" flex flex-row items-center space-x-3 text-wrap text-xs font-semibold text-[#DDD] lg:text-sm">
