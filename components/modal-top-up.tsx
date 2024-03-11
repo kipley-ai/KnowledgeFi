@@ -42,6 +42,7 @@ export default function ModalTopUp({
 
   const [toast3ErrorOpen, setToast3ErrorOpen] = useState<boolean>(false);
   const [minting, setMinting] = useState(false);
+  const [minted, setMinted] = useState(false);
   // Determine the environment and accordingly use the switch network hook
   const isDevelopment = process.env.NEXT_PUBLIC_ENV_DEV === "1";
   const { isSepolia, switchToSepolia } = useSwitchToSepolia();
@@ -125,6 +126,7 @@ export default function ModalTopUp({
       setMinting(true);
       await mintToken(1000 * KIP_TOKEN_DECIMAL);
       await delay(3000);
+      setMinted(true);
     } catch (error) {
       console.log("handleMintToken", error);
     } finally {
@@ -155,6 +157,7 @@ export default function ModalTopUp({
             onClick={(e) => {
               e.stopPropagation();
               setIsOpen(false);
+              setMinted(false);
             }}
           >
             <div className="sr-only">Close</div>
@@ -191,13 +194,27 @@ export default function ModalTopUp({
           </div>
         </div>
         <div className="inline-flex items-center self-stretch pl-5">
-          <div className="flex cursor-pointer items-center gap-2 hover:brightness-75">
-            <p
-              onClick={handleMintToken}
-              className="text-sm text-gray-500 underline underline-offset-4"
-            >
-              {minting ? "Minting..." : "Claim Free $KFI Token"}
-            </p>
+          <div className="flex cursor-pointer items-center gap-2">
+            {!isTargetNetworkActive ? (
+              <button
+                onClick={switchToTargetNetwork}
+                className="text-sm text-gray-500 underline underline-offset-4 hover:brightness-75"
+              >
+                Change network to claim $KFI token
+              </button>
+            ) : (
+              <button
+                disabled={minting || minted}
+                onClick={handleMintToken}
+                className="text-sm text-gray-500 underline underline-offset-4 enabled:hover:brightness-75"
+              >
+                {minting
+                  ? "Claiming..."
+                  : minted
+                    ? "Successfully claimed 1,000 $KFI Token!"
+                    : "Claim Free $KFI Token"}
+              </button>
+            )}
           </div>
         </div>
         <div className="inline-flex items-center justify-between self-stretch p-5">
