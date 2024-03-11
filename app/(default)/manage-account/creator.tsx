@@ -191,9 +191,9 @@ const NFTCard = ({
         <p className="line-clamp-1 text-sm text-white">
           {nft.price_per_query} {nft.token_symbol}
         </p>
-        <p className="line-clamp-1 text-[12px] text-gray-400">
+        {/* <p className="line-clamp-1 text-[12px] text-gray-400">
           {nft.category || "Uncategorised"}
-        </p>
+        </p> */}
       </div>
       <div className="absolute bottom-0 hidden h-12 w-full items-center justify-center space-x-2 rounded-b-2xl bg-[#01F7FF] group-hover:flex">
         <p className="text-center text-sm font-semibold text-black">Withdraw</p>
