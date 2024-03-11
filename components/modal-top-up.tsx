@@ -12,6 +12,8 @@ import ModalTopUpPending from "./modal-top-up-pending";
 import { useSwitchToSepolia } from "@/hooks/useSwitchNetwork";
 import { useSwitchToPolygon } from "@/hooks/useSwitchNetwork";
 import { useAddRecharge } from "@/hooks/api/user";
+import { IconContext } from "react-icons";
+import { FaPlus } from "react-icons/fa6";
 
 interface Form {
   amount?: number;
@@ -167,6 +169,11 @@ export default function ModalTopUp({
             <span>Get Credits by Paying </span>
             <span className="text-aqua-700">$KFI </span>
             <span>token</span>
+          </div>
+        </div>
+        <div className="inline-flex items-center self-stretch pl-5">
+          <div className="flex items-center gap-2 hover:brightness-75 cursor-pointer">
+            <p className="text-sm text-gray-500 underline underline-offset-4">Claim Free $KFI Token</p>
           </div>
         </div>
         <div className="inline-flex items-center justify-between self-stretch p-5">
