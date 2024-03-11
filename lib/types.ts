@@ -14,6 +14,7 @@ export type ChatbotData = {
   created_at: string;
   session_id: string;
   category_name: string;
+  tone: string;
 };
 
 export type ChatbotDataListResponse = {

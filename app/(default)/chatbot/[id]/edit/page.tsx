@@ -23,7 +23,7 @@ export default function EditChatbot() {
 
   return (
     <div className="flex w-full flex-col items-center justify-center bg-[#292D32] py-10">
-      <div className="flex w-3/5 flex-col">
+      <div className="flex w-4/5 flex-col">
         <div className="flex w-full rounded-xl border-2 border-[#393E44] bg-[#181B1F] p-1">
           <button
             onClick={() => setActiveTab("settings")}
