@@ -156,7 +156,7 @@ export default function NFT() {
             className="mt-8 flex w-44 flex-row items-center justify-between rounded-3xl bg-[#01F7FF] p-2 px-5"
             type="button"
           >
-            <h5 className="text-sm font-semibold text-black">Generate SFT</h5>
+            <h5 className="text-sm font-semibold text-black">MINT SFT</h5>
             <svg
               width="20"
               height="10"
