@@ -1,7 +1,7 @@
 import Image from "next/image";
 import CheckIcon from "public/images/check-icon.svg";
-import CrossIcon from "public/images/cross-icon.svg";
-import ModalBlank from "./modal-blank-2";
+import CrossIcon from "public/images/cross-icon-2.png";
+import ModalBlank from "./modal-blank-3";
 import { DM_Sans, Poppins } from "next/font/google";
 import { useRouter } from "next/navigation";
 
@@ -13,17 +13,6 @@ interface ToastProps {
   onDone?: any;
   onClose?: any;
 }
-
-const dmsans = DM_Sans({
-  subsets: ["latin"],
-  variable: "--font-inter",
-  display: "swap",
-});
-
-const poppins = Poppins({
-  weight: ["400"],
-  subsets: ["latin"],
-});
 
 export default function SuccessFailModal({
   children,
@@ -38,19 +27,19 @@ export default function SuccessFailModal({
   return (
     <ModalBlank isOpen={open} setIsOpen={setOpen}>
       <div
-        className={`flex w-[360px] flex-col items-center justify-center rounded-2xl bg-[#181B1F] px-7 py-10 text-white ${dmsans.className} font-semibold`}
+        className={`flex w-[360px] flex-col items-center justify-center rounded-2xl bg-[#181B1F] px-7 py-10 text-white font-semibold`}
       >
         <div className="flex w-full flex-row items-center justify-between">
           <h2 className="text-3xl">Success</h2>
           <Image
-            className="h-[30px] w-[30px] cursor-pointer"
+            className="h-[12px] w-[12px] cursor-pointer"
             src={CrossIcon}
             alt="cross icon"
             onClick={onClose || (() => router.push("/nft"))}
           />
         </div>
         <div
-          className={`flex flex-row ${poppins.className} my-7 items-center justify-center text-sm`}
+          className={`flex flex-row my-7 items-center justify-center text-sm`}
         >
           <Image
             className="mr-4 h-[30px] w-[30px]"

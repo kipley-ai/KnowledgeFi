@@ -15,6 +15,7 @@ export type ChatbotData = {
   session_id: string;
   category_name: string;
   tone: string;
+  personality: string;
 };
 
 export type ChatbotDataListResponse = {
