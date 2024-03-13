@@ -499,7 +499,7 @@ export default function NFT() {
               type="button"
             >
               <h5 className="text-xs font-semibold text-black lg:text-sm">
-                Generate SFT
+                MINT SFT
               </h5>
               <svg
                 width="20"

@@ -46,7 +46,7 @@ export const delay = (ms: number) => {
 };
 
 export const chatbotSlug = (chatbot: any) => {
-  return `${chatbot.name.replaceAll(" ", "-")}-${chatbot.chatbot_id}`;
+  return `${chatbot.name.replaceAll(" ", "-").replaceAll(/[^a-zA-Z0-9-]/g, "")}-${chatbot.chatbot_id}`;
 };
 
 export const chatbotIdFromSlug = (slug: string) => {
