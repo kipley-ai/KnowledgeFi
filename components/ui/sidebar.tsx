@@ -40,25 +40,16 @@ const ChatHistoryList = () => {
   const segments = useSelectedLayoutSegments();
   const chatbotListQuery = useChatbotChatList();
   const pathname = usePathname();
-  // const chatbotListPage = searchParams.get("chatbotListPage") ?? "1";
-  // const chatbotListPerPage = searchParams.get("chatbotListPerPage") ?? "10";
-  // const chatbotListStart = (Number(chatbotListPage) - 1) * Number(chatbotListPerPage);
-  // const chatbotListEnd = chatbotListStart + Number(chatbotListPerPage);
 
   if (chatbotListQuery.data) {
     const chatbotListData = chatbotListQuery.data?.data.data;
-    // const chatbotListTotalPages = Math.ceil(
-    // 	Number(chatchatbotListListData.length) / Number(chatbotListPerPage)
-    // );
-
     if (chatbotListData !== undefined && chatbotListData.length > 0) {
       return (
         <>
-          {/* {chatbotListData.slice(chatbotListStart, chatbotListEnd).map((chatbot: any, index: number) => ( */}
           {chatbotListData.map((chatbot: any, index: number) => (
             <li
               key={chatbot.chatbot_id}
-              className={`mx-3 mb-3 px-2 py-2 last:mb-0 hover:rounded-md hover:bg-stone-600 hover:text-white ${
+              className={`mx-3 mb-2 py-2 last:mb-0 hover:rounded-md hover:bg-stone-600 hover:text-white ${
                 (segments.includes("home") || segments.includes("dashboard")) &&
                 "bg-transparent"
               } ${pathname === `/chatbot/${chatbotSlug(chatbot)}` ? "" : ""}`}
@@ -77,10 +68,6 @@ const ChatHistoryList = () => {
               </SidebarLink>
             </li>
           ))}
-          {/* <PaginationController
-						totalPages={chatbotListTotalPages}
-						pageQuery={"chatbotListPage"}
-					/> */}
         </>
       );
     }
@@ -276,7 +263,7 @@ export default function Sidebar() {
                       "bg-transparent"
                     } `}
                   >
-                    <div className="flex items-center px-3">
+                    <div className="mb-2 flex items-center px-3">
                       <svg
                         width="19"
                         height="19"
@@ -295,165 +282,14 @@ export default function Sidebar() {
                         CHAT LIST
                       </span>
                     </div>
+                    <ul className="max-h-[35vh] overflow-y-auto">
+                      <ChatHistoryList />
+                    </ul>
                   </li>
-                  <ChatHistoryList />
-                  {/* <li
-									className={`px-3 py-2  mb-3 last:mb-0 ${
-										(segments.includes("home") ||
-											segments.includes("dashboard")) &&
-										"bg-transparent"
-									} `}
-								>
-									style={{ border: '2px solid #01F7FF', borderRadius: '24px', padding: '6px 10px' }}>
-									<SidebarLink href="/#">
-										<div className="flex items-center">
-											<span className="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200 text-[14px] font-semibold text-neutral-500">
-												Cloud Server Security
-											</span>
-										</div>
-									</SidebarLink>
-								</li>
-								<li
-									className={`px-3 py-2  mb-3 last:mb-0 ${
-										(segments.includes("home") ||
-											segments.includes("dashboard")) &&
-										"bg-transparent"
-									} `}
-								>
-									style={{ border: '2px solid #01F7FF', borderRadius: '24px', padding: '6px 10px' }}>
-									<SidebarLink href="/#">
-										<div className="flex items-center">
-											<span className="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200 text-[14px] font-semibold text-neutral-500">
-												Favorites
-											</span>
-										</div>
-									</SidebarLink>
-								</li>
-								<li
-									className={`px-3 py-2  mb-3 last:mb-0 ${
-										(segments.includes("home") ||
-											segments.includes("dashboard")) &&
-										"bg-transparent"
-									} `}
-								>
-									style={{ border: '2px solid #01F7FF', borderRadius: '24px', padding: '6px 10px' }}>
-									<SidebarLink href="/#">
-										<div className="flex items-center">
-											<span className="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200 text-[14px] font-semibold text-neutral-500">
-												Production
-											</span>
-										</div>
-									</SidebarLink>
-								</li>
-								<li
-									className={`px-3 py-2  mb-3 last:mb-0 ${
-										(segments.includes("home") ||
-											segments.includes("dashboard")) &&
-										"bg-transparent"
-									} `}
-								>
-									style={{ border: '2px solid #01F7FF', borderRadius: '24px', padding: '6px 10px' }}>
-									<SidebarLink href="/#">
-										<div className="flex items-center">
-											<span className="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200 text-[14px] font-semibold text-neutral-500">
-												Writing Tips
-											</span>
-										</div>
-									</SidebarLink>
-								</li> */}
-                  {/* <li
-									className={`px-3 py-2  mb-0.5 last:mb-0 ${segments.includes("login") && "bg-slate-900"
-										}`}
-								>
-									<Link
-										className="block text-slate-200 hover:text-white transition duration-150 truncate"
-										href="/create-chatbot"
-										onClick={handleChatbotClick}
-									>
-										<div className="flex items-center">
-											{walletReady ? ( // wallet connected
-												<>
-													<div
-														className="flex items-center"
-														onClick={handleWalletReadyClick}
-													>
-														<svg
-															xmlns="http://www.w3.org/2000/svg"
-															width="36"
-															height="36"
-															fill="none"
-															viewBox="0 0 36 36"
-														>
-															<path
-																fill="#F1F5F9"
-																fillRule="evenodd"
-																d="M18 7C11.925 7 7 11.925 7 18s4.925 11 11 11 11-4.925 11-11S24.075 7 18 7zm0 6a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3h-3a1 1 0 110-2h3v-3a1 1 0 011-1z"
-																clipRule="evenodd"
-															>
-																{" "}
-															</path>
-														</svg>
-														<span className="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200 text-[14px] font-semibold text-neutral-500">
-															Create chat bot
-														</span>
-													</div>
-												</>
-											) : (
-												<GetInvolvedButton
-													buttonStyle="flex items-center "
-													wrapStyle="flex items-center "
-													chainStyle="flex items-center "
-													content={
-														<>
-															<svg
-																xmlns="http://www.w3.org/2000/svg"
-																width="36"
-																height="36"
-																fill="none"
-																viewBox="0 0 36 36"
-															>
-																<path
-																	fill="#F1F5F9"
-																	fillRule="evenodd"
-																	d="M18 7C11.925 7 7 11.925 7 18s4.925 11 11 11 11-4.925 11-11S24.075 7 18 7zm0 6a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3h-3a1 1 0 110-2h3v-3a1 1 0 011-1z"
-																	clipRule="evenodd"
-																>
-																	{" "}
-																</path>
-															</svg>
-															<span className="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200 text-[14px] font-semibold text-neutral-500">
-																Create chat bot
-															</span>
-														</>
-													}
-												/>
-											)}
-										</div>
-									</Link>
-								</li> */}
                 </ul>
                 <CreditBalance />
               </div>
             </div>
-
-            {/* Expand / collapse button */}
-            {/* <div className="pt-3 hidden lg:inline-flex 2xl:hidden justify-end mt-auto">
-						<div className="px-3 py-2">
-							<button onClick={() => setSidebarExpanded(!sidebarExpanded)}>
-								<span className="sr-only">Expand / collapse sidebar</span>
-								<svg
-									className="w-6 h-6 fill-current sidebar-expanded:rotate-180"
-									viewBox="0 0 24 24"
-								>
-									<path
-										className="text-slate-400"
-										d="M19.586 11l-5-5L16 4.586 23.414 12 16 19.414 14.586 18l5-5H7v-2z"
-									/>
-									<path className="text-slate-600" d="M3 23H1V1h2z" />
-								</svg>
-							</button>
-						</div>
-					</div> */}
           </Transition>
         </div>
       </CreditBalanceProvider>
