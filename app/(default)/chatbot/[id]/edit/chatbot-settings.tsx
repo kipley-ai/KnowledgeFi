@@ -7,6 +7,8 @@ import { useDebouncedCallback } from "use-debounce";
 import ImageInput from "@/components/image-input-2";
 import LoadingIcon from "public/images/loading-icon.svg";
 import CreateChatbotModal from "@/components/toast-4";
+import Switcher from "@/components/switcher";
+import Tooltip from "@/components/tooltip";
 
 interface Form {
   category_id: string;
@@ -24,30 +26,21 @@ const ChatbotSettings = () => {
   const { id } = useParams();
   const chatbotDetail = useChatbotDetail({ chatbot_id: id as string });
   const [form, setForm] = useState<any>({
-    category_id: "",
     chatbot_id: "",
     name: "",
     description: "",
-    instruction: "",
-    example_conversation: "",
     profile_image: "",
+    chatbot_price_per_query: 0,
   });
   const [selectedFile, setSelectedFile] = useState<any>(LoadingIcon);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [showModal, setShowModal] = useState(false);
+  const [mode, setMode] = useState(0);
+  const [toneData, setToneData] = useState("");
+  const [personality, setPersonality] = useState(0);
+  const [personalityData, setPersonalityData] = useState("");
+  const [errorMessage, setErrorMessage] = useState<any>({});
 
-  const handleDivClick = useDebouncedCallback(
-    () => {
-      if (fileInputRef.current) {
-        fileInputRef.current.click();
-      }
-    },
-    300, // 300ms debounce time
-    {
-      leading: true,
-      trailing: false,
-    },
-  );
 
   const handleFormChange = (name: string, value: any) => {
     setForm({
@@ -60,13 +53,13 @@ const ChatbotSettings = () => {
     try {
       updateChatbot.mutate(
         {
-          category_id: form.category_id as string,
           chatbot_id: id as string,
+          profile_image: selectedFile,
           name: form.name as string,
           description: form.description as string,
-          instruction: form.instruction as string,
-          example_conversation: form.example_conversation as string,
-          profile_image: selectedFile,
+          tone: toneData,
+          personality: personalityData,
+          price_per_query: form.chatbot_price_per_query as number,
         },
         {
           onSuccess(data, variables, context) {
@@ -80,9 +73,27 @@ const ChatbotSettings = () => {
   };
 
   useEffect(() => {
+    if (mode == 0) {
+      setToneData("instruction");
+    } else if (mode == 1) {
+      setToneData("instruction_2");
+    }
+  }, [mode]);
+
+  useEffect(() => {
+    if (personality == 0) {
+      setPersonalityData("focused");
+    } else if (personality == 1) {
+      setPersonalityData("creative");
+    }
+  }, [personality]);
+
+  useEffect(() => {
     if (chatbotDetail.isSuccess) {
       setForm(chatbotDetail.data?.data.data);
       setSelectedFile(chatbotDetail.data?.data.data.profile_image);
+      setMode(chatbotDetail.data?.data.data.tone === "instruction" ? 0 : 1);
+      setPersonality(chatbotDetail.data?.data.data.personality === "focused" ? 0 : 1);
     }
   }, [chatbotDetail.isSuccess]);
 
@@ -94,168 +105,121 @@ const ChatbotSettings = () => {
         setOpen={setShowModal}
       />
       <div className="flex flex-col bg-[#292D32] py-8 sm:px-6 lg:px-0">
-        <form className="flex flex-col gap-5 space-y-4">
-          {/* Profile Picture */}
-          <div className="flex flex-row items-start py-8">
-            {/* Left side - Image container */}
-            {/* <div className="w-32 h-32 mr-8"> */}
-            <div className="flex flex-col">
+        <form className="flex flex-col gap-4 space-y-4">
+          <div className="flex flex-row justify-between gap-8">
+            <div className="w-60">
               <ImageInput
                 selectedFile={selectedFile}
                 setSelectedFile={setSelectedFile}
               />
             </div>
-            {/* </div> */}
-            {/* Right side - Text and Upload button */}
-            {/* <div className="flex flex-col justify-center self-end mt-16">
-                        <p className="text-xs text-gray-400 mb-6">
-                            800x800 PNG, JPG is recommended. Maximum file size: 2Mb
-                        </p>
-                        <div className="flex items-center justify-center bg-transparent text-white text-sm font-bold py-2 rounded-3xl cursor-pointer border-2 border-[#393E44] w-fit px-6" onClick={handleDivClick}>
-                            <span>Upload new image</span>
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" className="ml-2">
-                                <path d="M3.33317 13.5352C2.32818 12.8625 1.6665 11.7168 1.6665 10.4167C1.6665 8.46369 3.15943 6.85941 5.06629 6.68281C5.45635 4.31011 7.51671 2.5 9.99984 2.5C12.483 2.5 14.5433 4.31011 14.9334 6.68281C16.8402 6.85941 18.3332 8.46369 18.3332 10.4167C18.3332 11.7168 17.6715 12.8625 16.6665 13.5352M6.6665 13.3333L9.99984 10M9.99984 10L13.3332 13.3333M9.99984 10V17.5" stroke="#7C878E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
-                            <input
-                                ref={fileInputRef}
-                                id="profile_image"
-                                type="file"
-                                className="hidden"
-                                accept="image/png, image/jpeg"
-                                onChange={(e) => handleFormChange("profile_image", e.target.value)}
-                            />
-                        </div>
-                    </div> */}
-          </div>
 
-          {/* Character Name */}
-          <div className="grid grid-cols-2 gap-5">
-            <div className="">
-              <label
-                htmlFor="characterName"
-                className="block text-sm font-semibold text-white "
-              >
-                Name
-              </label>
-              <div className="mt-1">
-                <input
-                  id="characterName"
-                  type="text"
-                  value={form.name}
-                  className="mt-2 w-full rounded-xl border-2 border-[#50575F] bg-transparent text-white"
-                  placeholder="Name your Chatbot"
-                  onChange={(e) => handleFormChange("name", e.target.value)}
-                  maxLength={100}
-                />
+            <div className="flex w-full flex-col gap-6">
+              <div className="">
+                <label
+                  htmlFor="characterName"
+                  className="block text-sm font-semibold text-white "
+                >
+                  Name
+                </label>
+                <div className="mt-1">
+                  <input
+                    id="characterName"
+                    type="text"
+                    value={form.name}
+                    className="mt-2 w-full rounded-xl border-2 border-[#50575F] bg-transparent text-white"
+                    placeholder="Name your Chatbot"
+                    onChange={(e) => handleFormChange("name", e.target.value)}
+                    maxLength={100}
+                  />
+                </div>
               </div>
-              {/* <p className="mt-2 text-xs text-gray-400">
-                        The name of your AI character.
-                    </p> */}
-            </div>
-            <div className="">
-              <label
-                className="flex w-1/3 flex-col text-sm font-semibold text-white"
-                htmlFor="category"
-              >
-                Category
-              </label>
-              <select
-                id="category"
-                value={form.category_id}
-                className="mt-3 w-full rounded-xl border-2 border-[#50575F] bg-[#292D32] text-white"
-                onChange={(e) =>
-                  handleFormChange("category_id", e.target.value)
-                }
-              >
-                <option value="">Production</option>
-                <option value="">Select a category</option>
-                <option value="">Select a category</option>
-                {/* ... other options */}
-              </select>
-              {/* <p className="mt-2 text-xs text-gray-400">Category of your AI.</p> */}
-            </div>
-          </div>
 
-          {/* Description */}
-          <div className="">
-            <label
-              htmlFor="description"
-              className="block text-sm font-semibold text-white"
-            >
-              Description
-            </label>
-            <div className="mt-1">
-              <input
-                id="description"
-                type="text"
-                value={form.description}
-                className="mt-2 w-full rounded-xl border-2 border-[#50575F] bg-transparent text-white"
-                placeholder="Describe your Chatbot"
-                onChange={(e) =>
-                  handleFormChange("description", e.target.value)
-                }
-                maxLength={1000}
-              />
+              <div className="">
+                <label
+                  htmlFor="description"
+                  className="block text-sm font-semibold text-white"
+                >
+                  Description
+                </label>
+                <div className="mt-1">
+                  <textarea
+                    id="description"
+                    value={form.description}
+                    className="mt-2 w-full rounded-xl border-2 border-[#50575F] bg-transparent text-white"
+                    placeholder="Describe your Chatbot"
+                    onChange={(e) =>
+                      handleFormChange("description", e.target.value)
+                    }
+                    rows={3}
+                    maxLength={1000}
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label
+                  htmlFor="tone"
+                  className="block text-xs font-semibold text-white lg:text-sm "
+                >
+                  Tone
+                </label>
+                <div className="mt-3">
+                  <Switcher
+                    texts={["1st Person Tone", "3rd Person Tone"]}
+                    mode={mode}
+                    setWhich={setMode}
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label
+                  htmlFor="personality"
+                  className="block text-xs font-semibold text-white lg:text-sm"
+                >
+                  Personality
+                </label>
+                <div className="mt-3">
+                  <Switcher
+                    texts={["More Focused", "More Creative"]}
+                    mode={personality}
+                    setWhich={setPersonality}
+                  />
+                </div>
+              </div>
+              
+              <div>
+                <label className=" flex flex-row items-center space-x-3 text-wrap text-xs font-semibold text-[#DDD] lg:text-sm">
+                  <span>Price Per Query (in $KFI)</span>
+                  <Tooltip bg="dark" position="right" size="md">
+                    Set your price per query on your chatbot app and get paid in
+                    $KFI.
+                  </Tooltip>
+                </label>
+                <div className="mt-3">
+                  <input
+                    className="placeholder-text-[#7C878E] w-full rounded-xl bg-transparent text-xs text-[#DDD] lg:text-sm"
+                    type="number"
+                    name="pricePerQuery"
+                    placeholder="e.g. 1"
+                    onChange={(e) => {
+                      if (parseFloat(e.target.value) < 0)
+                        handleFormChange("chatbot_price_per_query", 0);
+                      else handleFormChange("chatbot_price_per_query", Number(e.target.value));
+                    }}
+                    value={form.chatbot_price_per_query}
+                  />
+                  {errorMessage && errorMessage.pricePerQuery ? (
+                    <div className=" text-xs text-red-400">
+                      {errorMessage.pricePerQuery}
+                    </div>
+                  ) : (
+                    <div className="text-xs opacity-0 lg:text-sm">a</div>
+                  )}
+                </div>
+              </div>
             </div>
-            {/* <p className="mt-2 text-xs text-gray-400">
-                        Description of your AI character.
-                    </p> */}
-          </div>
-
-          {/* Category */}
-
-          {/* Prompt */}
-          <div className="">
-            <label
-              className="mt-4 flex flex-col font-semibold text-white"
-              htmlFor="prompt"
-            >
-              Instructions
-            </label>
-            <textarea
-              id="prompt"
-              value={form.instruction}
-              placeholder="Give Instructions and Personality to your Chatbot"
-              className="mt-2 w-full rounded-xl border-2 border-[#50575F] bg-transparent text-white"
-              onChange={(e) => handleFormChange("instruction", e.target.value)}
-              rows={5}
-              maxLength={1000}
-            />
-            {/* <div className="flex flex-row justify-between">
-                        <p className="mt-2 text-xs text-gray-400">
-                            Describe your AI character.
-                        </p>
-                        <p className="mt-2 text-xs text-gray-400">
-                            Enter at least 200 more characters.
-                        </p>
-                    </div> */}
-          </div>
-          <div className="">
-            <label
-              className="mt-4 flex flex-col font-semibold text-white"
-              htmlFor="example"
-            >
-              Conversation Starters
-            </label>
-            <textarea
-              id="example"
-              value={form.example_conversation}
-              onChange={(e) =>
-                handleFormChange("example_conversation", e.target.value)
-              }
-              placeholder={"Examples for users to start the conversation"}
-              className="mt-2 w-full rounded-xl border-2 bg-transparent text-white"
-              rows={5}
-              maxLength={1000}
-            />
-            {/* <div className="flex flex-row justify-between">
-						<p className="mt-2 text-xs text-gray-400">
-							Give an example of your conversation with your AI.
-						</p>
-						<p className="mt-2 text-xs text-gray-400">
-							Enter at least 200 more characters.
-						</p>
-					</div> */}
           </div>
 
           {/* Cancel and Save Changes Button */}

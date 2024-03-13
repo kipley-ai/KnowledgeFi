@@ -15,6 +15,7 @@ import { PaginationController } from "@/components/pagination-2/controller";
 import { useRouter } from "next/navigation";
 import { useUserDetail } from "@/hooks/api/user";
 import { KF_TITLE } from "@/utils/constants";
+import { chatbotSlug } from "@/utils/utils";
 
 type NoDataProps = {
   item: string;
@@ -176,7 +177,7 @@ const BotCard = ({ bot }: BotCardProps) => {
         </Link>
         <Link
           className="flex flex-1 items-center justify-center rounded-br-xl hover:bg-[#01F7FF] hover:text-black"
-          href={`/chatbot/` + bot.chatbot_id}
+          href={`/chatbot/` + chatbotSlug(bot)}
         >
           <p className="text-center text-sm font-semibold">Chat</p>
         </Link>
@@ -248,7 +249,7 @@ const BotList = () => {
 };
 
 export default function NFT() {
-  const title = KF_TITLE + "My Assets";
+  const title = "My Assets";
   const { setHeaderTitle } = useAppProvider();
 
   const handleLoadMore = () => {
@@ -256,7 +257,7 @@ export default function NFT() {
   };
 
   useEffect(() => {
-    document.title = title;
+    document.title = KF_TITLE + title;
     setHeaderTitle(title);
 
     return () => setHeaderTitle("Default Title");

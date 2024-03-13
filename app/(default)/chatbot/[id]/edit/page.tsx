@@ -11,19 +11,19 @@ import { KF_TITLE } from "@/utils/constants";
 
 export default function EditChatbot() {
   const { setHeaderTitle } = useAppProvider();
-  const title = KF_TITLE + "Edit Chatbot";
+  const title = "Edit Chatbot";
 
   const [activeTab, setActiveTab] = useState("settings");
 
   useEffect(() => {
     setHeaderTitle(title);
-    document.title = title;
+    document.title = KF_TITLE + title;
     return () => setHeaderTitle("Default Title");
   }, [setHeaderTitle, title]);
 
   return (
     <div className="flex w-full flex-col items-center justify-center bg-[#292D32] py-10">
-      <div className="flex w-3/5 flex-col">
+      <div className="flex w-4/5 flex-col">
         <div className="flex w-full rounded-xl border-2 border-[#393E44] bg-[#181B1F] p-1">
           <button
             onClick={() => setActiveTab("settings")}

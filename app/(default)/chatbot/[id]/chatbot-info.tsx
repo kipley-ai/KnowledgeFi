@@ -4,9 +4,11 @@ import { useChatbotDetail } from "@/hooks/api/chatbot";
 import { useNftDetail } from "@/hooks/api/nft";
 
 import "./chat-messages.css";
+import { chatbotIdFromSlug } from "@/utils/utils";
 
 const ChatbotInfo = () => {
-  const { id } = useParams();
+  const { id: slug } = useParams();
+  const id = chatbotIdFromSlug(slug.toString());
   const router = useRouter();
 
   const { data: chatbotData } = useChatbotDetail({

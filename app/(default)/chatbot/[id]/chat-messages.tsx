@@ -20,6 +20,7 @@ import { useCreditDeduction } from "@/hooks/api/credit";
 import { useAppProvider } from "@/providers/app-provider";
 import { useCreditBalanceContext } from "./credit-balance-context";
 import { useCreditBalance } from "@/hooks/api/credit";
+import { chatbotIdFromSlug } from "@/utils/utils";
 
 const MessageList = () => {
   const [answersStream, setAnswersStream] = useState<string[]>([]);
@@ -55,7 +56,8 @@ const MessageList = () => {
     buttonSession,
   } = useCreateChatbotContext();
 
-  const { id } = useParams();
+  const { id: slug } = useParams();
+  const id = chatbotIdFromSlug(slug.toString());
 
   const { data: chatbotData, isSuccess: chatbotDetailIsSuccess } =
     useChatbotDetail({
@@ -162,7 +164,7 @@ const MessageList = () => {
   }, [lastJsonMessage]);
 
   return (
-    <div className="flex grow flex-col gap-2 overflow-auto h-auto md:space-y-4">
+    <div className="flex h-auto grow flex-col gap-2 overflow-auto md:space-y-4">
       <FirstAnswer
         profileImage={chatbotData?.data.data.profile_image}
         sender={"bot"}

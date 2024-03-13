@@ -18,6 +18,7 @@ export interface ICreateChatbotParams {
   profile_image: string;
   name: string;
   tone: string;
+  personality: string;
   sft_id: string;
   kb_id: string;
   price_per_query: number;
@@ -55,13 +56,13 @@ export interface IChatbotDetailParams {
 }
 
 export interface IUpdateChatbotParams {
-  category_id: string;
   chatbot_id: string;
   name: string;
   description: string;
-  instruction: string;
-  example_conversation: string;
   profile_image: string;
+  tone: string;
+  personality: string;
+  price_per_query: number;
 }
 
 export interface IPaginate {

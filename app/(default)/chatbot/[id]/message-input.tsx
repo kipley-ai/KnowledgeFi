@@ -18,8 +18,11 @@ import Image from "next/image";
 import Avatar from "public/images/avatar-gradient-icon.svg";
 import EnterIcon from "public/images/arrow-right.svg";
 import { useDefaultValue } from "@/hooks/api/default_value";
+import { chatbotIdFromSlug } from "@/utils/utils";
 
 const MessageInput = () => {
+  const { id: slug } = useParams();
+  const id = chatbotIdFromSlug(slug.toString());
   const {
     // Newly entered question
     newQuestion,
@@ -41,7 +44,6 @@ const MessageInput = () => {
   const router = useRouter();
   const pathname = usePathname();
   const { address } = useAccount();
-  const { id } = useParams();
   const chatSession = useGetSession({ chatbot_id: id as string });
   const newSession = useNewSession();
   const pluginConfig = useDefaultValue({ key: "plugin_config" });
@@ -188,7 +190,7 @@ const MessageInput = () => {
   };
 
   return (
-    <div className="sticky inset-x-0 bottom-4 mt-6 flex gap-4 w-auto items-center">
+    <div className="sticky inset-x-0 bottom-4 mt-6 flex w-auto items-center gap-4">
       <button
         className="rounded-2xl border border-gray-600 px-2 text-sm text-gray-600"
         onClick={handleClearChat}

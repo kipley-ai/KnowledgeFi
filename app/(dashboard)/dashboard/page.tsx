@@ -34,6 +34,7 @@ import { keepPreviousData } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { KF_TITLE } from "@/utils/constants";
+import { chatbotSlug } from "@/utils/utils";
 
 export default function Dashboard() {
   const title = KF_TITLE + "Dashboard";
@@ -164,7 +165,7 @@ const BotItem = ({
 }) => {
   return (
     <Link
-      href={`/chatbot/${botData.chatbot_id}`}
+      href={`/chatbot/${chatbotSlug(botData)}`}
       className="relative flex w-[calc(50dvw-30px)] cursor-pointer flex-col md:w-[155px]"
     >
       <div className="absolute right-px top-[5px] h-[60px] w-[60px] rounded-2xl bg-apricot-700"></div>

@@ -10,3 +10,8 @@ export const KF_TITLE =
   process.env.NEXT_PUBLIC_ENV_DEV === "1"
     ? "KnowledgeFi Test - "
     : "KnowledgeFi - ";
+
+export enum ONBOARDING_FLOW {
+  NORMAL = "1",
+  KOL = "2",
+}
