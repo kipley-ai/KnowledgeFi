@@ -1,8 +1,9 @@
+"use client";
 import axios from "axios";
 import { useState, useEffect, useRef } from "react";
 import { useCreateChatbotContext } from "../create-knowledge-context";
 import { useIsWhitelisted, useUserDetail } from "@/hooks/api/user";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { ONBOARDING_FLOW } from "@/utils/constants";
 
 type InviteCodeProps = {
@@ -10,6 +11,7 @@ type InviteCodeProps = {
 };
 
 const InviteCode = ({ address }: InviteCodeProps) => {
+  const router = useRouter();
   const [isBlankPresent, setIsBlankPresent] = useState(true);
   const [otp, setOtp] = useState(new Array(6).fill(""));
   const [errorMessage, setErrorMessage] = useState("");
@@ -133,8 +135,9 @@ const InviteCode = ({ address }: InviteCodeProps) => {
           sessionStorage.setItem("address", address);
         }
 
-        if (process.env.NEXT_PUBLIC_ONBOARDING_FLOW === ONBOARDING_FLOW.KOL) {
-          redirect("/dashboard");
+        if (process.env.NEXT_PUBLIC_ONBOARDING_FLOW! === ONBOARDING_FLOW.KOL) {
+          router.push("/dashboard");
+          return;
         }
 
         setStep("data_source");
