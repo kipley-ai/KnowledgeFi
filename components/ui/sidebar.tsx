@@ -26,6 +26,7 @@ import { useChatbotChatList } from "@/hooks/api/chatbot";
 import { PaginationController } from "../pagination/controller";
 import CreditBalance from "../../app/(default)/chatbot/[id]/credit-balance";
 import { CreditBalanceProvider } from "../../app/(default)/chatbot/[id]/credit-balance-context";
+import { chatbotSlug } from "@/utils/utils";
 
 const GetInvolvedButton = dynamic(
   () => import("../GetInvolvedButton/get-involved-button"),
@@ -60,14 +61,16 @@ const ChatHistoryList = () => {
               className={`mx-3 mb-3 px-2 py-2 last:mb-0 hover:rounded-md hover:bg-stone-600 hover:text-white ${
                 (segments.includes("home") || segments.includes("dashboard")) &&
                 "bg-transparent"
-              } ${pathname === "/chatbot/" + chatbot.chatbot_id ? "" : ""}`}
+              } ${pathname === `/chatbot/${chatbotSlug(chatbot)}` ? "" : ""}`}
             >
-              <SidebarLink href={`/chatbot/${chatbot.chatbot_id}`}>
+              <SidebarLink href={`/chatbot/${chatbotSlug(chatbot)}`}>
                 <div className="flex items-center">
                   <span
-                    className={`text-[14px] text-sm font-medium font-semibold duration-200 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 ${pathname === "/chatbot/" + chatbot.chatbot_id ? "text-aqua-700" : ""}`}
+                    className={`text-[14px] text-sm font-medium font-semibold duration-200 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 ${pathname === `/chatbot/${chatbotSlug(chatbot)}` ? "text-aqua-700" : ""}`}
                   >
-                    {pathname === "/chatbot/" + chatbot.chatbot_id ? "> " : ""}
+                    {pathname === `/chatbot/${chatbotSlug(chatbot)}`
+                      ? "> "
+                      : ""}
                     {chatbot.name}
                   </span>
                 </div>

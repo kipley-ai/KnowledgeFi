@@ -2,7 +2,7 @@
 import axios from "axios";
 import { useState, useEffect, useRef } from "react";
 import { useCreateChatbotContext } from "../create-knowledge-context";
-import { useIsWhitelisted, useUserDetail } from "@/hooks/api/user";
+import { useIsWhitelisted } from "@/hooks/api/user";
 import { useRouter } from "next/navigation";
 import { ONBOARDING_FLOW } from "@/utils/constants";
 
@@ -136,10 +136,9 @@ const InviteCode = ({ address }: InviteCodeProps) => {
         }
 
         if (process.env.NEXT_PUBLIC_ONBOARDING_FLOW! === ONBOARDING_FLOW.KOL) {
-          router.push("/dashboard");
+          window.location.href = "/dashboard";
           return;
         }
-
         setStep("data_source");
       }
     } catch (error) {
@@ -155,11 +154,11 @@ const InviteCode = ({ address }: InviteCodeProps) => {
       inputsRef.current[0].focus();
     }
 
-    window.addEventListener("paste", handlePaste);
+    // window.addEventListener("paste", handlePaste);
 
-    return () => {
-      window.removeEventListener("paste", handlePaste);
-    };
+    // return () => {
+    //   window.removeEventListener("paste", handlePaste);
+    // };
   }, []);
 
   useEffect(() => {
@@ -170,9 +169,13 @@ const InviteCode = ({ address }: InviteCodeProps) => {
 
   useEffect(() => {
     // Check if all OTP inputs are filled
-    if (!otp.some((value) => value.trim() === "")) {
-      handleContinue();
-    }
+    const cont = async () => {
+      if (!otp.some((value) => value.trim() === "")) {
+        await handleContinue();
+      }
+    };
+
+    cont();
   }, [otp]);
 
   if (isLoading) return null;

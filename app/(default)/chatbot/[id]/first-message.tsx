@@ -5,6 +5,7 @@ import AvatarDummy from "public/images/avatar-bot-dummy.svg";
 import LoadingIcon from "public/images/loading-icon.svg";
 import { useState } from "react";
 import { CopyButton } from "./last-message";
+import { chatbotIdFromSlug } from "@/utils/utils";
 
 const FirstAnswer = ({
   profileImage,
@@ -18,7 +19,9 @@ const FirstAnswer = ({
   isGenerating: boolean;
 }) => {
   const isStream = Array.isArray(message);
-  const { id } = useParams();
+  const { id: slug } = useParams();
+  const id = chatbotIdFromSlug(slug.toString());
+
   const { data: chatbotData, isSuccess: chatbotDetailIsSuccess } =
     useChatbotDetail({
       chatbot_id: id as string,
@@ -45,18 +48,20 @@ const FirstAnswer = ({
             <Image
               src={profileImage}
               alt="Profile"
-              className="w-8 h-8 rounded-full"
+              className="h-8 w-8 rounded-full"
               width={50}
               height={50}
             />
-            <div className="text-white text-sm w-full">
-              <h6 className="mb-5 mt-1 font-semibold">{chatbotData?.data.data.name}</h6>
+            <div className="w-full text-sm text-white">
+              <h6 className="mb-5 mt-1 font-semibold">
+                {chatbotData?.data.data.name}
+              </h6>
               <p>{isStream ? message.slice(0, -2).join("") : message}</p>
             </div>
           </div>
 
           {/* Interactive buttons */}
-          <div className="h-[40px] flex items-center justify-end pl-10">
+          <div className="flex h-[40px] items-center justify-end pl-10">
             {/* Regenerate answer button */}
             {/* Copy button icon */}
             {showCopy && !isStream ? <CopyButton message={message} /> : <></>}

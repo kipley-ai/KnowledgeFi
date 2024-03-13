@@ -1,4 +1,5 @@
 import { useChatbotDetail } from "@/hooks/api/chatbot";
+import { chatbotIdFromSlug } from "@/utils/utils";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import AvatarDummy from "public/images/avatar-bot-dummy.svg";
@@ -66,7 +67,9 @@ const LastAnswer = ({
   isGenerating: boolean;
 }) => {
   const isStream = Array.isArray(message);
-  const { id } = useParams();
+  const { id: slug } = useParams();
+  const id = chatbotIdFromSlug(slug.toString());
+
   const { data: chatbotData, isSuccess: chatbotDetailIsSuccess } =
     useChatbotDetail({
       chatbot_id: id as string,
@@ -81,11 +84,11 @@ const LastAnswer = ({
       >
         {/* Loading icon and generating text */}
         {isGenerating && (
-          <div className="flex gap-6 items-center text-gray-400 text-sm mb-2 space-x-3">
+          <div className="mb-2 flex items-center gap-6 space-x-3 text-sm text-gray-400">
             <Image
               src={LoadingIcon}
               alt="Profile"
-              className="animate-spin h-5 w-5 ml-1 text-white"
+              className="ml-1 h-5 w-5 animate-spin text-white"
               width={50}
               height={50}
             />
@@ -99,18 +102,22 @@ const LastAnswer = ({
             <Image
               src={profileImage}
               alt="Profile"
-              className="w-8 h-8 rounded-full"
+              className="h-8 w-8 rounded-full"
               width={50}
               height={50}
             />
-            <div className="text-white text-sm w-full">
-              <h6 className="mb-5 mt-1 font-semibold">{chatbotData?.data.data.name}</h6>
-              <p className="whitespace-break-spaces break-words">{isStream ? message.slice(0, -2).join("") : message}</p>
+            <div className="w-full text-sm text-white">
+              <h6 className="mb-5 mt-1 font-semibold">
+                {chatbotData?.data.data.name}
+              </h6>
+              <p className="whitespace-break-spaces break-words">
+                {isStream ? message.slice(0, -2).join("") : message}
+              </p>
             </div>
           </div>
 
           {/* Interactive buttons */}
-          <div className="h-[40px] flex items-center justify-end pl-10">
+          <div className="flex h-[40px] items-center justify-end pl-10">
             {/* Regenerate answer button */}
             {/* Copy button icon */}
             {showCopy && !isStream ? <CopyButton message={message} /> : <></>}

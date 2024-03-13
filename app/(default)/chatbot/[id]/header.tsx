@@ -16,6 +16,7 @@ import SidebarRight from "@/components/ui/sidebar-right";
 import Description from "./description";
 import CreditBalance from "./credit-balance";
 import { KF_TITLE } from "@/utils/constants";
+import { chatbotIdFromSlug } from "@/utils/utils";
 
 const archivo = Archivo({
   weight: ["400", "600"],
@@ -26,7 +27,9 @@ const Header = () => {
   const { buttonSession, setButtonSession } = useCreateChatbotContext();
 
   const newSession = useNewSession();
-  const { id } = useParams();
+  const { id: slug } = useParams();
+  const id = chatbotIdFromSlug(slug.toString());
+
   const router = useRouter();
 
   const { data: chatbotData, isSuccess: chatbotDetailIsSuccess } =

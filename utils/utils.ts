@@ -44,3 +44,11 @@ export const noMoreThanCharacters = (number: number) =>
 export const delay = (ms: number) => {
   return new Promise((resolve) => setTimeout(resolve, ms));
 };
+
+export const chatbotSlug = (chatbot: any) => {
+  return `${chatbot.name.replaceAll(" ", "-")}-${chatbot.chatbot_id}`;
+};
+
+export const chatbotIdFromSlug = (slug: string) => {
+  return slug.slice(-36);
+};
