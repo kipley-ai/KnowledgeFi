@@ -249,7 +249,7 @@ const BotList = () => {
 };
 
 export default function NFT() {
-  const title = KF_TITLE + "My Assets";
+  const title = "My Assets";
   const { setHeaderTitle } = useAppProvider();
 
   const handleLoadMore = () => {
@@ -257,7 +257,7 @@ export default function NFT() {
   };
 
   useEffect(() => {
-    document.title = title;
+    document.title = KF_TITLE + title;
     setHeaderTitle(title);
 
     return () => setHeaderTitle("Default Title");

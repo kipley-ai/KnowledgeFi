@@ -11,13 +11,13 @@ import { KF_TITLE } from "@/utils/constants";
 
 export default function EditChatbot() {
   const { setHeaderTitle } = useAppProvider();
-  const title = KF_TITLE + "Edit Chatbot";
+  const title = "Edit Chatbot";
 
   const [activeTab, setActiveTab] = useState("settings");
 
   useEffect(() => {
     setHeaderTitle(title);
-    document.title = title;
+    document.title = KF_TITLE + title;
     return () => setHeaderTitle("Default Title");
   }, [setHeaderTitle, title]);
 
