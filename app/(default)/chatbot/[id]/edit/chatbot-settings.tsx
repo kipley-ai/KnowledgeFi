@@ -82,9 +82,9 @@ const ChatbotSettings = () => {
 
   useEffect(() => {
     if (personality == 0) {
-      setPersonalityData("instruction");
+      setPersonalityData("focused");
     } else if (personality == 1) {
-      setPersonalityData("instruction_2");
+      setPersonalityData("creative");
     }
   }, [personality]);
 
@@ -93,11 +93,9 @@ const ChatbotSettings = () => {
       setForm(chatbotDetail.data?.data.data);
       setSelectedFile(chatbotDetail.data?.data.data.profile_image);
       setMode(chatbotDetail.data?.data.data.tone === "instruction" ? 0 : 1);
-      // TODO: set personality
+      setPersonality(chatbotDetail.data?.data.data.personality === "focused" ? 0 : 1);
     }
   }, [chatbotDetail.isSuccess]);
-
-  console.log('form :>> ', form);
 
   return (
     <>
@@ -207,8 +205,8 @@ const ChatbotSettings = () => {
                     placeholder="e.g. 1"
                     onChange={(e) => {
                       if (parseFloat(e.target.value) < 0)
-                        handleFormChange("pricePerQuery", 0);
-                      else handleFormChange("pricePerQuery", e.target.value);
+                        handleFormChange("chatbot_price_per_query", 0);
+                      else handleFormChange("chatbot_price_per_query", Number(e.target.value));
                     }}
                     value={form.chatbot_price_per_query}
                   />
