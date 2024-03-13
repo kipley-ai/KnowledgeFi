@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import { useCreateChatbotContext } from "../create-knowledge-context";
 import { useIsWhitelisted, useUserDetail } from "@/hooks/api/user";
 import { redirect } from "next/navigation";
+import { ONBOARDING_FLOW } from "@/utils/constants";
 
 type InviteCodeProps = {
   address: string | undefined;
@@ -131,6 +132,11 @@ const InviteCode = ({ address }: InviteCodeProps) => {
         if (address) {
           sessionStorage.setItem("address", address);
         }
+
+        if (process.env.NEXT_PUBLIC_ONBOARDING_FLOW === ONBOARDING_FLOW.KOL) {
+          redirect("/dashboard");
+        }
+
         setStep("data_source");
       }
     } catch (error) {
