@@ -3,6 +3,7 @@ import { ReactSetter } from "@/lib/aliases";
 import { delay } from "@/utils/utils";
 import { useSession } from "next-auth/react";
 import { use, useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import SpinnerIcon from "@/public/images/spinner-icon.svg";
 import SpinnerCheckIcon from "@/public/images/spinner-check-icon.svg";
 import Image from "next/image";
@@ -13,8 +14,8 @@ export const TwitterScrapingStatus = ({
   setShowFailModal: ReactSetter<boolean>;
 }) => {
   const { data: twitterData } = useSession();
-
   const scrapeTwitter = useScrapeTwitter();
+  const searchParams = useSearchParams();
 
   const {
     data: scrapeStatus,
@@ -58,7 +59,7 @@ export const TwitterScrapingStatus = ({
 
   if (scrapeStatus?.status === "success") {
     return (
-      <>
+      <div className="flex items-center">
         <Image
           src={SpinnerCheckIcon}
           alt="Profile"
@@ -69,7 +70,7 @@ export const TwitterScrapingStatus = ({
         <span className="text-wrap text-sm font-light text-white">
           Your Twitter Posts are ready!
         </span>
-      </>
+      </div>
     );
   }
 
@@ -78,7 +79,7 @@ export const TwitterScrapingStatus = ({
   }
 
   return (
-    <>
+    <div className="flex items-center">
       <Image
         src={SpinnerIcon}
         alt="Profile"
@@ -89,6 +90,6 @@ export const TwitterScrapingStatus = ({
       <span className="text-wrap text-sm font-light text-white">
         Your Twitter Posts are processing...
       </span>
-    </>
+    </div>
   );
 };

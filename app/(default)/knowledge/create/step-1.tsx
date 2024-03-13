@@ -120,6 +120,7 @@ export default function Step1({
             setIsComingSoon(button.comingSoon);
 
             if (button.type == "twitter") {
+              sessionStorage.setItem("kbType", "twitter");
               if (twitterStatus != "authenticated") {
                 setShowTwitterLogin(true);
                 sessionStorage.setItem("mintNFTRedirect", "true");
