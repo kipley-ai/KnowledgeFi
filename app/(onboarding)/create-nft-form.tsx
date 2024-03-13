@@ -513,7 +513,7 @@ export default function NFT() {
               type="button"
             >
               <h5 className="text-xs font-semibold text-black lg:text-sm">
-                GENERATE SFT
+                MINT SFT
               </h5>
               <Image
                 width={24}
