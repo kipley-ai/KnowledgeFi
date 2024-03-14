@@ -46,7 +46,11 @@ const MessageInput = () => {
   const { address } = useAccount();
   const chatSession = useGetSession({ chatbot_id: id as string });
   const newSession = useNewSession();
-  const pluginConfig = useDefaultValue({ key: "plugin_config" });
+  
+  const { data: chatbotData, isSuccess } = useChatbotDetail({
+    chatbot_id: id as string,
+  });
+  const pluginConfig = useDefaultValue({ key: chatbotData?.data.data.personality as string });
   const chatHistoryAPI = useChatHistory({
     session_id: chatSession.data?.data.data?.session_id,
     app_id: id as string,
@@ -65,9 +69,7 @@ const MessageInput = () => {
   const [topDocs, setTopDocs] = useState(10);
   const [maxTokens, setMaxTokens] = useState(250);
 
-  const { data: chatbotData, isSuccess } = useChatbotDetail({
-    chatbot_id: id as string,
-  });
+  
 
   useEffect(() => {
     console.log(!chatSession.data?.data.data?.session_id);
