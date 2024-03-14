@@ -61,6 +61,7 @@
     "sass": "^1.55.0",
     "sharp": "^0.33.2",
     "swiper": "^8.4.4",
+    "tailwind-scrollbar": "^3.1.0",
     "three": "^0.145.0",
     "three-stdlib": "^2.17.2",
     "threejs-toys": "^0.0.8",

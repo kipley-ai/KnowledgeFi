@@ -30,6 +30,7 @@ export default function ChatBotPage() {
   // 	router.push("/onboarding");
   // }
 
+  const [showShareModal, setShowShareModal] = useState(false);
   const { setHeaderTitle } = useAppProvider();
   const pathname = usePathname();
 
@@ -47,8 +48,8 @@ export default function ChatBotPage() {
         <div className="mx-auto flex h-[calc(100vh-70px)] w-full flex-col py-4 md:w-3/4 lg:h-[calc(100vh-120px)]">
           <CreateChatbotProvider>
             {/* <Header /> */}
-            <ChatbotInfo />
-            <MessageList />
+            <ChatbotInfo setIsOpen={setShowShareModal}/>
+            <MessageList isOpen={showShareModal} setIsOpen={setShowShareModal} />
             <MessageInput />
           </CreateChatbotProvider>
         </div>
