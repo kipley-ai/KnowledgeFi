@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useAccount } from "wagmi";
 import { useParams, useRouter, redirect } from "next/navigation";
 import { useCreateChatbotAPI } from "@/hooks/api/chatbot";
 import { useCreateChatbotContext } from "./create-chatbot-context";
@@ -6,7 +7,7 @@ import { useGetCategory } from "@/hooks/api/chatbot";
 import { useChatbotPKLStatus } from "@/hooks/api/chatbot";
 import { useSession } from "next-auth/react";
 import CreateChatbotModal from "@/components/toast-4";
-import { useUserDetail } from "@/hooks/api/user";
+import { useSuperAdmin } from "@/hooks/api/access";
 import { useNftDetail } from "@/hooks/api/nft";
 // import LoadingIcon from "public/images/loading-icon.svg";
 import ImageInput from "@/components/image-input-2";
@@ -44,6 +45,7 @@ const ChatBotForm = () => {
     tmp: true,
     value: "",
   });
+  const { address } = useAccount();
   const [category, setCategory] = useState("");
   const [categories, setCategories] = useState<Category[]>([]);
   const [profileImage, setProfileImage] = useState("");
@@ -55,7 +57,7 @@ const ChatBotForm = () => {
   const createChatbot = useCreateChatbotAPI();
   const { createChatbot: chatbot } = useCreateChatbotContext();
   const { id } = useParams();
-  const userDetail = useUserDetail();
+  const superAdmin = useSuperAdmin();
   const { data: nftData } = useNftDetail({ sft_id: id as string });
   const [selectedFile, setSelectedFile] = useState<any>(DEFAULT_COVER_IMAGE);
   const [mode, setMode] = useState(0);
@@ -253,15 +255,15 @@ const ChatBotForm = () => {
   };
 
   useEffect(() => {
-    if (
-      userDetail.isSuccess &&
-      nftData &&
-      nftData?.data?.data?.wallet_addr !==
-        userDetail.data?.data.data.wallet_addr
-    ) {
-      redirect(`/nft/${id}`);
+    if (superAdmin.isSuccess && nftData) {
+      if (
+        superAdmin.data?.data.status === "failed" &&
+        nftData?.data?.data?.wallet_addr !== address
+      ) {
+        redirect(`/nft/${id}`);
+      }
     }
-  }, [userDetail, nftData]);
+  }, [superAdmin.isSuccess, nftData]);
 
   return (
     <>

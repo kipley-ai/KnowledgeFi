@@ -1,7 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
+import { useAccount } from "wagmi";
 import { useChatbotDetail, useUpdateChatbotAPI } from "@/hooks/api/chatbot";
-import { useUserDetail } from "@/hooks/api/user";
+import { useSuperAdmin } from "@/hooks/api/access";
 import defaulUserAvatar from "public/images/chatbot-avatar.png";
 import { useParams, redirect, useRouter } from "next/navigation";
 import { useDebouncedCallback } from "use-debounce";
@@ -23,11 +24,12 @@ interface Form {
 
 const ChatbotSettings = () => {
   const updateChatbot = useUpdateChatbotAPI();
+  const { address } = useAccount();
 
   const { id } = useParams();
   const router = useRouter();
   const chatbotDetail = useChatbotDetail({ chatbot_id: id as string });
-  const userDetail = useUserDetail();
+  const superAdmin = useSuperAdmin();
   const [form, setForm] = useState<any>({
     chatbot_id: "",
     name: "",
@@ -91,22 +93,24 @@ const ChatbotSettings = () => {
   }, [personality]);
 
   useEffect(() => {
-    if (
-      userDetail.isSuccess &&
-      chatbotDetail.isSuccess &&
-      chatbotDetail.data?.data.data.wallet_addr !==
-        userDetail.data?.data.data.wallet_addr
-    ) {
-      return redirect(`/nft/${chatbotDetail.data?.data.data.sft_id}`);
+    if (superAdmin.isSuccess && chatbotDetail.isSuccess) {
+      if (
+        superAdmin.data?.data.status === "failed" &&
+        chatbotDetail.data?.data.data.wallet_addr !== address
+      ) {
+        redirect(`/nft/${chatbotDetail.data?.data.data.sft_id}`);
+      }
     }
-  }, [userDetail.isSuccess, chatbotDetail.isSuccess]);
+  }, [superAdmin.isSuccess, chatbotDetail.isSuccess]);
 
   useEffect(() => {
     if (chatbotDetail.isSuccess) {
       setForm(chatbotDetail.data?.data.data);
       setSelectedFile(chatbotDetail.data?.data.data.profile_image);
       setMode(chatbotDetail.data?.data.data.tone === "instruction" ? 0 : 1);
-      setPersonality(chatbotDetail.data?.data.data.personality === "focused" ? 0 : 1);
+      setPersonality(
+        chatbotDetail.data?.data.data.personality === "focused" ? 0 : 1,
+      );
     }
   }, [chatbotDetail.isSuccess]);
 
