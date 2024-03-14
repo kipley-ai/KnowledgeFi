@@ -1,8 +1,9 @@
 import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import { useChatbotDetail, useUpdateChatbotAPI } from "@/hooks/api/chatbot";
+import { useUserDetail } from "@/hooks/api/user";
 import defaulUserAvatar from "public/images/chatbot-avatar.png";
-import { useParams } from "next/navigation";
+import { useParams, redirect, useRouter } from "next/navigation";
 import { useDebouncedCallback } from "use-debounce";
 import ImageInput from "@/components/image-input-2";
 import LoadingIcon from "public/images/loading-icon.svg";
@@ -24,7 +25,9 @@ const ChatbotSettings = () => {
   const updateChatbot = useUpdateChatbotAPI();
 
   const { id } = useParams();
+  const router = useRouter();
   const chatbotDetail = useChatbotDetail({ chatbot_id: id as string });
+  const userDetail = useUserDetail();
   const [form, setForm] = useState<any>({
     chatbot_id: "",
     name: "",
@@ -40,7 +43,6 @@ const ChatbotSettings = () => {
   const [personality, setPersonality] = useState(0);
   const [personalityData, setPersonalityData] = useState("");
   const [errorMessage, setErrorMessage] = useState<any>({});
-
 
   const handleFormChange = (name: string, value: any) => {
     setForm({
@@ -87,6 +89,17 @@ const ChatbotSettings = () => {
       setPersonalityData("creative");
     }
   }, [personality]);
+
+  useEffect(() => {
+    if (
+      userDetail.isSuccess &&
+      chatbotDetail.isSuccess &&
+      chatbotDetail.data?.data.data.wallet_addr !==
+        userDetail.data?.data.data.wallet_addr
+    ) {
+      return redirect(`/nft/${chatbotDetail.data?.data.data.sft_id}`);
+    }
+  }, [userDetail.isSuccess, chatbotDetail.isSuccess]);
 
   useEffect(() => {
     if (chatbotDetail.isSuccess) {
@@ -188,7 +201,7 @@ const ChatbotSettings = () => {
                   />
                 </div>
               </div>
-              
+
               <div>
                 <label className=" flex flex-row items-center space-x-3 text-wrap text-xs font-semibold text-[#DDD] lg:text-sm">
                   <span>Price Per Query (in $KFI)</span>
@@ -206,7 +219,11 @@ const ChatbotSettings = () => {
                     onChange={(e) => {
                       if (parseFloat(e.target.value) < 0)
                         handleFormChange("chatbot_price_per_query", 0);
-                      else handleFormChange("chatbot_price_per_query", Number(e.target.value));
+                      else
+                        handleFormChange(
+                          "chatbot_price_per_query",
+                          Number(e.target.value),
+                        );
                     }}
                     value={form.chatbot_price_per_query}
                   />
@@ -227,6 +244,9 @@ const ChatbotSettings = () => {
             <button
               className="mt-8 flex items-center justify-center rounded-3xl bg-[#292D32] p-2 px-5 ring-2 ring-gray-600"
               type="button"
+              onClick={() => {
+                router.push(`/nft/${chatbotDetail.data?.data.data.sft_id}`);
+              }}
             >
               <h5 className="text-sm font-semibold text-white">Cancel</h5>
             </button>

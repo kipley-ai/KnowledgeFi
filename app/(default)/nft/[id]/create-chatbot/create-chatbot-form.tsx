@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useParams, useRouter, redirect } from "next/navigation";
 import { useCreateChatbotAPI } from "@/hooks/api/chatbot";
 import { useCreateChatbotContext } from "./create-chatbot-context";
 import { useGetCategory } from "@/hooks/api/chatbot";
 import { useChatbotPKLStatus } from "@/hooks/api/chatbot";
 import { useSession } from "next-auth/react";
 import CreateChatbotModal from "@/components/toast-4";
+import { useUserDetail } from "@/hooks/api/user";
 import { useNftDetail } from "@/hooks/api/nft";
 // import LoadingIcon from "public/images/loading-icon.svg";
 import ImageInput from "@/components/image-input-2";
@@ -54,6 +55,7 @@ const ChatBotForm = () => {
   const createChatbot = useCreateChatbotAPI();
   const { createChatbot: chatbot } = useCreateChatbotContext();
   const { id } = useParams();
+  const userDetail = useUserDetail();
   const { data: nftData } = useNftDetail({ sft_id: id as string });
   const [selectedFile, setSelectedFile] = useState<any>(DEFAULT_COVER_IMAGE);
   const [mode, setMode] = useState(0);
@@ -146,10 +148,7 @@ const ChatBotForm = () => {
   };
 
   const handleCancel = () => {
-    // Redirect the user to the dashboard page
-    if (typeof window !== "undefined") {
-      router.push("/dashboard");
-    }
+    router.push(`/nft/${id}`);
   };
 
   const examplePlaceholder = [
@@ -252,6 +251,17 @@ const ChatBotForm = () => {
       return true;
     }
   };
+
+  useEffect(() => {
+    if (
+      userDetail.isSuccess &&
+      nftData &&
+      nftData?.data?.data?.wallet_addr !==
+        userDetail.data?.data.data.wallet_addr
+    ) {
+      redirect(`/nft/${id}`);
+    }
+  }, [userDetail, nftData]);
 
   return (
     <>
@@ -518,7 +528,7 @@ const ChatBotForm = () => {
               className="mt-8 flex items-center justify-center rounded-3xl bg-[#292D32] p-2 px-5 ring-2 ring-gray-600"
               type="button"
             >
-              <h5 className="text-xs font-semibold text-white lg:text-sm">
+              <h5 className="text-xs font-semibold text-white lg:text-sm" onClick={handleCancel}>
                 Cancel
               </h5>
             </button>
