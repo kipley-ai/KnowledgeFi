@@ -2,23 +2,21 @@ import ModalBlank from "@/components/modal-blank-3";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { useUpdateSharedChat, useGetSharedChatId } from "@/hooks/api/chatbot";
+import AvatarDummy from "public/images/avatar-default-02.svg";
 
 type ModalProps = {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
   messageHistory: any[];
-  userImage: any;
   chatbotData?: any;
 };
 
 const MessageHistory = ({
   messageHistory,
-  userImage,
   botImage,
   botName,
 }: {
   messageHistory: any[];
-  userImage: any;
   botImage?: string;
   botName?: string;
 }) => {
@@ -28,7 +26,7 @@ const MessageHistory = ({
         return (
           <div className="flex flex-row p-4 space-x-4" key={index}>
             <Image
-              src={message.sender === "user" ? userImage : botImage}
+              src={message.sender === "user" ? AvatarDummy : botImage}
               className="w-8 h-8 rounded"
               alt="Profile"
               width={50}
@@ -45,7 +43,7 @@ const MessageHistory = ({
   )
 }
 
-const ShareModal = ({ isOpen, setIsOpen, messageHistory, userImage, chatbotData }: ModalProps) => {
+const ShareModal = ({ isOpen, setIsOpen, messageHistory, chatbotData }: ModalProps) => {
   const [isFirstShare, setIsFirstShare] = useState(true);
   const [sharedChatId, setSharedChatId] = useState("");
   const [copyClipboard, setCopyClipboard] = useState(false);
@@ -121,7 +119,7 @@ const ShareModal = ({ isOpen, setIsOpen, messageHistory, userImage, chatbotData 
             <p className="text-white">{chatbotData?.name}</p>
             <p className="text-[#7C878E]">| {lastSharedDate}</p>
           </div>
-          <MessageHistory messageHistory={messageHistory} userImage={userImage} botImage={chatbotData?.profile_image} botName={chatbotData?.name}/>
+          <MessageHistory messageHistory={messageHistory} botImage={chatbotData?.profile_image} botName={chatbotData?.name}/>
         </div>
         <button
           className="flex flex-row w-full bg-[#353945] items-center justify-center py-2 space-x-4 rounded" 

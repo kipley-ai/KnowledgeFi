@@ -3,10 +3,9 @@
 import { useGetSharedChat } from "@/hooks/api/chatbot";
 import { useChatbotDetail } from "@/hooks/api/chatbot";
 import { useParams } from "next/navigation";
-import AvatarDefault from "@/public/images/avatar-default.svg";
+import AvatarDummy from "public/images/avatar-default-02.svg";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { Router } from "next/router";
 
 type Message = {
   message: string,
@@ -29,7 +28,7 @@ const MessageHistory = ({
         return (
           <div className="flex flex-row p-4 space-x-4" key={index}>
             <Image
-              src={message.sender === "user" ? AvatarDefault : botImage}
+              src={message.sender === "user" ? AvatarDummy : botImage}
               className="w-8 h-8 rounded"
               alt="Profile"
               width={50}
@@ -52,7 +51,6 @@ const SharedChat = () => {
   const chatbotDetail = useChatbotDetail({ "chatbot_id": sharedChat.data?.data.chatbot_id })
   const sharedDate = new Date(sharedChat.data?.data.last_shared_time).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
   const router = useRouter();
-  console.log('yey')
     
   return (
     <div className={`flex flex-col bg-[#080403] ${sharedChat.isFetching ? "h-[200dvh]": "h-full"} border-[#393E44] text-[#7C878E]`}>

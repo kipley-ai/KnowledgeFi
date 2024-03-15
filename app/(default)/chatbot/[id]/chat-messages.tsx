@@ -166,7 +166,7 @@ const MessageList = ({ isOpen, setIsOpen }: { isOpen: boolean, setIsOpen: (isOpe
 
   return (
     <>
-    <ShareModal isOpen={isOpen} setIsOpen={setIsOpen} messageHistory={messageHistory} userImage={profileImage} chatbotData={chatbotData?.data.data} />
+    <ShareModal isOpen={isOpen} setIsOpen={setIsOpen} messageHistory={messageHistory} chatbotData={chatbotData?.data.data} />
     <div className="flex h-auto grow flex-col gap-2 overflow-auto md:space-y-4">
       <FirstAnswer
         profileImage={chatbotData?.data.data.profile_image}
