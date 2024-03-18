@@ -1,8 +1,10 @@
 import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
+import { useAccount } from "wagmi";
 import { useChatbotDetail, useUpdateChatbotAPI } from "@/hooks/api/chatbot";
+import { useSuperAdmin } from "@/hooks/api/access";
 import defaulUserAvatar from "public/images/chatbot-avatar.png";
-import { useParams } from "next/navigation";
+import { useParams, redirect, useRouter } from "next/navigation";
 import { useDebouncedCallback } from "use-debounce";
 import ImageInput from "@/components/image-input-2";
 import LoadingIcon from "public/images/loading-icon.svg";
@@ -22,9 +24,12 @@ interface Form {
 
 const ChatbotSettings = () => {
   const updateChatbot = useUpdateChatbotAPI();
+  const { address } = useAccount();
 
   const { id } = useParams();
+  const router = useRouter();
   const chatbotDetail = useChatbotDetail({ chatbot_id: id as string });
+  const superAdmin = useSuperAdmin();
   const [form, setForm] = useState<any>({
     chatbot_id: "",
     name: "",
@@ -40,7 +45,6 @@ const ChatbotSettings = () => {
   const [personality, setPersonality] = useState(0);
   const [personalityData, setPersonalityData] = useState("");
   const [errorMessage, setErrorMessage] = useState<any>({});
-
 
   const handleFormChange = (name: string, value: any) => {
     setForm({
@@ -89,11 +93,24 @@ const ChatbotSettings = () => {
   }, [personality]);
 
   useEffect(() => {
+    if (superAdmin.isSuccess && chatbotDetail.isSuccess) {
+      if (
+        superAdmin.data?.data.status === "failed" &&
+        chatbotDetail.data?.data.data.wallet_addr !== address
+      ) {
+        redirect(`/nft/${chatbotDetail.data?.data.data.sft_id}`);
+      }
+    }
+  }, [superAdmin.isSuccess, chatbotDetail.isSuccess]);
+
+  useEffect(() => {
     if (chatbotDetail.isSuccess) {
       setForm(chatbotDetail.data?.data.data);
       setSelectedFile(chatbotDetail.data?.data.data.profile_image);
       setMode(chatbotDetail.data?.data.data.tone === "instruction" ? 0 : 1);
-      setPersonality(chatbotDetail.data?.data.data.personality === "focused" ? 0 : 1);
+      setPersonality(
+        chatbotDetail.data?.data.data.personality === "focused" ? 0 : 1,
+      );
     }
   }, [chatbotDetail.isSuccess]);
 
@@ -188,7 +205,7 @@ const ChatbotSettings = () => {
                   />
                 </div>
               </div>
-              
+
               <div>
                 <label className=" flex flex-row items-center space-x-3 text-wrap text-xs font-semibold text-[#DDD] lg:text-sm">
                   <span>Price Per Query (in $KFI)</span>
@@ -206,7 +223,11 @@ const ChatbotSettings = () => {
                     onChange={(e) => {
                       if (parseFloat(e.target.value) < 0)
                         handleFormChange("chatbot_price_per_query", 0);
-                      else handleFormChange("chatbot_price_per_query", Number(e.target.value));
+                      else
+                        handleFormChange(
+                          "chatbot_price_per_query",
+                          Number(e.target.value),
+                        );
                     }}
                     value={form.chatbot_price_per_query}
                   />
@@ -227,6 +248,9 @@ const ChatbotSettings = () => {
             <button
               className="mt-8 flex items-center justify-center rounded-3xl bg-[#292D32] p-2 px-5 ring-2 ring-gray-600"
               type="button"
+              onClick={() => {
+                router.push(`/nft/${chatbotDetail.data?.data.data.sft_id}`);
+              }}
             >
               <h5 className="text-sm font-semibold text-white">Cancel</h5>
             </button>

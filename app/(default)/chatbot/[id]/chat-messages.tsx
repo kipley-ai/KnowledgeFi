@@ -21,8 +21,9 @@ import { useAppProvider } from "@/providers/app-provider";
 import { useCreditBalanceContext } from "./credit-balance-context";
 import { useCreditBalance } from "@/hooks/api/credit";
 import { chatbotIdFromSlug } from "@/utils/utils";
+import ShareModal from "@/components/share-chat-modal";
 
-const MessageList = () => {
+const MessageList = ({ isOpen, setIsOpen }: { isOpen: boolean, setIsOpen: (isOpen: boolean) => void;}) => {
   const [answersStream, setAnswersStream] = useState<string[]>([]);
   const fieldRef = useRef<HTMLDivElement>(null);
   const [profileImage, setProfileImage] = useState<StaticImageData | string>(
@@ -164,6 +165,8 @@ const MessageList = () => {
   }, [lastJsonMessage]);
 
   return (
+    <>
+    <ShareModal isOpen={isOpen} setIsOpen={setIsOpen} messageHistory={messageHistory} chatbotData={chatbotData?.data.data} />
     <div className="flex h-auto grow flex-col gap-2 overflow-auto md:space-y-4">
       <FirstAnswer
         profileImage={chatbotData?.data.data.profile_image}
@@ -210,6 +213,7 @@ const MessageList = () => {
       )}
       <div ref={fieldRef}></div>
     </div>
+    </>
   );
 };
 

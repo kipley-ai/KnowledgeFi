@@ -16,44 +16,7 @@ const ManageDataSources = () => {
   const [checkHeader, setCheckHeader] = useState(false);
   const [checkRow, setCheckRow] = useState<boolean[]>([]);
   const deleteItemAPI = useDeleteKBItem();
-  // const data = [
-  //   {
-  //     from: "Twitter",
-  //     type: "File",
-  //     size: "5 Bytes",
-  //     lastUpdated: "2024-02-11 08:12:09 UTC",
-  //     status: "Completed",
-  //   },
-  //   {
-  //     from: "Twitter",
-  //     type: "File",
-  //     size: "5 Bytes",
-  //     lastUpdated: "2024-02-11 08:12:09 UTC",
-  //     status: "Failed",
-  //   },
-  //   {
-  //     from: "Twitter",
-  //     type: "File",
-  //     size: "5 Bytes",
-  //     lastUpdated: "2024-02-11 08:12:09 UTC",
-  //     status: "Completed",
-  //   },
-  //   {
-  //     from: "Twitter",
-  //     type: "File",
-  //     size: "5 Bytes",
-  //     lastUpdated: "2024-02-11 08:12:09 UTC",
-  //     status: "Completed",
-  //   },
-  //   {
-  //     from: "Twitter",
-  //     type: "File",
-  //     size: "5 Bytes",
-  //     lastUpdated: "2024-02-11 08:12:09 UTC",
-  //     status: "Completed",
-  //   },
-  //   // ... more data
-  // ];
+
   const { id } = useParams();
 
   const chatbotDetail = useChatbotDetail({
@@ -62,7 +25,7 @@ const ManageDataSources = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [pageSize, setPageSize] = useState<number>(8);
 
-  const { isPending, isError, error, data, isFetching, refetch:kbItemReftech, status } = useKBItem(
+  const { isPending, isError, error, data, isFetching, refetch: kbItemReftech, status } = useKBItem(
     {
       kb_id: chatbotDetail.data?.data.data.kb_id as string,
       page: currentPage,
@@ -118,7 +81,7 @@ const ManageDataSources = () => {
   const kbDetail = useKBDetail({
     kb_id: chatbotDetail.data?.data.data.kb_id as string,
   });
-  
+
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
@@ -135,10 +98,10 @@ const ManageDataSources = () => {
   if (isError) {
     return <div>Error: {error.message}</div>;
   }
-    
+
   const { kb_item_data: kbItemData, kb_item_count: kbItemCount } = data.data.data;
 
-  if (kbItemCount > 0) {
+  if (kbItemCount >= 0) {
     const totalPages = Math.ceil(kbItemCount / pageSize);
 
     return (
@@ -260,19 +223,29 @@ const ManageDataSources = () => {
         </div>
         <div className="mt-4 flex flex-row items-center justify-center space-x-12">
           <div className="flex flex-col items-center">
-            <div
-              className={`${!isFetching && "invisible"} flex w-full items-center justify-center gap-4`}
-            >
-              <FaSpinner size={20} className="animate-spin" />
-              <p className="text-md text-gray-300">Loading</p>
-            </div>
-            <PaginationController
-              currentPage={currentPage}
-              onPageChange={handlePageChange}
-              totalPages={totalPages}
-            />
+            {isFetching ? (
+              <div className="flex w-full items-center justify-center gap-4">
+                <FaSpinner size={20} className="animate-spin" />
+                <p className="text-md text-gray-300">Loading</p>
+              </div>
+            ) : (
+              <>
+                {kbItemCount === 0 ? (
+                  <div className="text-center">
+                    <p className="text-lg text-gray-500">Oh, it seems you got no data here. Why not try adding some?</p>
+                  </div>
+                ) : (
+                  <PaginationController
+                    currentPage={currentPage}
+                    onPageChange={handlePageChange}
+                    totalPages={Math.ceil(kbItemCount / pageSize)}
+                  />
+                )}
+              </>
+            )}
           </div>
         </div>
+
       </div>
     );
   }

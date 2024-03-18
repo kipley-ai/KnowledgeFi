@@ -211,6 +211,17 @@ export default function NFT() {
     }
   };
 
+  const [isTwitter, setIsTwitter] = useState(false);
+
+  useEffect(() => {
+    const kbType = sessionStorage.getItem("kbType");
+    if (kbType === "twitter") {
+      setIsTwitter(true);
+    }
+    sessionStorage.removeItem("kbType");
+  }, []);
+
+
   return (
     <>
       <MintConfirmationModal
@@ -237,7 +248,7 @@ export default function NFT() {
           <div className="flex items-center justify-between">
             <h1 className="text-2xl font-semibold text-white">Mint SFT </h1>
             <div>
-              {createKb.type == "twitter" ? (
+              {isTwitter ? (
                 <TwitterScrapingStatus setShowFailModal={setShowFailModal} />
               ) : (
                 ""
@@ -311,7 +322,7 @@ export default function NFT() {
                     placeholder={
                       form.name
                         ? "e.g. " +
-                          form.name?.replace(" ", "").slice(0, 4).toUpperCase()
+                        form.name?.replace(" ", "").slice(0, 4).toUpperCase()
                         : "Enter NFT Token Symbol"
                     }
                     // placeholder={"Enter NFT Token Symbol"}

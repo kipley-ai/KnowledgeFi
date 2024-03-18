@@ -185,3 +185,44 @@ export const useChatbotPKLStatus = (params: any) => {
       enabled: params.willRefetch,
   });
 }
+
+export const useUpdateSharedChat = () => {
+  const { address } = useAccount();
+
+  return useMutation({
+    mutationFn: (params: any) =>
+      axios.post("/api/chatbot/update_shared_chat", params, {
+        headers: {
+          "x-kf-user-id": address,
+        },
+      }),
+  });
+}
+
+export const useGetSharedChatId = (params: any) => {
+  const { address } = useAccount();
+
+  return useQuery({
+    queryKey: ["chatbot", "shared_chat_id", params.chatbot_id],
+    queryFn: () =>
+      axios.post("/api/chatbot/shared_chat_id", params, {
+        headers: {
+          "x-kf-user-id": address,
+        },
+      }),
+  });
+}
+
+export const useGetSharedChat = (params: any) => {
+  const { address } = useAccount();
+
+  return useQuery({
+    queryKey: ["chatbot", "shared_chat", params.id],
+    queryFn: () =>
+      axios.post("/api/chatbot/shared_chat", params, {
+        headers: {
+          "x-kf-user-id": address,
+        },
+      }),
+  });
+}
