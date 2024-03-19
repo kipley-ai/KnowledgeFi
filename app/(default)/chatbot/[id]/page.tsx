@@ -19,6 +19,7 @@ import { useChatbotDetail } from "@/hooks/api/chatbot";
 import Description from "./description";
 import CreditBalance from "./credit-balance";
 import { CreditBalanceProvider } from "./credit-balance-context";
+import InaccessibleChat from "./inaccessible-shared-chat";
 
 export default function ChatBotPage() {
   // const router = useRouter();
@@ -48,9 +49,10 @@ export default function ChatBotPage() {
         <div className="mx-auto flex h-[calc(100vh-70px)] w-full flex-col py-4 md:w-3/4 lg:h-[calc(100vh-120px)]">
           <CreateChatbotProvider>
             {/* <Header /> */}
-            <ChatbotInfo setIsOpen={setShowShareModal}/>
+            <ChatbotInfo setIsOpen={setShowShareModal} />
             <MessageList isOpen={showShareModal} setIsOpen={setShowShareModal} />
             <MessageInput />
+            {/* <InaccessibleChat /> */}
           </CreateChatbotProvider>
         </div>
         {/* <div className="hidden w-1/4 flex-col md:flex">
