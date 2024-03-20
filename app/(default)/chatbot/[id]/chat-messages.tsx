@@ -22,6 +22,7 @@ import { useCreditBalanceContext } from "./credit-balance-context";
 import { useCreditBalance } from "@/hooks/api/credit";
 import { chatbotIdFromSlug } from "@/utils/utils";
 import ShareModal from "@/components/share-chat-modal";
+import TweetAnswer from "./tweet-answer";
 
 const MessageList = ({ isOpen, setIsOpen }: { isOpen: boolean, setIsOpen: (isOpen: boolean) => void;}) => {
   const [answersStream, setAnswersStream] = useState<string[]>([]);
@@ -174,6 +175,7 @@ const MessageList = ({ isOpen, setIsOpen }: { isOpen: boolean, setIsOpen: (isOpe
         message={chatbotData?.data.data.example_conversation as string}
         isGenerating={replyStatus == "answering"}
       />
+      <TweetAnswer />
       {messageHistory.map((message, index) => {
         return index < messageHistory.length - 1 || message.sender == "user" ? (
           <ChatMessage chatbotData={chatbotData} message={message} />
