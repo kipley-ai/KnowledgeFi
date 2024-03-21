@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import AvatarDummy from "public/images/avatar-bot-dummy.svg";
 import LoadingIcon from "public/images/loading-icon.svg";
 import { useState } from "react";
+import TweetAnswer from "./tweet-answer";
 
 export const CopyButton = ({ message }: { message: string }) => {
   return (
@@ -60,11 +61,13 @@ const LastAnswer = ({
   sender,
   message,
   isGenerating,
+  chunks = "",
 }: {
   profileImage: any;
   sender: string;
   message: string[] | string;
   isGenerating: boolean;
+  chunks?: string;
 }) => {
   const isStream = Array.isArray(message);
   const { id: slug } = useParams();
@@ -75,6 +78,15 @@ const LastAnswer = ({
       chatbot_id: id as string,
     });
   const [showCopy, setShowCopy] = useState(false);
+
+  const sources: string[] = [];
+  if (chunks.length > 0) {
+    const chunksObject = JSON.parse(chunks);
+    chunksObject.chunks.forEach((chunk: any) => {
+      sources.push(chunk.metadata.source);
+    });
+  }
+
   return (
     <>
       <div
@@ -112,6 +124,9 @@ const LastAnswer = ({
               </h6>
               <p className="whitespace-break-spaces break-words">
                 {isStream ? message.slice(0, -2).join("") : message}
+                {sender === "bot" && sources.length > 0 && (
+                  <TweetAnswer chunks={sources} />
+                )}
               </p>
             </div>
           </div>

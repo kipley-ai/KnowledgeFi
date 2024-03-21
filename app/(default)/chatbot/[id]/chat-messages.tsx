@@ -26,6 +26,7 @@ import TweetAnswer from "./tweet-answer";
 
 const MessageList = ({ isOpen, setIsOpen }: { isOpen: boolean, setIsOpen: (isOpen: boolean) => void;}) => {
   const [answersStream, setAnswersStream] = useState<string[]>([]);
+  const [tweetChunks, setTweetChunks] = useState<string[]>([]);
   const fieldRef = useRef<HTMLDivElement>(null);
   const [profileImage, setProfileImage] = useState<StaticImageData | string>(
     "",
@@ -98,6 +99,7 @@ const MessageList = ({ isOpen, setIsOpen }: { isOpen: boolean, setIsOpen: (isOpe
 
     console.log("Answer Stream");
     console.log(answersStream.slice(0, -2));
+    console.log('lastJsonMessage :>> ', lastJsonMessage);
 
     if (lastJsonMessage !== null && lastJsonMessage.type !== "error") {
       if (lastJsonMessage.type === "end") {
@@ -111,6 +113,11 @@ const MessageList = ({ isOpen, setIsOpen }: { isOpen: boolean, setIsOpen: (isOpe
           })
           .reduce((a: string, b: string) => a + b, "");
 
+        // const stringChunks = JSON.stringify(tweetChunks);
+        // if (stringChunks !== "[]") {
+        //   fullBotAnswer = fullBotAnswer + "\n" + stringChunks;
+        // }
+
         console.log("fullBotAnswer");
         console.log(fullBotAnswer);
 
@@ -121,6 +128,7 @@ const MessageList = ({ isOpen, setIsOpen }: { isOpen: boolean, setIsOpen: (isOpe
 
         setAnswersStream([]);
         setReplyStatus("idle");
+        // setTweetChunks([]);
 
         console.log("Message history");
         console.log(messageHistory);
@@ -142,7 +150,14 @@ const MessageList = ({ isOpen, setIsOpen }: { isOpen: boolean, setIsOpen: (isOpe
         );
 
         return;
-      }
+      } 
+      // else if ("chunks" in lastJsonMessage) {
+      //   const chunks = [];
+      //   for (const chunk of lastJsonMessage?.chunks) {
+      //     chunks.push(chunk?.metadata?.source);
+      //   }
+      //   setTweetChunks(chunks);
+      // }
 
       setAnswersStream((prevAnswersStream) => {
         if (lastJsonMessage.sender == "user") {
@@ -175,7 +190,6 @@ const MessageList = ({ isOpen, setIsOpen }: { isOpen: boolean, setIsOpen: (isOpe
         message={chatbotData?.data.data.example_conversation as string}
         isGenerating={replyStatus == "answering"}
       />
-      <TweetAnswer />
       {messageHistory.map((message, index) => {
         return index < messageHistory.length - 1 || message.sender == "user" ? (
           <ChatMessage chatbotData={chatbotData} message={message} />
@@ -198,6 +212,7 @@ const MessageList = ({ isOpen, setIsOpen }: { isOpen: boolean, setIsOpen: (isOpe
               profileImage={chatbotData?.data.data.profile_image}
               sender={"bot"}
               message={message.message}
+              chunks={message.chunks}
               isGenerating={replyStatus == "answering"}
             />
           </>

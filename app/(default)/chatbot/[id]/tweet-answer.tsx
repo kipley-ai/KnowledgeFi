@@ -5,7 +5,8 @@ import {
 } from "@szhsin/react-accordion";
 import Chevron from "@/components/icon/chevron-down.svg";
 import Image from "next/image";
-import { useState } from "react";
+import { Tweet } from "react-tweet";
+import { useState, useEffect } from "react";
 
 const tweets = [
   {
@@ -66,7 +67,11 @@ const AccordionItem = ({ header, ...rest }: any) => (
   />
 );
 
-const TweetAnswer = () => {
+type TweetAnswerProps = {
+  chunks: string[];
+};
+
+const TweetAnswer = ({ chunks }: TweetAnswerProps) => {
   const [isAllCollapsed, setIsAllCollapsed] = useState(true);
 
   const providerValue = useAccordionProvider({
@@ -86,8 +91,15 @@ const TweetAnswer = () => {
     setIsAllCollapsed(!isAllCollapsed);
   };
 
+  useEffect(() => {
+    const s = document.createElement("script");
+    s.setAttribute("src", "https://platform.twitter.com/widgets.js");
+    s.setAttribute("async", "true");
+    document.head.appendChild(s);
+  }, []);
+
   return (
-    <div className="ml-12 mr-2 flex flex-col gap-2">
+    <div className="mr-2 flex flex-col gap-2">
       <div className="flex justify-end">
         <button
           onClick={handleExpandAll}
@@ -101,11 +113,20 @@ const TweetAnswer = () => {
         providerValue={providerValue}
         className="grid grid-cols-2 gap-3"
       >
-        {tweets.map(({ header, content }, i) => (
-          <AccordionItem key={i} header={header} itemKey={`Item-${i + 1}`}>
-            {content}
-          </AccordionItem>
-        ))}
+        {chunks &&
+          chunks.length > 0 &&
+          chunks.map((chunk, i) => {
+            const id = chunk.match(/\d+/)![0];
+
+            return (
+            <AccordionItem
+              key={i}
+              header={`Tweet ${i + 1}`}
+              itemKey={`Item-${i + 1}`}
+            >
+              <Tweet id={id} />
+            </AccordionItem>
+          )})}
       </ControlledAccordion>
     </div>
   );
