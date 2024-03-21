@@ -26,7 +26,7 @@ import TweetAnswer from "./tweet-answer";
 
 const MessageList = ({ isOpen, setIsOpen }: { isOpen: boolean, setIsOpen: (isOpen: boolean) => void;}) => {
   const [answersStream, setAnswersStream] = useState<string[]>([]);
-  const [tweetChunks, setTweetChunks] = useState<string[]>([]);
+  const [chunks, setChunks] = useState<string>("");
   const fieldRef = useRef<HTMLDivElement>(null);
   const [profileImage, setProfileImage] = useState<StaticImageData | string>(
     "",
@@ -113,22 +113,16 @@ const MessageList = ({ isOpen, setIsOpen }: { isOpen: boolean, setIsOpen: (isOpe
           })
           .reduce((a: string, b: string) => a + b, "");
 
-        // const stringChunks = JSON.stringify(tweetChunks);
-        // if (stringChunks !== "[]") {
-        //   fullBotAnswer = fullBotAnswer + "\n" + stringChunks;
-        // }
-
         console.log("fullBotAnswer");
         console.log(fullBotAnswer);
 
         setMessageHistory((prevHistory) => [
           ...prevHistory,
-          { sender: "bot", message: fullBotAnswer },
+          { sender: "bot", message: fullBotAnswer, chunks },
         ]);
 
         setAnswersStream([]);
         setReplyStatus("idle");
-        // setTweetChunks([]);
 
         console.log("Message history");
         console.log(messageHistory);
@@ -150,14 +144,11 @@ const MessageList = ({ isOpen, setIsOpen }: { isOpen: boolean, setIsOpen: (isOpe
         );
 
         return;
-      } 
-      // else if ("chunks" in lastJsonMessage) {
-      //   const chunks = [];
-      //   for (const chunk of lastJsonMessage?.chunks) {
-      //     chunks.push(chunk?.metadata?.source);
-      //   }
-      //   setTweetChunks(chunks);
-      // }
+      } else if ("chunks" in lastJsonMessage) {
+        const chunksObject = { chunks: lastJsonMessage.chunks}
+        const chunksString = JSON.stringify(chunksObject);
+        setChunks(chunksString);
+      }
 
       setAnswersStream((prevAnswersStream) => {
         if (lastJsonMessage.sender == "user") {
@@ -225,6 +216,7 @@ const MessageList = ({ isOpen, setIsOpen }: { isOpen: boolean, setIsOpen: (isOpe
           profileImage={chatbotData?.data.data.profile_image}
           sender={"bot"}
           message={answersStream}
+          chunks={chunks}
           isGenerating={replyStatus == "answering"}
         />
       )}

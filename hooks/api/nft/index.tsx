@@ -28,6 +28,7 @@ export const useNftDetail = (params: INFTDetailParams) => {
           "x-kf-user-id": address,
         },
       }),
+    enabled: !!params.sft_id,
   });
 };
 

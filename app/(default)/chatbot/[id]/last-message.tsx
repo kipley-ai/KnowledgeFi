@@ -80,8 +80,9 @@ const LastAnswer = ({
   const [showCopy, setShowCopy] = useState(false);
 
   const sources: string[] = [];
-  if (chunks.length > 0) {
+  if (chunks) {
     const chunksObject = JSON.parse(chunks);
+    console.log('chunksObjectLastMessage :>> ', chunksObject);
     chunksObject.chunks.forEach((chunk: any) => {
       sources.push(chunk.metadata.source);
     });
