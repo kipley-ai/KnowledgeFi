@@ -18,6 +18,8 @@ import KipProtocolVideo from "../kip-protocol-video";
 import { useState } from "react";
 import FreeKFI from "../free-kfi-token";
 
+import { useSwitchToPolygon, useSwitchToSepolia } from "@/hooks/useSwitchNetwork";
+
 export default function Onboarding() {
   const sign = localStorage.getItem("kip-protocol-signature");
   const { address, status } = useAccount();
@@ -27,9 +29,21 @@ export default function Onboarding() {
 
   const { data: userDetail, isLoading } = useUserDetail();
 
+  const isDevelopment = process.env.NEXT_PUBLIC_ENV_DEV === "1";
+  const { isSepolia, switchToSepolia } = useSwitchToSepolia();
+  const { isPolygon, switchToPolygon } = useSwitchToPolygon();
+
+  const isTargetNetworkActive = isDevelopment ? isSepolia : isPolygon;
+  const switchToTargetNetwork = isDevelopment ? switchToSepolia : switchToPolygon;
+  const targetNetworkName = isDevelopment ? "Sepolia" : "Polygon";
+
   if (isLoading) return null;
 
   if (status === "connected" && (sign || verifStatus === "authenticated")) {
+    if (!isTargetNetworkActive) {
+      switchToTargetNetwork();
+    }
+
     if (
       userDetail?.data?.status !== "error" &&
       userDetail?.data?.data.onboarding
@@ -67,4 +81,5 @@ export default function Onboarding() {
   if (status === "disconnected") {
     return <JetWelcome />;
   }
+
 }
