@@ -52,7 +52,7 @@ export function useSwitchToBase() {
   const isBase = chain?.id === base.id;
   const switchToBase = async () => {
     if (!isBase && switchNetwork) {
-      await switchNetwork(mainnet.id);
+      await switchNetwork(base.id);
     }
   };
 
