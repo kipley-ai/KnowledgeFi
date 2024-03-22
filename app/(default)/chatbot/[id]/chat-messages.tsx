@@ -160,14 +160,20 @@ const MessageList = ({ isOpen, setIsOpen }: { isOpen: boolean, setIsOpen: (isOpe
 
     if (
       lastJsonMessage !== null &&
-      lastJsonMessage.type === "error" &&
-      lastJsonMessage.message === "Credit insufficient"
+      lastJsonMessage.type === "error"
     ) {
-      const msgHist = messageHistory.slice(0, -1);
-      setMessageHistory(msgHist);
-      setReplyStatus("idle");
-      setModalTopUp(true);
-      return;
+      if (lastJsonMessage.message === "Credit insufficient") {
+        const msgHist = messageHistory.slice(0, -1);
+        setMessageHistory(msgHist);
+        setReplyStatus("idle");
+        setModalTopUp(true);
+      } else {
+        setMessageHistory((prevHistory) => [
+          ...prevHistory,
+          { sender: "bot", message: "Sorry, something went wrong. Try again." },
+        ]);
+        setReplyStatus("idle");
+      }
     }
   }, [lastJsonMessage]);
 
@@ -183,7 +189,7 @@ const MessageList = ({ isOpen, setIsOpen }: { isOpen: boolean, setIsOpen: (isOpe
       />
       {messageHistory.map((message, index) => {
         return index < messageHistory.length - 1 || message.sender == "user" ? (
-          <ChatMessage chatbotData={chatbotData} message={message} />
+          <ChatMessage key={index} chatbotData={chatbotData} message={message} />
         ) : (
           // <div onMouseOver={}>
           // 	<div className="flex items-start space-x-3 ">
@@ -200,6 +206,7 @@ const MessageList = ({ isOpen, setIsOpen }: { isOpen: boolean, setIsOpen: (isOpe
           // </div>
           <>
             <LastMessage
+              key={index}
               profileImage={chatbotData?.data.data.profile_image}
               sender={"bot"}
               message={message.message}
