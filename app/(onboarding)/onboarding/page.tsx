@@ -18,7 +18,7 @@ import KipProtocolVideo from "../kip-protocol-video";
 import { useState } from "react";
 import FreeKFI from "../free-kfi-token";
 
-import { useSwitchToPolygon, useSwitchToSepolia, useSwitchToEthereum } from "@/hooks/useSwitchNetwork";
+import { useSwitchToSepolia, useSwitchToBase } from "@/hooks/useSwitchNetwork";
 
 export default function Onboarding() {
   const sign = localStorage.getItem("kip-protocol-signature");
@@ -31,11 +31,10 @@ export default function Onboarding() {
 
   const isDevelopment = process.env.NEXT_PUBLIC_ENV_DEV === "1";
   const { isSepolia, switchToSepolia } = useSwitchToSepolia();
-  const { isEthereum, switchToEthereum } = useSwitchToEthereum();
+  const { isBase, switchToBase } = useSwitchToBase();
 
-  const isTargetNetworkActive = isDevelopment ? isSepolia : isEthereum;
-  const switchToTargetNetwork = isDevelopment ? switchToSepolia : switchToEthereum;
-  const targetNetworkName = isDevelopment ? "Sepolia" : "Ethereum";
+  const isTargetNetworkActive = isDevelopment ? isSepolia : isBase;
+  const switchToTargetNetwork = isDevelopment ? switchToSepolia : switchToBase;
 
   if (isLoading) return null;
 
@@ -81,5 +80,4 @@ export default function Onboarding() {
   if (status === "disconnected") {
     return <JetWelcome />;
   }
-
 }
