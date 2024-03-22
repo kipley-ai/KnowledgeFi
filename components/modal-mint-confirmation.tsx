@@ -3,8 +3,7 @@
 import React from "react";
 import ModalBlank from "@/components/modal-blank-3";
 import Image from "next/image";
-import { useSwitchToSepolia } from "@/hooks/useSwitchNetwork";
-import { useSwitchToPolygon } from "@/hooks/useSwitchNetwork";
+import { useSwitchToSepolia, useSwitchToPolygon, useSwitchToEthereum } from "@/hooks/useSwitchNetwork";
 
 export default function ModalMintConfirmation({
   isOpen,
@@ -23,12 +22,12 @@ export default function ModalMintConfirmation({
   // Determine the environment and accordingly use the switch network hook
   const isDevelopment = process.env.NEXT_PUBLIC_ENV_DEV === "1";
   const { isSepolia, switchToSepolia } = useSwitchToSepolia();
-  const { isPolygon, switchToPolygon } = useSwitchToPolygon();
+  const { isEthereum, switchToEthereum } = useSwitchToEthereum();
 
   // Determine which network is currently active and which switch function to use
-  const isTargetNetworkActive = isDevelopment ? isSepolia : isPolygon;
-  const switchToTargetNetwork = isDevelopment ? switchToSepolia : switchToPolygon;
-  const targetNetworkName = isDevelopment ? "Sepolia" : "Polygon";
+  const isTargetNetworkActive = isDevelopment ? isSepolia : isEthereum;
+  const switchToTargetNetwork = isDevelopment ? switchToSepolia : switchToEthereum;
+  const targetNetworkName = isDevelopment ? "Sepolia" : "Ethereum";
 
   return (
     <ModalBlank isOpen={isOpen} setIsOpen={setIsOpen}>

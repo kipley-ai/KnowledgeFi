@@ -14,8 +14,7 @@ import Notification from "@/components/notification";
 import ModalTopUpSuccessful from "./modal-top-up-successful";
 import ModalTopUpFailed from "./modal-top-up-failed";
 import ModalTopUpPending from "./modal-top-up-pending";
-import { useSwitchToSepolia } from "@/hooks/useSwitchNetwork";
-import { useSwitchToPolygon } from "@/hooks/useSwitchNetwork";
+import { useSwitchToSepolia, useSwitchToPolygon, useSwitchToEthereum } from "@/hooks/useSwitchNetwork";
 import { useAddRecharge } from "@/hooks/api/user";
 import { IconContext } from "react-icons";
 import { FaPlus } from "react-icons/fa6";
@@ -43,17 +42,18 @@ export default function ModalTopUp({
   const [toast3ErrorOpen, setToast3ErrorOpen] = useState<boolean>(false);
   const [minting, setMinting] = useState(false);
   const [minted, setMinted] = useState(false);
+
   // Determine the environment and accordingly use the switch network hook
   const isDevelopment = process.env.NEXT_PUBLIC_ENV_DEV === "1";
   const { isSepolia, switchToSepolia } = useSwitchToSepolia();
-  const { isPolygon, switchToPolygon } = useSwitchToPolygon();
+  const { isEthereum, switchToEthereum } = useSwitchToEthereum();
 
   // Determine which network is currently active and which switch function to use
-  const isTargetNetworkActive = isDevelopment ? isSepolia : isPolygon;
+  const isTargetNetworkActive = isDevelopment ? isSepolia : isEthereum;
   const switchToTargetNetwork = isDevelopment
     ? switchToSepolia
-    : switchToPolygon;
-  const targetNetworkName = isDevelopment ? "Sepolia" : "Polygon";
+    : switchToEthereum;
+  const targetNetworkName = isDevelopment ? "Sepolia" : "Ethereum";
 
   const addRecharge = useAddRecharge();
 
@@ -234,9 +234,8 @@ export default function ModalTopUp({
         <div className="inline-flex items-center justify-between self-stretch px-5 py-0">
           <div className="grid w-full grid-cols-3 gap-3 font-bold text-white">
             <button
-              className={`flex h-12 flex-col items-center justify-center rounded-3xl border-2 ${
-                form?.amount == 50 ? "border-aqua-700" : "border-[#50575F]"
-              }`}
+              className={`flex h-12 flex-col items-center justify-center rounded-3xl border-2 ${form?.amount == 50 ? "border-aqua-700" : "border-[#50575F]"
+                }`}
               onClick={() => {
                 handleFormChange("amount", 50);
               }}
@@ -244,9 +243,8 @@ export default function ModalTopUp({
               <span className="text-sm font-bold leading-6">50</span>
             </button>
             <button
-              className={`flex h-12 flex-col items-center justify-center rounded-3xl border-2 ${
-                form?.amount == 100 ? "border-aqua-700" : "border-[#50575F]"
-              }`}
+              className={`flex h-12 flex-col items-center justify-center rounded-3xl border-2 ${form?.amount == 100 ? "border-aqua-700" : "border-[#50575F]"
+                }`}
               onClick={() => {
                 handleFormChange("amount", 100);
               }}
@@ -254,9 +252,8 @@ export default function ModalTopUp({
               <span className="text-sm font-bold leading-6">100</span>
             </button>
             <button
-              className={`flex h-12 flex-col items-center justify-center rounded-3xl border-2 ${
-                form?.amount == 300 ? "border-aqua-700" : "border-[#50575F]"
-              }`}
+              className={`flex h-12 flex-col items-center justify-center rounded-3xl border-2 ${form?.amount == 300 ? "border-aqua-700" : "border-[#50575F]"
+                }`}
               onClick={() => {
                 handleFormChange("amount", 300);
               }}
@@ -264,9 +261,8 @@ export default function ModalTopUp({
               <span className="text-sm font-bold leading-6">300</span>
             </button>
             <button
-              className={`flex h-12 flex-col items-center justify-center rounded-3xl border-2 ${
-                form?.amount == 500 ? "border-aqua-700" : "border-[#50575F]"
-              }`}
+              className={`flex h-12 flex-col items-center justify-center rounded-3xl border-2 ${form?.amount == 500 ? "border-aqua-700" : "border-[#50575F]"
+                }`}
               onClick={() => {
                 handleFormChange("amount", 500);
               }}
@@ -274,9 +270,8 @@ export default function ModalTopUp({
               <span className="text-sm font-bold leading-6">500</span>
             </button>
             <button
-              className={`flex h-12 flex-col items-center justify-center rounded-3xl border-2 ${
-                form?.amount == 750 ? "border-aqua-700" : "border-[#50575F]"
-              }`}
+              className={`flex h-12 flex-col items-center justify-center rounded-3xl border-2 ${form?.amount == 750 ? "border-aqua-700" : "border-[#50575F]"
+                }`}
               onClick={() => {
                 handleFormChange("amount", 750);
               }}
@@ -284,9 +279,8 @@ export default function ModalTopUp({
               <span className="text-sm font-bold leading-6">750</span>
             </button>
             <button
-              className={`flex h-12 flex-col items-center justify-center rounded-3xl border-2 ${
-                form?.amount == 1000 ? "border-aqua-700" : "border-[#50575F]"
-              }`}
+              className={`flex h-12 flex-col items-center justify-center rounded-3xl border-2 ${form?.amount == 1000 ? "border-aqua-700" : "border-[#50575F]"
+                }`}
               onClick={() => {
                 handleFormChange("amount", 1000);
               }}
