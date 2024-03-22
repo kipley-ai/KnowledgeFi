@@ -22,9 +22,11 @@ import { useCreditBalanceContext } from "./credit-balance-context";
 import { useCreditBalance } from "@/hooks/api/credit";
 import { chatbotIdFromSlug } from "@/utils/utils";
 import ShareModal from "@/components/share-chat-modal";
+import TweetAnswer from "./tweet-answer";
 
 const MessageList = ({ isOpen, setIsOpen }: { isOpen: boolean, setIsOpen: (isOpen: boolean) => void;}) => {
   const [answersStream, setAnswersStream] = useState<string[]>([]);
+  const [chunks, setChunks] = useState<string>("");
   const fieldRef = useRef<HTMLDivElement>(null);
   const [profileImage, setProfileImage] = useState<StaticImageData | string>(
     "",
@@ -97,6 +99,7 @@ const MessageList = ({ isOpen, setIsOpen }: { isOpen: boolean, setIsOpen: (isOpe
 
     console.log("Answer Stream");
     console.log(answersStream.slice(0, -2));
+    console.log('lastJsonMessage :>> ', lastJsonMessage);
 
     if (lastJsonMessage !== null && lastJsonMessage.type !== "error") {
       if (lastJsonMessage.type === "end") {
@@ -115,7 +118,7 @@ const MessageList = ({ isOpen, setIsOpen }: { isOpen: boolean, setIsOpen: (isOpe
 
         setMessageHistory((prevHistory) => [
           ...prevHistory,
-          { sender: "bot", message: fullBotAnswer },
+          { sender: "bot", message: fullBotAnswer, chunks },
         ]);
 
         setAnswersStream([]);
@@ -141,6 +144,10 @@ const MessageList = ({ isOpen, setIsOpen }: { isOpen: boolean, setIsOpen: (isOpe
         );
 
         return;
+      } else if ("chunks" in lastJsonMessage) {
+        const chunksObject = { chunks: lastJsonMessage.chunks}
+        const chunksString = JSON.stringify(chunksObject);
+        setChunks(chunksString);
       }
 
       setAnswersStream((prevAnswersStream) => {
@@ -153,14 +160,20 @@ const MessageList = ({ isOpen, setIsOpen }: { isOpen: boolean, setIsOpen: (isOpe
 
     if (
       lastJsonMessage !== null &&
-      lastJsonMessage.type === "error" &&
-      lastJsonMessage.message === "Credit insufficient"
+      lastJsonMessage.type === "error"
     ) {
-      const msgHist = messageHistory.slice(0, -1);
-      setMessageHistory(msgHist);
-      setReplyStatus("idle");
-      setModalTopUp(true);
-      return;
+      if (lastJsonMessage.message === "Credit insufficient") {
+        const msgHist = messageHistory.slice(0, -1);
+        setMessageHistory(msgHist);
+        setReplyStatus("idle");
+        setModalTopUp(true);
+      } else {
+        setMessageHistory((prevHistory) => [
+          ...prevHistory,
+          { sender: "bot", message: "Sorry, something went wrong. Try again." },
+        ]);
+        setReplyStatus("idle");
+      }
     }
   }, [lastJsonMessage]);
 
@@ -176,7 +189,7 @@ const MessageList = ({ isOpen, setIsOpen }: { isOpen: boolean, setIsOpen: (isOpe
       />
       {messageHistory.map((message, index) => {
         return index < messageHistory.length - 1 || message.sender == "user" ? (
-          <ChatMessage chatbotData={chatbotData} message={message} />
+          <ChatMessage key={index} chatbotData={chatbotData} message={message} />
         ) : (
           // <div onMouseOver={}>
           // 	<div className="flex items-start space-x-3 ">
@@ -193,9 +206,11 @@ const MessageList = ({ isOpen, setIsOpen }: { isOpen: boolean, setIsOpen: (isOpe
           // </div>
           <>
             <LastMessage
+              key={index}
               profileImage={chatbotData?.data.data.profile_image}
               sender={"bot"}
               message={message.message}
+              chunks={message.chunks}
               isGenerating={replyStatus == "answering"}
             />
           </>
@@ -208,6 +223,7 @@ const MessageList = ({ isOpen, setIsOpen }: { isOpen: boolean, setIsOpen: (isOpe
           profileImage={chatbotData?.data.data.profile_image}
           sender={"bot"}
           message={answersStream}
+          chunks={chunks}
           isGenerating={replyStatus == "answering"}
         />
       )}

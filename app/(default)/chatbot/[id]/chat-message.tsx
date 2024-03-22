@@ -2,6 +2,7 @@ import Image from "next/image";
 import { CopyButton } from "./last-message";
 import { useState } from "react";
 import AvatarDummy from "public/images/avatar-default-02.svg";
+import TweetAnswer from "./tweet-answer";
 
 const ChatMessage = ({
   chatbotData,
@@ -11,6 +12,15 @@ const ChatMessage = ({
   message: any;
 }) => {
   const [showCopy, setShowCopy] = useState(false);
+
+  const sources: string[] = [];
+  if (message.chunks) {
+    const chunksObject = JSON.parse(message.chunks);
+    chunksObject.chunks.forEach((chunk: any) => {
+      sources.push(chunk.metadata.source);
+    });
+  }
+
   return (
     <div
       onMouseEnter={() => setShowCopy(true)}
@@ -29,6 +39,9 @@ const ChatMessage = ({
             {message.sender == "bot" ? chatbotData?.data.data.name : "You"}
           </h6>
           <p className="whitespace-break-spaces">{message.message}</p>
+          {message.sender === "bot" && sources.length > 0 && (
+            <TweetAnswer chunks={sources} />
+          )}
         </div>
       </div>
       <div className="h-[40px] flex items-center justify-end pl-10">

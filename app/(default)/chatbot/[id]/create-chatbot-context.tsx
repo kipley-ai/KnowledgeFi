@@ -36,6 +36,7 @@ interface CreateChatbotContextProps {
 interface Message {
   sender: "bot" | "user";
   message: string;
+  chunks?: string;
 }
 
 const CreateChatbotContext = createContext<

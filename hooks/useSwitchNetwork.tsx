@@ -1,6 +1,7 @@
 import { useNetwork, useSwitchNetwork } from 'wagmi';
 import { sepolia } from 'wagmi/chains';
 import { polygon } from 'wagmi/chains';
+import { mainnet } from 'wagmi/chains';
 
 export function useSwitchToSepolia() {
     const { chain } = useNetwork();
@@ -28,4 +29,18 @@ export function useSwitchToPolygon() {
     };
 
     return { isPolygon, switchToPolygon };
+}
+
+export function useSwitchToEthereum() {
+    const { chain } = useNetwork();
+    const { switchNetwork } = useSwitchNetwork();
+
+    const isEthereum = chain?.id === mainnet.id;
+    const switchToEthereum = async () => {
+        if (!isEthereum && switchNetwork) {
+            await switchNetwork(mainnet.id);
+        }
+    };
+
+    return { isEthereum, switchToEthereum };
 }
