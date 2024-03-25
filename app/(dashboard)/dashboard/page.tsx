@@ -36,7 +36,7 @@ import Link from "next/link";
 import { KF_TITLE } from "@/utils/constants";
 import { chatbotSlug } from "@/utils/utils";
 
-import ExploreBanner from "components/banner/explore-banner.png"
+import ExploreBanner from "components/banner/explore-banner.png";
 
 export default function Dashboard() {
   const title = KF_TITLE + "Dashboard";
@@ -78,13 +78,11 @@ export default function Dashboard() {
 
   //console.log(botsQuery.data?.data); //For Debugging Purpose
 
-  const featuredBotsQuery = useChatbotExplore(
-    {
-      page: 1,
-      page_size: 5,
-      explore_name: "Featured Chatbots"
-    },
-  );
+  const featuredBotsQuery = useChatbotExplore({
+    page: 1,
+    page_size: 5,
+    explore_name: "Featured Chatbots",
+  });
 
   console.log(featuredBotsQuery); //For debugging purpose
 
@@ -125,7 +123,7 @@ export default function Dashboard() {
         observer.unobserve(loadMoreRef.current);
       }
       window.removeEventListener("resize", handleBreakpoint);
-      setHeaderTitle("AI Chats");
+      setHeaderTitle("Explore");
       document.title = title;
     };
   }, [breakpoint, pageSize, botsQuery.isFetching]); // Ensure dependencies are correctly listed
@@ -139,19 +137,19 @@ export default function Dashboard() {
 
       {/* Featured Chatbot */}
       <div className="mt-4">
-        <h2 className="text-2xl text-white">Featured Chatbot</h2>
+        <h2 className="text-2xl text-white">Featured Chatbots</h2>
       </div>
       <div className="my-4 flex flex-wrap justify-between gap-y-4 md:gap-3 lg:justify-start">
         {featuredBotsQuery.data?.data?.data
           ? featuredBotsQuery.data.data.data.chatbot_data.map((botData) => {
-            return (
-              <BotItem
-                key={botData.chatbot_id}
-                botData={botData}
-                onClick={() => { }}
-              />
-            );
-          })
+              return (
+                <BotItem
+                  key={botData.chatbot_id}
+                  botData={botData}
+                  onClick={() => {}}
+                />
+              );
+            })
           : null}
       </div>
 
@@ -161,19 +159,19 @@ export default function Dashboard() {
 
       {/* Chatbot lists */}
       <div className="mt-4">
-        <h2 className="text-2xl text-white">Chatbots</h2>
+        <h2 className="text-2xl text-white">Popular Chatbots</h2>
       </div>
       <div className="my-4 flex flex-wrap justify-between gap-y-4 md:gap-3 lg:justify-start">
         {botsQuery.data?.data.data
           ? botsQuery.data.data.data.chatbot_data.map((botData) => {
-            return (
-              <BotItem
-                key={botData.chatbot_id}
-                botData={botData}
-                onClick={() => { }}
-              />
-            );
-          })
+              return (
+                <BotItem
+                  key={botData.chatbot_id}
+                  botData={botData}
+                  onClick={() => {}}
+                />
+              );
+            })
           : null}
       </div>
 
@@ -194,13 +192,11 @@ const BotItem = ({
   return (
     <Link
       href={`/chatbot/${chatbotSlug(botData)}`}
-      className="group relative flex cursor-pointer flex-col w-full md:w-[19%]"
+      className="group relative flex w-full cursor-pointer flex-col md:w-[19%]"
       onClick={onClick}
     >
       <div className="bg-stone-500 p-2">
-        <div
-          className="relative w-full pb-[100%] overflow-hidden bg-stone-400"
-        >
+        <div className="relative w-full overflow-hidden bg-stone-400 pb-[100%]">
           <Image
             src={botData.profile_image ?? ""}
             layout="fill"
@@ -213,6 +209,5 @@ const BotItem = ({
         <div className="text-md font-bold text-white">{botData.name}</div>
       </div>
     </Link>
-
   );
 };
