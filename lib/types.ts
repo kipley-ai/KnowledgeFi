@@ -113,3 +113,26 @@ export type EarningReportResponse = {
     earning_report_count: number;
   };
 };
+
+export type TaskData = {
+  task_id: string;
+  task_name: string;
+  is_public: number;
+  task_assigned: string | null;
+  task_start_time: string;
+  task_end_time: string | null;
+  task_reward_type: string;
+  task_reward_amount: number;
+  task_frequency: string;
+  task_link: string;
+  task_action: string;
+  is_deleted: number;
+  created: string;
+};
+
+export type TaskListResponse = {
+  data: {
+    task_data: TaskData[];
+    task_count: number;
+  };
+};

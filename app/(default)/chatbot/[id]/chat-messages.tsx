@@ -97,13 +97,15 @@ const MessageList = ({ isOpen, setIsOpen }: { isOpen: boolean, setIsOpen: (isOpe
   useEffect(() => {
     fieldRef.current?.scrollIntoView();
 
-    console.log("Answer Stream");
-    console.log(answersStream.slice(0, -2));
+    // console.log("Answer Stream");
+    // console.log(answersStream.slice(0, -2));
     console.log('lastJsonMessage :>> ', lastJsonMessage);
 
     if (lastJsonMessage !== null && lastJsonMessage.type !== "error") {
       if (lastJsonMessage.type === "end") {
         chatHistoryAPI.refetch();
+
+        console.log('chunks :>> ', chunks);
 
         const fullBotAnswer = answersStream
           .slice(0, -2)
@@ -123,6 +125,7 @@ const MessageList = ({ isOpen, setIsOpen }: { isOpen: boolean, setIsOpen: (isOpe
 
         setAnswersStream([]);
         setReplyStatus("idle");
+        setChunks("");
 
         console.log("Message history");
         console.log(messageHistory);
@@ -191,20 +194,6 @@ const MessageList = ({ isOpen, setIsOpen }: { isOpen: boolean, setIsOpen: (isOpe
         return index < messageHistory.length - 1 || message.sender == "user" ? (
           <ChatMessage key={index} chatbotData={chatbotData} message={message} />
         ) : (
-          // <div onMouseOver={}>
-          // 	<div className="flex items-start space-x-3 ">
-          // 		<Image src={chatbotData?.data.data.profile_image} alt="User avatar" className="w-8 h-8 rounded-full mr-5" />
-          // 		<div className="text-white text-sm w-full">
-          // 			<h6 className="mb-5 mt-1">{message.sender == "bot" ? chatbotData?.data.data.name : "You"}</h6>
-          // 			<p>{message.message}</p>
-          // 		</div>
-
-          // 	</div>
-          // 	<div className="flex items-center justify-end pl-10">
-          // 		<CopyButton message={message.message}/>
-          // 	</div>
-          // </div>
-          <>
             <LastMessage
               key={index}
               profileImage={chatbotData?.data.data.profile_image}
@@ -213,7 +202,6 @@ const MessageList = ({ isOpen, setIsOpen }: { isOpen: boolean, setIsOpen: (isOpe
               chunks={message.chunks}
               isGenerating={replyStatus == "answering"}
             />
-          </>
         );
       })}
       {replyStatus == "idle" ? (
