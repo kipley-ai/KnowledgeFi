@@ -49,10 +49,9 @@ const ChatHistoryList = () => {
           {chatbotListData.map((chatbot: any, index: number) => (
             <li
               key={chatbot.chatbot_id}
-              className={`mx-3 mb-2 py-2 last:mb-0 hover:rounded-md hover:bg-stone-600 hover:text-white ${
-                (segments.includes("home") || segments.includes("dashboard")) &&
+              className={`mx-3 py-1 last:mb-0 hover:rounded-md hover:bg-stone-600 hover:text-white ${(segments.includes("home") || segments.includes("dashboard")) &&
                 "bg-transparent"
-              } ${pathname === `/chatbot/${chatbotSlug(chatbot)}` ? "" : ""}`}
+                } ${pathname === `/chatbot/${chatbotSlug(chatbot)}` ? "" : ""}`}
             >
               <SidebarLink href={`/chatbot/${chatbotSlug(chatbot)}`}>
                 <div className="flex items-center">
@@ -224,13 +223,12 @@ export default function Sidebar() {
               {/* Pages group */}
               <div>
                 <ul className="border-b-2 border-gray-700 pb-4">
-                  {/* Inbox */}
+                  {/* Explore */}
                   <li
-                    className={`mx-3 mb-4 px-3 py-1 last:mb-0 hover:rounded-md hover:bg-stone-600 hover:text-aqua-700 ${
-                      (segments.length === 0 ||
-                        segments.includes("dashboard")) &&
-                      "rounded-md border-2 border-aqua-700"
-                    }`}
+                    className={`mx-3 mb-2 px-3 last:mb-0 hover:rounded-md hover:bg-stone-600 hover:text-aqua-700 ${(segments.length === 0 ||
+                      segments.includes("dashboard")) &&
+                      ""
+                      }`}
                   >
                     {/* style={{ border: '2px solid #01F7FF', borderRadius: '24px', padding: '6px 10px' }}> */}
                     <SidebarLink href="/dashboard">
@@ -249,19 +247,37 @@ export default function Sidebar() {
                             fill="#00FFFF"
                           />
                         </svg>
-                        <span className="ml-3 text-[14px] text-xs font-semibold  text-aqua-700 duration-200 lg:text-lg lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100">
-                          EXPLORE
+                        <span className="ml-3 text-[14px] text-xs font-semibold  text-white duration-200 lg:text-lg lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100">
+                          Explore
+                        </span>
+                      </div>
+                    </SidebarLink>
+                  </li>
+                  {/* Task Center */}
+                  <li
+                    className={`mx-3 mb-2 px-3 last:mb-0 hover:rounded-md hover:bg-stone-600 hover:text-aqua-700 ${(segments.length === 0 ||
+                      segments.includes("dashboard")) &&
+                      ""
+                      }`}
+                  >
+                    {/* style={{ border: '2px solid #01F7FF', borderRadius: '24px', padding: '6px 10px' }}> */}
+                    <SidebarLink href="/task-center">
+                      <div className="flex items-center py-1">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path fill-rule="evenodd" clip-rule="evenodd" d="M2 11V5H4H6H8L8 11H6H4H2ZM6 9V7H4V9H6ZM22 5H10V7H22V5ZM22 9H10V11H22V9ZM10 13H22V15H10V13ZM22 17H10V19H22V17ZM2 13V19H4H6H8L8 13H6H4H2ZM6 15V17H4V15H6Z" fill="#01F7FF" />
+                        </svg>
+                        <span className="ml-3 text-[14px] text-xs font-semibold text-white duration-200 lg:text-lg lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100">
+                          Task Center
                         </span>
                       </div>
                     </SidebarLink>
                   </li>
                   {/* Login */}
                   <li
-                    className={`mb-1 border-t-2 border-gray-700 px-3 pt-5 last:mb-0 ${
-                      (segments.includes("home") ||
-                        segments.includes("dashboard")) &&
+                    className={`mb-1 border-t-2 border-gray-700 px-3 pt-5 last:mb-0 ${(segments.includes("home") ||
+                      segments.includes("dashboard")) &&
                       "bg-transparent"
-                    } `}
+                      } `}
                   >
                     <div className="mb-2 flex items-center px-3">
                       <svg

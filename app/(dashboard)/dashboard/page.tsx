@@ -29,12 +29,14 @@ import { useChatSession } from "@/hooks/api/chatbox";
 import { useUserDetail } from "@/hooks/api/user";
 import { ChatbotData } from "@/lib/types";
 import { LoadMore, LoadMoreSpinner } from "@/components/load-more";
-import { useChatbotList } from "@/hooks/api/chatbot";
+import { useChatbotList, useChatbotExplore } from "@/hooks/api/chatbot";
 import { keepPreviousData } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { KF_TITLE } from "@/utils/constants";
 import { chatbotSlug } from "@/utils/utils";
+
+import ExploreBanner from "components/banner/explore-banner.png"
 
 export default function Dashboard() {
   const title = KF_TITLE + "Dashboard";
@@ -62,17 +64,29 @@ export default function Dashboard() {
     //     .request_url,
   });
 
-  const incrementAmount = 6;
+  const incrementAmount = 5;
   const [pageSize, setPageSize] = useState(20);
 
-  const botsQuery = useChatbotList(
+  const botsQuery = useChatbotExplore(
     {
       page: 1,
       page_size: pageSize, // AL: Set this so that we can get the total bots count for proper client side pagination for now
-      sort_by: "created_at",
+      explore_name: "Chatbots",
     },
     keepPreviousData,
   );
+
+  //console.log(botsQuery.data?.data); //For Debugging Purpose
+
+  const featuredBotsQuery = useChatbotExplore(
+    {
+      page: 1,
+      page_size: 5,
+      explore_name: "Featured Chatbots"
+    },
+  );
+
+  console.log(featuredBotsQuery); //For debugging purpose
 
   const [hasMoreBots, setHasMoreBots] = useState(true);
 
@@ -111,41 +125,55 @@ export default function Dashboard() {
         observer.unobserve(loadMoreRef.current);
       }
       window.removeEventListener("resize", handleBreakpoint);
-      setHeaderTitle("Explore");
+      setHeaderTitle("AI Chats");
       document.title = title;
     };
   }, [breakpoint, pageSize, botsQuery.isFetching]); // Ensure dependencies are correctly listed
 
   return (
-    <div className="w-full max-w-[96rem] bg-stone-800 px-4 py-8 sm:px-6 lg:px-12">
+    <div className="w-full bg-stone-800 px-4 py-8 sm:px-6 lg:px-12">
       <ModalLoginTwitter isOpen={modalLogin} setIsOpen={setModalLogin} />
-      {/* <Switcher
-        texts={["All", "Technology", "Crypto", "Celebrities", "Others"]}
-        mode={mode}
-        setWhich={setMode}
-      /> */}
 
-      {/* <div>
-					<Image
-						className="h-full w-full cursor-pointer"
-						alt="chat"
-						src={chat_image}
-						onClick={()=>setModalLogin(true)}/>
-					</div> */}
+      {/* Explorer Banner */}
+      <Image src={ExploreBanner} alt="" className="w-full" />
 
-      {/* <div className="grid-cols-4 gap-4 mx-[-22px] my-[8px]"> */}
-      <div className="my-8 flex flex-wrap justify-between gap-y-8 md:gap-6 lg:justify-start">
-        {/* <div className="grid grid-cols-6"> */}
+      {/* Featured Chatbot */}
+      <div className="mt-4">
+        <h2 className="text-2xl text-white">Featured Chatbot</h2>
+      </div>
+      <div className="my-4 flex flex-wrap justify-between gap-y-4 md:gap-3 lg:justify-start">
+        {featuredBotsQuery.data?.data?.data
+          ? featuredBotsQuery.data.data.data.chatbot_data.map((botData) => {
+            return (
+              <BotItem
+                key={botData.chatbot_id}
+                botData={botData}
+                onClick={() => { }}
+              />
+            );
+          })
+          : null}
+      </div>
+
+      <div ref={loadMoreRef} className="mb-8">
+        {featuredBotsQuery.isFetching && <LoadMoreSpinner />}
+      </div>
+
+      {/* Chatbot lists */}
+      <div className="mt-4">
+        <h2 className="text-2xl text-white">Chatbots</h2>
+      </div>
+      <div className="my-4 flex flex-wrap justify-between gap-y-4 md:gap-3 lg:justify-start">
         {botsQuery.data?.data.data
           ? botsQuery.data.data.data.chatbot_data.map((botData) => {
-              return (
-                <BotItem
-                  key={botData.chatbot_id}
-                  botData={botData}
-                  onClick={() => {}}
-                />
-              );
-            })
+            return (
+              <BotItem
+                key={botData.chatbot_id}
+                botData={botData}
+                onClick={() => { }}
+              />
+            );
+          })
           : null}
       </div>
 
@@ -166,42 +194,25 @@ const BotItem = ({
   return (
     <Link
       href={`/chatbot/${chatbotSlug(botData)}`}
-      className="relative flex w-[calc(50dvw-30px)] cursor-pointer flex-col md:w-[155px]"
+      className="group relative flex cursor-pointer flex-col w-full md:w-[20%]"
+      onClick={onClick}
     >
-      <div className="absolute right-px top-[5px] h-[60px] w-[60px] rounded-2xl bg-apricot-700"></div>
-      <div
-        className="rounded-tl-3xl bg-stone-500 p-2"
-        style={{ clipPath: "url(#polygonPhoto)" }}
-      >
+      <div className="bg-stone-500 p-2">
         <div
-          className="relative h-[138px] overflow-hidden rounded-[18px] bg-stone-400"
-          style={{ clipPath: "url(#polygonPhoto)" }}
-          onClick={onClick}
+          className="relative w-full pb-[100%] overflow-hidden bg-stone-400"
         >
           <Image
             src={botData.profile_image ?? ""}
-            fill
-            style={{ objectFit: "cover" }}
-            sizes="138px"
+            layout="fill"
+            objectFit="cover"
             alt="Avatar"
           />
         </div>
-        <svg width="0" height="0" className="block">
-          <clipPath id="polygonPhoto" clipPathUnits="objectBoundingBox">
-            <path d="M1 1V.215C1 .196.993.177.98.162L.851.023C.838.008.819 0 .8 0H0v1" />
-          </clipPath>
-        </svg>
       </div>
-      <div
-        className="grow rounded-bl-3xl rounded-br-3xl bg-stone-500"
-        style={{
-          padding: "16px 16px 20px",
-          overflowWrap: "break-word",
-        }}
-        onClick={onClick}
-      >
-        <div className="text-md font-bold text-neutral-300">{botData.name}</div>
+      <div className="flex-grow bg-stone-500 p-4">
+        <div className="text-md font-bold text-white">{botData.name}</div>
       </div>
     </Link>
+
   );
 };
