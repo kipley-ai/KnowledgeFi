@@ -180,7 +180,7 @@ const InviteCode = ({ address }: InviteCodeProps) => {
 
   if (isLoading) return null;
 
-  if (isWl?.data && isWl?.data.status !== "error") {
+  if (isWl?.data && isWl?.data?.status !== "error") {
     setStep("data_source");
   }
 

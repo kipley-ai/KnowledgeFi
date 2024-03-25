@@ -22,7 +22,7 @@ export default function DefaultLayout({
     case "connected":
       if (
         userDetail?.data?.status !== "error" &&
-        !userDetail?.data.data.onboarding
+        !userDetail?.data?.data.onboarding
       ) {
         return redirect("/onboarding");
       }
