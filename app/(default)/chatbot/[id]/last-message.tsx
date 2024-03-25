@@ -53,7 +53,6 @@ const LastAnswer = ({
   const sources: string[] = [];
   if (chunks) {
     const chunksObject = JSON.parse(chunks);
-    console.log('chunksObjectLastMessage :>> ', chunksObject);
     chunksObject.chunks.forEach((chunk: any) => {
       sources.push(chunk.metadata.source);
     });

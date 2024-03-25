@@ -8,24 +8,6 @@ import Image from "next/image";
 import { Tweet } from "react-tweet";
 import { useState, useEffect } from "react";
 
-const tweets = [
-  {
-    header: "Tweet 1",
-    content:
-      "Flowbite is an open-source library of interactive components built on top of Tailwind CSS including buttons, dropdowns, modals, navbars, and more.",
-  },
-  {
-    header: "Tweet 2",
-    content:
-      "Flowbite is first conceptualized and designed using the Figma software so everything you see in the library has a design equivalent in our Figma file.",
-  },
-  {
-    header: "Tweet 3",
-    content:
-      "The main difference is that the core components from Flowbite are open source under the MIT license, whereas Tailwind UI is a paid product. Another difference is that Flowbite relies on smaller and standalone components, whereas Tailwind UI offers sections of pages.",
-  },
-];
-
 const AccordionItem = ({ header, ...rest }: any) => (
   <Item
     {...rest}
@@ -42,11 +24,11 @@ const AccordionItem = ({ header, ...rest }: any) => (
           width="24"
           height="24"
           viewBox="0 0 24 24"
-          stroke-width="2"
+          strokeWidth="2"
           stroke="currentColor"
           fill="none"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         >
           <path stroke="none" d="M0 0h24v24H0z" fill="none" />
           <polyline points="6 9 12 15 18 9" />
