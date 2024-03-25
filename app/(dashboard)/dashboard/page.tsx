@@ -131,7 +131,7 @@ export default function Dashboard() {
   }, [breakpoint, pageSize, botsQuery.isFetching]); // Ensure dependencies are correctly listed
 
   return (
-    <div className="w-full max-w-[96rem] bg-stone-800 px-4 py-8 sm:px-6 lg:px-12">
+    <div className="w-full bg-stone-800 px-4 py-8 sm:px-6 lg:px-12">
       <ModalLoginTwitter isOpen={modalLogin} setIsOpen={setModalLogin} />
 
       {/* Explorer Banner */}
@@ -153,6 +153,10 @@ export default function Dashboard() {
             );
           })
           : null}
+      </div>
+
+      <div ref={loadMoreRef} className="mb-8">
+        {featuredBotsQuery.isFetching && <LoadMoreSpinner />}
       </div>
 
       {/* Chatbot lists */}
