@@ -35,7 +35,7 @@ const handler = NextAuth({
 			trigger?: "signIn" | "signUp" | "update" | undefined;
 		}) => {
 			if (profile) {
-				token.username = profile.screen_name;
+				token.username = profile?.screen_name;
 			}
 
 			return token;

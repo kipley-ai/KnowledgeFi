@@ -27,6 +27,7 @@ import { PaginationController } from "../pagination/controller";
 import CreditBalance from "../../app/(default)/chatbot/[id]/credit-balance";
 import { CreditBalanceProvider } from "../../app/(default)/chatbot/[id]/credit-balance-context";
 import { chatbotSlug } from "@/utils/utils";
+import TaskCenterSideBar from "./task-center-sidebar";
 
 const GetInvolvedButton = dynamic(
   () => import("../GetInvolvedButton/get-involved-button"),
@@ -49,9 +50,10 @@ const ChatHistoryList = () => {
           {chatbotListData.map((chatbot: any, index: number) => (
             <li
               key={chatbot.chatbot_id}
-              className={`mx-3 py-1 last:mb-0 hover:rounded-md hover:bg-stone-600 hover:text-white ${(segments.includes("home") || segments.includes("dashboard")) &&
+              className={`mx-3 py-1 last:mb-0 hover:rounded-md hover:bg-stone-600 hover:text-white ${
+                (segments.includes("home") || segments.includes("dashboard")) &&
                 "bg-transparent"
-                } ${pathname === `/chatbot/${chatbotSlug(chatbot)}` ? "" : ""}`}
+              } ${pathname === `/chatbot/${chatbotSlug(chatbot)}` ? "" : ""}`}
             >
               <SidebarLink href={`/chatbot/${chatbotSlug(chatbot)}`}>
                 <div className="flex items-center">
@@ -225,10 +227,11 @@ export default function Sidebar() {
                 <ul className="border-b-2 border-gray-700 pb-4">
                   {/* Explore */}
                   <li
-                    className={`mx-3 mb-2 px-3 last:mb-0 hover:rounded-md hover:bg-stone-600 hover:text-aqua-700 ${(segments.length === 0 ||
-                      segments.includes("dashboard")) &&
+                    className={`mx-3 mb-2 px-3 last:mb-0 hover:rounded-md hover:bg-stone-600 hover:text-aqua-700 ${
+                      (segments.length === 0 ||
+                        segments.includes("dashboard")) &&
                       ""
-                      }`}
+                    }`}
                   >
                     {/* style={{ border: '2px solid #01F7FF', borderRadius: '24px', padding: '6px 10px' }}> */}
                     <SidebarLink href="/dashboard">
@@ -254,13 +257,12 @@ export default function Sidebar() {
                     </SidebarLink>
                   </li>
                   {/* Task Center */}
-                  <li
+                  {/* <li
                     className={`mx-3 mb-2 px-3 last:mb-0 hover:rounded-md hover:bg-stone-600 hover:text-aqua-700 ${(segments.length === 0 ||
                       segments.includes("dashboard")) &&
                       ""
                       }`}
                   >
-                    {/* style={{ border: '2px solid #01F7FF', borderRadius: '24px', padding: '6px 10px' }}> */}
                     <SidebarLink href="/task-center">
                       <div className="flex items-center py-1">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -271,13 +273,14 @@ export default function Sidebar() {
                         </span>
                       </div>
                     </SidebarLink>
-                  </li>
+                  </li> */}
                   {/* Login */}
                   <li
-                    className={`mb-1 border-t-2 border-gray-700 px-3 pt-5 last:mb-0 ${(segments.includes("home") ||
-                      segments.includes("dashboard")) &&
+                    className={`mb-1 border-t-2 border-gray-700 px-3 pt-5 last:mb-0 ${
+                      (segments.includes("home") ||
+                        segments.includes("dashboard")) &&
                       "bg-transparent"
-                      } `}
+                    } `}
                   >
                     <div className="mb-2 flex items-center px-3">
                       <svg
@@ -298,12 +301,13 @@ export default function Sidebar() {
                         CHAT LIST
                       </span>
                     </div>
-                    <ul className="max-h-[35vh] overflow-y-auto">
+                    <ul className="max-h-[15vh] overflow-y-auto 2xl:max-h-[30vh]">
                       <ChatHistoryList />
                     </ul>
                   </li>
                 </ul>
                 <CreditBalance />
+                <TaskCenterSideBar />
               </div>
             </div>
           </Transition>
