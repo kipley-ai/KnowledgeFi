@@ -98,7 +98,8 @@ const TweetAnswer = ({ chunks }: TweetAnswerProps) => {
         {chunks &&
           chunks.length > 0 &&
           chunks.map((chunk, i) => {
-            const id = chunk.match(/\d+/)![0];
+            // const id = chunk.match(/\d+/)![0];
+            const id = chunk.split('/').slice(-1)[0]
 
             return (
             <AccordionItem
