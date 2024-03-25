@@ -73,7 +73,7 @@ export default function CreditBalance() {
             />
           </svg>
 
-          <h6 className="text-lg tracking-tight">CREDIT BALANCE</h6>
+          <h6 className="text-lg tracking-tight">Credit Balance</h6>
         </div>
         <button
           className="self-end rounded-full text-gray-400 hover:text-blue-500"
@@ -99,7 +99,7 @@ export default function CreditBalance() {
       </div>
       <p>
         <span className="lg:text-md text-sm font-medium">
-          {creditBalance} CREDITS
+          {creditBalance} Credits
         </span>
       </p>
       {topUpStatus === "processing" && (
@@ -114,7 +114,7 @@ export default function CreditBalance() {
         disabled={topUpStatus === "processing"}
       >
         <span className="text-xs font-medium text-[#FCFCFD] duration-200">
-          TOP UP CREDITS
+          Top Up Credits
         </span>
       </button>
       <ModalTopUpSuccessful
