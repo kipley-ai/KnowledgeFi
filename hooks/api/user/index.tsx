@@ -235,3 +235,24 @@ export const useRechargeStatus = (params: any) => {
     enabled: params.willRefetch,
   });
 };
+
+export const useTotalReferral = () => {
+  const { address } = useAccount();
+
+  return useQuery({
+    queryKey: ["user", "total", "referral"],
+    queryFn: () =>
+      axios.post<{
+        referral_count: number;
+      }>(
+        "/api/user/total_ref",
+        {},
+        {
+          headers: {
+            "x-kf-user-id": address,
+          },
+        },
+      ),
+    select: (data) => data.data,
+  });
+};

@@ -14,8 +14,7 @@ import Notification from "@/components/notification";
 import ModalTopUpSuccessful from "./modal-top-up-successful";
 import ModalTopUpFailed from "./modal-top-up-failed";
 import ModalTopUpPending from "./modal-top-up-pending";
-import { useSwitchToSepolia } from "@/hooks/useSwitchNetwork";
-import { useSwitchToPolygon } from "@/hooks/useSwitchNetwork";
+import { useSwitchToSepolia, useSwitchToBase } from "@/hooks/useSwitchNetwork";
 import { useAddRecharge } from "@/hooks/api/user";
 import { IconContext } from "react-icons";
 import { FaPlus } from "react-icons/fa6";
@@ -43,17 +42,16 @@ export default function ModalTopUp({
   const [toast3ErrorOpen, setToast3ErrorOpen] = useState<boolean>(false);
   const [minting, setMinting] = useState(false);
   const [minted, setMinted] = useState(false);
+
   // Determine the environment and accordingly use the switch network hook
   const isDevelopment = process.env.NEXT_PUBLIC_ENV_DEV === "1";
   const { isSepolia, switchToSepolia } = useSwitchToSepolia();
-  const { isPolygon, switchToPolygon } = useSwitchToPolygon();
+  const { isBase, switchToBase } = useSwitchToBase();
 
   // Determine which network is currently active and which switch function to use
-  const isTargetNetworkActive = isDevelopment ? isSepolia : isPolygon;
-  const switchToTargetNetwork = isDevelopment
-    ? switchToSepolia
-    : switchToPolygon;
-  const targetNetworkName = isDevelopment ? "Sepolia" : "Polygon";
+  const isTargetNetworkActive = isDevelopment ? isSepolia : isBase;
+  const switchToTargetNetwork = isDevelopment ? switchToSepolia : switchToBase;
+  const targetNetworkName = isDevelopment ? "Sepolia" : "Base";
 
   const addRecharge = useAddRecharge();
 
