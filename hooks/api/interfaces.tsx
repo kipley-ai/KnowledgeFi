@@ -107,3 +107,9 @@ export interface INftList {
 export interface IUpdateUserParams {
   profile_image: string;
 }
+
+export interface IChatbotExplore {
+  page: number;
+  page_size: number;
+  explore_name: string;
+}

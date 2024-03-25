@@ -11,6 +11,7 @@ import {
   IChatbotDetailParams,
   IUpdateChatbotParams,
   IChatbotList,
+  IChatbotExplore,
 } from "../interfaces";
 import { ChatbotDataListResponse, ChatbotDetailResponse } from "@/lib/types";
 
@@ -181,8 +182,8 @@ export const useChatbotPKLStatus = (params: any) => {
           "x-kf-user-id": address,
         },
       }),
-      refetchInterval: 3000,
-      enabled: params.willRefetch,
+    refetchInterval: 3000,
+    enabled: params.willRefetch,
   });
 }
 
@@ -226,3 +227,21 @@ export const useGetSharedChat = (params: any) => {
       }),
   });
 }
+
+export const useChatbotExplore = (
+  params: IChatbotExplore,
+  placeholderData: typeof keepPreviousData | undefined = undefined,
+) => {
+  const appId = process.env.APP_ID;
+
+  return useQuery({
+    queryKey: [
+      params.page,
+      params.page_size,
+      params.explore_name
+    ],
+    queryFn: () =>
+      axios.post<ChatbotDataListResponse>("/api/chatbot/list", params),
+    placeholderData: placeholderData,
+  });
+};
