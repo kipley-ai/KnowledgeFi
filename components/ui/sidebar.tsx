@@ -27,6 +27,7 @@ import { PaginationController } from "../pagination/controller";
 import CreditBalance from "../../app/(default)/chatbot/[id]/credit-balance";
 import { CreditBalanceProvider } from "../../app/(default)/chatbot/[id]/credit-balance-context";
 import { chatbotSlug } from "@/utils/utils";
+import TaskCenterSideBar from "./task-center-sidebar";
 
 const GetInvolvedButton = dynamic(
   () => import("../GetInvolvedButton/get-involved-button"),
@@ -304,6 +305,7 @@ export default function Sidebar() {
                   </li>
                 </ul>
                 <CreditBalance />
+                <TaskCenterSideBar />
               </div>
             </div>
           </Transition>

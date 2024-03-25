@@ -194,7 +194,7 @@ const BotItem = ({
   return (
     <Link
       href={`/chatbot/${chatbotSlug(botData)}`}
-      className="group relative flex cursor-pointer flex-col w-full md:w-[20%]"
+      className="group relative flex cursor-pointer flex-col w-full md:w-[19%]"
       onClick={onClick}
     >
       <div className="bg-stone-500 p-2">
