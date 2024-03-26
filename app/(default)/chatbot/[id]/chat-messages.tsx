@@ -24,7 +24,13 @@ import { chatbotIdFromSlug } from "@/utils/utils";
 import ShareModal from "@/components/share-chat-modal";
 import TweetAnswer from "./tweet-answer";
 
-const MessageList = ({ isOpen, setIsOpen }: { isOpen: boolean, setIsOpen: (isOpen: boolean) => void;}) => {
+const MessageList = ({
+  isOpen,
+  setIsOpen,
+}: {
+  isOpen: boolean;
+  setIsOpen: (isOpen: boolean) => void;
+}) => {
   const [answersStream, setAnswersStream] = useState<string[]>([]);
   const [chunks, setChunks] = useState<string>("");
   const fieldRef = useRef<HTMLDivElement>(null);
@@ -35,7 +41,7 @@ const MessageList = ({ isOpen, setIsOpen }: { isOpen: boolean, setIsOpen: (isOpe
   const { data: twitterSession, status: twitterStatus } = useSession();
   const { isConnected } = useAccount();
   const [isConnected_, setIsConnected_] = useState<boolean>(false);
-  const [checkFirstQuotation,setCheckFirstQuotation] = useState(false)
+  const [checkFirstQuotation, setCheckFirstQuotation] = useState(false);
 
   useEffect(() => {
     setIsConnected_(isConnected);
@@ -78,10 +84,11 @@ const MessageList = ({ isOpen, setIsOpen }: { isOpen: boolean, setIsOpen: (isOpe
     //   appDetail?.data?.data.data.app_info.plugin_meta_data.chat_history_api
     //     .request_url,
   });
+  const creditBalance = useCreditBalance();
+  const creditDeduction = useCreditDeduction();
 
   const { setCreditBalance } = useCreditBalanceContext();
   const { setModalTopUp } = useAppProvider();
-  const creditDeduction = useCreditDeduction();
 
   useEffect(() => {
     console.log(chatbotDetailIsSuccess && chatHistoryAPI.isSuccess);
@@ -93,20 +100,23 @@ const MessageList = ({ isOpen, setIsOpen }: { isOpen: boolean, setIsOpen: (isOpe
       }
       setAnswersStream([]);
     }
-  }, [chatbotDetailIsSuccess, chatHistoryAPI.isSuccess, chatHistoryAPI.data?.data,  buttonSession]);
+  }, [
+    chatbotDetailIsSuccess,
+    chatHistoryAPI.isSuccess,
+    chatHistoryAPI.data?.data,
+    buttonSession,
+  ]);
 
   useEffect(() => {
     fieldRef.current?.scrollIntoView();
 
     // console.log("Answer Stream");
     // console.log(answersStream.slice(0, -2));
-    console.log('lastJsonMessage :>> ', lastJsonMessage);
+    console.log("lastJsonMessage :>> ", lastJsonMessage);
 
     if (lastJsonMessage !== null && lastJsonMessage.type !== "error") {
       if (lastJsonMessage.type === "end") {
-        
-
-        console.log('chunks :>> ', chunks);
+        console.log("chunks :>> ", chunks);
 
         const fullBotAnswer = answersStream
           .slice(0, -2)
@@ -130,7 +140,7 @@ const MessageList = ({ isOpen, setIsOpen }: { isOpen: boolean, setIsOpen: (isOpe
 
         console.log("Message history");
         console.log(messageHistory);
-        
+
         creditDeduction.mutate(
           {
             answer: fullBotAnswer,
@@ -139,10 +149,9 @@ const MessageList = ({ isOpen, setIsOpen }: { isOpen: boolean, setIsOpen: (isOpe
             session_id: chatSession.data?.data.data?.session_id,
           },
           {
-            onSuccess: () => {
-              const creditBalance =
-                useCreditBalance().data?.data.data.credit_balance;
-              setCreditBalance(creditBalance);
+            onSuccess: async () => {
+              const { data } = await creditBalance.refetch();
+              setCreditBalance(data?.data?.data.credit_balance);
               chatHistoryAPI.refetch();
             },
           },
@@ -150,30 +159,30 @@ const MessageList = ({ isOpen, setIsOpen }: { isOpen: boolean, setIsOpen: (isOpe
 
         return;
       } else if ("chunks" in lastJsonMessage) {
-        const chunksObject = { chunks: lastJsonMessage.chunks}
+        const chunksObject = { chunks: lastJsonMessage.chunks };
         const chunksString = JSON.stringify(chunksObject);
         setChunks(chunksString);
       } else if (lastJsonMessage.type === "start") {
-        setCheckFirstQuotation(true)
+        setCheckFirstQuotation(true);
       }
 
       setAnswersStream((prevAnswersStream) => {
         if (lastJsonMessage.sender == "user") {
           return prevAnswersStream;
         }
-        if (checkFirstQuotation && lastJsonMessage.message.startsWith('\"')){
-          setCheckFirstQuotation(false)
-          return [...prevAnswersStream, lastJsonMessage.message.slice(1,lastJsonMessage.message.length)];
+        if (checkFirstQuotation && lastJsonMessage.message?.startsWith('"')) {
+          setCheckFirstQuotation(false);
+          return [
+            ...prevAnswersStream,
+            lastJsonMessage.message.slice(1, lastJsonMessage.message.length),
+          ];
         } else {
           return [...prevAnswersStream, lastJsonMessage.message];
         }
       });
     }
 
-    if (
-      lastJsonMessage !== null &&
-      lastJsonMessage.type === "error"
-    ) {
+    if (lastJsonMessage !== null && lastJsonMessage.type === "error") {
       if (lastJsonMessage.message === "Credit insufficient") {
         const msgHist = messageHistory.slice(0, -1);
         setMessageHistory(msgHist);
@@ -191,18 +200,28 @@ const MessageList = ({ isOpen, setIsOpen }: { isOpen: boolean, setIsOpen: (isOpe
 
   return (
     <>
-    <ShareModal isOpen={isOpen} setIsOpen={setIsOpen} messageHistory={messageHistory} chatbotData={chatbotData?.data.data} />
-    <div className="flex h-auto grow flex-col gap-2 overflow-auto md:space-y-4">
-      <FirstAnswer
-        profileImage={chatbotData?.data.data.profile_image}
-        sender={"bot"}
-        message={chatbotData?.data.data.example_conversation as string}
-        isGenerating={replyStatus == "answering"}
+      <ShareModal
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        messageHistory={messageHistory}
+        chatbotData={chatbotData?.data.data}
       />
-      {messageHistory.map((message, index) => {
-        return index < messageHistory.length - 1 || message.sender == "user" ? (
-          <ChatMessage key={index} chatbotData={chatbotData} message={message} />
-        ) : (
+      <div className="flex h-auto grow flex-col gap-2 overflow-auto md:space-y-4">
+        <FirstAnswer
+          profileImage={chatbotData?.data.data.profile_image}
+          sender={"bot"}
+          message={chatbotData?.data.data.example_conversation as string}
+          isGenerating={replyStatus == "answering"}
+        />
+        {messageHistory.map((message, index) => {
+          return index < messageHistory.length - 1 ||
+            message.sender == "user" ? (
+            <ChatMessage
+              key={index}
+              chatbotData={chatbotData}
+              message={message}
+            />
+          ) : (
             <LastMessage
               key={index}
               profileImage={chatbotData?.data.data.profile_image}
@@ -211,21 +230,21 @@ const MessageList = ({ isOpen, setIsOpen }: { isOpen: boolean, setIsOpen: (isOpe
               chunks={message.chunks}
               isGenerating={replyStatus == "answering"}
             />
-        );
-      })}
-      {replyStatus == "idle" ? (
-        <></>
-      ) : (
-        <LastMessage
-          profileImage={chatbotData?.data.data.profile_image}
-          sender={"bot"}
-          message={answersStream}
-          chunks={chunks}
-          isGenerating={replyStatus == "answering"}
-        />
-      )}
-      <div ref={fieldRef}></div>
-    </div>
+          );
+        })}
+        {replyStatus == "idle" ? (
+          <></>
+        ) : (
+          <LastMessage
+            profileImage={chatbotData?.data.data.profile_image}
+            sender={"bot"}
+            message={answersStream}
+            chunks={chunks}
+            isGenerating={replyStatus == "answering"}
+          />
+        )}
+        <div ref={fieldRef}></div>
+      </div>
     </>
   );
 };
