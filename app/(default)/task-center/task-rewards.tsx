@@ -1,9 +1,13 @@
+import Toast from "@/components/toast";
+import { useAppProvider } from "@/providers/app-provider";
 import { useTaskList } from "@/hooks/api/task";
 import { TaskData } from "@/lib/types";
 import Image from "next/image";
 import SpinnerIcon from "@/public/images/spinner-icon.svg";
 import { getNextDayAtMidnight, getRemainingTimeString } from "@/lib/date";
 import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
+import { useTakeTask, useCompleteTask } from "@/hooks/api/task";
 
 const TaskType = ({ taskFrequency }: { taskFrequency: string }) => {
   if (taskFrequency == "daily") {
@@ -79,22 +83,66 @@ const TaskDeadline = ({
 
 const TaskCard = ({
   data,
-  isCompleted,
-  taskStatus,
+  setToastMessage,
+  refetch,
 }: {
   data: TaskData;
-  isCompleted: boolean;
-  taskStatus?: string;
+  setToastMessage: (message: string) => void;
+  refetch: () => void;
 }) => {
-  const router = useRouter();
-  const statusClasses = !isCompleted
-    ? "bg-transparent text-gray-20 border border-[#00FFFF] border-opacity-30 cursor-not-allowed"
+  const { toast, setToast } = useAppProvider();
+
+  let isCompleted: boolean = !!data.is_completed;
+  const isTaken: boolean = !!data.is_taken;
+
+  let taskStatus: string = isCompleted
+    ? "Completed"
+    : isTaken
+      ? "Verify"
+      : "Go";
+
+  if (data.task_end_time !== null && getRemainingTimeString(data.task_end_time) === "Task has ended") {
+    isCompleted = true;
+    taskStatus = "Ended";
+  }
+
+  const statusClasses = isCompleted
+    ? "disabled bg-transparent text-gray-20 border border-[#00FFFF] border-opacity-30 cursor-not-allowed"
     : "border border-[#00FFFF] bg-transparent text-[#00EBFF] hover:bg-[#00FFFF] hover:text-black";
-  const buttonText = isCompleted ? "Completed" : "Go";
+
+  const { mutate: takeTask } = useTakeTask();
+  const { mutate: completeTask } = useCompleteTask();
 
   const handleButton = () => {
     if (taskStatus?.toLowerCase() === "go") {
-      router.push(data.task_link);
+      takeTask({ task_id: data.task_id });
+      window.open(data.task_link, "_blank");
+      taskStatus = "Verify";
+    } else if (taskStatus?.toLowerCase() === "verify") {
+      completeTask(
+        { taken_id: data.taken_id },
+        {
+          onSuccess: (data) => {
+            console.log("data :>> ", data.data);
+            if (data.data.status === "error") {
+              setToastMessage(data.data.msg);
+              setTimeout(() => {
+                setToastMessage("");
+              }, 3000);
+              refetch();
+            } else {
+              setToastMessage("Task completed!");
+              setTimeout(() => {
+                setToastMessage("");
+              }, 3000);
+              refetch();
+            }
+          },
+          onError: (error) => {
+            console.log("error :>> ", error);
+          },
+        },
+      );
     }
   };
 
@@ -159,20 +207,30 @@ const TaskCard = ({
 };
 
 const TasksSection = () => {
-  const { data: listData, isSuccess } = useTaskList({
+  const [toastMessage, setToastMessage] = useState<string>("");
+
+  const { toast, setToast } = useAppProvider();
+
+  const { data: listData, isSuccess, refetch } = useTaskList({
     page: 1,
     page_size: 10,
     sort_by: "created",
   });
 
   if (isSuccess) {
+    console.log("listData.data :>> ", listData);
     return (
       <div className="bg-[#151515] p-6">
         <h2 className="mb-6 text-2xl font-bold text-white">TASK REWARDS</h2>
         <div className="grid grid-cols-2 gap-4">
-          {listData.task_data.map((taskData) => {
+          {listData.task_data.map((taskData, i) => {
             return (
-              <TaskCard data={taskData} isCompleted={true} taskStatus={"Go"} />
+              <TaskCard
+                key={i}
+                data={taskData}
+                setToastMessage={setToastMessage}
+                refetch={refetch}
+              />
             );
           })}
         </div>
@@ -182,6 +240,12 @@ const TasksSection = () => {
 
   return (
     <div className="h-full w-full bg-[#151515] p-6">
+      {/* <Toast children={toastMessage} open={toast} setOpen={setToast} /> */}
+      {toastMessage !== "" && (
+        <div className="flex w-full justify-center items-center">
+          <p>{toastMessage}</p>
+        </div>
+      )}
       <h2 className="mb-6 text-2xl font-bold text-white">TASK REWARDS</h2>
       <div className="flex h-full max-h-full w-full max-w-full flex-col items-center justify-center">
         <Image
