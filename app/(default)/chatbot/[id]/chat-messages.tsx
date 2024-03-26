@@ -93,7 +93,7 @@ const MessageList = ({ isOpen, setIsOpen }: { isOpen: boolean, setIsOpen: (isOpe
       }
       setAnswersStream([]);
     }
-  }, [chatbotDetailIsSuccess, chatHistoryAPI.isSuccess, buttonSession]);
+  }, [chatbotDetailIsSuccess, chatHistoryAPI.isSuccess, chatHistoryAPI.data?.data,  buttonSession]);
 
   useEffect(() => {
     fieldRef.current?.scrollIntoView();
