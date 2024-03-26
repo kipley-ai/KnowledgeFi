@@ -93,11 +93,11 @@ const LastAnswer = ({
               width={50}
               height={50}
             />
-            <div className="w-full text-sm text-white">
-              <h6 className="mb-5 mt-1 font-semibold">
+            <div className="w-full text-white">
+              <h6 className="mb-5 mt-1 font-black text-lg">
                 {chatbotData?.data.data.name}
               </h6>
-              <p className="whitespace-break-spaces break-words">
+              <p className="text-sm whitespace-break-spaces break-words">
                 {isStream ? message.slice(0, -2).join("") : trimQuotationMarks(message)}
                 {/* {sender === "bot" && sources.length > 0 && (
                   <TweetAnswer chunks={sources} />

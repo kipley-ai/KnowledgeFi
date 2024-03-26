@@ -51,11 +51,11 @@ const FirstAnswer = ({
               width={50}
               height={50}
             />
-            <div className="w-full text-sm text-white">
-              <h6 className="mb-5 mt-1 font-semibold">
+            <div className="w-full text-white">
+              <h6 className="mb-5 mt-1 font-black text-lg">
                 {chatbotData?.data.data.name}
               </h6>
-              <p>{isStream ? message.slice(0, -2).join("") : message}</p>
+              <p className="text-sm">{isStream ? message.slice(0, -2).join("") : message}</p>
             </div>
             {showCopy && !isStream ? <CopyButton message={message} /> : <></>}
           </div>
