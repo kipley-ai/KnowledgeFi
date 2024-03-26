@@ -104,7 +104,7 @@ const MessageList = ({ isOpen, setIsOpen }: { isOpen: boolean, setIsOpen: (isOpe
 
     if (lastJsonMessage !== null && lastJsonMessage.type !== "error") {
       if (lastJsonMessage.type === "end") {
-        chatHistoryAPI.refetch();
+        
 
         console.log('chunks :>> ', chunks);
 
@@ -130,7 +130,7 @@ const MessageList = ({ isOpen, setIsOpen }: { isOpen: boolean, setIsOpen: (isOpe
 
         console.log("Message history");
         console.log(messageHistory);
-
+        chatHistoryAPI.refetch();
         creditDeduction.mutate(
           {
             answer: fullBotAnswer,
