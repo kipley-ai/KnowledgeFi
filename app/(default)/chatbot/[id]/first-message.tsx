@@ -42,9 +42,8 @@ const FirstAnswer = ({
 					</div>
 				)} */}
         {/* Message bubble */}
-        <div className="flex flex-col space-y-2">
           {/* Message bubble */}
-          <div className="flex items-start space-x-4">
+          <div className="relative flex items-start space-x-4">
             <Image
               src={profileImage}
               alt="Profile"
@@ -58,15 +57,8 @@ const FirstAnswer = ({
               </h6>
               <p>{isStream ? message.slice(0, -2).join("") : message}</p>
             </div>
-          </div>
-
-          {/* Interactive buttons */}
-          <div className="flex h-[40px] items-center justify-end pl-10">
-            {/* Regenerate answer button */}
-            {/* Copy button icon */}
             {showCopy && !isStream ? <CopyButton message={message} /> : <></>}
           </div>
-        </div>
       </div>
     </>
   );

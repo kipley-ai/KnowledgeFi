@@ -35,6 +35,7 @@ const MessageList = ({ isOpen, setIsOpen }: { isOpen: boolean, setIsOpen: (isOpe
   const { data: twitterSession, status: twitterStatus } = useSession();
   const { isConnected } = useAccount();
   const [isConnected_, setIsConnected_] = useState<boolean>(false);
+  const [checkFirstQuotation,setCheckFirstQuotation] = useState(false)
 
   useEffect(() => {
     setIsConnected_(isConnected);
@@ -92,7 +93,7 @@ const MessageList = ({ isOpen, setIsOpen }: { isOpen: boolean, setIsOpen: (isOpe
       }
       setAnswersStream([]);
     }
-  }, [chatbotDetailIsSuccess, chatHistoryAPI.isSuccess, buttonSession]);
+  }, [chatbotDetailIsSuccess, chatHistoryAPI.isSuccess, chatHistoryAPI.data?.data,  buttonSession]);
 
   useEffect(() => {
     fieldRef.current?.scrollIntoView();
@@ -103,14 +104,14 @@ const MessageList = ({ isOpen, setIsOpen }: { isOpen: boolean, setIsOpen: (isOpe
 
     if (lastJsonMessage !== null && lastJsonMessage.type !== "error") {
       if (lastJsonMessage.type === "end") {
-        chatHistoryAPI.refetch();
+        
 
         console.log('chunks :>> ', chunks);
 
         const fullBotAnswer = answersStream
           .slice(0, -2)
           .map((message: string, idx: number) => {
-            if (idx == 0) return "";
+            if (idx == 0 || message === undefined) return "";
             return message;
           })
           .reduce((a: string, b: string) => a + b, "");
@@ -129,7 +130,7 @@ const MessageList = ({ isOpen, setIsOpen }: { isOpen: boolean, setIsOpen: (isOpe
 
         console.log("Message history");
         console.log(messageHistory);
-
+        
         creditDeduction.mutate(
           {
             answer: fullBotAnswer,
@@ -142,6 +143,7 @@ const MessageList = ({ isOpen, setIsOpen }: { isOpen: boolean, setIsOpen: (isOpe
               const creditBalance =
                 useCreditBalance().data?.data.data.credit_balance;
               setCreditBalance(creditBalance);
+              chatHistoryAPI.refetch();
             },
           },
         );
@@ -151,13 +153,20 @@ const MessageList = ({ isOpen, setIsOpen }: { isOpen: boolean, setIsOpen: (isOpe
         const chunksObject = { chunks: lastJsonMessage.chunks}
         const chunksString = JSON.stringify(chunksObject);
         setChunks(chunksString);
+      } else if (lastJsonMessage.type === "start") {
+        setCheckFirstQuotation(true)
       }
 
       setAnswersStream((prevAnswersStream) => {
         if (lastJsonMessage.sender == "user") {
           return prevAnswersStream;
         }
-        return [...prevAnswersStream, lastJsonMessage.message];
+        if (checkFirstQuotation && lastJsonMessage.message && lastJsonMessage.message.startsWith('\"')){
+          setCheckFirstQuotation(false)
+          return [...prevAnswersStream, lastJsonMessage.message.slice(1,lastJsonMessage.message.length)];
+        } else {
+          return [...prevAnswersStream, lastJsonMessage.message];
+        }
       });
     }
 
