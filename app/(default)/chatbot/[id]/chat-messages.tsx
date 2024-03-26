@@ -130,7 +130,7 @@ const MessageList = ({ isOpen, setIsOpen }: { isOpen: boolean, setIsOpen: (isOpe
 
         console.log("Message history");
         console.log(messageHistory);
-        chatHistoryAPI.refetch();
+        
         creditDeduction.mutate(
           {
             answer: fullBotAnswer,
@@ -143,6 +143,7 @@ const MessageList = ({ isOpen, setIsOpen }: { isOpen: boolean, setIsOpen: (isOpe
               const creditBalance =
                 useCreditBalance().data?.data.data.credit_balance;
               setCreditBalance(creditBalance);
+              chatHistoryAPI.refetch();
             },
           },
         );
