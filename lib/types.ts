@@ -128,6 +128,9 @@ export type TaskData = {
   task_action: string;
   is_deleted: number;
   created: string;
+  is_completed: number;
+  is_taken: number;
+  taken_id: string | null;
 };
 
 export type TaskListResponse = {
