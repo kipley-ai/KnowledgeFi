@@ -13,9 +13,10 @@ const TotalReferral = () => {
       <div className="my-4 flex items-center space-x-3">
         <Image src={PointIcon} alt="" />
         <div>
-          <div className="text-sm text-[#808191]">Total Referral</div>
+          <div className="text-sm text-[#808191]">Referral Points</div>
           <div className="text-3xl font-bold text-white">
-            {data.referral_count}
+            {/* {data.referral_count} */}
+            0
           </div>
         </div>
       </div>
@@ -44,7 +45,7 @@ const Header = () => {
           <Image src={PointIcon} alt="" />
           <div>
             <div className="text-sm text-[#808191]">Base Point</div>
-            <div className="text-3xl font-bold text-white">10000</div>
+            <div className="text-3xl font-bold text-white">0</div>
           </div>
         </div>
 
@@ -77,12 +78,12 @@ const Header = () => {
                 <input
                   type="text"
                   readOnly
-                  value="https://knowledgefi.xyz/invite/97902dsa"
+                  value="Coming Soon..."
                   className="mr-4 flex-grow bg-transparent text-white focus:outline-none"
                 />
                 <button className="shrink-0">
                   {/* SVG icon */}
-                  <svg
+                  {/* <svg
                     width="24"
                     height="24"
                     viewBox="0 0 24 24"
@@ -95,7 +96,7 @@ const Header = () => {
                       d="M21.0012 6H7.00122V22H15.0012V20H17.0012V18H15.0012V16H17.0012V18H19.0012V16H21.0012V6ZM9.00122 20V8H19.0012V14H13.0012V20H9.00122ZM3.00122 18H5.00122V4H17.0012V2H5.00122H3.00122V4V18Z"
                       fill="#01F7FF"
                     />
-                  </svg>
+                  </svg> */}
                 </button>
               </div>
             </div>
