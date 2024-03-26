@@ -35,6 +35,7 @@ const MessageList = ({ isOpen, setIsOpen }: { isOpen: boolean, setIsOpen: (isOpe
   const { data: twitterSession, status: twitterStatus } = useSession();
   const { isConnected } = useAccount();
   const [isConnected_, setIsConnected_] = useState<boolean>(false);
+  const [checkFirstQuotation,setCheckFirstQuotation] = useState(false)
 
   useEffect(() => {
     setIsConnected_(isConnected);
@@ -151,13 +152,20 @@ const MessageList = ({ isOpen, setIsOpen }: { isOpen: boolean, setIsOpen: (isOpe
         const chunksObject = { chunks: lastJsonMessage.chunks}
         const chunksString = JSON.stringify(chunksObject);
         setChunks(chunksString);
+      } else if (lastJsonMessage.type === "start") {
+        setCheckFirstQuotation(true)
       }
 
       setAnswersStream((prevAnswersStream) => {
         if (lastJsonMessage.sender == "user") {
           return prevAnswersStream;
         }
-        return [...prevAnswersStream, lastJsonMessage.message];
+        if (checkFirstQuotation && lastJsonMessage.message.startsWith('\"')){
+          setCheckFirstQuotation(false)
+          return [...prevAnswersStream, lastJsonMessage.message.slice(1,lastJsonMessage.message.length)];
+        } else {
+          return [...prevAnswersStream, lastJsonMessage.message];
+        }
       });
     }
 
