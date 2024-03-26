@@ -11,6 +11,7 @@ type Message = {
   message: string,
   sender: string,
   create: string,
+  chunks: string,
 }
 
 const MessageHistory = ({
@@ -25,6 +26,14 @@ const MessageHistory = ({
   return (
     <div className="text-white py-10">
       {messageHistory?.map((message, index) => {
+        const sources: string[] = [];
+        if(message.chunks){
+          const chunksObject = JSON.parse(message.chunks);
+          chunksObject.chunks.forEach((chunk: any) => {
+            sources.push(chunk.metadata.source);
+          });
+        }
+
         return (
           <div className="flex flex-row p-4 space-x-4" key={index}>
             <Image
@@ -37,6 +46,9 @@ const MessageHistory = ({
             <div className="flex flex-col space-y-4 pt-2 w-full text-sm font-light">
               <p>{message.sender === "user" ? "Anonymous": botName}</p>
               <p className="whitespace-break-spaces">{message.message}</p>
+              {sources.map((source: string, index: number) => (
+                <a href={source} className="text-sm hover:underline" target="_blank" rel="noreferrer">{source}</a>
+              ))}
             </div>
           </div>
         );

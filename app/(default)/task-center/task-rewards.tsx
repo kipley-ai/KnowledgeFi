@@ -83,10 +83,14 @@ const TaskDeadline = ({
 
 const TaskCard = ({
   data,
+  setToastErrorOpen,
+  setToastSuccessOpen,
   setToastMessage,
   refetch,
 }: {
   data: TaskData;
+  setToastErrorOpen: (value: boolean) => void;
+  setToastSuccessOpen: (value: boolean) => void;
   setToastMessage: (message: string) => void;
   refetch: () => void;
 }) => {
@@ -101,7 +105,10 @@ const TaskCard = ({
       ? "Verify"
       : "Go";
 
-  if (data.task_end_time !== null && getRemainingTimeString(data.task_end_time) === "Task has ended") {
+  if (
+    data.task_end_time !== null &&
+    getRemainingTimeString(data.task_end_time) === "Task has ended"
+  ) {
     isCompleted = true;
     taskStatus = "Ended";
   }
@@ -117,7 +124,7 @@ const TaskCard = ({
     if (taskStatus?.toLowerCase() === "go") {
       takeTask({ task_id: data.task_id });
       window.open(data.task_link, "_blank");
-      taskStatus = "Verify";
+      refetch();
     } else if (taskStatus?.toLowerCase() === "verify") {
       completeTask(
         { taken_id: data.taken_id },
@@ -125,15 +132,15 @@ const TaskCard = ({
           onSuccess: (data) => {
             console.log("data :>> ", data.data);
             if (data.data.status === "error") {
-              setToastMessage(data.data.msg);
+              setToastErrorOpen(true);
               setTimeout(() => {
-                setToastMessage("");
+                setToastErrorOpen(false);
               }, 3000);
               refetch();
             } else {
-              setToastMessage("Task completed!");
+              setToastSuccessOpen(true);
               setTimeout(() => {
-                setToastMessage("");
+                setToastSuccessOpen(false);
               }, 3000);
               refetch();
             }
@@ -207,11 +214,17 @@ const TaskCard = ({
 };
 
 const TasksSection = () => {
+  const [toastSuccessOpen, setToastSuccessOpen] = useState<boolean>(false);
+  const [toastErrorOpen, setToastErrorOpen] = useState<boolean>(false);
   const [toastMessage, setToastMessage] = useState<string>("");
 
   const { toast, setToast } = useAppProvider();
 
-  const { data: listData, isSuccess, refetch } = useTaskList({
+  const {
+    data: listData,
+    isSuccess,
+    refetch,
+  } = useTaskList({
     page: 1,
     page_size: 10,
     sort_by: "created",
@@ -221,6 +234,18 @@ const TasksSection = () => {
     console.log("listData.data :>> ", listData);
     return (
       <div className="bg-[#151515] p-6">
+        <div className="mb-1 flex flex-col items-center justify-center">
+          <Toast
+            type="success"
+            open={toastSuccessOpen}
+            setOpen={setToastSuccessOpen}
+          >
+            Task completed successfully!
+          </Toast>
+          <Toast type="error" open={toastErrorOpen} setOpen={setToastErrorOpen}>
+            Verification failed. Please finish the task and try again.
+          </Toast>
+        </div>
         <h2 className="mb-6 text-2xl font-bold text-white">TASK REWARDS</h2>
         <div className="grid grid-cols-2 gap-4">
           {listData.task_data.map((taskData, i) => {
@@ -230,6 +255,8 @@ const TasksSection = () => {
                 data={taskData}
                 setToastMessage={setToastMessage}
                 refetch={refetch}
+                setToastSuccessOpen={setToastSuccessOpen}
+                setToastErrorOpen={setToastErrorOpen}
               />
             );
           })}
@@ -240,12 +267,6 @@ const TasksSection = () => {
 
   return (
     <div className="h-full w-full bg-[#151515] p-6">
-      {/* <Toast children={toastMessage} open={toast} setOpen={setToast} /> */}
-      {toastMessage !== "" && (
-        <div className="flex w-full justify-center items-center">
-          <p>{toastMessage}</p>
-        </div>
-      )}
       <h2 className="mb-6 text-2xl font-bold text-white">TASK REWARDS</h2>
       <div className="flex h-full max-h-full w-full max-w-full flex-col items-center justify-center">
         <Image
