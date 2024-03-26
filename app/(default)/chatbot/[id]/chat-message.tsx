@@ -21,12 +21,16 @@ const ChatMessage = ({
     });
   }
 
+  const trimQuotationMarks = (str: string): string => {
+    return str.replace(/"/g, '');
+  };
+
   return (
     <div
       onMouseEnter={() => setShowCopy(true)}
       onMouseLeave={() => setShowCopy(false)}
     >
-      <div className="flex items-start space-x-4">
+      <div className="relative flex items-start space-x-4">
         <Image
           src={message.sender == "bot" ? chatbotData?.data.data.profile_image : AvatarDummy}
           alt="User avatar"
@@ -34,17 +38,20 @@ const ChatMessage = ({
           width={50}
           height={50}
         />
-        <div className="text-white text-sm w-full">
-          <h6 className="mb-5 mt-1 font-semibold">
+        <div className="w-full text-white">
+          <h6 className="mb-2 mt-1 font-black text-lg">
             {message.sender == "bot" ? chatbotData?.data.data.name : "You"}
           </h6>
-          <p className="whitespace-break-spaces">{message.message}</p>
-          {message.sender === "bot" && sources.length > 0 && (
+          <p className="whitespace-break-spaces text-sm">{trimQuotationMarks(message.message)}</p>
+          {/* {message.sender === "bot" && sources.length > 0 && (
             <TweetAnswer chunks={sources} />
-          )}
+          )} */}
+          {sources.map((source: string, index: number) => (
+            <p key={index}>
+              <a href={source} className="text-sm hover:underline" target="_blank" rel="noreferrer">{source}</a>
+            </p>
+          ))}
         </div>
-      </div>
-      <div className="h-[40px] flex items-center justify-end pl-10">
         {showCopy && <CopyButton message={message.message} />}
       </div>
     </div>
