@@ -11,7 +11,7 @@ import Copy from "@/components/icon/copy.svg"
 export const CopyButton = ({ message }: { message: string }) => {
   return (
     <button
-      className="text-gray-400 hover:text-blue-500"
+      className="absolute top-0 right-0 z-20 text-gray-400 hover:text-blue-500"
       onClick={() => {
         navigator.clipboard.writeText(message);
       }}
@@ -20,8 +20,8 @@ export const CopyButton = ({ message }: { message: string }) => {
         src={Copy}
         alt="Copy icon"
         className="mr-4"
-        width={40}
-        height={40}
+        width={35}
+        height={35}
       />
     </button>
   );
@@ -58,6 +58,10 @@ const LastAnswer = ({
     });
   }
 
+  const trimQuotationMarks = (str: string): string => {
+    return str.replace(/"/g, '');
+  };
+
   return (
     <>
       <div
@@ -81,7 +85,7 @@ const LastAnswer = ({
         {/* Message bubble */}
         <div className="flex flex-col space-y-2">
           {/* Message bubble */}
-          <div className="flex items-start space-x-4">
+          <div className="relative flex items-start space-x-4">
             <Image
               src={profileImage}
               alt="Profile"
@@ -94,19 +98,18 @@ const LastAnswer = ({
                 {chatbotData?.data.data.name}
               </h6>
               <p className="whitespace-break-spaces break-words">
-                {isStream ? message.slice(0, -2).join("") : message}
-                {sender === "bot" && sources.length > 0 && (
+                {isStream ? message.slice(0, -2).join("") : trimQuotationMarks(message)}
+                {/* {sender === "bot" && sources.length > 0 && (
                   <TweetAnswer chunks={sources} />
-                )}
+                )} */}
+                {sources.map((source: string, index: number) => (
+                  <p key={index}>
+                    <a href={source} className="text-sm hover:underline" target="_blank" rel="noreferrer">{source}</a>
+                  </p>
+                ))}
               </p>
             </div>
-          </div>
-
-          {/* Interactive buttons */}
-          <div className="flex h-[40px] items-center justify-end pl-10">
-            {/* Regenerate answer button */}
-            {/* Copy button icon */}
-            {showCopy && !isStream ? <CopyButton message={message} /> : <></>}
+            {showCopy && !isStream && <CopyButton message={message} />}
           </div>
         </div>
       </div>

@@ -111,7 +111,7 @@ const MessageList = ({ isOpen, setIsOpen }: { isOpen: boolean, setIsOpen: (isOpe
         const fullBotAnswer = answersStream
           .slice(0, -2)
           .map((message: string, idx: number) => {
-            if (idx == 0) return "";
+            if (idx == 0 || message === undefined) return "";
             return message;
           })
           .reduce((a: string, b: string) => a + b, "");
@@ -161,7 +161,7 @@ const MessageList = ({ isOpen, setIsOpen }: { isOpen: boolean, setIsOpen: (isOpe
         if (lastJsonMessage.sender == "user") {
           return prevAnswersStream;
         }
-        if (checkFirstQuotation && lastJsonMessage.message.startsWith('\"')){
+        if (checkFirstQuotation && lastJsonMessage.message && lastJsonMessage.message.startsWith('\"')){
           setCheckFirstQuotation(false)
           return [...prevAnswersStream, lastJsonMessage.message.slice(1,lastJsonMessage.message.length)];
         } else {
