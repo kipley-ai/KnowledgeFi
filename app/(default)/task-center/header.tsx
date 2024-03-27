@@ -4,6 +4,7 @@ import ReferralBonusBackground from "components/background/task-center-backgroun
 import BlindBoxPicture from "components/background/blind box_final_bottom 1.svg";
 import { useTotalReferral } from "@/hooks/api/user";
 import SpinnerIcon from "@/public/images/spinner-icon.svg";
+import { useTaskBasePoint } from "@/hooks/api/task";
 
 const TotalReferral = () => {
   const { data, isSuccess } = useTotalReferral();
@@ -15,8 +16,7 @@ const TotalReferral = () => {
         <div>
           <div className="text-sm text-[#808191]">Referral Points</div>
           <div className="text-3xl font-bold text-white">
-            {/* {data.referral_count} */}
-            0
+            {/* {data.referral_count} */}0
           </div>
         </div>
       </div>
@@ -37,6 +37,7 @@ const TotalReferral = () => {
 };
 
 const Header = () => {
+  const { data } = useTaskBasePoint();
   return (
     <div className="flex items-start justify-between bg-[#303030]">
       <div className="flex w-1/4 flex-col items-center">
@@ -45,7 +46,9 @@ const Header = () => {
           <Image src={PointIcon} alt="" />
           <div>
             <div className="text-sm text-[#808191]">Base Point</div>
-            <div className="text-3xl font-bold text-white">0</div>
+            <div className="text-3xl font-bold text-white">
+              {data?.data?.base_point}
+            </div>
           </div>
         </div>
 

@@ -52,3 +52,21 @@ export const useCompleteTask = () => {
       }),
   });
 };
+
+export const useTaskBasePoint = () => {
+  const { address } = useAccount();
+
+  return useQuery({
+    queryKey: ["task-base-point"],
+    queryFn: () =>
+      axios.post(
+        "/api/task/base-point",
+        {},
+        {
+          headers: {
+            "x-kf-user-id": address,
+          },
+        },
+      ),
+  });
+};
