@@ -30,32 +30,8 @@ const TaskDeadline = ({
   taskEndTime,
 }: {
   taskFrequency: string;
-  taskEndTime: Date | string | null;
+  taskEndTime: string | null;
 }) => {
-  if (taskFrequency == "daily") {
-    return (
-      <div className="flex flex-row items-center rounded-sm bg-[#303030] px-3 py-1 text-xs text-white">
-        <svg
-          width="13"
-          height="13"
-          viewBox="0 0 8 8"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            fill-rule="evenodd"
-            clip-rule="evenodd"
-            d="M6.33333 1H1.66667V1.66667H1V6.33333H1.66667V7H6.33333V6.33333H7V1.66667H6.33333V1ZM6.33333 1.66667V6.33333H1.66667V1.66667H6.33333ZM3.66667 2.33333H4.33333V4.33333H5.66667V5L4.33333 5H3.66667V2.33333Z"
-            fill="#01F7FF"
-          />
-        </svg>
-        <span className="ml-2">
-          {getRemainingTimeString(getNextDayAtMidnight())}
-        </span>
-      </div>
-    );
-  }
-
   if (taskEndTime === null) {
     return "";
   }
@@ -76,7 +52,9 @@ const TaskDeadline = ({
           fill="#01F7FF"
         />
       </svg>
-      <span className="ml-2">{getRemainingTimeString(taskEndTime)}</span>
+      <span className="ml-2">
+        {getRemainingTimeString(taskEndTime, taskFrequency)}
+      </span>
     </div>
   );
 };
@@ -107,7 +85,8 @@ const TaskCard = ({
 
   if (
     data.task_end_time !== null &&
-    getRemainingTimeString(data.task_end_time) === "Task has ended"
+    getRemainingTimeString(data.task_end_time, data.task_frequency) ===
+      "Task has ended"
   ) {
     isCompleted = true;
     taskStatus = "Ended";
