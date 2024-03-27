@@ -5,6 +5,8 @@ import BlindBoxPicture from "components/background/blind box_final_bottom 1.svg"
 import { useTotalReferral } from "@/hooks/api/user";
 import SpinnerIcon from "@/public/images/spinner-icon.svg";
 import { useTaskBasePoint } from "@/hooks/api/task";
+import CountUp from "react-countup"
+import { useState, useEffect } from "react";
 
 const TotalReferral = () => {
   const { data, isSuccess } = useTotalReferral();
@@ -38,6 +40,19 @@ const TotalReferral = () => {
 
 const Header = () => {
   const { data } = useTaskBasePoint();
+
+  // Initial states for start and end points
+  const [startPoints, setStartPoints] = useState(0);
+  const [endPoints, setEndPoints] = useState(0);
+
+  // Effect hook to update endPoints whenever data changes
+  useEffect(() => {
+    if (data?.data?.base_point) {
+      setStartPoints(endPoints); // Set startPoints to the previous endPoints
+      setEndPoints(data.data.base_point); // Update endPoints with the new value
+    }
+  }, [data?.data?.base_point]);
+
   return (
     <div className="flex items-start justify-between bg-[#303030]">
       <div className="flex w-1/4 flex-col items-center">
@@ -47,7 +62,7 @@ const Header = () => {
           <div>
             <div className="text-sm text-[#808191]">Base Point</div>
             <div className="text-3xl font-bold text-white">
-              {data?.data?.base_point}
+              <CountUp start={startPoints} end={endPoints} duration={1.5} />
             </div>
           </div>
         </div>
