@@ -20,6 +20,7 @@ import {
   polygon,
   optimism,
   arbitrum,
+	avalanche, 
   base,
   zora,
   sepolia,
