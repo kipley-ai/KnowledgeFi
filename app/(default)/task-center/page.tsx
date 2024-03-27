@@ -12,9 +12,9 @@ export default function TaskCenter() {
     })
 
     return (
-        <div>
+        <>
             <Header />
             <TaskSection />
-        </div>
+        </>
     )
 }

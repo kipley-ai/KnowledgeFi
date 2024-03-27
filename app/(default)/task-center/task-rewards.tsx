@@ -12,13 +12,13 @@ import { useTakeTask, useCompleteTask } from "@/hooks/api/task";
 const TaskType = ({ taskFrequency }: { taskFrequency: string }) => {
   if (taskFrequency == "daily") {
     return (
-      <div className="mr-2 rounded-sm bg-[#FE8D08] bg-opacity-20 px-3 py-1 text-xs font-bold text-[#FE8D08]">
+      <div className="mr-1 w-min rounded-sm bg-[#FE8D08] bg-opacity-20 px-3 py-1 text-xs font-bold text-[#FE8D08] flex items-center">
         Daily
       </div>
     );
   } else {
     return (
-      <div className="mr-2 rounded-sm bg-[#97fe08] bg-opacity-20 px-3 py-1 text-xs font-bold text-[#97fe08]">
+      <div className="mr-1 w-min rounded-sm bg-[#97fe08] bg-opacity-20 px-3 py-1 text-xs font-bold text-[#97fe08] flex items-center">
         Once
       </div>
     );
@@ -133,15 +133,14 @@ const TaskCard = ({
   };
 
   return (
-    <div className="flex gap-2 rounded-lg border-2 border-[#00FFFF] bg-transparent p-4 shadow-md">
+    <div className="flex flex-col xl:flex-row gap-2 rounded-lg border-2 border-[#00FFFF] p-4 shadow-md">
+      <div className="flex items-center justify-between gap-2">
       <div>
-        <div className="text-sm font-bold text-[#00EBFF]">
+        <div className="text-xl font-bold text-[#00EBFF]">
           {data.task_reward_amount}
         </div>
-        <div className="text-xs font-bold text-[#00EBFF]">POINTS</div>
+        <div className="text-xs text-[#00EBFF]">POINTS</div>
       </div>
-
-      <div>
         <svg
           width="42"
           height="38"
@@ -169,7 +168,7 @@ const TaskCard = ({
 
       <div className="grow">
         <p className="text-sm font-bold text-white">{data.task_name}</p>
-        <div className="flex flex-row">
+        <div className="mt-1 flex flex-col md:flex-row gap-2">
           {/* Task Type Tag */}
           <TaskType taskFrequency={data.task_frequency} />
           {/* Deadline Tag */}
