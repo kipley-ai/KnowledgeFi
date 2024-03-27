@@ -34,12 +34,12 @@ const ChatMessage = ({
         <Image
           src={message.sender == "bot" ? chatbotData?.data.data.profile_image : AvatarDummy}
           alt="User avatar"
-          className="w-8 h-8 rounded-full"
+          className="h-7 w-7 md:h-8 md:w-8 rounded-full"
           width={50}
           height={50}
         />
-        <div className="w-full text-white">
-          <h6 className="mb-2 mt-1 font-black text-lg">
+        <div className="text-white">
+          <h6 className="mb-1 mt-1 font-black text-lg">
             {message.sender == "bot" ? chatbotData?.data.data.name : "You"}
           </h6>
           <p className="whitespace-break-spaces text-sm">{trimQuotationMarks(message.message)}</p>
@@ -48,7 +48,7 @@ const ChatMessage = ({
           )} */}
           {sources.map((source: string, index: number) => (
             <p key={index}>
-              <a href={source} className="text-sm hover:underline" target="_blank" rel="noreferrer">{source}</a>
+              <a href={source} className="text-xs md:text-sm hover:underline" target="_blank" rel="noreferrer">{source}</a>
             </p>
           ))}
         </div>

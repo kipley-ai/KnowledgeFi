@@ -37,7 +37,7 @@ const ChatbotInfo = ({setIsOpen}: {setIsOpen: (isOpen: boolean) => void;}) => {
       <div className="mb-2 flex w-full flex-col divide-y-2 divide-aqua-700 border-2 border-aqua-700">
         <div className="flex flex-row justify-between px-6 py-2">
           <h1
-            className="font-semibold text-aqua-700 md:text-2xl"
+            className="font-semibold text-aqua-700 text-xl md:text-2xl"
             style={{
               textShadow: "0 0 10px #01F7FF",
             }}
@@ -45,7 +45,7 @@ const ChatbotInfo = ({setIsOpen}: {setIsOpen: (isOpen: boolean) => void;}) => {
             {chatbotData?.data.data.name}
           </h1>
           <button 
-            className="flex flex-row items-center space-x-3 bg-[#1E1E1E] px-4 rounded-md text-white"
+            className="flex flex-row items-center space-x-3 bg-[#1E1E1E] px-4 rounded-md text-white text-sm hover:brightness-125"
             type="button"
             onClick={() => setIsOpen(true)}
           >
@@ -60,12 +60,12 @@ const ChatbotInfo = ({setIsOpen}: {setIsOpen: (isOpen: boolean) => void;}) => {
             <Image
               src={chatbotData?.data.data.profile_image as string}
               alt="Profile"
-              className="rounded-full border-2 border-aqua-700"
+              className="rounded-full border-2 border-aqua-700 w-[80px] h-[80px] lg:w-[100px] lg:h-[100px]"
               style={{ boxShadow: "0 0 10px #01F7FF" }}
               width={100}
               height={100}
             />
-            <p className="line-clamp-4 text-sm">
+            <p className="line-clamp-5 md:line-clamp-4 text-gray-400 text-xs md:text-sm">
               {chatbotData?.data.data.description}
             </p>
           </div>
@@ -75,7 +75,7 @@ const ChatbotInfo = ({setIsOpen}: {setIsOpen: (isOpen: boolean) => void;}) => {
                 <Image
                   src={nftData?.data.data.profile_image as string}
                   alt="Profile"
-                  className=" border-2 border-aqua-700"
+                  className=" border-2 border-aqua-700 w-[80px] h-[80px] lg:w-[100px] lg:h-[100px]"
                   style={{ boxShadow: "0 0 10px #01F7FF" }}
                   width={100}
                   height={100}
@@ -88,7 +88,7 @@ const ChatbotInfo = ({setIsOpen}: {setIsOpen: (isOpen: boolean) => void;}) => {
               </a>
             </div>
           </div>
-          <div className="box absolute bottom-0 left-20 top-0 m-auto h-3/6 w-7/12 bg-transparent sm:w-9/12 xl:w-10/12"></div>
+          <div className="box absolute bottom-0 left-16 lg:left-[74px] top-0 m-auto h-3/6 w-7/12 bg-transparent sm:w-9/12 xl:w-10/12"></div>
         </div>
       </div>
     </div>

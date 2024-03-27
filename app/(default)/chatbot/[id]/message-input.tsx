@@ -194,14 +194,14 @@ const MessageInput = () => {
   return (
     <div className="sticky inset-x-0 bottom-4 mt-6 flex w-auto items-center gap-4">
       <button
-        className="rounded-2xl border border-gray-600 px-2 text-sm text-gray-600"
+        className="rounded-2xl border border-gray-600 px-2 text-sm text-gray-600 hover:brightness-150"
         onClick={handleClearChat}
       >
         CLEAR
         <br />
         CHAT
       </button>
-      <div className="flex rounded-md border border-gray-600 bg-neutral-900 px-4 py-1 focus-within:border-[#01F7FF] lg:bottom-0 lg:w-full">
+      <div className="flex grow justify-between items-center rounded-md border border-gray-600 bg-neutral-900 pl-1 py-1 focus-within:border-[#01F7FF] lg:bottom-0 lg:w-full">
         {/* Profile picture placeholder */}
         {/* <Image src={Avatar} alt="Profile" className="w-8 h-8 rounded-full mr-4" /> */}
         {/* Input Field */}
@@ -212,14 +212,14 @@ const MessageInput = () => {
             if (e.key === "Enter") handleSendMessage();
             // console.log(e.key)
           }}
-          className="flex-grow border-0 bg-neutral-900 text-white placeholder-gray-300 caret-[#01F7FF] outline-none focus:ring-0"
+          className="grow border-0 bg-neutral-900 text-white placeholder-gray-300 caret-[#01F7FF] outline-none focus:ring-0"
           value={newQuestion}
           onChange={(e) => {
             setNewQuestion(e.target.value);
           }}
         />
         {/* Icons or buttons */}
-        <div className="ml-4 flex items-center">
+        <div className="mx-4">
           <button
             className="text-light-blue"
             onClick={(e) => {
