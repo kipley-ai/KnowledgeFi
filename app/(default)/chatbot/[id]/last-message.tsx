@@ -11,7 +11,7 @@ import Copy from "@/components/icon/copy.svg"
 export const CopyButton = ({ message }: { message: string }) => {
   return (
     <button
-      className="absolute top-0 right-0 z-20 text-gray-400 hover:text-blue-500"
+      className="absolute top-0 right-0 z-20 text-gray-400 hover:brightness-150"
       onClick={() => {
         navigator.clipboard.writeText(message);
       }}
@@ -65,7 +65,7 @@ const LastAnswer = ({
   return (
     <>
       <div
-        className="flex flex-col space-y-2 pt-5"
+        className="flex flex-col space-y-2"
         onMouseEnter={() => setShowCopy(true)}
         onMouseLeave={() => setShowCopy(false)}
       >
@@ -89,12 +89,12 @@ const LastAnswer = ({
             <Image
               src={profileImage}
               alt="Profile"
-              className="h-8 w-8 rounded-full"
+              className="h-7 w-7 md:h-8 md:w-8 rounded-full"
               width={50}
               height={50}
             />
             <div className="w-full text-white">
-              <h6 className="mb-5 mt-1 font-black text-lg">
+              <h6 className="mb-1 mt-1 font-black text-lg">
                 {chatbotData?.data.data.name}
               </h6>
               <p className="text-sm whitespace-break-spaces break-words">
@@ -104,7 +104,7 @@ const LastAnswer = ({
                 )} */}
                 {sources.map((source: string, index: number) => (
                   <p key={index}>
-                    <a href={source} className="text-sm hover:underline" target="_blank" rel="noreferrer">{source}</a>
+                    <a href={source} className="text-xs xs:text-sm hover:underline" target="_blank" rel="noreferrer">{source}</a>
                   </p>
                 ))}
               </p>
