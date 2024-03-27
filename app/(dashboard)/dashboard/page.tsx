@@ -84,7 +84,7 @@ export default function Dashboard() {
     explore_name: "Featured Chatbots",
   });
 
-  console.log(featuredBotsQuery); //For debugging purpose
+  // console.log(featuredBotsQuery); //For debugging purpose
 
   const [hasMoreBots, setHasMoreBots] = useState(true);
 
@@ -136,10 +136,10 @@ export default function Dashboard() {
       <Image src={ExploreBanner} alt="" className="w-full" />
 
       {/* Featured Chatbot */}
-      <div className="mt-4">
+      <div className="mt-8">
         <h2 className="text-2xl text-white">Featured Chatbots</h2>
       </div>
-      <div className="my-4 flex flex-wrap justify-between gap-y-4 md:gap-3 lg:justify-start">
+      <div className="my-4 grid grid-cols-2 gap-x-6 gap-y-8 md:grid-cols-4 xl:grid-cols-5">
         {featuredBotsQuery.data?.data?.data
           ? featuredBotsQuery.data.data.data.chatbot_data.map((botData) => {
               return (
@@ -161,7 +161,7 @@ export default function Dashboard() {
       <div className="mt-4">
         <h2 className="text-2xl text-white">Popular Chatbots</h2>
       </div>
-      <div className="my-4 flex flex-wrap justify-between gap-y-4 md:gap-3 lg:justify-start">
+      <div className="my-4 grid grid-cols-2 gap-x-6 gap-y-8 md:grid-cols-4 xl:grid-cols-5">
         {botsQuery.data?.data.data
           ? botsQuery.data.data.data.chatbot_data.map((botData) => {
               return (
@@ -192,11 +192,11 @@ const BotItem = ({
   return (
     <Link
       href={`/chatbot/${chatbotSlug(botData)}`}
-      className="group relative flex w-full cursor-pointer flex-col md:w-[19%]"
+      className="grow group relative flex cursor-pointer flex-col w-auto rounded-sm bg-stone-500 transition ease-in-out delay-50 hover:bg-stone-600"
       onClick={onClick}
     >
-      <div className="bg-stone-500 p-2">
-        <div className="relative w-full overflow-hidden bg-stone-400 pb-[100%]">
+      <div className="p-2">
+        <div className="relative w-full overflow-hidden pb-[100%]">
           <Image
             src={botData.profile_image ?? ""}
             layout="fill"
@@ -205,8 +205,8 @@ const BotItem = ({
           />
         </div>
       </div>
-      <div className="flex-grow bg-stone-500 p-4">
-        <div className="text-md font-bold text-white">{botData.name}</div>
+      <div className="flex-grow p-4">
+        <div className="text-sm md:text-base font-bold text-white break-words">{botData.name}</div>
       </div>
     </Link>
   );
