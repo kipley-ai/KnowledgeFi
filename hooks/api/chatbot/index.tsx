@@ -243,5 +243,6 @@ export const useChatbotExplore = (
     queryFn: () =>
       axios.post<ChatbotDataListResponse>("/api/chatbot/list", params),
     placeholderData: placeholderData,
+    refetchOnWindowFocus: false,
   });
 };

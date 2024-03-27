@@ -156,7 +156,7 @@ export default function Header() {
                     />
                   </svg>
 
-                  <span className="ml-1 mr-2 text-xs font-medium text-neutral-300 duration-200 lg:text-sm">
+                  <span className="min-[468px]:ml-2 text-[0.6rem] font-medium text-neutral-300 duration-200 md:text-sm">
                     CREATE KNOWLEDGE ASSET
                   </span>
                 </div>
@@ -166,7 +166,7 @@ export default function Header() {
             <Link href="/nft">
               <button className="pr-3">
                 <div className="flex items-center rounded-md border border-[#01F7FF] px-2 py-2">
-                  <span className="mx-1 text-xs font-medium text-neutral-300 duration-200 lg:text-sm">
+                  <span className="text-[0.6rem] font-medium text-neutral-300 duration-200 md:text-sm">
                     MY ASSETS
                   </span>
                 </div>
