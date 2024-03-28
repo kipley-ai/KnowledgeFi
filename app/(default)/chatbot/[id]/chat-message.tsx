@@ -48,7 +48,7 @@ const ChatMessage = ({
           )} */}
           {sources.map((source: string, index: number) => (
             <p key={index}>
-              <a href={source} className="text-xs md:text-sm hover:underline" target="_blank" rel="noreferrer">{source}</a>
+              <a href={source} className="text-xs sm:text-sm hover:underline" target="_blank" rel="noreferrer">{source}</a>
             </p>
           ))}
         </div>

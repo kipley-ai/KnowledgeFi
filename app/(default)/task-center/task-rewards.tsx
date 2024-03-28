@@ -166,7 +166,7 @@ const TaskCard = ({
         </svg>
       </div>
 
-      <div className="grow">
+      <div className="grow self-center">
         <p className="text-sm font-bold text-white">{data.task_name}</p>
         <div className="mt-1 flex flex-col md:flex-row gap-2">
           {/* Task Type Tag */}

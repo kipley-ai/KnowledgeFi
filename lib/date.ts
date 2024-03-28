@@ -7,14 +7,15 @@ export const getNextDayAtMidnight = (): string => {
   return nextDay.toString();
 };
 
-export const getRemainingTimeString = (
-  futureTime: string,
-  taskFrequency: string,
-): string => {
+export const getRemainingTimeString = (futureTime, taskFrequency) => {
   const now = new Date();
-  const future = new Date(futureTime + "z");
+  const future = new Date(futureTime + "Z");
 
   const diff = future.getTime() - now.getTime();
+
+  if (isNaN(diff)) {
+    return "Invalid future time";
+  }
 
   if (diff <= 0) {
     return "Task has ended";
@@ -31,7 +32,9 @@ export const getRemainingTimeString = (
     return `Ends in ${days} day${days > 1 ? "s" : ""} ${hours} hr${hours > 1 ? "s" : ""}`;
   } else if (hours > 0) {
     return `Ends in ${hours} hr${hours > 1 ? "s" : ""} ${minutes} min${minutes > 1 ? "s" : ""}`;
+  } else if (minutes >= 0) {
+    return `Ends in ${minutes} min${minutes !== 1 ? "s" : ""}`;
   } else {
-    return `Ends in ${minutes} min${minutes > 1 ? "s" : ""}`;
+    return "Invalid time difference";
   }
 };

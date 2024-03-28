@@ -193,7 +193,15 @@ export default function Sidebar() {
             leaveTo="-translate-x-full"
           >
             {/* Sidebar header */}
-            <div className="mb-5 flex justify-between pr-3 sm:px-2">
+            <div className="mb-5 flex justify-between px-3">
+              {/* Logo */}
+              <Link href="/dashboard">
+                <h2 className="pl-3 font-semibold text-slate-500">
+                  <span className="text-2xl font-black text-neutral-300 lg:hidden lg:text-[28px] lg:sidebar-expanded:block 2xl:block">
+                    KnowledgeFi
+                  </span>
+                </h2>
+              </Link>
               {/* Close button */}
               <button
                 className="text-slate-500 hover:text-slate-400 lg:hidden"
@@ -210,14 +218,6 @@ export default function Sidebar() {
                   <path d="M10.7 18.7l1.4-1.4L7.8 13H20v-2H7.8l4.3-4.3-1.4-1.4L4 12z" />
                 </svg>
               </button>
-              {/* Logo */}
-              <Link href="/dashboard">
-                <h2 className="pl-3 font-semibold text-slate-500">
-                  <span className="text-xl font-black text-neutral-300 lg:hidden lg:text-[28px] lg:sidebar-expanded:block 2xl:block">
-                    KnowledgeFi
-                  </span>
-                </h2>
-              </Link>
             </div>
 
             {/* Links */}
@@ -250,7 +250,7 @@ export default function Sidebar() {
                             fill="#00FFFF"
                           />
                         </svg>
-                        <span className="ml-3 text-[14px] text-xs font-semibold  text-white duration-200 lg:text-lg lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100">
+                        <span className="ml-3 text-[14px] font-semibold  text-white duration-200 text-lg lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100">
                           Explore
                         </span>
                       </div>
@@ -297,8 +297,8 @@ export default function Sidebar() {
                           fill="#00FFFF"
                         />
                       </svg>
-                      <span className="ml-3 text-[14px] font-semibold tracking-tight text-white duration-200 lg:text-lg lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100">
-                        CHAT LIST
+                      <span className="ml-3 font-semibold tracking-tight text-white duration-200 text-lg lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100">
+                        Chat List
                       </span>
                     </div>
                     <ul className="max-h-[15vh] overflow-y-auto 2xl:max-h-[30vh]">

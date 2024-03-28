@@ -104,7 +104,7 @@ const ShareModal = ({ isOpen, setIsOpen, messageHistory, chatbotData }: ModalPro
 
   return (
     <ModalBlank isOpen={isOpen} setIsOpen={setIsOpen}>
-      <div className="flex flex-col px-8 py-8 space-y-5 bg-[#080403]">
+      <div className="md:w-[650px] flex flex-col px-8 py-8 space-y-5 bg-[#080403]">
         <div className="flex flex-row justify-between items-center">
           <h1 className="text-[#7C878E] text-2xl">Share Your Chat</h1>
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" type="button" className="cursor-pointer" onClick={() => setIsOpen(false)}>

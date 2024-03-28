@@ -16,7 +16,10 @@ const TotalReferral = () => {
       <div className="flex-1 px-4 py-4 flex items-center space-x-3">
         <Image src={PointIcon} className="size-[50px] md:size-auto" alt="" />
         <div>
-          <div className="text-sm text-[#808191]">Referral Points</div>
+          <div className="flex flex-col xs:flex-row text-sm font-semibold text-[#808191]">
+            <p>Referral </p>
+            <p className="xs:ml-2">Points</p>
+          </div>
           <div className="text-3xl font-bold text-white">
             {data.referral_count}
           </div>
@@ -60,7 +63,10 @@ const Header = () => {
         <div className="py-4 flex-1 px-4 flex items-center space-x-3 border-r border-white md:border-none">
           <Image src={PointIcon} className="size-[50px] md:size-auto" alt="" />
           <div>
-            <div className="text-sm text-[#808191]">Base Point</div>
+            <div className="flex flex-col xs:flex-row text-sm font-semibold text-[#808191]">
+              <p>Base </p>
+              <p className="xs:ml-2">Points</p>
+            </div>
             <div className="text-3xl font-bold text-white">
               <CountUp start={startPoints} end={endPoints} duration={1.5} />
             </div>
@@ -77,14 +83,14 @@ const Header = () => {
       {/* Referral Bonus Section */}
       {/* Referral Bonus Section */}
       <div
-        className="flex w-full md:w-3/4 h-full items-center pl-10 py-4"
+        className="flex w-full md:w-3/4 h-full items-center pl-4 md:pl-10 py-4"
         style={{
           backgroundImage: `url(${ReferralBonusBackground.src})`,
           backgroundSize: "cover",
         }}
       >
-        <div className="flex w-full flex-row justify-between items-center">
-          <div className="flex flex-grow flex-col justify-center">
+        <div className="flex w-full flex-col sm:flex-row justify-between gap-4 items-center">
+          <div className="flex grow flex-col justify-center">
             {/* Referral Bonus Code */}
             <div className="text-white">
               <h2 className="mb-2 text-xl font-bold">Referral Bonus</h2>
@@ -96,9 +102,9 @@ const Header = () => {
                   type="text"
                   readOnly
                   value="Coming Soon..."
-                  className="mr-4 flex-grow bg-transparent text-white focus:outline-none"
+                  className="grow mr-4 bg-transparent text-white focus:outline-none"
                 />
-                <button className="shrink-0">
+                <button className="">
                   {/* SVG icon */}
                   <svg
                     width="24"
@@ -119,7 +125,7 @@ const Header = () => {
             </div>
           </div>
           {/* Referral Bonus Image */}
-          <div className="shrink">
+          <div className="">
             <Image src={BlindBoxPicture} alt="" />
           </div>
         </div>

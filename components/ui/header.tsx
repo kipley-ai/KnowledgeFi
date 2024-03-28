@@ -77,7 +77,7 @@ export default function Header() {
       <div className="px-4 sm:px-6 lg:px-8">
         <div className="-mb-px flex h-16 items-center justify-between">
           {/* Header: Left side */}
-          <div className="flex">
+          <div className="flex gap-4">
             {/* Hamburger button */}
             <button
               className="text-slate-500 hover:text-slate-600 lg:hidden"
@@ -99,7 +99,7 @@ export default function Header() {
               </svg>
             </button>
 
-            <div className="flex items-center">
+            <div className="hidden sm:flex gap-2 items-center">
               {headerTitle === "AI CHAT" ? (
                 <svg
                   width="22"
@@ -129,8 +129,8 @@ export default function Header() {
                   />
                 </svg>
               )}
-              <span className="mx-3 text-sm font-medium text-white duration-200 lg:text-sm">
-                {headerTitle}
+              <span className="text-sm font-medium text-white duration-200">
+                {headerTitle !== "AI CHAT" && headerTitle}
               </span>
             </div>
           </div>
@@ -147,6 +147,7 @@ export default function Header() {
                     viewBox="0 0 16 16"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
+                    className="max-sm:size-[12px]"
                   >
                     <path
                       fill-rule="evenodd"
@@ -156,7 +157,7 @@ export default function Header() {
                     />
                   </svg>
 
-                  <span className="min-[468px]:ml-2 text-[0.6rem] font-medium text-neutral-300 duration-200 md:text-sm">
+                  <span className="ml-1 sm:ml-2 text-[0.6rem] font-medium text-neutral-300 duration-200 md:text-sm">
                     CREATE KNOWLEDGE ASSET
                   </span>
                 </div>
