@@ -142,6 +142,7 @@ const MessageInput = () => {
             setNewQuestion("");
             setReplyStatus("answering");
             setLastQuestion(newQuestion);
+            setInputRows(1);
           },
         },
       );
@@ -179,6 +180,7 @@ const MessageInput = () => {
       setNewQuestion("");
       setReplyStatus("answering");
       setLastQuestion(newQuestion);
+      setInputRows(1);
     }
   };
 
@@ -220,7 +222,7 @@ const MessageInput = () => {
         <textarea
           ref={inputRef}
           placeholder="Ask me anything"
-          className="grow border-0 bg-neutral-900 text-white placeholder-gray-300 caret-[#01F7FF] outline-none focus:ring-0"
+          className="grow resize-none border-0 bg-neutral-900 text-white placeholder-gray-300 caret-[#01F7FF] outline-none focus:ring-0"
           value={newQuestion}
           onChange={(e) => {
             let lengthOfText = e.target.value.match(/\n/g)?.length;
