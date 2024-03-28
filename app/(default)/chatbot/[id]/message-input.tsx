@@ -40,7 +40,8 @@ const MessageInput = () => {
     setButtonSession,
   } = useCreateChatbotContext();
 
-  const inputRef = useRef<HTMLInputElement>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
+  const [inputRows, setInputRows] = useState(1);
   const { address } = useAccount();
   const chatSession = useGetSession({ chatbot_id: id as string });
   const newSession = useNewSession();
@@ -216,16 +217,29 @@ const MessageInput = () => {
         {/* Profile picture placeholder */}
         {/* <Image src={Avatar} alt="Profile" className="w-8 h-8 rounded-full mr-4" /> */}
         {/* Input Field */}
-        <input
+        <textarea
           ref={inputRef}
-          type="text"
           placeholder="Ask me anything"
           className="grow border-0 bg-neutral-900 text-white placeholder-gray-300 caret-[#01F7FF] outline-none focus:ring-0"
           value={newQuestion}
           onChange={(e) => {
+            let lengthOfText = e.target.value.match(/\n/g)?.length;
+            if (!lengthOfText) {
+              setInputRows(1);
+            }
+            if (lengthOfText && lengthOfText < 2) {
+              setInputRows(lengthOfText + 1);
+            }
             setNewQuestion(e.target.value);
           }}
           disabled={replyStatus === "answering"}
+          rows={inputRows}
+          tabIndex={0}
+          onKeyDown={(e) => {
+            if (e.code === "Enter" && !e.shiftKey) {
+              handleSendMessage(e);
+            }
+          }}
         />
         {/* Icons or buttons */}
         <div className="mx-4">
