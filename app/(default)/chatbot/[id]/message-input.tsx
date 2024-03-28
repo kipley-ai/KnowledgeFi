@@ -99,7 +99,7 @@ const MessageInput = () => {
   const handleSendMessage = async (e: any) => {
     e.preventDefault();
 
-    if (!newQuestion || newQuestion === "") return;
+    if (!newQuestion || newQuestion === "" || inputValue.trim() === "") return;
 
     if (!chatSession.data?.data.data?.session_id) {
       newSession.mutate(
