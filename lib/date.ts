@@ -7,7 +7,7 @@ export const getNextDayAtMidnight = (): string => {
   return nextDay.toString();
 };
 
-export const getRemainingTimeString = (futureTime, taskFrequency) => {
+export const getRemainingTimeString = (futureTime: string, taskFrequency: string): string => {
   const now = new Date();
   const future = new Date(futureTime + "Z");
 
