@@ -13,7 +13,7 @@ import {
   useNewSession,
 } from "@/hooks/api/chatbot";
 import { useChatHistory } from "@/hooks/api/chatbox";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Avatar from "public/images/avatar-gradient-icon.svg";
 import EnterIcon from "public/images/arrow-right.svg";
@@ -34,23 +34,23 @@ const MessageInput = () => {
     setMessageHistory,
 
     // Loading
+    replyStatus,
     setReplyStatus,
 
     setButtonSession,
   } = useCreateChatbotContext();
 
-  const searchParams = useSearchParams();
-  const objParams = new URLSearchParams(searchParams.toString());
-  const router = useRouter();
-  const pathname = usePathname();
+  const inputRef = useRef<HTMLInputElement>(null);
   const { address } = useAccount();
   const chatSession = useGetSession({ chatbot_id: id as string });
   const newSession = useNewSession();
-  
+
   const { data: chatbotData, isSuccess } = useChatbotDetail({
     chatbot_id: id as string,
   });
-  const pluginConfig = useDefaultValue({ key: chatbotData?.data.data.personality as string });
+  const pluginConfig = useDefaultValue({
+    key: chatbotData?.data.data.personality as string,
+  });
   const chatHistoryAPI = useChatHistory({
     session_id: chatSession.data?.data.data?.session_id,
     app_id: id as string,
@@ -68,8 +68,6 @@ const MessageInput = () => {
   const [presencePenalty, setPresencePenalty] = useState(0);
   const [topDocs, setTopDocs] = useState(10);
   const [maxTokens, setMaxTokens] = useState(250);
-
-  
 
   useEffect(() => {
     console.log(!chatSession.data?.data.data?.session_id);
@@ -92,7 +90,14 @@ const MessageInput = () => {
     }
   }, [pluginConfig.isSuccess]);
 
+  useEffect(() => {
+    if (replyStatus === "idle") {
+      inputRef.current?.focus();
+    }
+  }, [replyStatus]);
+
   const handleSendMessage = async () => {
+    if (!newQuestion || newQuestion === "") return;
     if (!chatSession.data?.data.data?.session_id) {
       newSession.mutate(
         { chatbot_id: id as string },
@@ -201,11 +206,12 @@ const MessageInput = () => {
         <br />
         CHAT
       </button>
-      <div className="flex grow justify-between items-center rounded-md border border-gray-600 bg-neutral-900 pl-1 py-1 focus-within:border-[#01F7FF] lg:bottom-0 lg:w-full">
+      <div className="flex grow items-center justify-between rounded-md border border-gray-600 bg-neutral-900 py-1 pl-1 focus-within:border-[#01F7FF] lg:bottom-0 lg:w-full">
         {/* Profile picture placeholder */}
         {/* <Image src={Avatar} alt="Profile" className="w-8 h-8 rounded-full mr-4" /> */}
         {/* Input Field */}
         <input
+          ref={inputRef}
           type="text"
           placeholder="Ask me anything"
           onKeyDown={(e) => {
@@ -217,6 +223,7 @@ const MessageInput = () => {
           onChange={(e) => {
             setNewQuestion(e.target.value);
           }}
+          disabled={replyStatus === "answering"}
         />
         {/* Icons or buttons */}
         <div className="mx-4">
@@ -225,6 +232,7 @@ const MessageInput = () => {
             onClick={(e) => {
               handleSendMessage();
             }}
+            disabled={replyStatus === "answering"}
           >
             <svg
               width="20"
