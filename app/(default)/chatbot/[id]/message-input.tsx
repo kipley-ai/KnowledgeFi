@@ -96,8 +96,11 @@ const MessageInput = () => {
     }
   }, [replyStatus]);
 
-  const handleSendMessage = async () => {
+  const handleSendMessage = async (e: any) => {
+    e.preventDefault();
+
     if (!newQuestion || newQuestion === "") return;
+
     if (!chatSession.data?.data.data?.session_id) {
       newSession.mutate(
         { chatbot_id: id as string },
@@ -206,7 +209,10 @@ const MessageInput = () => {
         <br />
         CHAT
       </button>
-      <div className="flex grow items-center justify-between rounded-md border border-gray-600 bg-neutral-900 py-1 pl-1 focus-within:border-[#01F7FF] lg:bottom-0 lg:w-full">
+      <form
+        onSubmit={handleSendMessage}
+        className="flex grow items-center justify-between rounded-md border border-gray-600 bg-neutral-900 py-1 pl-1 focus-within:border-[#01F7FF] lg:bottom-0 lg:w-full"
+      >
         {/* Profile picture placeholder */}
         {/* <Image src={Avatar} alt="Profile" className="w-8 h-8 rounded-full mr-4" /> */}
         {/* Input Field */}
@@ -214,10 +220,6 @@ const MessageInput = () => {
           ref={inputRef}
           type="text"
           placeholder="Ask me anything"
-          onKeyDown={(e) => {
-            if (e.key === "Enter") handleSendMessage();
-            // console.log(e.key)
-          }}
           className="grow border-0 bg-neutral-900 text-white placeholder-gray-300 caret-[#01F7FF] outline-none focus:ring-0"
           value={newQuestion}
           onChange={(e) => {
@@ -229,9 +231,6 @@ const MessageInput = () => {
         <div className="mx-4">
           <button
             className="text-light-blue"
-            onClick={(e) => {
-              handleSendMessage();
-            }}
             disabled={replyStatus === "answering"}
           >
             <svg
@@ -250,7 +249,7 @@ const MessageInput = () => {
             </svg>
           </button>
         </div>
-      </div>
+      </form>
     </div>
   );
 };
