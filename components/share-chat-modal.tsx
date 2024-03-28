@@ -69,18 +69,20 @@ const ShareModal = ({ isOpen, setIsOpen, messageHistory, chatbotData }: ModalPro
       if(!sharedIdAPI.isRefetching && copyClipboard){
         // console.log(`${BASE_URL}/chat/${sharedIdAPI.data.data.data.share_id}`)
         navigator.clipboard.writeText(`${BASE_URL}/share/${sharedIdAPI.data.data.data.share_id}`);
-        setCopyClipboard(false);
+        setTimeout(() => {
+          setCopyClipboard(false);
+        }, 3000);
       }
     }
   }, [sharedIdAPI.isSuccess, sharedIdAPI.isRefetching])
   
   const handleUpdateSharedChat = () => {
+    setCopyClipboard(true);
     updateSharedAPI.mutate(
       { chatbot_id: chatbotData?.chatbot_id },
       {
         onSuccess(data, variables, context) {
           sharedIdAPI.refetch();
-          setCopyClipboard(true);
         }
       }
     );
@@ -97,14 +99,14 @@ const ShareModal = ({ isOpen, setIsOpen, messageHistory, chatbotData }: ModalPro
   const updateShareText = () => {
     return (
       <p className="text-sm text-white font-light">
-        You have shared this chat <span className="underline">before</span>. If you want to update the shared chat content, please update and get a new shared link.
+        You have shared this chat before. If you want to update the shared chat content, please update and get a new shared link.
       </p>
     )
   }
 
   return (
     <ModalBlank isOpen={isOpen} setIsOpen={setIsOpen}>
-      <div className="flex flex-col w-[650px] px-8 py-12 space-y-5 bg-[#080403]">
+      <div className="md:w-[650px] flex flex-col px-8 py-8 space-y-5 bg-[#080403]">
         <div className="flex flex-row justify-between items-center">
           <h1 className="text-[#7C878E] text-2xl">Share Your Chat</h1>
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" type="button" className="cursor-pointer" onClick={() => setIsOpen(false)}>
@@ -127,17 +129,19 @@ const ShareModal = ({ isOpen, setIsOpen, messageHistory, chatbotData }: ModalPro
           onClick={handleUpdateSharedChat}
         >
           {
-            updateSharedAPI.isSuccess || updateSharedAPI.isPending ?
+            copyClipboard ?
             <></> :
             <svg width="19" height="18" viewBox="0 0 19 18" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path fill-rule="evenodd" clip-rule="evenodd" d="M18.5 8V2V0H16.5H10.5V2H14.5V4H12.5V6H10.5V8H8.5V10H6.5V12H8.5V10H10.5V8H12.5V6H14.5V4H16.5V8H18.5ZM8.5 2H2.5H0.5V4V16V18H2.5H14.5H16.5V16V10H14.5V16H2.5V4H8.5V2Z" fill="#01F7FF"/>
             </svg>
           }
-          <p className="text-[#01F7FF]">{
-            updateSharedAPI.isSuccess ? "COPIED!" : 
-            updateSharedAPI.isPending ? "COPYING..." :
-            isFirstShare ? "COPY LINK" : "UPDATE AND COPY LINK"
-          }</p>
+          <p className="text-[#01F7FF]">
+            {copyClipboard ? (
+              updateSharedAPI.isSuccess ? "COPIED!" : "COPYING..."
+            ) : (
+              isFirstShare ? "COPY LINK" : "UPDATE AND COPY LINK"
+            )}
+          </p>
         </button>
       </div>
     </ModalBlank>

@@ -13,7 +13,7 @@ import {
   useNewSession,
 } from "@/hooks/api/chatbot";
 import { useChatHistory } from "@/hooks/api/chatbox";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Avatar from "public/images/avatar-gradient-icon.svg";
 import EnterIcon from "public/images/arrow-right.svg";
@@ -34,23 +34,24 @@ const MessageInput = () => {
     setMessageHistory,
 
     // Loading
+    replyStatus,
     setReplyStatus,
 
     setButtonSession,
   } = useCreateChatbotContext();
 
-  const searchParams = useSearchParams();
-  const objParams = new URLSearchParams(searchParams.toString());
-  const router = useRouter();
-  const pathname = usePathname();
+  const inputRef = useRef<HTMLTextAreaElement>(null);
+  const [inputRows, setInputRows] = useState(1);
   const { address } = useAccount();
   const chatSession = useGetSession({ chatbot_id: id as string });
   const newSession = useNewSession();
-  
+
   const { data: chatbotData, isSuccess } = useChatbotDetail({
     chatbot_id: id as string,
   });
-  const pluginConfig = useDefaultValue({ key: chatbotData?.data.data.personality as string });
+  const pluginConfig = useDefaultValue({
+    key: chatbotData?.data.data.personality as string,
+  });
   const chatHistoryAPI = useChatHistory({
     session_id: chatSession.data?.data.data?.session_id,
     app_id: id as string,
@@ -68,8 +69,6 @@ const MessageInput = () => {
   const [presencePenalty, setPresencePenalty] = useState(0);
   const [topDocs, setTopDocs] = useState(10);
   const [maxTokens, setMaxTokens] = useState(250);
-
-  
 
   useEffect(() => {
     console.log(!chatSession.data?.data.data?.session_id);
@@ -92,7 +91,17 @@ const MessageInput = () => {
     }
   }, [pluginConfig.isSuccess]);
 
-  const handleSendMessage = async () => {
+  useEffect(() => {
+    if (replyStatus === "idle") {
+      inputRef.current?.focus();
+    }
+  }, [replyStatus]);
+
+  const handleSendMessage = async (e: any) => {
+    e.preventDefault();
+
+    if (!newQuestion || newQuestion === "" || newQuestion.trim() === "") return;
+
     if (!chatSession.data?.data.data?.session_id) {
       newSession.mutate(
         { chatbot_id: id as string },
@@ -133,6 +142,7 @@ const MessageInput = () => {
             setNewQuestion("");
             setReplyStatus("answering");
             setLastQuestion(newQuestion);
+            setInputRows(1);
           },
         },
       );
@@ -170,6 +180,7 @@ const MessageInput = () => {
       setNewQuestion("");
       setReplyStatus("answering");
       setLastQuestion(newQuestion);
+      setInputRows(1);
     }
   };
 
@@ -194,37 +205,49 @@ const MessageInput = () => {
   return (
     <div className="sticky inset-x-0 bottom-4 mt-6 flex w-auto items-center gap-4">
       <button
-        className="rounded-2xl border border-gray-600 px-2 text-sm text-gray-600"
+        className="rounded-2xl border border-gray-600 px-2 text-sm text-gray-600 hover:brightness-150"
         onClick={handleClearChat}
       >
         CLEAR
         <br />
         CHAT
       </button>
-      <div className="flex rounded-md border border-gray-600 bg-neutral-900 px-4 py-1 focus-within:border-[#01F7FF] lg:bottom-0 lg:w-full">
+      <form
+        onSubmit={handleSendMessage}
+        className="flex grow items-center justify-between rounded-md border border-gray-600 bg-neutral-900 py-1 pl-1 focus-within:border-[#01F7FF] lg:bottom-0 lg:w-full"
+      >
         {/* Profile picture placeholder */}
         {/* <Image src={Avatar} alt="Profile" className="w-8 h-8 rounded-full mr-4" /> */}
         {/* Input Field */}
-        <input
-          type="text"
+        <textarea
+          ref={inputRef}
           placeholder="Ask me anything"
-          onKeyDown={(e) => {
-            if (e.key === "Enter") handleSendMessage();
-            // console.log(e.key)
-          }}
-          className="flex-grow border-0 bg-neutral-900 text-white placeholder-gray-300 caret-[#01F7FF] outline-none focus:ring-0"
+          className="grow resize-none border-0 bg-neutral-900 text-white placeholder-gray-300 caret-[#01F7FF] outline-none focus:ring-0"
           value={newQuestion}
           onChange={(e) => {
+            let lengthOfText = e.target.value.match(/\n/g)?.length;
+            if (!lengthOfText) {
+              setInputRows(1);
+            }
+            if (lengthOfText && lengthOfText < 2) {
+              setInputRows(lengthOfText + 1);
+            }
             setNewQuestion(e.target.value);
+          }}
+          disabled={replyStatus === "answering"}
+          rows={inputRows}
+          tabIndex={0}
+          onKeyDown={(e) => {
+            if (e.code === "Enter" && !e.shiftKey) {
+              handleSendMessage(e);
+            }
           }}
         />
         {/* Icons or buttons */}
-        <div className="ml-4 flex items-center">
+        <div className="mx-4">
           <button
             className="text-light-blue"
-            onClick={(e) => {
-              handleSendMessage();
-            }}
+            disabled={replyStatus === "answering"}
           >
             <svg
               width="20"
@@ -242,7 +265,7 @@ const MessageInput = () => {
             </svg>
           </button>
         </div>
-      </div>
+      </form>
     </div>
   );
 };

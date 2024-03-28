@@ -47,12 +47,12 @@ const FirstAnswer = ({
             <Image
               src={profileImage}
               alt="Profile"
-              className="h-8 w-8 rounded-full"
+              className="h-7 w-7 md:h-8 md:w-8 rounded-full"
               width={50}
               height={50}
             />
             <div className="w-full text-white">
-              <h6 className="mb-5 mt-1 font-black text-lg">
+              <h6 className="mb-1 mt-1 font-black text-lg">
                 {chatbotData?.data.data.name}
               </h6>
               <p className="text-sm">{isStream ? message.slice(0, -2).join("") : message}</p>

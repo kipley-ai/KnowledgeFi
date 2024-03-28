@@ -210,7 +210,7 @@ const MessageList = ({
         messageHistory={messageHistory}
         chatbotData={chatbotData?.data.data}
       />
-      <div className="flex h-auto grow flex-col gap-2 overflow-auto md:space-y-4">
+      <div className="flex grow h-auto flex-col gap-4 overflow-y-auto">
         <FirstAnswer
           profileImage={chatbotData?.data.data.profile_image}
           sender={"bot"}

@@ -4,19 +4,23 @@ import ReferralBonusBackground from "components/background/task-center-backgroun
 import BlindBoxPicture from "components/background/blind box_final_bottom 1.svg";
 import { useTotalReferral } from "@/hooks/api/user";
 import SpinnerIcon from "@/public/images/spinner-icon.svg";
+import CountUp from "react-countup"
+import { useState, useEffect } from "react";
 
 const TotalReferral = () => {
   const { data, isSuccess } = useTotalReferral();
 
   if (isSuccess) {
     return (
-      <div className="my-4 flex items-center space-x-3">
-        <Image src={PointIcon} alt="" />
+      <div className="flex-1 px-4 py-4 flex items-center space-x-3">
+        <Image src={PointIcon} className="size-[50px] md:size-auto" alt="" />
         <div>
-          <div className="text-sm text-[#808191]">Referral Points</div>
+          <div className="flex flex-col xs:flex-row text-sm font-semibold text-[#808191]">
+            <p>Referral </p>
+            <p className="xs:ml-2">Points</p>
+          </div>
           <div className="text-3xl font-bold text-white">
-            {/* {data.referral_count} */}
-            0
+            {data.referral_count}
           </div>
         </div>
       </div>
@@ -24,7 +28,7 @@ const TotalReferral = () => {
   }
 
   return (
-    <div className="flex h-full max-h-full w-full max-w-full items-center justify-center">
+    <div className="flex-1 px-4 py-4 flex h-full max-h-full w-full max-w-full items-center justify-center">
       <Image
         src={SpinnerIcon}
         alt="Loading"
@@ -36,21 +40,32 @@ const TotalReferral = () => {
   );
 };
 
-const Header = () => {
+const Header = ({
+  startPoints,
+  endPoints,
+}: {
+  startPoints: number;
+  endPoints: number;
+}) => {
   return (
-    <div className="flex items-start justify-between bg-[#303030]">
-      <div className="flex w-1/4 flex-col items-center">
+    <div className="flex flex-col md:flex-row items-center justify-between bg-[#303030]">
+      <div className="flex w-full h-full md:w-1/4 md:flex-col items-start">
         {/* Base Point Section */}
-        <div className="my-4 flex items-center space-x-3 pr-8">
-          <Image src={PointIcon} alt="" />
+        <div className="py-4 flex-1 px-4 flex items-center space-x-3 border-r border-white md:border-none">
+          <Image src={PointIcon} className="size-[50px] md:size-auto" alt="" />
           <div>
-            <div className="text-sm text-[#808191]">Base Point</div>
-            <div className="text-3xl font-bold text-white">0</div>
+            <div className="flex flex-col xs:flex-row text-sm font-semibold text-[#808191]">
+              <p>Base </p>
+              <p className="xs:ml-2">Points</p>
+            </div>
+            <div className="text-3xl font-bold text-white">
+              <CountUp start={startPoints} end={endPoints} duration={1.5} />
+            </div>
           </div>
         </div>
 
         {/* Separator Line */}
-        <div className="my-2 w-full border-b border-white"></div>
+        <div className="hidden md:block my-2 w-full border-b border-white"></div>
 
         {/* Total Referral Section */}
         <TotalReferral />
@@ -59,15 +74,14 @@ const Header = () => {
       {/* Referral Bonus Section */}
       {/* Referral Bonus Section */}
       <div
-        className="flex w-3/4 items-center pl-10"
+        className="flex w-full md:w-3/4 h-full items-center pl-4 md:pl-10 py-4"
         style={{
           backgroundImage: `url(${ReferralBonusBackground.src})`,
           backgroundSize: "cover",
-          backgroundPosition: "center",
         }}
       >
-        <div className="flex w-full flex-row justify-between">
-          <div className="flex flex-grow flex-col justify-center">
+        <div className="flex w-full flex-col sm:flex-row justify-between gap-4 items-center">
+          <div className="flex grow flex-col justify-center">
             {/* Referral Bonus Code */}
             <div className="text-white">
               <h2 className="mb-2 text-xl font-bold">Referral Bonus</h2>
@@ -79,11 +93,11 @@ const Header = () => {
                   type="text"
                   readOnly
                   value="Coming Soon..."
-                  className="mr-4 flex-grow bg-transparent text-white focus:outline-none"
+                  className="grow mr-4 bg-transparent text-white focus:outline-none"
                 />
-                <button className="shrink-0">
+                <button className="">
                   {/* SVG icon */}
-                  {/* <svg
+                  <svg
                     width="24"
                     height="24"
                     viewBox="0 0 24 24"
@@ -96,13 +110,13 @@ const Header = () => {
                       d="M21.0012 6H7.00122V22H15.0012V20H17.0012V18H15.0012V16H17.0012V18H19.0012V16H21.0012V6ZM9.00122 20V8H19.0012V14H13.0012V20H9.00122ZM3.00122 18H5.00122V4H17.0012V2H5.00122H3.00122V4V18Z"
                       fill="#01F7FF"
                     />
-                  </svg> */}
+                  </svg>
                 </button>
               </div>
             </div>
           </div>
           {/* Referral Bonus Image */}
-          <div className="hidden shrink-0 lg:block">
+          <div className="">
             <Image src={BlindBoxPicture} alt="" />
           </div>
         </div>

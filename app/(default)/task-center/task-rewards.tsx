@@ -12,13 +12,13 @@ import { useTakeTask, useCompleteTask } from "@/hooks/api/task";
 const TaskType = ({ taskFrequency }: { taskFrequency: string }) => {
   if (taskFrequency == "daily") {
     return (
-      <div className="mr-2 rounded-sm bg-[#FE8D08] bg-opacity-20 px-3 py-1 text-xs font-bold text-[#FE8D08]">
+      <div className="mr-1 w-min rounded-sm bg-[#FE8D08] bg-opacity-20 px-3 py-1 text-xs font-bold text-[#FE8D08] flex items-center">
         Daily
       </div>
     );
   } else {
     return (
-      <div className="mr-2 rounded-sm bg-[#97fe08] bg-opacity-20 px-3 py-1 text-xs font-bold text-[#97fe08]">
+      <div className="mr-1 w-min rounded-sm bg-[#97fe08] bg-opacity-20 px-3 py-1 text-xs font-bold text-[#97fe08] flex items-center">
         Once
       </div>
     );
@@ -30,32 +30,8 @@ const TaskDeadline = ({
   taskEndTime,
 }: {
   taskFrequency: string;
-  taskEndTime: Date | string | null;
+  taskEndTime: string | null;
 }) => {
-  if (taskFrequency == "daily") {
-    return (
-      <div className="flex flex-row items-center rounded-sm bg-[#303030] px-3 py-1 text-xs text-white">
-        <svg
-          width="13"
-          height="13"
-          viewBox="0 0 8 8"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            fill-rule="evenodd"
-            clip-rule="evenodd"
-            d="M6.33333 1H1.66667V1.66667H1V6.33333H1.66667V7H6.33333V6.33333H7V1.66667H6.33333V1ZM6.33333 1.66667V6.33333H1.66667V1.66667H6.33333ZM3.66667 2.33333H4.33333V4.33333H5.66667V5L4.33333 5H3.66667V2.33333Z"
-            fill="#01F7FF"
-          />
-        </svg>
-        <span className="ml-2">
-          {getRemainingTimeString(getNextDayAtMidnight())}
-        </span>
-      </div>
-    );
-  }
-
   if (taskEndTime === null) {
     return "";
   }
@@ -76,7 +52,9 @@ const TaskDeadline = ({
           fill="#01F7FF"
         />
       </svg>
-      <span className="ml-2">{getRemainingTimeString(taskEndTime)}</span>
+      <span className="ml-2">
+        {getRemainingTimeString(taskEndTime, taskFrequency)}
+      </span>
     </div>
   );
 };
@@ -87,12 +65,14 @@ const TaskCard = ({
   setToastSuccessOpen,
   setToastMessage,
   refetch,
+  refetchBasePoints,
 }: {
   data: TaskData;
   setToastErrorOpen: (value: boolean) => void;
   setToastSuccessOpen: (value: boolean) => void;
   setToastMessage: (message: string) => void;
   refetch: () => void;
+  refetchBasePoints: () => void;
 }) => {
   const { toast, setToast } = useAppProvider();
 
@@ -107,7 +87,8 @@ const TaskCard = ({
 
   if (
     data.task_end_time !== null &&
-    getRemainingTimeString(data.task_end_time) === "Task has ended"
+    getRemainingTimeString(data.task_end_time, data.task_frequency) ===
+      "Task has ended"
   ) {
     isCompleted = true;
     taskStatus = "Ended";
@@ -143,6 +124,7 @@ const TaskCard = ({
                 setToastSuccessOpen(false);
               }, 3000);
               refetch();
+              refetchBasePoints();
             }
           },
           onError: (error) => {
@@ -154,15 +136,14 @@ const TaskCard = ({
   };
 
   return (
-    <div className="flex gap-2 rounded-lg border-2 border-[#00FFFF] bg-transparent p-4 shadow-md">
+    <div className="flex flex-col xl:flex-row gap-2 rounded-lg border-2 border-[#00FFFF] p-4 shadow-md">
+      <div className="flex items-center justify-between gap-2">
       <div>
-        <div className="text-sm font-bold text-[#00EBFF]">
+        <div className="text-xl font-bold text-[#00EBFF]">
           {data.task_reward_amount}
         </div>
-        <div className="text-xs font-bold text-[#00EBFF]">POINTS</div>
+        <div className="text-xs text-[#00EBFF]">POINTS</div>
       </div>
-
-      <div>
         <svg
           width="42"
           height="38"
@@ -188,9 +169,9 @@ const TaskCard = ({
         </svg>
       </div>
 
-      <div className="grow">
+      <div className="grow self-center">
         <p className="text-sm font-bold text-white">{data.task_name}</p>
-        <div className="flex flex-row">
+        <div className="mt-1 flex flex-col md:flex-row gap-2">
           {/* Task Type Tag */}
           <TaskType taskFrequency={data.task_frequency} />
           {/* Deadline Tag */}
@@ -213,7 +194,9 @@ const TaskCard = ({
   );
 };
 
-const TasksSection = () => {
+const TasksSection = (
+  { refetchBasePoints }: { refetchBasePoints: () => void }
+) => {
   const [toastSuccessOpen, setToastSuccessOpen] = useState<boolean>(false);
   const [toastErrorOpen, setToastErrorOpen] = useState<boolean>(false);
   const [toastMessage, setToastMessage] = useState<string>("");
@@ -255,6 +238,7 @@ const TasksSection = () => {
                 data={taskData}
                 setToastMessage={setToastMessage}
                 refetch={refetch}
+                refetchBasePoints={refetchBasePoints}
                 setToastSuccessOpen={setToastSuccessOpen}
                 setToastErrorOpen={setToastErrorOpen}
               />
