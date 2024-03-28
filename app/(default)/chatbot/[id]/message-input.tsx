@@ -97,7 +97,7 @@ const MessageInput = () => {
   }, [replyStatus]);
 
   const handleSendMessage = async () => {
-    if (!newQuestion || newQuestion === "") return;
+    if (!newQuestion || newQuestion === "" || newQuestion.trim() === "") return;
     if (!chatSession.data?.data.data?.session_id) {
       newSession.mutate(
         { chatbot_id: id as string },
