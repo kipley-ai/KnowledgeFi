@@ -4,7 +4,6 @@ import ReferralBonusBackground from "components/background/task-center-backgroun
 import BlindBoxPicture from "components/background/blind box_final_bottom 1.svg";
 import { useTotalReferral } from "@/hooks/api/user";
 import SpinnerIcon from "@/public/images/spinner-icon.svg";
-import { useTaskBasePoint } from "@/hooks/api/task";
 import CountUp from "react-countup"
 import { useState, useEffect } from "react";
 
@@ -41,21 +40,13 @@ const TotalReferral = () => {
   );
 };
 
-const Header = () => {
-  const { data } = useTaskBasePoint();
-
-  // Initial states for start and end points
-  const [startPoints, setStartPoints] = useState(0);
-  const [endPoints, setEndPoints] = useState(0);
-
-  // Effect hook to update endPoints whenever data changes
-  useEffect(() => {
-    if (data?.data?.base_point) {
-      setStartPoints(endPoints); // Set startPoints to the previous endPoints
-      setEndPoints(data.data.base_point); // Update endPoints with the new value
-    }
-  }, [data?.data?.base_point]);
-
+const Header = ({
+  startPoints,
+  endPoints,
+}: {
+  startPoints: number;
+  endPoints: number;
+}) => {
   return (
     <div className="flex flex-col md:flex-row items-center justify-between bg-[#303030]">
       <div className="flex w-full h-full md:w-1/4 md:flex-col items-start">

@@ -65,12 +65,14 @@ const TaskCard = ({
   setToastSuccessOpen,
   setToastMessage,
   refetch,
+  refetchBasePoints,
 }: {
   data: TaskData;
   setToastErrorOpen: (value: boolean) => void;
   setToastSuccessOpen: (value: boolean) => void;
   setToastMessage: (message: string) => void;
   refetch: () => void;
+  refetchBasePoints: () => void;
 }) => {
   const { toast, setToast } = useAppProvider();
 
@@ -122,6 +124,7 @@ const TaskCard = ({
                 setToastSuccessOpen(false);
               }, 3000);
               refetch();
+              refetchBasePoints();
             }
           },
           onError: (error) => {
@@ -191,7 +194,9 @@ const TaskCard = ({
   );
 };
 
-const TasksSection = () => {
+const TasksSection = (
+  { refetchBasePoints }: { refetchBasePoints: () => void }
+) => {
   const [toastSuccessOpen, setToastSuccessOpen] = useState<boolean>(false);
   const [toastErrorOpen, setToastErrorOpen] = useState<boolean>(false);
   const [toastMessage, setToastMessage] = useState<string>("");
@@ -233,6 +238,7 @@ const TasksSection = () => {
                 data={taskData}
                 setToastMessage={setToastMessage}
                 refetch={refetch}
+                refetchBasePoints={refetchBasePoints}
                 setToastSuccessOpen={setToastSuccessOpen}
                 setToastErrorOpen={setToastErrorOpen}
               />
