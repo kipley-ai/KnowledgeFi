@@ -3,13 +3,14 @@ import Sidebar from "@/components/ui/sidebar";
 import Header from "@/components/ui/header";
 import { useAccount } from "wagmi";
 import { useEffect } from "react";
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
 import { useUserDetail } from "@/hooks/api/user";
 import { useAppProvider } from "@/providers/app-provider";
 
 import ModalTopUpSuccessful from "@/components/modal-top-up-successful";
 import ModalTopUpFailed from "@/components/modal-top-up-failed";
+import { SUBDOMAINS } from "@/utils/constants";
 
 export default function DefaultLayout({
   children,
@@ -18,6 +19,12 @@ export default function DefaultLayout({
 }) {
   const { status } = useAccount();
   const pathname = usePathname();
+  const router = useRouter();
+
+  const subdomain = window.location.origin.split("//")[1].split(".")[0];
+  if (SUBDOMAINS.includes(subdomain) && pathname !== "/") {
+    redirect(process.env.NEXT_PUBLIC_HOST + pathname);
+  }
 
   const { data: userDetail, isLoading, isSuccess } = useUserDetail();
 

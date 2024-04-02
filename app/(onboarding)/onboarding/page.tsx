@@ -11,14 +11,22 @@ import CreateChatbot from "../create-chatbot";
 import OnboardingSuccess from "../onboarding-success";
 import { useAppProvider } from "@/providers/app-provider";
 import { useUserDetail } from "@/hooks/api/user";
-import { redirect } from "next/navigation";
+import { redirect, usePathname } from "next/navigation";
 import KipProtocolVideo from "../kip-protocol-video";
 import FreeKFI from "../free-kfi-token";
+import { useEffect } from "react";
+import { SUBDOMAINS } from "@/utils/constants";
 
 export default function Onboarding() {
   const sign = localStorage.getItem("kip-protocol-signature");
   const { address, status } = useAccount();
   const { verifStatus } = useAppProvider();
+  const pathname = usePathname();
+
+  const subdomain = window.location.origin.split("//")[1].split(".")[0];
+  if (SUBDOMAINS.includes(subdomain) && pathname !== "/") {
+    redirect(process.env.NEXT_PUBLIC_HOST + pathname);
+  }
 
   const { step, welcomePage } = useCreateChatbotContext();
 

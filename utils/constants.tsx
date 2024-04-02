@@ -15,3 +15,5 @@ export enum ONBOARDING_FLOW {
   NORMAL = "1",
   KOL = "2",
 }
+
+export const SUBDOMAINS = ["yat-siu", "yat-siu-beta"];

@@ -5,6 +5,8 @@ import Header from "@/components/ui/header";
 import { redirect, usePathname } from "next/navigation";
 import { useAccount } from "wagmi";
 import { useUserDetail } from "@/hooks/api/user";
+import { useEffect } from "react";
+import { SUBDOMAINS } from "@/utils/constants";
 
 export default function DefaultLayout({
   children,
@@ -13,6 +15,11 @@ export default function DefaultLayout({
 }) {
   const { status } = useAccount();
   const pathname = usePathname();
+
+  const subdomain = window.location.origin.split("//")[1].split(".")[0];
+  if (SUBDOMAINS.includes(subdomain) && pathname !== "/") {
+    redirect(process.env.NEXT_PUBLIC_HOST + pathname);
+  }
 
   const { data: userDetail, isLoading } = useUserDetail();
 
