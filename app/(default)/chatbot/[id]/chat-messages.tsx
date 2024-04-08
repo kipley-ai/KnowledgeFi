@@ -23,6 +23,7 @@ import { useCreditBalance } from "@/hooks/api/credit";
 import { chatbotIdFromSlug } from "@/utils/utils";
 import ShareModal from "@/components/share-chat-modal";
 import TweetAnswer from "./tweet-answer";
+import { LoadMoreSpinner } from "@/components/load-more";
 
 const MessageList = ({
   isOpen,
@@ -75,20 +76,43 @@ const MessageList = ({
     });
   const chatSession = useGetSession({ chatbot_id: id as string });
 
+  const [pageNumber, setPageNumber] = useState(1);
+  // const loadMoreRef = useRef(null);
+  // const [hasMoreChat, setHasMoreChat] = useState(true);
+
   const chatHistoryAPI = useChatHistory({
     session_id: chatSession.data?.data.data?.session_id,
     app_id: id as string,
-    page_num: 1,
-    page_size: 10,
-    // request_url:
-    //   appDetail?.data?.data.data.app_info.plugin_meta_data.chat_history_api
-    //     .request_url,
+    page_num: pageNumber,
+    page_size: 999,
   });
+
+  //console.log(chatSession.data?.data.data?.session_id); // For debugging purpose
+
   const creditBalance = useCreditBalance();
   const creditDeduction = useCreditDeduction();
 
   const { setCreditBalance } = useCreditBalanceContext();
   const { setModalTopUp } = useAppProvider();
+
+  // useEffect(() => {
+  //   const observer = new IntersectionObserver(
+  //     (entries) => {
+  //       if (entries[0].isIntersecting && hasMoreChat) {
+  //         // Assuming you have a way to know you haven't loaded all messages yet
+  //         console.log("Near top, load previous messages");
+  //         setPageNumber((prevPageNumber) => prevPageNumber + 1);
+  //       }
+  //     },
+  //     { root: null, rootMargin: "0px", threshold: 1.0 }
+  //   );
+
+  //   if (loadMoreRef.current) {
+  //     observer.observe(loadMoreRef.current);
+  //   }
+
+  //   return () => observer.disconnect(); // Cleanup observer on component unmount
+  // }, [pageNumber]);
 
   useEffect(() => {
     console.log(chatbotDetailIsSuccess && chatHistoryAPI.isSuccess);
@@ -112,11 +136,11 @@ const MessageList = ({
 
     // console.log("Answer Stream");
     // console.log(answersStream.slice(0, -2));
-    console.log("lastJsonMessage :>> ", lastJsonMessage);
+    // console.log("lastJsonMessage :>> ", lastJsonMessage);
 
     if (lastJsonMessage !== null && lastJsonMessage.type !== "error") {
       if (lastJsonMessage.type === "end") {
-        console.log("chunks :>> ", chunks);
+        // console.log("chunks :>> ", chunks);
 
         const fullBotAnswer = answersStream
           .slice(0, -2)
@@ -126,8 +150,8 @@ const MessageList = ({
           })
           .reduce((a: string, b: string) => a + b, "");
 
-        console.log("fullBotAnswer");
-        console.log(fullBotAnswer);
+        // console.log("fullBotAnswer");
+        // console.log(fullBotAnswer);
 
         setMessageHistory((prevHistory) => [
           ...prevHistory,
@@ -138,8 +162,8 @@ const MessageList = ({
         setReplyStatus("idle");
         setChunks("");
 
-        console.log("Message history");
-        console.log(messageHistory);
+        // console.log("Message history");
+        // console.log(messageHistory);
 
         creditDeduction.mutate(
           {
@@ -201,6 +225,8 @@ const MessageList = ({
       }
     }
   }, [lastJsonMessage]);
+
+  console.log(pageNumber);
 
   return (
     <>
