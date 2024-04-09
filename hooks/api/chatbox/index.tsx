@@ -6,6 +6,7 @@ import { IChatBoxParams, IChatBoxHistoryParams } from "../interfaces";
 import useWebSocket from "react-use-websocket";
 // import { useAuthorizer } from "@authorizerdev/authorizer-react";
 import { useAccount } from "wagmi";
+import { constructHeader } from "@/app/api/utils";
 import { chatPayloadSchema, ChatPayload, LastMessagePayload } from "./schema";
 import axios from "axios";
 

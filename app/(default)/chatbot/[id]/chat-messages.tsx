@@ -21,9 +21,11 @@ import { useAppProvider } from "@/providers/app-provider";
 import { useCreditBalanceContext } from "./credit-balance-context";
 import { useCreditBalance } from "@/hooks/api/credit";
 import { chatbotIdFromSlug } from "@/utils/utils";
+import { getBreakpoint } from "@/components/utils/utils";
 import ShareModal from "@/components/share-chat-modal";
 import TweetAnswer from "./tweet-answer";
 import { LoadMoreSpinner } from "@/components/load-more";
+import { keepPreviousData } from "@tanstack/react-query";
 
 const MessageList = ({
   isOpen,
@@ -76,18 +78,30 @@ const MessageList = ({
     });
   const chatSession = useGetSession({ chatbot_id: id as string });
 
-  const [pageNumber, setPageNumber] = useState(1);
-  // const loadMoreRef = useRef(null);
-  // const [hasMoreChat, setHasMoreChat] = useState(true);
+  const [breakpoint, setBreakpoint] = useState<string | undefined>(
+    getBreakpoint(),
+  );
+
+  const handleBreakpoint = () => {
+    setBreakpoint(getBreakpoint());
+  };
+
+  const loadMoreRef = useRef(null);
+
+  const [pageSize, setPageSize] = useState(20);
+  const incrementAmount = 10;
 
   const chatHistoryAPI = useChatHistory({
     session_id: chatSession.data?.data.data?.session_id,
     app_id: id as string,
-    page_num: pageNumber,
-    page_size: 999,
+    page_num: 1,
+    page_size: pageSize,
   });
+  // console.log(chatHistoryAPI.data?.data?.data.history_count); // For debugging purpose
 
-  //console.log(chatSession.data?.data.data?.session_id); // For debugging purpose
+
+  const [hasMoreChat, setHasMoreChat] = useState(true);
+
 
   const creditBalance = useCreditBalance();
   const creditDeduction = useCreditDeduction();
@@ -95,32 +109,47 @@ const MessageList = ({
   const { setCreditBalance } = useCreditBalanceContext();
   const { setModalTopUp } = useAppProvider();
 
-  // useEffect(() => {
-  //   const observer = new IntersectionObserver(
-  //     (entries) => {
-  //       if (entries[0].isIntersecting && hasMoreChat) {
-  //         // Assuming you have a way to know you haven't loaded all messages yet
-  //         console.log("Near top, load previous messages");
-  //         setPageNumber((prevPageNumber) => prevPageNumber + 1);
-  //       }
-  //     },
-  //     { root: null, rootMargin: "0px", threshold: 1.0 }
-  //   );
+  useEffect(() => {
+    // Setup for window resize event listener and IntersectionObserver as before
 
-  //   if (loadMoreRef.current) {
-  //     observer.observe(loadMoreRef.current);
-  //   }
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const isIntersecting = entries[0].isIntersecting;
+        const totalChat = chatHistoryAPI.data?.data?.data.history_count ?? 0; // Use ?? to provide a default value
 
-  //   return () => observer.disconnect(); // Cleanup observer on component unmount
-  // }, [pageNumber]);
+        // Check conditions before loading more items
+        if (isIntersecting && !chatHistoryAPI.isFetching && pageSize < totalChat) {
+          console.log("Loading more items"); // For debugging
+          setPageSize((prevSize) => prevSize + incrementAmount);
+        }
+      },
+      {
+        root: null,
+        rootMargin: "0px",
+        threshold: 1.0,
+      },
+    );
+
+    if (loadMoreRef.current) {
+      observer.observe(loadMoreRef.current);
+    }
+
+    // Cleanup function remains the same
+    return () => {
+      if (loadMoreRef.current) {
+        observer.unobserve(loadMoreRef.current);
+      }
+      window.removeEventListener("resize", handleBreakpoint);
+    };
+  }, [breakpoint, pageSize, chatHistoryAPI.isFetching]); // Ensure dependencies are correctly listed
 
   useEffect(() => {
-    console.log(chatbotDetailIsSuccess && chatHistoryAPI.isSuccess);
+    console.log("Is success?: ", chatbotDetailIsSuccess && chatHistoryAPI.isSuccess);
     if (chatbotDetailIsSuccess && chatHistoryAPI.isSuccess) {
-      console.log(chatHistoryAPI.data?.data.length);
-      if (chatHistoryAPI.data?.data.length) {
-        console.log(chatHistoryAPI.data?.data);
-        setMessageHistory(chatHistoryAPI.data?.data.reverse());
+      console.log(chatHistoryAPI.data?.data?.data.history_count);
+      if (chatHistoryAPI.data?.data?.data.history_count) {
+        console.log(chatHistoryAPI.data?.data?.data.list);
+        setMessageHistory(chatHistoryAPI.data?.data?.data.history_list.reverse());
       }
       setAnswersStream([]);
     }
@@ -226,8 +255,6 @@ const MessageList = ({
     }
   }, [lastJsonMessage]);
 
-  console.log(pageNumber);
-
   return (
     <>
       <ShareModal
@@ -243,6 +270,9 @@ const MessageList = ({
           message={chatbotData?.data.data.example_conversation as string}
           isGenerating={replyStatus == "answering"}
         />
+        <div ref={loadMoreRef} className="mb-8">
+          {chatHistoryAPI.isFetching && <LoadMoreSpinner />}
+        </div>
         {messageHistory.map((message, index) => {
           return index < messageHistory.length - 1 ||
             message.sender == "user" ? (
