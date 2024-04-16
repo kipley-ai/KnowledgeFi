@@ -201,9 +201,9 @@ const ChatBotForm = () => {
 
   useEffect(() => {
     if (personality == 0) {
-      setPersonalityData("instruction");
+      setPersonalityData("focused");
     } else if (personality == 1) {
-      setPersonalityData("instruction_2");
+      setPersonalityData("creative");
     }
   }, [personality]);
   
