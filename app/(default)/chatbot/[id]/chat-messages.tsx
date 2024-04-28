@@ -115,7 +115,7 @@ const MessageList = ({
     const observer = new IntersectionObserver(
       (entries) => {
         const isIntersecting = entries[0].isIntersecting;
-        const totalChat = chatHistoryAPI.data?.data?.data.history_count ?? 0; // Use ?? to provide a default value
+        const totalChat = chatHistoryAPI.data?.data?.data?.history_count ?? 0; // Use ?? to provide a default value
 
         // Check conditions before loading more items
         if (isIntersecting && !chatHistoryAPI.isFetching && pageSize < totalChat) {
@@ -146,8 +146,8 @@ const MessageList = ({
   useEffect(() => {
     console.log("Is success?: ", chatbotDetailIsSuccess && chatHistoryAPI.isSuccess);
     if (chatbotDetailIsSuccess && chatHistoryAPI.isSuccess) {
-      console.log(chatHistoryAPI.data?.data?.data.history_count);
-      if (chatHistoryAPI.data?.data?.data.history_count) {
+      console.log(chatHistoryAPI.data?.data?.data?.history_count);
+      if (chatHistoryAPI.data?.data?.data?.history_count) {
         console.log(chatHistoryAPI.data?.data?.data.list);
         setMessageHistory(chatHistoryAPI.data?.data?.data.history_list.reverse());
       }
