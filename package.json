@@ -62,7 +62,7 @@
     "react-use-websocket": "^4.5.0",
     "recoil": "^0.7.6",
     "sass": "^1.55.0",
-    "sharp": "^0.33.2",
+    "sharp": "^0.33.5",
     "swiper": "^8.4.4",
     "tailwind-scrollbar": "^3.1.0",
     "three": "^0.145.0",
