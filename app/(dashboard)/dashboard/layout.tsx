@@ -21,19 +21,8 @@ export default function DefaultLayout({
     redirect(process.env.NEXT_PUBLIC_HOST + pathname);
   }
 
-  const { data: userDetail, isLoading } = useUserDetail();
-
-  if (isLoading) return null;
-
   switch (status) {
     case "connected":
-      if (
-        userDetail?.data?.status !== "error" &&
-        !userDetail?.data?.data.onboarding
-      ) {
-        return redirect("/onboarding");
-      }
-
       return (
         <div className="flex h-[100dvh] overflow-hidden bg-neutral-900">
           {/* Sidebar */}

@@ -41,14 +41,6 @@ export default function DefaultLayout({
 
   switch (status) {
     case "connected":
-      if (
-        userDetail?.data?.status !== "error" &&
-        !userDetail?.data?.data.onboarding &&
-        pathname !== "/knowledge/create/iframe"
-      ) {
-        return redirect("/onboarding");
-      }
-
       return (
         <div className="flex h-[100dvh] overflow-hidden bg-neutral-900">
           {/* Sidebar */}

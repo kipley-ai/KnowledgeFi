@@ -69,7 +69,7 @@ export default function ModalTopUp({
 
     try {
       const bal = await balanceOf();
-      if (bal === 0) {
+      if (bal == 0) {
         setToast3ErrorOpen(true);
         return;
       }

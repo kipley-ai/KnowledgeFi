@@ -35,34 +35,36 @@ export default function Onboarding() {
   if (isLoading) return null;
 
   if (status === "connected" && (sign || verifStatus === "authenticated")) {
-    if (
-      userDetail?.data?.status !== "error" &&
-      userDetail?.data?.data.onboarding
-      // && (process.env.NEXT_PUBLIC_ENV_DEV == "1" ? false : true) // Dont skip onboarding in dev
-    ) {
-      return redirect("/dashboard");
-    }
+    return redirect("/dashboard");
 
-    return (
-      // <div className="flex flex-col py-10 pb-20 px-6 lg:px-8 xl:px-32">
-      <div className="flex flex-col gap-8">
-        <OnboardingHeader />
-        {step == "data_source" || step == "upload_files" || step == "notion" ? (
-          <SelectDataElements />
-        ) : step == "mint_nft" ? (
-          <MintNFT />
-        ) : step == "create_chatbot" ? (
-          <CreateChatbot />
-        ) : step == "free_kfi" ? (
-          <FreeKFI />
-        ) : step == "onboarding_success" ? (
-          <OnboardingSuccess />
-        ) : (
-          <InviteCode address={address} />
-        )}
-      </div>
-      // </div>
-    );
+    // if (
+    //   userDetail?.data?.status !== "error" &&
+    //   userDetail?.data?.data.onboarding
+    //   // && (process.env.NEXT_PUBLIC_ENV_DEV == "1" ? false : true) // Dont skip onboarding in dev
+    // ) {
+    //   return redirect("/dashboard");
+    // }
+
+    // return (
+    //   // <div className="flex flex-col py-10 pb-20 px-6 lg:px-8 xl:px-32">
+    //   <div className="flex flex-col gap-8">
+    //     <OnboardingHeader />
+    //     {step == "data_source" || step == "upload_files" || step == "notion" ? (
+    //       <SelectDataElements />
+    //     ) : step == "mint_nft" ? (
+    //       <MintNFT />
+    //     ) : step == "create_chatbot" ? (
+    //       <CreateChatbot />
+    //     ) : step == "free_kfi" ? (
+    //       <FreeKFI />
+    //     ) : step == "onboarding_success" ? (
+    //       <OnboardingSuccess />
+    //     ) : (
+    //       <InviteCode address={address} />
+    //     )}
+    //   </div>
+    //   // </div>
+    // );
   }
 
   if (welcomePage === "kip-video") {
