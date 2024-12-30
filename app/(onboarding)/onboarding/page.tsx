@@ -30,9 +30,9 @@ export default function Onboarding() {
 
   const { step, welcomePage } = useCreateChatbotContext();
 
-  const { data: userDetail, isLoading } = useUserDetail();
+  // const { data: userDetail, isLoading } = useUserDetail();
 
-  if (isLoading) return null;
+  // if (isLoading) return null;
 
   if (status === "connected" && (sign || verifStatus === "authenticated")) {
     return redirect("/dashboard");
