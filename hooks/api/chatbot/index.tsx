@@ -15,6 +15,8 @@ import {
 } from "../interfaces";
 import { ChatbotDataListResponse, ChatbotDetailResponse } from "@/lib/types";
 
+import { useAppProvider } from "@/providers/app-provider";
+
 export const useChatbotList = (
   params: IChatbotList,
   placeholderData: typeof keepPreviousData | undefined = undefined,
@@ -169,7 +171,7 @@ export const useGetChatbotPrice = (params: IChatbotDetailParams) => {
         },
       }),
   });
-}
+};
 
 export const useChatbotPKLStatus = (params: any) => {
   const { address } = useAccount();
@@ -185,7 +187,7 @@ export const useChatbotPKLStatus = (params: any) => {
     refetchInterval: 3000,
     enabled: params.willRefetch,
   });
-}
+};
 
 export const useUpdateSharedChat = () => {
   const { address } = useAccount();
@@ -198,7 +200,7 @@ export const useUpdateSharedChat = () => {
         },
       }),
   });
-}
+};
 
 export const useGetSharedChatId = (params: any) => {
   const { address } = useAccount();
@@ -212,7 +214,7 @@ export const useGetSharedChatId = (params: any) => {
         },
       }),
   });
-}
+};
 
 export const useGetSharedChat = (params: any) => {
   const { address } = useAccount();
@@ -226,7 +228,7 @@ export const useGetSharedChat = (params: any) => {
         },
       }),
   });
-}
+};
 
 export const useChatbotExplore = (
   params: IChatbotExplore,
@@ -235,14 +237,30 @@ export const useChatbotExplore = (
   const appId = process.env.APP_ID;
 
   return useQuery({
-    queryKey: [
-      params.page,
-      params.page_size,
-      params.explore_name
-    ],
+    queryKey: [params.page, params.page_size, params.explore_name],
     queryFn: () =>
       axios.post<ChatbotDataListResponse>("/api/chatbot/list", params),
     placeholderData: placeholderData,
     refetchOnWindowFocus: false,
+  });
+};
+
+export const useGetInitialSuggestedQuestions = (
+  params: any,
+  isFetching: boolean,
+) => {
+  const { address } = useAccount();
+  //console.log("🚀 ~ address:", address);
+
+  return useQuery({
+    queryKey: ["chatbot", params.chatbot_id, "initial_suggestion"],
+    queryFn: () =>
+      axios.post("/api/chatbot/get_initial_suggested_questions", params, {
+        headers: {
+          "x-kf-user-id": address,
+        },
+      }),
+    enabled: isFetching,
+    refetchInterval: 2000,
   });
 };

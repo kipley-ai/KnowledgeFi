@@ -99,9 +99,7 @@ const MessageList = ({
   });
   // console.log(chatHistoryAPI.data?.data?.data.history_count); // For debugging purpose
 
-
   const [hasMoreChat, setHasMoreChat] = useState(true);
-
 
   const creditBalance = useCreditBalance();
   const creditDeduction = useCreditDeduction();
@@ -118,7 +116,11 @@ const MessageList = ({
         const totalChat = chatHistoryAPI.data?.data?.data?.history_count ?? 0; // Use ?? to provide a default value
 
         // Check conditions before loading more items
-        if (isIntersecting && !chatHistoryAPI.isFetching && pageSize < totalChat) {
+        if (
+          isIntersecting &&
+          !chatHistoryAPI.isFetching &&
+          pageSize < totalChat
+        ) {
           console.log("Loading more items"); // For debugging
           setPageSize((prevSize) => prevSize + incrementAmount);
         }
@@ -144,12 +146,17 @@ const MessageList = ({
   }, [breakpoint, pageSize, chatHistoryAPI.isFetching]); // Ensure dependencies are correctly listed
 
   useEffect(() => {
-    console.log("Is success?: ", chatbotDetailIsSuccess && chatHistoryAPI.isSuccess);
+    console.log(
+      "Is success?: ",
+      chatbotDetailIsSuccess && chatHistoryAPI.isSuccess,
+    );
     if (chatbotDetailIsSuccess && chatHistoryAPI.isSuccess) {
       console.log(chatHistoryAPI.data?.data?.data?.history_count);
       if (chatHistoryAPI.data?.data?.data?.history_count) {
-        console.log(chatHistoryAPI.data?.data?.data.list);
-        setMessageHistory(chatHistoryAPI.data?.data?.data.history_list.reverse());
+        console.log(chatHistoryAPI.data?.data?.data.history_list);
+        setMessageHistory(
+          chatHistoryAPI.data?.data?.data.history_list.reverse(),
+        );
       }
       setAnswersStream([]);
     }
@@ -263,14 +270,14 @@ const MessageList = ({
         messageHistory={messageHistory}
         chatbotData={chatbotData?.data.data}
       />
-      <div className="flex grow h-auto flex-col gap-4 overflow-y-auto">
+      <div className="flex h-auto grow flex-col gap-4 overflow-y-auto">
         <FirstAnswer
           profileImage={chatbotData?.data.data.profile_image}
           sender={"bot"}
           message={chatbotData?.data.data.example_conversation as string}
           isGenerating={replyStatus == "answering"}
         />
-        <div ref={loadMoreRef} className="mb-8">
+        <div ref={loadMoreRef}>
           {chatHistoryAPI.isFetching && <LoadMoreSpinner />}
         </div>
         {messageHistory.map((message, index) => {

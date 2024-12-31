@@ -6,7 +6,11 @@ import { useNftDetail } from "@/hooks/api/nft";
 import "./chat-messages.css";
 import { chatbotIdFromSlug } from "@/utils/utils";
 
-const ChatbotInfo = ({setIsOpen}: {setIsOpen: (isOpen: boolean) => void;}) => {
+const ChatbotInfo = ({
+  setIsOpen,
+}: {
+  setIsOpen: (isOpen: boolean) => void;
+}) => {
   const { id: slug } = useParams();
   const id = chatbotIdFromSlug(slug.toString());
   const router = useRouter();
@@ -37,20 +41,31 @@ const ChatbotInfo = ({setIsOpen}: {setIsOpen: (isOpen: boolean) => void;}) => {
       <div className="mb-2 flex w-full flex-col divide-y-2 divide-aqua-700 border-2 border-aqua-700">
         <div className="flex flex-row justify-between px-6 py-2">
           <h1
-            className="font-semibold text-aqua-700 text-xl md:text-2xl"
+            className="text-xl font-semibold text-aqua-700 md:text-2xl"
             style={{
               textShadow: "0 0 10px #01F7FF",
             }}
           >
             {chatbotData?.data.data.name}
           </h1>
-          <button 
-            className="flex flex-row items-center space-x-3 bg-[#1E1E1E] px-4 rounded-md text-white text-sm hover:brightness-125"
+          <button
+            className="flex flex-row items-center space-x-3 rounded-md bg-[#1E1E1E] px-4 text-sm text-white hover:brightness-125"
             type="button"
             onClick={() => setIsOpen(true)}
           >
-            <svg width="12" height="13" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path fill-rule="evenodd" clip-rule="evenodd" d="M5.33333 1.83329V0.5H6.66667V1.83329L8.00006 1.83329V3.16663L9.33333 3.16663V4.49996H8V3.16663L6.66667 3.16663L6.66667 9.83333H5.33333L5.33333 3.16663H4.00008V4.49996H2.66675V3.16663H4.00006V1.83329L5.33333 1.83329ZM0 8.5V11.1666L5.96046e-08 12.5L1.78814e-07 12.5H1.33333V12.5L10.6667 12.5V12.5H12L12 12.5V11.1666L12 8.5H10.6667V11.1666L1.33333 11.1666L1.33333 8.5H0Z" fill="#01F7FF"/>
+            <svg
+              width="12"
+              height="13"
+              viewBox="0 0 12 13"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M5.33333 1.83329V0.5H6.66667V1.83329L8.00006 1.83329V3.16663L9.33333 3.16663V4.49996H8V3.16663L6.66667 3.16663L6.66667 9.83333H5.33333L5.33333 3.16663H4.00008V4.49996H2.66675V3.16663H4.00006V1.83329L5.33333 1.83329ZM0 8.5V11.1666L5.96046e-08 12.5L1.78814e-07 12.5H1.33333V12.5L10.6667 12.5V12.5H12L12 12.5V11.1666L12 8.5H10.6667V11.1666L1.33333 11.1666L1.33333 8.5H0Z"
+                fill="#01F7FF"
+              />
             </svg>
             <p>Share</p>
           </button>
@@ -60,12 +75,12 @@ const ChatbotInfo = ({setIsOpen}: {setIsOpen: (isOpen: boolean) => void;}) => {
             <Image
               src={chatbotData?.data.data.profile_image as string}
               alt="Profile"
-              className="rounded-full border-2 border-aqua-700 w-[80px] h-[80px] lg:w-[100px] lg:h-[100px]"
+              className="h-[80px] w-[80px] rounded-full border-2 border-aqua-700 lg:h-[100px] lg:w-[100px]"
               style={{ boxShadow: "0 0 10px #01F7FF" }}
               width={100}
               height={100}
             />
-            <p className="line-clamp-5 md:line-clamp-4 text-gray-400 text-xs md:text-sm">
+            <p className="line-clamp-5 text-xs text-gray-400 md:line-clamp-4 md:text-sm">
               {chatbotData?.data.data.description}
             </p>
           </div>
@@ -75,7 +90,7 @@ const ChatbotInfo = ({setIsOpen}: {setIsOpen: (isOpen: boolean) => void;}) => {
                 <Image
                   src={nftData?.data.data.profile_image as string}
                   alt="Profile"
-                  className=" border-2 border-aqua-700 w-[80px] h-[80px] lg:w-[100px] lg:h-[100px]"
+                  className=" h-[80px] w-[80px] border-2 border-aqua-700 lg:h-[100px] lg:w-[100px]"
                   style={{ boxShadow: "0 0 10px #01F7FF" }}
                   width={100}
                   height={100}
@@ -88,7 +103,7 @@ const ChatbotInfo = ({setIsOpen}: {setIsOpen: (isOpen: boolean) => void;}) => {
               </a>
             </div>
           </div>
-          <div className="box absolute bottom-0 left-16 lg:left-[74px] top-0 m-auto h-3/6 w-7/12 bg-transparent sm:w-9/12 xl:w-10/12"></div>
+          <div className="box absolute bottom-0 left-16 top-0 m-auto h-3/6 w-7/12 bg-transparent sm:w-9/12 lg:left-[74px] xl:w-10/12"></div>
         </div>
       </div>
     </div>
