@@ -18,7 +18,7 @@ const ChatInitialSuggestion = ({ handleSendMessage }: any) => {
 
   useEffect(() => {
     if (status === "success" && data?.data?.status === "success") {
-      console.log("🚀 ~ ChatInitialSuggestion ~ data:", data?.data);
+      //console.log("🚀 ~ ChatInitialSuggestion ~ data:", data?.data);
       setIsFetching(false);
     }
   }, [status, data]);

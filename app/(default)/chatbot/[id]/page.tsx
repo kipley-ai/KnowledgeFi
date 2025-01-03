@@ -1,25 +1,18 @@
 "use client";
-import Header from "./header";
+// import Header from "./header";
 import ChatbotInfo from "./chatbot-info";
 import MessageList from "./chat-messages";
 import MessageInput from "./message-input";
-import { useRouter } from "next/navigation";
-import { useUserDetail } from "@/hooks/api/user";
+// import { useRouter } from "next/navigation";
+// import { useUserDetail } from "@/hooks/api/user";
 import { useAppProvider } from "@/providers/app-provider";
 import { useEffect, useState } from "react";
-import { useNftDetail } from "@/hooks/api/nft";
-import { useParams, usePathname } from "next/navigation";
-import {
-  useChatHistory,
-  useChatSession,
-  useChatboxWS,
-} from "@/hooks/api/chatbox";
+import { usePathname } from "next/navigation";
 import { CreateChatbotProvider } from "./create-chatbot-context";
-import { useChatbotDetail } from "@/hooks/api/chatbot";
-import Description from "./description";
-import CreditBalance from "./credit-balance";
+// import Description from "./description";
+// import CreditBalance from "./credit-balance";
+// import InaccessibleChat from "./inaccessible-shared-chat";
 import { CreditBalanceProvider } from "./credit-balance-context";
-import InaccessibleChat from "./inaccessible-shared-chat";
 
 export default function ChatBotPage() {
   // const router = useRouter();
@@ -37,7 +30,7 @@ export default function ChatBotPage() {
 
   useEffect(() => {
     setHeaderTitle("AI CHAT"); // Set the title when the component is mounted
-    console.log(pathname.split("/").pop());
+    //console.log(pathname.split("/").pop());
 
     // Optional: Reset the title when the component is unmounted
     return () => setHeaderTitle("Default Title");
@@ -50,7 +43,10 @@ export default function ChatBotPage() {
           <CreateChatbotProvider>
             {/* <Header /> */}
             <ChatbotInfo setIsOpen={setShowShareModal} />
-            <MessageList isOpen={showShareModal} setIsOpen={setShowShareModal} />
+            <MessageList
+              isOpen={showShareModal}
+              setIsOpen={setShowShareModal}
+            />
             <MessageInput />
             {/* <InaccessibleChat /> */}
           </CreateChatbotProvider>

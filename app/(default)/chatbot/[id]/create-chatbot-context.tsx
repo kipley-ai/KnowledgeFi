@@ -2,13 +2,9 @@
 
 import { createContext, useContext, useState } from "react";
 import { ReactSetter } from "@/lib/aliases";
-import {
-  useChatHistory,
-  useChatSession,
-  useChatboxWS,
-} from "@/hooks/api/chatbox";
+import { useChatboxWS } from "@/hooks/api/chatbox";
 import { ChatPayload, LastMessagePayload } from "@/hooks/api/chatbox/schema";
-import { useNftDetail } from "@/hooks/api/nft";
+//import { useNftDetail } from "@/hooks/api/nft";
 
 interface CreateChatbotContextProps {
   createChatbot: any;
@@ -37,6 +33,9 @@ interface Message {
   sender: "bot" | "user";
   message: string;
   chunks?: string;
+  chatbot_recommendation?: any[];
+  created?: any;
+  suggested_questions?: any[];
 }
 
 const CreateChatbotContext = createContext<

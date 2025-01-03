@@ -10,9 +10,9 @@ import { useChatbotDetail, useGetSession } from "@/hooks/api/chatbot";
 import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useAccount } from "wagmi";
-import Image from "next/image";
-import AvatarDummy from "public/images/avatar-bot-dummy.svg";
-import AvatarDummy2 from "public/images/avatar-user-dummy.svg";
+// import Image from "next/image";
+// import AvatarDummy from "public/images/avatar-bot-dummy.svg";
+// import AvatarDummy2 from "public/images/avatar-user-dummy.svg";
 import { StaticImageData } from "next/image";
 import ChatMessage from "./chat-message";
 import FirstAnswer from "./first-message";
@@ -23,9 +23,9 @@ import { useCreditBalance } from "@/hooks/api/credit";
 import { chatbotIdFromSlug } from "@/utils/utils";
 import { getBreakpoint } from "@/components/utils/utils";
 import ShareModal from "@/components/share-chat-modal";
-import TweetAnswer from "./tweet-answer";
 import { LoadMoreSpinner } from "@/components/load-more";
-import { keepPreviousData } from "@tanstack/react-query";
+// import TweetAnswer from "./tweet-answer";
+// import { keepPreviousData } from "@tanstack/react-query";
 
 const MessageList = ({
   isOpen,
@@ -97,7 +97,8 @@ const MessageList = ({
     page_num: 1,
     page_size: pageSize,
   });
-  // console.log(chatHistoryAPI.data?.data?.data.history_count); // For debugging purpose
+  //console.log("🚀 ~ chatHistoryAPI:", chatHistoryAPI);
+  console.log("🚀 ~ chatHistoryAPI data:", chatHistoryAPI.data?.data);
 
   const [hasMoreChat, setHasMoreChat] = useState(true);
 
@@ -113,7 +114,7 @@ const MessageList = ({
     const observer = new IntersectionObserver(
       (entries) => {
         const isIntersecting = entries[0].isIntersecting;
-        const totalChat = chatHistoryAPI.data?.data?.data?.history_count ?? 0; // Use ?? to provide a default value
+        const totalChat = chatHistoryAPI.data?.data.length ?? 0; // Use ?? to provide a default value
 
         // Check conditions before loading more items
         if (
@@ -146,17 +147,12 @@ const MessageList = ({
   }, [breakpoint, pageSize, chatHistoryAPI.isFetching]); // Ensure dependencies are correctly listed
 
   useEffect(() => {
-    console.log(
-      "Is success?: ",
-      chatbotDetailIsSuccess && chatHistoryAPI.isSuccess,
-    );
+    //console.log(chatbotDetailIsSuccess && chatHistoryAPI.isSuccess);
     if (chatbotDetailIsSuccess && chatHistoryAPI.isSuccess) {
-      console.log(chatHistoryAPI.data?.data?.data?.history_count);
-      if (chatHistoryAPI.data?.data?.data?.history_count) {
-        console.log(chatHistoryAPI.data?.data?.data.history_list);
-        setMessageHistory(
-          chatHistoryAPI.data?.data?.data.history_list.reverse(),
-        );
+      //console.log(chatHistoryAPI.data?.data.length);
+      if (chatHistoryAPI.data?.data.length) {
+        //console.log(chatHistoryAPI.data?.data);
+        setMessageHistory(chatHistoryAPI.data?.data.reverse());
       }
       setAnswersStream([]);
     }
