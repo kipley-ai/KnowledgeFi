@@ -14,11 +14,9 @@ import {
 } from "@/hooks/api/chatbot";
 import { useChatHistory } from "@/hooks/api/chatbox";
 import { useEffect, useRef, useState } from "react";
-import Image from "next/image";
-import Avatar from "public/images/avatar-gradient-icon.svg";
-import EnterIcon from "public/images/arrow-right.svg";
 import { useDefaultValue } from "@/hooks/api/default_value";
 import { chatbotIdFromSlug } from "@/utils/utils";
+import ChatInitialSuggestion from "./chat-initial-suggestion";
 
 const MessageInput = () => {
   const { id: slug } = useParams();
@@ -31,6 +29,7 @@ const MessageInput = () => {
 
     // WS
     sendValidatedMessage,
+    messageHistory,
     setMessageHistory,
 
     // Loading
@@ -77,9 +76,9 @@ const MessageInput = () => {
   useEffect(() => {
     console.log(pluginConfig.data?.data);
     if (pluginConfig.isSuccess) {
-      // console.log(pluginConfig.data?.data)
+      //console.log(pluginConfig.data?.data);
       const plugin_config = JSON.parse(pluginConfig.data?.data.data.value);
-      console.log(plugin_config);
+      //console.log(plugin_config);
       setModel(plugin_config.model);
       setPromptTemplate2(plugin_config.prompt_template);
       setTemprature(plugin_config.model_temprature);
@@ -97,20 +96,22 @@ const MessageInput = () => {
     }
   }, [replyStatus]);
 
-  const handleSendMessage = async (e: any) => {
+  const handleSendMessage = async (e: any, question: string = "") => {
     e.preventDefault();
 
-    if (!newQuestion || newQuestion === "" || newQuestion.trim() === "") return;
+    let newQ = question || newQuestion;
+
+    if (!newQ || newQ === "" || newQ.trim() === "") return;
 
     if (!chatSession.data?.data.data?.session_id) {
       newSession.mutate(
         { chatbot_id: id as string },
         {
           onSuccess(data, variables, context) {
-            console.log(data);
+            //console.log(data);
             chatSession.refetch();
             sendValidatedMessage({
-              question: newQuestion,
+              question: newQ,
               chatbot_id: id as string,
               session_id: data?.data.session_id as string,
               kb_id: chatbotData?.data.data.kb_id as string,
@@ -137,18 +138,18 @@ const MessageInput = () => {
             });
             setMessageHistory((prevHistory) => [
               ...prevHistory,
-              { sender: "user", message: newQuestion },
+              { sender: "user", message: newQ },
             ]);
             setNewQuestion("");
             setReplyStatus("answering");
-            setLastQuestion(newQuestion);
+            setLastQuestion(newQ);
             setInputRows(1);
           },
         },
       );
     } else {
       sendValidatedMessage({
-        question: newQuestion,
+        question: newQ,
         chatbot_id: id as string,
         session_id: chatSession.data?.data.data.session_id as string,
         kb_id: chatbotData?.data.data.kb_id as string,
@@ -175,11 +176,11 @@ const MessageInput = () => {
       });
       setMessageHistory((prevHistory) => [
         ...prevHistory,
-        { sender: "user", message: newQuestion },
+        { sender: "user", message: newQ },
       ]);
       setNewQuestion("");
       setReplyStatus("answering");
-      setLastQuestion(newQuestion);
+      setLastQuestion(newQ);
       setInputRows(1);
     }
   };
@@ -190,6 +191,7 @@ const MessageInput = () => {
     '"';
 
   const handleClearChat = () => {
+    console.log("🚀 ~ fire handleClearChat");
     newSession.mutate(
       { chatbot_id: id as string },
       {
@@ -202,71 +204,105 @@ const MessageInput = () => {
     );
   };
 
+  useEffect(() => {
+    console.log("messageHistory ", messageHistory);
+  }, [messageHistory]);
+
   return (
-    <div className="sticky inset-x-0 bottom-4 mt-6 flex w-auto items-center gap-4">
-      <button
-        className="rounded-2xl border border-gray-600 px-2 text-sm text-gray-600 hover:brightness-150"
-        onClick={handleClearChat}
-      >
-        CLEAR
-        <br />
-        CHAT
-      </button>
-      <form
-        onSubmit={handleSendMessage}
-        className="flex grow items-center justify-between rounded-md border border-gray-600 bg-neutral-900 py-1 pl-1 focus-within:border-[#01F7FF] lg:bottom-0 lg:w-full"
-      >
-        {/* Profile picture placeholder */}
-        {/* <Image src={Avatar} alt="Profile" className="w-8 h-8 rounded-full mr-4" /> */}
-        {/* Input Field */}
-        <textarea
-          ref={inputRef}
-          placeholder="Ask me anything"
-          className="grow resize-none border-0 bg-neutral-900 text-white placeholder-gray-300 caret-[#01F7FF] outline-none focus:ring-0"
-          value={newQuestion}
-          onChange={(e) => {
-            let lengthOfText = e.target.value.match(/\n/g)?.length;
-            if (!lengthOfText) {
-              setInputRows(1);
-            }
-            if (lengthOfText && lengthOfText < 2) {
-              setInputRows(lengthOfText + 1);
-            }
-            setNewQuestion(e.target.value);
-          }}
-          disabled={replyStatus === "answering"}
-          rows={inputRows}
-          tabIndex={0}
-          onKeyDown={(e) => {
-            if (e.code === "Enter" && !e.shiftKey) {
-              handleSendMessage(e);
-            }
-          }}
-        />
-        {/* Icons or buttons */}
-        <div className="mx-4">
+    <>
+      <div className="border-border border-t-2">
+        <h3 className="py-2 text-sm font-medium">Smart Suggestions</h3>
+      </div>
+      {messageHistory.length === 0 && (
+        <ChatInitialSuggestion handleSendMessage={handleSendMessage} />
+      )}
+
+      <div className="sticky inset-x-0 bottom-4 flex-col items-center gap-2">
+        {messageHistory.length > 0 && (
+          <div className="mb-4 flex gap-4 overflow-x-auto max-md:pb-2 md:grid md:grid-cols-2">
+            {replyStatus === "idle" &&
+              messageHistory[messageHistory.length - 1]?.suggested_questions &&
+              messageHistory[
+                messageHistory.length - 1
+              ]?.suggested_questions?.map(
+                (suggestion: string, index: number) => (
+                  <button
+                    key={index}
+                    className="border-border bg-sidebar text-heading rounded-lg border-2 px-4 py-3 text-start text-xs font-light hover:bg-stone-600 hover:text-aqua-700 md:px-5"
+                    onClick={(e: any) => handleSendMessage(e, suggestion)}
+                  >
+                    {suggestion}
+                  </button>
+                ),
+              )}
+          </div>
+        )}
+        <div className="flex items-center gap-4">
           <button
-            className="text-light-blue"
-            disabled={replyStatus === "answering"}
+            className="rounded-2xl border border-gray-600 px-2 text-sm text-gray-600 hover:brightness-150"
+            onClick={handleClearChat}
           >
-            <svg
-              width="20"
-              height="14"
-              viewBox="0 0 20 14"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                fill-rule="evenodd"
-                clip-rule="evenodd"
-                d="M2.62268e-07 6L3.49691e-07 8L15 8L15 10L17 10L17 8L20 8L20 6L17 6L17 4L15 4L15 6L2.62268e-07 6ZM13 2L15 2L15 4L13 4L13 2ZM13 2L11 2L11 -4.80823e-07L13 -5.68248e-07L13 2ZM13 12L15 12L15 10L13 10L13 12ZM13 12L11 12L11 14L13 14L13 12Z"
-                fill="#00FFFF"
-              />
-            </svg>
+            CLEAR
+            <br />
+            CHAT
           </button>
+          <form
+            onSubmit={handleSendMessage}
+            className="flex grow items-center justify-between rounded-md border border-gray-600 bg-neutral-900 py-1 pl-1 focus-within:border-[#01F7FF] lg:bottom-0 lg:w-full"
+          >
+            {/* Profile picture placeholder */}
+            {/* <Image src={Avatar} alt="Profile" className="w-8 h-8 rounded-full mr-4" /> */}
+            {/* Input Field */}
+            <textarea
+              ref={inputRef}
+              placeholder="Ask me anything"
+              className="grow resize-none border-0 bg-neutral-900 text-white placeholder-gray-300 caret-[#01F7FF] outline-none focus:ring-0"
+              value={newQuestion}
+              onChange={(e) => {
+                let lengthOfText = e.target.value.match(/\n/g)?.length;
+                if (!lengthOfText) {
+                  setInputRows(1);
+                }
+                if (lengthOfText && lengthOfText < 2) {
+                  setInputRows(lengthOfText + 1);
+                }
+                setNewQuestion(e.target.value);
+              }}
+              disabled={replyStatus === "answering"}
+              rows={inputRows}
+              tabIndex={0}
+              onKeyDown={(e) => {
+                if (e.code === "Enter" && !e.shiftKey) {
+                  handleSendMessage(e);
+                }
+              }}
+            />
+            {/* Icons or buttons */}
+            <div className="mx-4">
+              <button
+                className="text-light-blue"
+                disabled={replyStatus === "answering"}
+              >
+                <svg
+                  width="20"
+                  height="14"
+                  viewBox="0 0 20 14"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    clip-rule="evenodd"
+                    d="M2.62268e-07 6L3.49691e-07 8L15 8L15 10L17 10L17 8L20 8L20 6L17 6L17 4L15 4L15 6L2.62268e-07 6ZM13 2L15 2L15 4L13 4L13 2ZM13 2L11 2L11 -4.80823e-07L13 -5.68248e-07L13 2ZM13 12L15 12L15 10L13 10L13 12ZM13 12L11 12L11 14L13 14L13 12Z"
+                    fill="#00FFFF"
+                  />
+                </svg>
+              </button>
+            </div>
+          </form>
         </div>
-      </form>
-    </div>
+      </div>
+    </>
   );
 };
 
