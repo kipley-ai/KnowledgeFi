@@ -13,7 +13,7 @@ const nextConfig = {
         hostname: "pbs.twimg.com",
         port: "",
         pathname: "/profile_images/**",
-      }
+      },
     ],
     domains: [
       "ucb80427f5c964c7dea1209e9c0f.previews.dropboxusercontent.com",
@@ -27,7 +27,8 @@ const nextConfig = {
       "digitaloceanspaces.com",
       "knowledgefi-kb-files-test.e8cf6e5ae8cb4fd0df33a1fef8bbba19.r2.cloudflarestorage.com",
       "knowledgefi-assets-test.kip.pro",
-      "knowledgefi-assets.kip.pro"
+      "knowledgefi-assets.kip.pro",
+      "new-kfi-kb-files-test.e8cf6e5ae8cb4fd0df33a1fef8bbba19.r2.cloudflarestorage.com",
     ],
   },
 };
